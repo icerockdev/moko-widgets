@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SegmentWidgetView" customModule="MultiPlatformLibraryWidgets" customModuleProvider="target">
+            <connections>
+                <outlet property="contentView" destination="EqO-vd-hhc" id="cn2-wU-E49"/>
+                <outlet property="segmentControll" destination="cPQ-Az-hm6" id="zKd-Cs-LYM"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="cPQ-Az-hm6">
+                    <rect key="frame" x="8" y="8" width="359" height="31"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="94s-6I-gYj"/>
+                    </constraints>
+                    <segments>
+                        <segment title="First"/>
+                        <segment title="Second"/>
+                    </segments>
+                    <color key="tintColor" name="MainColor"/>
+                    <connections>
+                        <action selector="onChangeSegment:" destination="-1" eventType="valueChanged" id="5z2-yY-udQ"/>
+                    </connections>
+                </segmentedControl>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EqO-vd-hhc">
+                    <rect key="frame" x="0.0" y="46" width="375" height="621"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="cPQ-Az-hm6" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="38R-Ws-txj"/>
+                <constraint firstAttribute="trailing" secondItem="cPQ-Az-hm6" secondAttribute="trailing" constant="8" id="Dhy-5k-Fpg"/>
+                <constraint firstAttribute="trailing" secondItem="EqO-vd-hhc" secondAttribute="trailing" id="EGm-HW-Mha"/>
+                <constraint firstItem="cPQ-Az-hm6" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="J8t-yS-Nl6"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="cPQ-Az-hm6" secondAttribute="trailing" id="bld-8g-vhS"/>
+                <constraint firstItem="EqO-vd-hhc" firstAttribute="top" secondItem="cPQ-Az-hm6" secondAttribute="bottom" constant="8" id="fsH-SG-fOq"/>
+                <constraint firstItem="cPQ-Az-hm6" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="lGH-zU-02d"/>
+                <constraint firstItem="EqO-vd-hhc" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="vsB-bz-tsy"/>
+                <constraint firstAttribute="bottom" secondItem="EqO-vd-hhc" secondAttribute="bottom" id="xxg-WJ-k42"/>
+            </constraints>
+            <point key="canvasLocation" x="53.600000000000001" y="84.107946026986511"/>
+        </view>
+    </objects>
+    <resources>
+        <namedColor name="MainColor">
+            <color red="0.0" green="0.28627450980392155" blue="0.58823529411764708" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

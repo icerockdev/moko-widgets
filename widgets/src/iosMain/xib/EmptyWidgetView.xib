@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EmptyWidgetView" customModule="MultiPlatformLibraryWidgets" customModuleProvider="target">
+            <connections>
+                <outlet property="titleLabel" destination="2x3-mJ-B2F" id="F2N-wB-8c5"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="393"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fEr-H4-pUj">
+                    <rect key="frame" x="87.5" y="96.5" width="200" height="200"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="200" id="Mmr-jA-kdd"/>
+                        <constraint firstAttribute="height" constant="200" id="XVi-ec-3Jc"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                            <color key="value" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2x3-mJ-B2F">
+                    <rect key="frame" x="20" y="55.5" width="335" height="21"/>
+                    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="fEr-H4-pUj" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="61c-NC-TGH"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="2x3-mJ-B2F" secondAttribute="trailing" constant="20" id="70p-Mv-Zxx"/>
+                <constraint firstItem="2x3-mJ-B2F" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="X2F-oN-Iut"/>
+                <constraint firstItem="fEr-H4-pUj" firstAttribute="top" secondItem="2x3-mJ-B2F" secondAttribute="bottom" constant="20" id="pqV-fr-8Id"/>
+                <constraint firstItem="fEr-H4-pUj" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="zqm-jG-k0T"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="108" y="-55.322338830584712"/>
+        </view>
+    </objects>
+</document>

@@ -1,0 +1,13 @@
+.gradle
+.settings
+.project
+.classpath
+.vscode
+.idea
+build
+*.iml
+Pods
+xcuserdata
+local.properties
+local.gradle
+*.generated.swift

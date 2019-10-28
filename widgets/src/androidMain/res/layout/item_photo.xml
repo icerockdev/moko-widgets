@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="kotlin.Unit" />
+
+        <variable
+            name="image"
+            type="android.graphics.Bitmap" />
+
+        <variable
+            name="onItemClick"
+            type="kotlin.jvm.functions.Function0&lt;Unit&gt;" />
+
+        <variable
+            name="onDeleteClick"
+            type="kotlin.jvm.functions.Function0&lt;Unit&gt;" />
+
+        <variable
+            name="isPlayVisible"
+            type="Boolean" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:layout_marginEnd="16dp"
+        app:cardCornerRadius="16dp"
+        app:cardPreventCornerOverlap="false">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:onClick="@{() -> onItemClick.invoke()}">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                app:imageBitmap="@{image}"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:onClick="@{() -> onDeleteClick.invoke()}"
+                android:shadowColor="@color/colorPrimary"
+                android:src="@drawable/ic_cancel"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                visibleOrInvisible="@{isPlayVisible}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/ic_item_photo_play"
+                tools:ignore="ContentDescription" />
+        </FrameLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

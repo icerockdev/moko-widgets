@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="widget"
+            type="com.icerockdev.mpp.widgets.ButtonWidget" />
+    </data>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonWidget"
+        style="?sclButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:enabled="@{widget.enabled.liveData.ld}"
+        android:onClick="@{() -> widget.onTap.invoke()}"
+        android:text="@{widget.text.liveData.ld}" />
+</layout>

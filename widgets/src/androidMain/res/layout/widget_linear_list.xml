@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="androidx.lifecycle.LiveData"/>
+        <import type="java.util.List"/>
+        <import type="com.icerockdev.mpp.binderadapter.generate.BindingClass"/>
+
+        <variable name="widget" type="com.icerockdev.mpp.widgets.LinearListWidget"/>
+        <variable name="list" type="LiveData&lt;List&lt;BindingClass&gt;&gt;"/>
+    </data>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        app:onRefreshListener="@{() -> widget.onRefresh.invoke()}">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:bindValue="@{list}"
+            app:adapter="@{`com.icerockdev.mpp.binderadapter.adapter.BinderAdapter`}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</layout>

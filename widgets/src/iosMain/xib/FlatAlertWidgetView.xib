@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FlatAlertWidgetView" customModule="MultiPlatformLibraryWidgets" customModuleProvider="target">
+            <connections>
+                <outlet property="actionButton" destination="ROB-l4-Uq4" id="s24-EB-IXH"/>
+                <outlet property="iconImageView" destination="Zg9-Yx-W1p" id="bSD-Hh-k1j"/>
+                <outlet property="messageLabel" destination="IGk-Hv-otN" id="VDh-VU-YXK"/>
+                <outlet property="view" destination="iN0-l3-epB" id="cFa-5L-oXY"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="268" height="312"/>
+            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IGk-Hv-otN">
+                    <rect key="frame" x="20" y="27.5" width="228" height="20.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Zg9-Yx-W1p">
+                    <rect key="frame" x="34" y="56" width="200" height="200"/>
+                    <color key="backgroundColor" red="0.5" green="0.0" blue="0.0" alpha="0.0" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="200" id="VcP-ri-OmH"/>
+                        <constraint firstAttribute="width" constant="200" id="dlK-O2-D9I"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="imageTintColor">
+                            <color key="value" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ROB-l4-Uq4">
+                    <rect key="frame" x="101" y="264" width="66" height="38"/>
+                    <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                    <state key="normal" title="Button">
+                        <color key="titleColor" red="0.52081549660000004" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="onButtonTap:" destination="-1" eventType="touchUpInside" id="JIg-hN-tcC"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="ROB-l4-Uq4" firstAttribute="top" secondItem="Zg9-Yx-W1p" secondAttribute="bottom" constant="8" id="B4j-c7-2Is"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="IGk-Hv-otN" secondAttribute="trailing" constant="20" id="J1g-Vb-6u9"/>
+                <constraint firstItem="Zg9-Yx-W1p" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="SER-eG-Wf9"/>
+                <constraint firstItem="Zg9-Yx-W1p" firstAttribute="top" secondItem="IGk-Hv-otN" secondAttribute="bottom" constant="8" id="nry-sh-rbK"/>
+                <constraint firstItem="IGk-Hv-otN" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="rxf-sc-fVC"/>
+                <constraint firstItem="Zg9-Yx-W1p" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="vdu-YW-EHA"/>
+                <constraint firstItem="ROB-l4-Uq4" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="wja-7u-D2Z"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                    <real key="value" value="8"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
+            <point key="canvasLocation" x="198.40000000000001" y="-44.07796101949026"/>
+        </view>
+    </objects>
+</document>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="widget"
+            type="com.icerockdev.mpp.widgets.forms.MediaWidget" />
+        <variable
+            name="selectedPhoto"
+            type="androidx.lifecycle.LiveData&lt;android.graphics.drawable.Drawable&gt;" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="24dp"
+            android:onClick="@{() -> widget.onWidgetPressed()}"
+            image="@{selectedPhoto}"
+            placeholder="@{@drawable/background_pick_photo}"
+            roundImage="@{true}"
+            />
+
+        <TextView
+            style="?widgetFieldsErrorTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@{widget.field.error.ld}"
+            android:textColor="@android:color/holo_red_light"
+            app:visibleOrGone="@{widget.field.error.ld != null}" />
+
+    </LinearLayout>
+</layout>
