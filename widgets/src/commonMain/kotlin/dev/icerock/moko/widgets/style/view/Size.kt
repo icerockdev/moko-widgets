@@ -1,4 +1,4 @@
-package com.icerockdev.mpp.widgets.style.view
+package dev.icerock.moko.widgets.style.view
 
 /**
  * Desired widget size defined as specs for width and height.

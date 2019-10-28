@@ -2,7 +2,7 @@ package dev.icerock.moko.widgets.style.ext
 
 import android.util.DisplayMetrics
 import android.view.ViewGroup
-import com.icerockdev.mpp.widgets.style.view.SizeSpec
+import dev.icerock.moko.widgets.style.view.SizeSpec
 
 fun Int.toPlatformSize(dm: DisplayMetrics): Int {
     return when (this) {

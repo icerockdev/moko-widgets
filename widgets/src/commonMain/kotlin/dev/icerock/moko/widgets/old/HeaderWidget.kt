@@ -4,7 +4,7 @@ import dev.icerock.moko.widgets.style.background.Background
 import com.icerockdev.mpp.widgets.style.view.MarginValues
 import com.icerockdev.mpp.widgets.style.view.Margined
 import com.icerockdev.mpp.widgets.style.view.TextStyle
-import com.icerockdev.mpp.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.core.VFC

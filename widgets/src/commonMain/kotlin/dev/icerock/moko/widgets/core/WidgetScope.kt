@@ -5,7 +5,7 @@ class WidgetScope(internal val properties: MutableMap<Key, Any>) {
     constructor() : this(properties = mutableMapOf<Key, Any>())
 
     constructor(parent: WidgetScope? = null, builder: Builder.() -> Unit) : this(
-        properties = parent?.properties?.toMutableMap() ?: mutableMapOf()
+        properties = parent?.properties?.deepMutableCopy() ?: mutableMapOf()
     ) {
         Builder(scope = this).builder()
     }
@@ -13,6 +13,12 @@ class WidgetScope(internal val properties: MutableMap<Key, Any>) {
     interface Key
 
     class Builder(val scope: WidgetScope)
+}
+
+private fun <K, V> Map<K, V>.deepMutableCopy(): MutableMap<K, V> = mutableMapOf<K, V>().also {
+    forEach { (key, value) ->
+        it[key] = value
+    }
 }
 
 fun buildWidget(scope: WidgetScope, builder: WidgetScope.() -> Widget): Widget {

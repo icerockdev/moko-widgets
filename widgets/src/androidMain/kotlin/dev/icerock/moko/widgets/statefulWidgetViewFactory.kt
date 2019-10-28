@@ -7,14 +7,16 @@ import dev.icerock.moko.mvvm.State
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.View
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.style.background.buildBackground
 
 actual var statefulWidgetViewFactory: VFC<StatefulWidget<*, *>> = { context: ViewFactoryContext,
                                                                     widget: StatefulWidget<*, *> ->
     val ctx = context.context
     val lifecycleOwner = context.lifecycleOwner
+    val style = widget.style
 
     val root = FrameLayout(ctx).apply {
-        setBackgroundColor(resources.getColor(android.R.color.white, null))
+        background = style.background.buildBackground(ctx)
     }
 
     val factoryContext = ViewFactoryContext(ctx, lifecycleOwner, root)

@@ -2,8 +2,8 @@ package dev.icerock.moko.widgets.old
 
 import com.icerockdev.mpp.widgets.style.view.Padded
 import com.icerockdev.mpp.widgets.style.view.PaddingValues
-import com.icerockdev.mpp.widgets.style.view.SizeSpec
-import com.icerockdev.mpp.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.style.view.SizeSpec
+import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.View

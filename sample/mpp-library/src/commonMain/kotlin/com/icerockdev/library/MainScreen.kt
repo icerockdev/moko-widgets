@@ -11,7 +11,10 @@ import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.*
 import dev.icerock.moko.widgets.core.*
 import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Orientation
 import dev.icerock.moko.widgets.style.background.ShapeType
+import dev.icerock.moko.widgets.style.view.SizeSpec
+import dev.icerock.moko.widgets.style.view.WidgetSize
 
 class MainScreen(
     private val widgetScope: WidgetScope
@@ -23,55 +26,80 @@ class MainScreen(
     override fun createWidget(viewModel: MainViewModel): Widget {
         return buildWidget(scope = widgetScope) {
             val errorScope = childScope {
-                flatAlertStyle = flatAlertStyle.copy(
+                this.flatAlertStyle = flatAlertStyle.copy(
                     background = Background(
-                        color = 0xFFFF0000.toInt()
+                        color = 0xFF00FF00.toInt()
                     )
                 )
             }
             val dataScope = childScope {
-                flatAlertStyle = flatAlertStyle.copy(
+                this.flatAlertStyle = flatAlertStyle.copy(
                     background = Background(
-                        color = 0xFF000000.toInt()
+                        color = 0xFFFF00FF.toInt()
                     )
                 )
             }
 
-            stateful(
-                style = statefulStyle.copy(
-                    background = statefulStyle.background.copy(
-                        shape = statefulStyle.background.shape.copy(type = ShapeType.OVAL)
-                    )
-                ),
-                state = viewModel.state,
-                empty = {
-                    flatAlert(message = "empty".desc().asLiveData())
-                },
-                loading = {
-                    flatAlert(
-                        style = flatAlertStyle.copy(
-                            background = Background(
-                                color = 0xFFFF0000.toInt()
+            linear(
+                childs = listOf(
+                    linear(
+                        style = linearStyle.copy(
+                            orientation = Orientation.HORIZONTAL,
+                            size = WidgetSize(
+                                width = SizeSpec.AS_PARENT,
+                                height = SizeSpec.WRAP_CONTENT
                             )
                         ),
-                        message = "loading".desc().asLiveData()
+                        childs = listOf(
+                            button(
+                                text = "change state".desc().asLiveData(),
+                                onTap = viewModel::onChangeStatePressed
+                            ),
+                            button(
+                                text = "just button".desc().asLiveData(),
+                                onTap = {}
+                            )
+                        )
+                    ),
+                    stateful(
+                        style = statefulStyle.copy(
+                            background = statefulStyle.background.copy(
+                                shape = statefulStyle.background.shape.copy(type = ShapeType.OVAL)
+                            )
+                        ),
+                        state = viewModel.state,
+                        empty = {
+                            flatAlert(message = "empty".desc().asLiveData())
+                        },
+                        loading = {
+                            flatAlert(
+                                style = flatAlertStyle.copy(
+                                    background = Background(
+                                        color = 0xFFFF0000.toInt()
+                                    )
+                                ),
+                                message = "loading".desc().asLiveData()
+                            )
+                        },
+                        data = { data ->
+                            buildWidget(dataScope) {
+                                tabs {
+                                    tab(
+                                        title = "first page".desc().asLiveData(),
+                                        body = flatAlert(message = data.map { it?.desc() })
+                                    )
+                                    tab(
+                                        title = "second page".desc().asLiveData(),
+                                        body = flatAlert(message = "SECOND".desc().asLiveData())
+                                    )
+                                }
+                            }
+                        },
+                        error = { error ->
+                            errorScope.flatAlert(message = error.map { it?.desc() })
+                        }
                     )
-                },
-                data = { data ->
-                    dataScope.tabs {
-                        tab(
-                            title = "first page".desc().asLiveData(),
-                            body = flatAlert(message = data.map { it?.desc() })
-                        )
-                        tab(
-                            title = "second page".desc().asLiveData(),
-                            body = flatAlert(message = "SECOND".desc().asLiveData())
-                        )
-                    }
-                },
-                error = { error ->
-                    errorScope.flatAlert(message = error.map { it?.desc() })
-                }
+                )
             )
         }
     }

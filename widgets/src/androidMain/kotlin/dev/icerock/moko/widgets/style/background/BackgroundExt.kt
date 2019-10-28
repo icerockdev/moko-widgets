@@ -9,11 +9,11 @@ fun Background.buildBackground(context: Context): StateListDrawable =
     StateListDrawable().also { selector ->
         selector.addState(
             intArrayOf(-android.R.attr.state_enabled),
-            makeGradient(colorsDisabled, orientation, shape, context)
+            makeGradient(colorsDisabled, direction, shape, context)
         )
         selector.addState(
             intArrayOf(),
-            makeGradient(colors, orientation, shape, context)
+            makeGradient(colors, direction, shape, context)
         )
     }
 
@@ -31,13 +31,13 @@ private fun GradientDrawable.applyShape(context: Context, newShape: Shape) {
 
 private fun makeGradient(
     colors: List<Int>,
-    orientation: Orientation,
+    direction: Direction,
     shape: Shape,
     context: Context
 ): GradientDrawable {
     return GradientDrawable().also {
         it.colors = colors.toIntArray()
-        it.orientation = orientation.toPlatformOrientation()
+        it.orientation = direction.toPlatformOrientation()
         it.applyShape(context, shape)
     }
 }

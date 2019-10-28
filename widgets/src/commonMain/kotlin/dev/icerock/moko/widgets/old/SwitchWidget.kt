@@ -10,6 +10,7 @@ import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.View
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.style.view.WidgetSize
 
 expect var switchWidgetViewFactory: VFC<SwitchWidget>
 
