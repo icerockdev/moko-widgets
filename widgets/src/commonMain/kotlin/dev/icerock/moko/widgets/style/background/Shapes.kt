@@ -1,9 +1,12 @@
-package com.icerockdev.mpp.widgets.style.background
+package dev.icerock.moko.widgets.style.background
 
 /**
  * Defines a shape with specified corners radii.
  */
-class Shape(val type: ShapeType = ShapeType.RECTANGLE, val corners: Corners = Corners())
+data class Shape(
+    val type: ShapeType = ShapeType.RECTANGLE,
+    val corners: Corners = Corners()
+)
 
 /**
  * Possible shape types
@@ -12,7 +15,7 @@ enum class ShapeType {
     OVAL, RECTANGLE
 }
 
-class Corners(
+data class Corners(
     val topLeft: Float = 0.0F,
     val topRight: Float = 0.0F,
     val bottomRight: Float = 0.0F,

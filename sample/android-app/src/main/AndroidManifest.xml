@@ -7,7 +7,7 @@
 
     <application
         android:label="moko-units test app"
-        android:theme="@style/Theme.AppCompat.DayNight"
+        android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity android:name=".MainActivity">

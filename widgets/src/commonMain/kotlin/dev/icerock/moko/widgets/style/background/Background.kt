@@ -1,6 +1,6 @@
-package com.icerockdev.mpp.widgets.style.background
+package dev.icerock.moko.widgets.style.background
 
-class Background(
+data class Background(
     val colors: List<Int> = listOf(0xFFFFFFFF.toInt(), 0xFFFFFFFF.toInt()),
     val colorsDisabled: List<Int> = colors,
     val orientation: Orientation = Orientation.LEFT_RIGHT,

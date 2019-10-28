@@ -1,35 +1,95 @@
-package com.icerockdev.mpp.widgets
+package dev.icerock.moko.widgets
 
-import android.view.LayoutInflater
-import androidx.databinding.DataBindingUtil
+import android.view.View
+import android.view.ViewGroup
+import android.widget.*
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.lifecycle.Observer
-import com.icerockdev.mpp.widgets.databinding.WidgetTabsBinding
+import dev.icerock.moko.resources.desc.StringDesc
+import dev.icerock.moko.widgets.core.VFC
+import dev.icerock.moko.widgets.core.ViewFactoryContext
 
 actual var tabsWidgetViewFactory: VFC<TabsWidget> = { context: ViewFactoryContext,
                                                       widget: TabsWidget ->
     val ctx = context.context
     val lifecycleOwner = context.lifecycleOwner
-    val parent = context.parent
-    val layoutInflater = LayoutInflater.from(ctx)
-    val binding: WidgetTabsBinding =
-        DataBindingUtil.inflate(layoutInflater, R.layout.widget_tabs, parent, false)
-    binding.widget = widget
-    binding.setLifecycleOwner(lifecycleOwner)
-    binding.tabhost.setup()
 
-    widget.tabs.forEachIndexed { index, tabWidget ->
-        val tab = binding.tabhost.newTabSpec("tab$index").apply {
-            setContent {
-                tabWidget.body.buildView(context)
-            }
-            setIndicator(tabWidget.title.liveData().value.toString(ctx))
-        }
-        tabWidget.title.liveData().ld().observe(lifecycleOwner, Observer {
-            if (it == null) return@Observer
-            tab.setIndicator(it.toString(ctx))
-        })
-        binding.tabhost.addTab(tab)
+    val tabHost = TabHost(ctx).apply {
+        layoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+        id = android.R.id.tabhost
     }
 
-    binding.root
+    val container = LinearLayout(ctx).apply {
+        layoutParams = FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+        orientation = LinearLayout.VERTICAL
+    }
+
+    tabHost.addView(container)
+
+    val tabsScroll = HorizontalScrollView(ctx).apply {
+        layoutParams = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        isVerticalScrollBarEnabled = false
+        isHorizontalScrollBarEnabled = false
+    }
+
+    val tabWidget = TabWidget(ctx).apply {
+        layoutParams = FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        id = android.R.id.tabs
+    }
+
+    tabsScroll.addView(tabWidget)
+    container.addView(tabsScroll)
+
+    val content = FrameLayout(ctx).apply {
+        layoutParams = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+        id = android.R.id.tabcontent
+    }
+    container.addView(content)
+
+    tabHost.setup()
+
+    widget.tabs.forEachIndexed { index, tab ->
+        fun createIndicator(stringDesc: StringDesc): View {
+            val tabContainer = FrameLayout(ContextThemeWrapper(ctx, android.R.style.Widget_Material_Tab))
+            val text = TextView(ContextThemeWrapper(ctx, android.R.style.Widget_Material_ActionBar_TabText)).apply {
+                text = stringDesc.toString(ctx)
+            }
+            tabContainer.addView(text)
+            return tabContainer
+        }
+
+        val tabSpec = tabHost.newTabSpec("tab$index").apply {
+            setContent {
+                tab.body.buildView(
+                    ViewFactoryContext(
+                        context = ctx,
+                        parent = content,
+                        lifecycleOwner = lifecycleOwner
+                    )
+                )
+            }
+            setIndicator(createIndicator(tab.title.value))
+        }
+        tab.title.ld().observe(lifecycleOwner, Observer {
+            tabSpec.setIndicator(createIndicator(it))
+        })
+        tabHost.addTab(tabSpec)
+    }
+
+    tabHost
 }

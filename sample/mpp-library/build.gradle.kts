@@ -6,7 +6,8 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.multiplatform")
     id("dev.icerock.mobile.multiplatform")
-    id("dev.icerock.mobile.multiplatform-units")
+    id("kotlin-android-extensions")
+//    id("dev.icerock.mobile.multiplatform-units")
     id("kotlin-kapt")
 }
 
@@ -23,21 +24,27 @@ android {
     }
 }
 
+val deps = listOf(
+    Deps.Libs.MultiPlatform.mokoUnits
+)
+
 setupFramework(
-    exports = listOf(
-        Deps.Libs.MultiPlatform.mokoUnits
-    )
+    exports = deps
 )
 
 dependencies {
     mppLibrary(Deps.Libs.MultiPlatform.kotlinStdLib)
-    mppLibrary(Deps.Libs.MultiPlatform.mokoUnits)
+    mppLibrary(Deps.Libs.MultiPlatform.coroutines)
+
+    deps.forEach { mppLibrary(it) }
 
     androidLibrary(Deps.Libs.Android.recyclerView)
-}
 
-multiplatformUnits {
-    classesPackage = "com.icerockdev.library"
-    dataBindingPackage = "com.icerockdev.library"
-    layoutsSourceSet = "androidMain"
+    mppModule(MultiPlatformModule(name = ":widgets"))
 }
+//
+//multiplatformUnits {
+//    classesPackage = "com.icerockdev.library"
+//    dataBindingPackage = "com.icerockdev.library"
+//    layoutsSourceSet = "androidMain"
+//}

@@ -1,6 +1,6 @@
 package dev.icerock.moko.widgets
 
-import com.icerockdev.mpp.widgets.style.background.Orientation
+import dev.icerock.moko.widgets.style.background.Orientation
 
 class ColorStyle(
         val colors: List<Int>,

@@ -6,7 +6,7 @@
 
         <variable
             name="widget"
-            type="com.icerockdev.mpp.widgets.forms.TimeWidget" />
+            type="dev.icerock.moko.widgets.old.TimeWidget" />
     </data>
 
     <FrameLayout

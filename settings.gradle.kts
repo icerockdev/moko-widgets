@@ -17,5 +17,5 @@ pluginManagement {
 enableFeaturePreview("GRADLE_METADATA")
 
 include(":widgets")
-// include(":sample:android-app")
-// include(":sample:mpp-library")
+include(":sample:android-app")
+include(":sample:mpp-library")

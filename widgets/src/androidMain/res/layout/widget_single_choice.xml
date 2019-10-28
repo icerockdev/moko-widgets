@@ -6,7 +6,7 @@
 
         <variable
             name="widget"
-            type="com.icerockdev.mpp.widgets.forms.SingleChoiceWidget" />
+            type="dev.icerock.moko.widgets.old.SingleChoiceWidget" />
     </data>
 
     <FrameLayout

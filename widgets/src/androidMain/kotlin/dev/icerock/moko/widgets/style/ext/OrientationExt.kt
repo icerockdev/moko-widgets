@@ -1,9 +1,9 @@
-package com.icerockdev.mpp.widgets.style.ext
+package dev.icerock.moko.widgets.style.ext
 
 import android.graphics.drawable.GradientDrawable
-import com.icerockdev.mpp.widgets.style.background.Orientation
+import dev.icerock.moko.widgets.style.background.Orientation
 
-private fun Orientation.toPlatformOrientation(): GradientDrawable.Orientation = when (this) {
+internal fun Orientation.toPlatformOrientation(): GradientDrawable.Orientation = when (this) {
     Orientation.TOP_BOTTOM -> GradientDrawable.Orientation.TOP_BOTTOM
     Orientation.TR_BL -> GradientDrawable.Orientation.TR_BL
     Orientation.RIGHT_LEFT -> GradientDrawable.Orientation.RIGHT_LEFT

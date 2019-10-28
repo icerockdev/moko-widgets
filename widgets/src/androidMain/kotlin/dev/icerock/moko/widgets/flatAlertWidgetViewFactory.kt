@@ -1,18 +1,147 @@
-package com.icerockdev.mpp.widgets
+package dev.icerock.moko.widgets
 
-import android.view.LayoutInflater
-import androidx.databinding.DataBindingUtil
-import com.icerockdev.mpp.widgets.databinding.WidgetFlatAlertBinding
+import android.view.Gravity
+import android.view.View
+import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.appcompat.widget.AppCompatButton
+import androidx.core.widget.TextViewCompat
+import androidx.lifecycle.Observer
+import dev.icerock.moko.widgets.core.VFC
+import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.utils.dp
 
 actual var flatAlertWidgetViewFactory: VFC<FlatAlertWidget> = { context: ViewFactoryContext,
                                                                 widget: FlatAlertWidget ->
     val ctx = context.context
-    val parent = context.parent
-    val layoutInflater = LayoutInflater.from(ctx)
-    // TODO добавить стилизацию для алерта из-вне (ic_empty, ic_error, цвета выдернуть из модуля)
-    val binding: WidgetFlatAlertBinding =
-        DataBindingUtil.inflate(layoutInflater, R.layout.widget_flat_alert, parent, false)
-    binding.widget = widget
-    binding.lifecycleOwner = context.lifecycleOwner
-    binding.root
+
+    val container = FrameLayout(ctx).apply {
+        layoutParams = FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+    }
+
+    val rowsContainer = LinearLayout(ctx).apply {
+        layoutParams = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        orientation = LinearLayout.VERTICAL
+    }
+
+    container.addView(rowsContainer)
+
+    // drawable
+    val drawableLiveData = widget.drawable
+    if (drawableLiveData != null) {
+        val imageView = ImageView(ctx).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            ).apply {
+                bottomMargin = 16.dp(ctx)
+                gravity = Gravity.CENTER_HORIZONTAL
+            }
+        }
+
+        rowsContainer.addView(imageView)
+
+        drawableLiveData.ld().observe(context.lifecycleOwner, Observer { resource ->
+            if (resource == null) {
+                imageView.setImageDrawable(null)
+                imageView.visibility = View.GONE
+            } else {
+                imageView.visibility = View.VISIBLE
+                imageView.setImageDrawable(ctx.getDrawable(resource.drawableResId))
+            }
+        })
+    }
+
+    // title
+    val titleLiveData = widget.title
+    if (titleLiveData != null) {
+        val textView = TextView(ctx).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            ).apply {
+                bottomMargin = 8.dp(ctx)
+                gravity = Gravity.CENTER_HORIZONTAL
+            }
+            gravity = Gravity.CENTER
+            TextViewCompat.setTextAppearance(this, android.R.style.TextAppearance_Material_Headline)
+        }
+
+        rowsContainer.addView(textView)
+
+        titleLiveData.ld().observe(context.lifecycleOwner, Observer { title ->
+            if (title == null) {
+                textView.text = null
+                textView.visibility = View.GONE
+            } else {
+                textView.text = title.toString(ctx)
+                textView.visibility = View.VISIBLE
+            }
+        })
+    }
+
+    // message
+    val textView = TextView(ctx).apply {
+        layoutParams = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        ).apply {
+            bottomMargin = 8.dp(ctx)
+            gravity = Gravity.CENTER_HORIZONTAL
+        }
+        gravity = Gravity.CENTER
+        TextViewCompat.setTextAppearance(this, android.R.style.TextAppearance_Material_Subhead)
+    }
+
+    rowsContainer.addView(textView)
+
+    widget.message.ld().observe(context.lifecycleOwner, Observer { msg ->
+        if (msg == null) {
+            textView.text = null
+            textView.visibility = View.GONE
+        } else {
+            textView.text = msg.toString(ctx)
+            textView.visibility = View.VISIBLE
+        }
+    })
+
+    // button
+    val buttonLiveData = widget.buttonText
+    val buttonTap = widget.onTap
+    if (buttonLiveData != null && buttonTap != null) {
+        val button = AppCompatButton(ctx).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            ).apply {
+                gravity = Gravity.CENTER_HORIZONTAL
+            }
+            setOnClickListener {
+                buttonTap()
+            }
+        }
+
+        rowsContainer.addView(button)
+
+        buttonLiveData.ld().observe(context.lifecycleOwner, Observer { buttonText ->
+            if (buttonText == null) {
+                button.text = null
+                button.visibility = View.GONE
+            } else {
+                button.text = buttonText.toString(ctx)
+                button.visibility = View.VISIBLE
+            }
+        })
+    }
+
+    container
 }

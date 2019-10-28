@@ -5,16 +5,16 @@
 
     <data>
 
-        <import type="com.icerockdev.mpp.widgets.forms.InputWidget" />
+        <import type="dev.icerock.moko.widgets.old.InputWidget" />
 
-        <import type="com.icerockdev.mpp.fields.FormField" />
+        <import type="dev.icerock.moko.fields.FormField" />
 
-        <import type="com.icerockdev.mpp.core.resources.StringDesc" />
+        <import type="dev.icerock.moko.resources.desc.StringDesc" />
 
 
         <variable
             name="widget"
-            type="InputWidget" />
+            type="dev.icerock.moko.widgets.old.InputWidget" />
 
         <variable
             name="field"
@@ -22,18 +22,16 @@
 
     </data>
 
-    <androidx.constraintlayout.motion.widget.MotionLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:applyMotionScene="true"
-        app:layoutDescription="@xml/icr_scene">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/hint"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
             android:maxLines="1"
-            android:text="@{widget.label.liveData().ld()}"
+            android:text="@{widget.label.ld()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/editText"
             app:layout_constraintTop_toTopOf="@+id/editText"
@@ -44,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:text="@={widget.field.data.ld}"
-            android:enabled="@{widget.enabled.liveData.ld}"
+            android:enabled="@{widget.enabled.ld}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -65,5 +63,5 @@
 
             tools:text="Ошибка" />
 
-    </androidx.constraintlayout.motion.widget.MotionLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

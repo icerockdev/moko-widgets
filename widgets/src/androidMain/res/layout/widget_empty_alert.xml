@@ -5,7 +5,7 @@
 
         <variable
             name="widget"
-            type="com.icerockdev.mpp.widgets.EmptyAlertWidget" />
+            type="dev.icerock.moko.widgets.old.EmptyAlertWidget" />
     </data>
 
     <FrameLayout

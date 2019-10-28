@@ -51,6 +51,8 @@ dependencies {
 
     implementation(Deps.Libs.Android.appCompat.name)
     implementation(Deps.Libs.Android.recyclerView.name)
+    implementation(Deps.Libs.Android.material.name)
+    implementation(Deps.Libs.Android.constraintLayout.name)
 
     implementation(project(":sample:mpp-library"))
 }

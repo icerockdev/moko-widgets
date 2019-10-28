@@ -1,11 +1,8 @@
-package com.icerockdev.mpp.widgets.utils
+package dev.icerock.moko.widgets.utils
 
 import androidx.databinding.BindingAdapter
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
-/**
- * Created by Nikita on 17/04/2019.
- */
 @BindingAdapter("app:onRefreshListener")
 fun setOnRefreshListener(view: SwipeRefreshLayout, listener: SwipeRefreshLayout.OnRefreshListener) {
     view.setOnRefreshListener {

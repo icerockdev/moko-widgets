@@ -1,4 +1,4 @@
-package dev.icerock.moko.widgets
+package dev.icerock.moko.widgets.core
 
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner

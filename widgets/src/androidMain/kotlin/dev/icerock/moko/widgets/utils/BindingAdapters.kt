@@ -1,4 +1,4 @@
-package com.icerockdev.mpp.widgets.forms
+package dev.icerock.moko.widgets.utils
 
 import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable

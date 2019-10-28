@@ -1,10 +1,12 @@
-package com.icerockdev.mpp.widgets
+package dev.icerock.moko.widgets
 
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.lifecycle.Observer
-import com.icerockdev.mpp.core.resources.StringDesc
-import com.icerockdev.mpp.mvvm.State
+import dev.icerock.moko.mvvm.State
+import dev.icerock.moko.widgets.core.VFC
+import dev.icerock.moko.widgets.core.View
+import dev.icerock.moko.widgets.core.ViewFactoryContext
 
 actual var statefulWidgetViewFactory: VFC<StatefulWidget<*, *>> = { context: ViewFactoryContext,
                                                                     widget: StatefulWidget<*, *> ->

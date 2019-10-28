@@ -3,18 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
+<!--    <data>-->
 
-        <import type="kotlin.Unit" />
+<!--        <import type="kotlin.Unit" />-->
 
-        <variable
-            name="file"
-            type="com.icerockdev.mpp.core.filesystem.File" />
+<!--        <variable-->
+<!--            name="file"-->
+<!--            type="com.icerockdev.mpp.core.filesystem.File" />-->
 
-        <variable
-            name="onItemDelete"
-            type="kotlin.jvm.functions.Function0&lt;Unit&gt;" />
-    </data>
+<!--        <variable-->
+<!--            name="onItemDelete"-->
+<!--            type="kotlin.jvm.functions.Function0&lt;Unit&gt;" />-->
+<!--    </data>-->
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -24,43 +24,43 @@
         android:orientation="horizontal"
         android:padding="16dp">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            app:srcCompat="@drawable/ic_pdf"
-            tools:ignore="ContentDescription" />
+<!--        <ImageView-->
+<!--            android:id="@+id/imageView"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center_vertical"-->
+<!--            app:srcCompat="@drawable/ic_pdf"-->
+<!--            tools:ignore="ContentDescription" />-->
 
-        <TextView
-            android:id="@+id/name"
-            style="?widgetFieldsDocumentTitleStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_toStartOf="@id/delete"
-            android:layout_toEndOf="@id/imageView"
-            android:text="@{file.name}" />
+<!--        <TextView-->
+<!--            android:id="@+id/name"-->
+<!--            style="?widgetFieldsDocumentTitleStyle"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center_vertical"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:layout_marginEnd="16dp"-->
+<!--            android:layout_toStartOf="@id/delete"-->
+<!--            android:layout_toEndOf="@id/imageView"-->
+<!--            android:text="@{file.name}" />-->
 
-        <FrameLayout
-            android:id="@+id/delete"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/background_document_delete"
-            android:onClick="@{() -> onItemDelete.invoke()}"
-            android:padding="3dp">
+<!--        <FrameLayout-->
+<!--            android:id="@+id/delete"-->
+<!--            android:layout_width="20dp"-->
+<!--            android:layout_height="20dp"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:layout_gravity="center_vertical"-->
+<!--            android:background="@drawable/background_document_delete"-->
+<!--            android:onClick="@{() -> onItemDelete.invoke()}"-->
+<!--            android:padding="3dp">-->
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_document_delete"
-                tools:ignore="ContentDescription" />
+<!--            <ImageView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:srcCompat="@drawable/ic_document_delete"-->
+<!--                tools:ignore="ContentDescription" />-->
 
-        </FrameLayout>
+<!--        </FrameLayout>-->
     </RelativeLayout>
 </layout>

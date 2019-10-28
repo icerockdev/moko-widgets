@@ -6,7 +6,7 @@
 
         <variable
             name="widget"
-            type="com.icerockdev.mpp.widgets.forms.InputWidget" />
+            type="dev.icerock.moko.widgets.old.InputWidget" />
     </data>
 
     <com.google.android.material.textfield.TextInputLayout

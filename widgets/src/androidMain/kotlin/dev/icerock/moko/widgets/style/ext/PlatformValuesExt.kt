@@ -1,4 +1,4 @@
-package com.icerockdev.mpp.widgets.style.ext
+package dev.icerock.moko.widgets.style.ext
 
 import android.util.DisplayMetrics
 import android.view.ViewGroup

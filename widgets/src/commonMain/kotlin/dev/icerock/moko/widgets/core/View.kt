@@ -1,4 +1,4 @@
-package dev.icerock.moko.widgets
+package dev.icerock.moko.widgets.core
 
 expect class View
 

@@ -1,4 +1,4 @@
-package com.icerockdev.mpp.widgets.utils
+package dev.icerock.moko.widgets.utils
 
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.GridLayoutManager

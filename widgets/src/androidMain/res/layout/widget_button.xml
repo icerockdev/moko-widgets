@@ -5,7 +5,7 @@
 
         <variable
             name="widget"
-            type="com.icerockdev.mpp.widgets.ButtonWidget" />
+            type="dev.icerock.moko.widgets.old.ButtonWidget" />
     </data>
 
     <androidx.appcompat.widget.AppCompatButton
@@ -13,7 +13,7 @@
         style="?sclButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:enabled="@{widget.enabled.liveData.ld}"
+        android:enabled="@{widget.enabled.ld}"
         android:onClick="@{() -> widget.onTap.invoke()}"
-        android:text="@{widget.text.liveData.ld}" />
+        android:text="@{widget.text.ld}" />
 </layout>

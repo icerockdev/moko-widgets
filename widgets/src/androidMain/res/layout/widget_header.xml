@@ -6,7 +6,7 @@
 
         <variable
             name="widget"
-            type="com.icerockdev.mpp.widgets.forms.HeaderWidget" />
+            type="dev.icerock.moko.widgets.old.HeaderWidget" />
     </data>
 
     <TextView
@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:text="@{widget.text.liveData.ld}"
+        android:text="@{widget.text.ld}"
         android:textAllCaps="true"
         tools:text="This is header " />
 

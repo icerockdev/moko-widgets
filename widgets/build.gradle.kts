@@ -20,13 +20,29 @@ android {
         minSdkVersion(Versions.Android.minSdk)
         targetSdkVersion(Versions.Android.targetSdk)
     }
+
+    dataBinding {
+        isEnabled = true
+    }
 }
 
 dependencies {
     mppLibrary(Deps.Libs.MultiPlatform.kotlinStdLib)
 
+    mppLibrary(Deps.Libs.MultiPlatform.coroutines)
+
+    mppLibrary(Deps.Libs.MultiPlatform.mokoResources)
+    mppLibrary(Deps.Libs.MultiPlatform.mokoMvvm)
+    mppLibrary(Deps.Libs.MultiPlatform.mokoFields)
+    mppLibrary(Deps.Libs.MultiPlatform.mokoUnits)
+    mppLibrary(Deps.Libs.MultiPlatform.mokoMedia)
+
     androidLibrary(Deps.Libs.Android.appCompat)
     androidLibrary(Deps.Libs.Android.recyclerView)
+    androidLibrary(Deps.Libs.Android.material)
+    androidLibrary(Deps.Libs.Android.constraintLayout)
+    androidLibrary(Deps.Libs.Android.inputMask)
+    androidLibrary(Deps.Libs.Android.glide)
 }
 
 publishing {
