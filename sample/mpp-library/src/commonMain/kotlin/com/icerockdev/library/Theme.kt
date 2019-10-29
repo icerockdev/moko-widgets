@@ -8,11 +8,13 @@ import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.LinearWidget
+import dev.icerock.moko.widgets.SingleChoiceWidget
 import dev.icerock.moko.widgets.TextWidget
 import dev.icerock.moko.widgets.buttonStyle
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.inputStyle
 import dev.icerock.moko.widgets.linearStyle
+import dev.icerock.moko.widgets.singleChoiceStyle
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Corners
 import dev.icerock.moko.widgets.style.background.Direction
@@ -118,10 +120,34 @@ object Theme {
         padding = PaddingValues(16f)
     )
 
+    val singleChoiceStyle: SingleChoiceWidget.Style = SingleChoiceWidget.Style(
+        size = WidgetSize(
+            width = SizeSpec.AS_PARENT,
+            height = SizeSpec.WRAP_CONTENT
+        ),
+        textStyle = TextStyle(
+            size = 15,
+            color = Color.grayText,
+            fontStyle = FontStyle.MEDIUM // Roboto-medium weight 500
+        ),
+        labelTextStyle = TextStyle(
+            size = 12,
+            color = Color.gray2Text,
+            fontStyle = FontStyle.MEDIUM // Roboto-regular weight 400
+        ),
+        margins = MarginValues(
+            bottom = 8f
+        ),
+        dropDownTextColor = null,
+        underlineColor = Color.grayUnderline,
+        dropDownBackground = null
+    )
+
     val mainWidgetScope = WidgetScope {
         this.inputStyle = Theme.inputStyle
         this.textStyle = Theme.headerStyle
         this.buttonStyle = Theme.buttonStyle
         this.linearStyle = Theme.profileContainerStyle
+        this.singleChoiceStyle = Theme.singleChoiceStyle
     }
 }

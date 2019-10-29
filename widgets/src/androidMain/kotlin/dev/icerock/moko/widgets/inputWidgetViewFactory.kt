@@ -39,7 +39,7 @@ actual var inputWidgetViewFactory: VFC<InputWidget> = { viewFactoryContext: View
     val editText = TextInputEditText(context).apply {
         layoutParams = LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
+            ViewGroup.LayoutParams.WRAP_CONTENT
         ).apply {
             // EditText's default background have paddings 4dp, while we not change background to own we just change margins
             // https://stackoverflow.com/questions/31735291/removing-the-left-padding-on-an-android-edittext/44497551

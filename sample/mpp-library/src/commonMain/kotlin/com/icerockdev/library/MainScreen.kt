@@ -19,6 +19,7 @@ import dev.icerock.moko.widgets.flatAlertStyle
 import dev.icerock.moko.widgets.input
 import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.linearStyle
+import dev.icerock.moko.widgets.singleChoice
 import dev.icerock.moko.widgets.stateful
 import dev.icerock.moko.widgets.statefulStyle
 import dev.icerock.moko.widgets.style.background.Background
@@ -39,53 +40,57 @@ open class MainScreen(
     }
 
     override fun createWidget(viewModel: MainViewModel): Widget {
-        return with(widgetScope) {
-            val items: List<Widget> = listOf(
-                input(
-                    label = const("Имя*"),
-                    field = viewModel.nameField
-                ),
-                input(
-                    label = const("Никнейм*"),
-                    field = viewModel.nicknameField
-                ),
-                input(
-                    label = const("О себе"),
-                    field = viewModel.aboutField,
-                    maxLines = const(null)
-                ),
-                text(
-                    text = const("ЛИЧНАЯ ИНФОРМАЦИЯ"),
-                    style = theme.headerStyle
-                ),
-                input(
-                    label = const("Email"),
-                    field = viewModel.emailField,
-                    inputType = InputType.EMAIL
-                ),
-                input(
-                    label = const("Телефон"),
-                    field = viewModel.phoneField,
-                    inputType = InputType.PHONE
-                ),
-                input(
-                    label = const("Дата рождения"),
-                    field = viewModel.birthdayField,
-                    inputType = InputType.DATE
-                ),
-                button(
-                    text = const("Сохранить"),
-                    onTap = viewModel::onSavePressed
-                )
-//                singleChoice(
-//                    label = "Пол".desc().asLiveData(),
-//                    field = viewModel.nameField
-//                ),
-            )
+        return profileScreen(viewModel)
+    }
 
+    private fun profileScreen(viewModel: MainViewModel): Widget {
+        return with(widgetScope) {
             linear(
                 style = theme.profileContainerStyle,
-                childs = items
+                childs = listOf(
+                    input(
+                        label = const("Имя*"),
+                        field = viewModel.nameField
+                    ),
+                    input(
+                        label = const("Никнейм*"),
+                        field = viewModel.nicknameField
+                    ),
+                    input(
+                        label = const("О себе"),
+                        field = viewModel.aboutField,
+                        maxLines = const(null)
+                    ),
+                    text(
+                        text = const("ЛИЧНАЯ ИНФОРМАЦИЯ"),
+                        style = theme.headerStyle
+                    ),
+                    input(
+                        label = const("Email"),
+                        field = viewModel.emailField,
+                        inputType = InputType.EMAIL
+                    ),
+                    input(
+                        label = const("Телефон"),
+                        field = viewModel.phoneField,
+                        inputType = InputType.PHONE
+                    ),
+                    input(
+                        label = const("Дата рождения"),
+                        field = viewModel.birthdayField,
+                        inputType = InputType.DATE
+                    ),
+                    singleChoice(
+                        label = const("Пол"),
+                        field = viewModel.genderField,
+                        values = viewModel.genders,
+                        cancelLabel = const("Отмена")
+                    ),
+                    button(
+                        text = const("Сохранить"),
+                        onTap = viewModel::onSavePressed
+                    )
+                )
             )
         }
     }

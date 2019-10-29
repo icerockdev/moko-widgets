@@ -10,6 +10,8 @@ import dev.icerock.moko.fields.validate
 import dev.icerock.moko.mvvm.State
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
+import dev.icerock.moko.mvvm.livedata.map
+import dev.icerock.moko.mvvm.livedata.mergeWith
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
@@ -34,6 +36,21 @@ class MainViewModel(val title: String) : ViewModel(), MainViewModelContract {
     })
     val phoneField: FormField<String, StringDesc> = FormField("+79999999999", liveBlock { null })
     val birthdayField: FormField<String, StringDesc> = FormField("31.05.1993", liveBlock { null })
+    val genders: LiveData<List<StringDesc>> = MutableLiveData(
+        initialValue = listOf(
+            "Мужчина".desc(),
+            "Женщина".desc()
+        )
+    )
+    val genderField = FormField<Int?, StringDesc>(null) { indexLiveData ->
+        genders.mergeWith(indexLiveData) { genders, index ->
+            if (index == null) null
+            else genders[index]
+        }.map {
+            if (it == null) "invalid!".desc()
+            else null
+        }
+    }
 
     private val fields = listOf(
         nameField,
@@ -41,7 +58,8 @@ class MainViewModel(val title: String) : ViewModel(), MainViewModelContract {
         aboutField,
         emailField,
         phoneField,
-        birthdayField
+        birthdayField,
+        genderField
     )
 
     override fun onChangeStatePressed() {
