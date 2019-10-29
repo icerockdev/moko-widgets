@@ -36,6 +36,7 @@ dependencies {
     mppLibrary(Deps.Libs.MultiPlatform.mokoFields)
     mppLibrary(Deps.Libs.MultiPlatform.mokoUnits)
     mppLibrary(Deps.Libs.MultiPlatform.mokoMedia)
+    mppLibrary(Deps.Libs.MultiPlatform.mokoGraphics)
 
     androidLibrary(Deps.Libs.Android.appCompat)
     androidLibrary(Deps.Libs.Android.recyclerView)

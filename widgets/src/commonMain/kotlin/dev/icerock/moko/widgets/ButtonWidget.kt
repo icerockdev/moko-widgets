@@ -20,9 +20,9 @@ import dev.icerock.moko.widgets.style.view.WidgetSize
 expect var buttonWidgetViewFactory: VFC<ButtonWidget>
 
 class ButtonWidget(
-    private val factory: VFC<ButtonWidget> = buttonWidgetViewFactory,
+    private val factory: VFC<ButtonWidget>,
     val text: LiveData<StringDesc>,
-    val enabled: LiveData<Boolean>? = null,
+    val enabled: LiveData<Boolean>?,
     val style: Style = Style(),
     val onTap: () -> Unit
 ) : Widget() {

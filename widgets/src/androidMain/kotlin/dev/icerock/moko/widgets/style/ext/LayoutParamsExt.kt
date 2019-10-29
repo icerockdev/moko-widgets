@@ -4,42 +4,30 @@
 
 package dev.icerock.moko.widgets.style.ext
 
-import android.content.res.Resources
+import android.content.Context
 import android.view.View
 import android.view.ViewGroup
+import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.PaddingValues
+import dev.icerock.moko.widgets.utils.dp
 
-fun ViewGroup.MarginLayoutParams.setDpMargins(
-    resources: Resources,
-    marginStart: Float = 0.0F,
-    marginEnd: Float = 0.0F,
-    marginTop: Float = 0.0F,
-    marginBottom: Float = 0.0F
+fun ViewGroup.MarginLayoutParams.applyMargin(
+    context: Context,
+    margin: MarginValues
 ) {
-    val density = resources.displayMetrics.density
-
     setMargins(
-        (density * marginStart).toInt(),
-        (density * marginTop).toInt(),
-        (density * marginEnd).toInt(),
-        (density * marginBottom).toInt()
+        margin.start.dp(context),
+        margin.top.dp(context),
+        margin.end.dp(context),
+        margin.bottom.dp(context)
     )
-    setMarginStart((density * marginStart).toInt())
-    setMarginEnd((density * marginEnd).toInt())
 }
 
-fun View.setDpPadding(
-    resources: Resources,
-    paddingStart: Float = 0.0F,
-    paddingEnd: Float = 0.0F,
-    paddingTop: Float = 0.0F,
-    paddingBottom: Float = 0.0F
-) {
-    val density = resources.displayMetrics.density
-
-    setPaddingRelative(
-        (density * paddingStart).toInt(),
-        (density * paddingTop).toInt(),
-        (density * paddingEnd).toInt(),
-        (density * paddingBottom).toInt()
+fun View.applyPadding(padding: PaddingValues) {
+    setPadding(
+        padding.start.dp(context),
+        padding.top.dp(context),
+        padding.end.dp(context),
+        padding.bottom.dp(context)
     )
 }

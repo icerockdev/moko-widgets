@@ -35,7 +35,7 @@ class FormWidget(
         val size: WidgetSize = WidgetSize(SizeSpec.WRAP_CONTENT, SizeSpec.WRAP_CONTENT),
         val orientation: Group.Orientation = Group.Orientation.VERTICAL,
         val spacing: Float = 0.0F,
-        override val paddings: PaddingValues = PaddingValues(0.0F)
+        override val padding: PaddingValues = PaddingValues(0.0F)
     ) : Padded
 
     class Group {

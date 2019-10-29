@@ -8,6 +8,6 @@ package dev.icerock.moko.widgets.style.view
  * Defines a widget that has inner paddings
  */
 interface Padded {
-    val paddings: PaddingValues
+    val padding: PaddingValues
 }
 

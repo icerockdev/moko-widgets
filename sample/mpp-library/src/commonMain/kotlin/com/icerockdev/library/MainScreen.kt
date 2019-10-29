@@ -16,6 +16,7 @@ import dev.icerock.moko.widgets.core.asLiveData
 import dev.icerock.moko.widgets.core.buildWidget
 import dev.icerock.moko.widgets.flatAlert
 import dev.icerock.moko.widgets.flatAlertStyle
+import dev.icerock.moko.widgets.input
 import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.linearStyle
 import dev.icerock.moko.widgets.stateful
@@ -23,30 +24,85 @@ import dev.icerock.moko.widgets.statefulStyle
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Orientation
 import dev.icerock.moko.widgets.style.background.ShapeType
+import dev.icerock.moko.widgets.style.input.InputType
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.tabs
+import dev.icerock.moko.widgets.text
 
 open class MainScreen(
-    private val widgetScope: WidgetScope
+    private val widgetScope: WidgetScope,
+    private val theme: Theme
 ) : Screen<MainViewModel, MainScreen.Args>() {
     override fun createViewModel(arguments: Args): MainViewModel {
         return MainViewModel(title = arguments.title)
     }
 
     override fun createWidget(viewModel: MainViewModel): Widget {
+        return with(widgetScope) {
+            val items: List<Widget> = listOf(
+                input(
+                    label = const("Имя*"),
+                    field = viewModel.nameField
+                ),
+                input(
+                    label = const("Никнейм*"),
+                    field = viewModel.nicknameField
+                ),
+                input(
+                    label = const("О себе"),
+                    field = viewModel.aboutField,
+                    maxLines = const(null)
+                ),
+                text(
+                    text = const("ЛИЧНАЯ ИНФОРМАЦИЯ"),
+                    style = theme.headerStyle
+                ),
+                input(
+                    label = const("Email"),
+                    field = viewModel.emailField,
+                    inputType = InputType.EMAIL
+                ),
+                input(
+                    label = const("Телефон"),
+                    field = viewModel.phoneField,
+                    inputType = InputType.PHONE
+                ),
+                input(
+                    label = const("Дата рождения"),
+                    field = viewModel.birthdayField,
+                    inputType = InputType.DATE
+                ),
+                button(
+                    text = const("Сохранить"),
+                    onTap = viewModel::onSavePressed
+                )
+//                singleChoice(
+//                    label = "Пол".desc().asLiveData(),
+//                    field = viewModel.nameField
+//                ),
+            )
+
+            linear(
+                style = theme.profileContainerStyle,
+                childs = items
+            )
+        }
+    }
+
+    private fun demoScreen(viewModel: MainViewModel): Widget {
         return buildWidget(scope = widgetScope) {
             val errorScope = childScope {
                 this.flatAlertStyle = flatAlertStyle.copy(
                     background = Background(
-                        color = 0xFF00FF00.toInt()
+                        color = 0xFF00FF00
                     )
                 )
             }
             val dataScope = childScope {
                 this.flatAlertStyle = flatAlertStyle.copy(
                     background = Background(
-                        color = 0xFFFF00FF.toInt()
+                        color = 0xFFFF00FF
                     )
                 )
             }
@@ -86,7 +142,7 @@ open class MainScreen(
                             flatAlert(
                                 style = flatAlertStyle.copy(
                                     background = Background(
-                                        color = 0xFFFF0000.toInt()
+                                        color = 0xFFFF0000
                                     )
                                 ),
                                 message = "loading".desc().asLiveData()

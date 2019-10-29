@@ -14,14 +14,13 @@ import androidx.lifecycle.Observer
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.background.buildBackground
-import dev.icerock.moko.widgets.style.ext.setDpMargins
+import dev.icerock.moko.widgets.style.ext.applyMargin
 import dev.icerock.moko.widgets.style.ext.toPlatformSize
 
 actual var buttonWidgetViewFactory: VFC<ButtonWidget> = { context: ViewFactoryContext,
                                                           widget: ButtonWidget ->
-    val ctx = context.context
+    val ctx = context.androidContext
     val dm = ctx.resources.displayMetrics
-    val parent = context.parent
     val style = widget.style
 
     val button = Button(ctx).apply {
@@ -29,13 +28,7 @@ actual var buttonWidgetViewFactory: VFC<ButtonWidget> = { context: ViewFactoryCo
             style.size.width.toPlatformSize(dm),
             style.size.height.toPlatformSize(dm)
         ).apply {
-            setDpMargins(
-                resources = ctx.resources,
-                marginStart = style.margins.start,
-                marginTop = style.margins.top,
-                marginEnd = style.margins.end,
-                marginBottom = style.margins.bottom
-            )
+            applyMargin(ctx, style.margins)
         }
 
         style.background?.let {
@@ -46,7 +39,7 @@ actual var buttonWidgetViewFactory: VFC<ButtonWidget> = { context: ViewFactoryCo
 
             background = rippleDrawable
         }
-        setTextColor(style.textStyle.color)
+        setTextColor(style.textStyle.color.argb.toInt())
         setTextSize(TypedValue.COMPLEX_UNIT_SP, style.textStyle.size.toFloat())
         isAllCaps = style.isAllCaps
     }

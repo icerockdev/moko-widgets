@@ -34,15 +34,15 @@ private fun GradientDrawable.applyShape(context: Context, newShape: Shape) {
 }
 
 private fun makeGradient(
-    colors: List<Int>,
+    colors: List<Long>,
     direction: Direction,
     shape: Shape,
     context: Context
 ): GradientDrawable {
-    return GradientDrawable().also {
-        it.colors = colors.toIntArray()
-        it.orientation = direction.toPlatformOrientation()
-        it.applyShape(context, shape)
+    return GradientDrawable().apply {
+        this.colors = colors.map { it.toInt() }.toIntArray()
+        this.orientation = direction.toPlatformOrientation()
+        this.applyShape(context, shape)
     }
 }
 

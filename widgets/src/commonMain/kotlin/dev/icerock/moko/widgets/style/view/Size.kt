@@ -11,6 +11,6 @@ package dev.icerock.moko.widgets.style.view
  * @property height widget's desirable height, could be either one of SizeSpecs or an exact value in dp
  */
 class WidgetSize(
-    val width: Int = SizeSpec.WRAP_CONTENT,
+    val width: Int = SizeSpec.AS_PARENT,
     val height: Int = SizeSpec.WRAP_CONTENT
 )

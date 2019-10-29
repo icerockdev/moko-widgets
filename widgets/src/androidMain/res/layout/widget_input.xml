@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <data>
+    <!--    <data>-->
 
-        <variable
-            name="widget"
-            type="dev.icerock.moko.widgets.old.InputWidget" />
-    </data>
+    <!--        <variable-->
+    <!--            name="widget"-->
+    <!--            type="dev.icerock.moko.widgets.InputWidget" />-->
+    <!--    </data>-->
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout"
-        style="Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    <!--    <com.google.android.material.textfield.TextInputLayout-->
+    <!--        android:id="@+id/textInputLayout"-->
+    <!--        style="Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:error="@{widget.field.error.ld}"-->
+    <!--        app:onFocusLost="@{() -> widget.field.validate()}"-->
+    <!--        app:errorEnabled="@{!widget.field.isValid().ld}">-->
+
+    <!--        <com.google.android.material.textfield.TextInputEditText-->
+    <!--            android:id="@+id/editText"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="@={widget.field.data.ld}" />-->
+
+    <!--    </com.google.android.material.textfield.TextInputLayout>-->
+
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:error="@{widget.field.error.ld}"
-        app:onFocusLost="@{() -> widget.field.validate()}"
-        app:errorEnabled="@{!widget.field.isValid().ld}">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@={widget.field.data.ld}" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
+        android:layout_height="match_parent" />
 </layout>

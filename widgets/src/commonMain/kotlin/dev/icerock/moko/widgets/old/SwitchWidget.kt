@@ -35,7 +35,7 @@ class SwitchWidget(
     /**
      * @property size desired size of widget
      * @property labelTextStyle floating label text style
-     * @property paddings @see com.icerockdev.mpp.widget.style.view.Padded
+     * @property padding @see com.icerockdev.mpp.widget.style.view.Padded
      * @property margins @see com.icerockdev.mpp.widget.style.view.Margined
      * @property background widget's background, might be null if not required
      * @property switchColor switch background, might be null if default
@@ -46,7 +46,7 @@ class SwitchWidget(
     data class SwitchStyle(
         val size: WidgetSize = WidgetSize(),
         val labelTextStyle: TextStyle = TextStyle(size = 14),
-        override val paddings: PaddingValues = PaddingValues(),
+        override val padding: PaddingValues = PaddingValues(),
         override val margins: MarginValues = MarginValues(),
         val background: Background? = null,
         val switchColor: ColorStyle? = null

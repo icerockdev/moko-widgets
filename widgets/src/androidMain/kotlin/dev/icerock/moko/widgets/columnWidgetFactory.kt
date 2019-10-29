@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.style.ext.applyPadding
 import dev.icerock.moko.widgets.style.ext.toLinearLayoutOrientation
 import dev.icerock.moko.widgets.style.ext.toPlatformSize
 
@@ -22,6 +23,8 @@ actual var linearWidgetViewFactory: VFC<LinearWidget> = { context, widget ->
             style.size.height.toPlatformSize(dm)
         )
         orientation = style.orientation.toLinearLayoutOrientation()
+
+        applyPadding(style.padding)
     }
 
     widget.childs.forEach { child ->

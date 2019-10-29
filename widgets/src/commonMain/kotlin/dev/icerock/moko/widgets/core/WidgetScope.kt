@@ -4,6 +4,9 @@
 
 package dev.icerock.moko.widgets.core
 
+import dev.icerock.moko.mvvm.livedata.LiveData
+import dev.icerock.moko.resources.desc.StringDesc
+import dev.icerock.moko.resources.desc.desc
 import kotlin.properties.ReadOnlyProperty
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
@@ -20,6 +23,14 @@ class WidgetScope(private val properties: MutableMap<Key, Any>) {
 
     fun childScope(builder: Builder.() -> Unit): WidgetScope {
         return WidgetScope(parent = this, builder = builder)
+    }
+
+    fun const(value: String): LiveData<StringDesc> {
+        return value.desc().asLiveData()
+    }
+
+    fun <T> const(value: T): LiveData<T> {
+        return value.asLiveData()
     }
 
     interface Key
