@@ -29,32 +29,16 @@ class FlatAlertWidget(
 }
 
 val WidgetScope.flatAlertFactory: VFC<FlatAlertWidget>
-    get() {
-        val factory = properties[FlatAlertWidget.FactoryKey] as? VFC<FlatAlertWidget>
-        return (factory ?: flatAlertWidgetViewFactory)
-    }
+        by WidgetScope.readProperty(FlatAlertWidget.FactoryKey, ::flatAlertWidgetViewFactory)
 
 var WidgetScope.Builder.flatAlertFactory: VFC<FlatAlertWidget>
-    get() {
-        return scope.flatAlertFactory
-    }
-    set(value) {
-        scope.properties[FlatAlertWidget.FactoryKey] = value
-    }
+        by WidgetScope.readWriteProperty(FlatAlertWidget.FactoryKey, WidgetScope::flatAlertFactory)
 
 val WidgetScope.flatAlertStyle: FlatAlertWidget.Style
-    get() {
-        val style = properties[FlatAlertWidget.StyleKey] as? FlatAlertWidget.Style
-        return style ?: FlatAlertWidget.Style()
-    }
+        by WidgetScope.readProperty(FlatAlertWidget.StyleKey) { FlatAlertWidget.Style() }
 
 var WidgetScope.Builder.flatAlertStyle: FlatAlertWidget.Style
-    get() {
-        return scope.flatAlertStyle
-    }
-    set(value) {
-        scope.properties[FlatAlertWidget.StyleKey] = value
-    }
+        by WidgetScope.readWriteProperty(FlatAlertWidget.StyleKey, WidgetScope::flatAlertStyle)
 
 fun WidgetScope.flatAlert(
     factory: VFC<FlatAlertWidget> = this.flatAlertFactory,
