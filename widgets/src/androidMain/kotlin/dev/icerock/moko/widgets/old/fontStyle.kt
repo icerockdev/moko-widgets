@@ -1,8 +1,12 @@
+/*
+ * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
+ */
+
 package dev.icerock.moko.widgets.old
 
 import android.graphics.Typeface
 import android.widget.TextView
-import com.icerockdev.mpp.widgets.style.view.FontStyle
+import dev.icerock.moko.widgets.style.view.FontStyle
 
 fun TextView.applyFontStyle(fontStyle: FontStyle) {
     when (fontStyle) {

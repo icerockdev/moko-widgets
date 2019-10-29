@@ -8,22 +8,33 @@ import dev.icerock.moko.core.Parcelable
 import dev.icerock.moko.core.Parcelize
 import dev.icerock.moko.mvvm.livedata.map
 import dev.icerock.moko.resources.desc.desc
-import dev.icerock.moko.widgets.*
-import dev.icerock.moko.widgets.core.*
+import dev.icerock.moko.widgets.button
+import dev.icerock.moko.widgets.core.Screen
+import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.core.WidgetScope
+import dev.icerock.moko.widgets.core.asLiveData
+import dev.icerock.moko.widgets.core.buildWidget
+import dev.icerock.moko.widgets.flatAlert
+import dev.icerock.moko.widgets.flatAlertStyle
+import dev.icerock.moko.widgets.linear
+import dev.icerock.moko.widgets.linearStyle
+import dev.icerock.moko.widgets.stateful
+import dev.icerock.moko.widgets.statefulStyle
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Orientation
 import dev.icerock.moko.widgets.style.background.ShapeType
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.tabs
 
 open class MainScreen(
     private val widgetScope: WidgetScope
-) : Screen<IMainViewModel, MainScreen.Args>() {
-    override fun createViewModel(arguments: Args): IMainViewModel {
+) : Screen<MainViewModel, MainScreen.Args>() {
+    override fun createViewModel(arguments: Args): MainViewModel {
         return MainViewModel(title = arguments.title)
     }
 
-    override fun createWidget(viewModel: IMainViewModel): Widget {
+    override fun createWidget(viewModel: MainViewModel): Widget {
         return buildWidget(scope = widgetScope) {
             val errorScope = childScope {
                 this.flatAlertStyle = flatAlertStyle.copy(

@@ -1,10 +1,6 @@
-//
-//  UIColor+Gradient.swift
-//  GetChallenge
-//
-//  Created by Stanislav Rachenko on 05/07/2019.
-//  Copyright © 2019 IceRock Development. All rights reserved.
-//
+/*
+ * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
+ */
 
 import Foundation
 import UIKit

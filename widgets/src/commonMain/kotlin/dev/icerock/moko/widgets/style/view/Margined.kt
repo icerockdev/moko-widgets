@@ -1,4 +1,8 @@
-package com.icerockdev.mpp.widgets.style.view
+/*
+ * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
+ */
+
+package dev.icerock.moko.widgets.style.view
 
 /**
  * Defines a widget that has margins.
@@ -9,14 +13,3 @@ interface Margined {
     val margins: MarginValues
 }
 
-/**
- * Margin values
- */
-data class MarginValues(
-    val start: Float = 0.0F,
-    val top: Float = 0.0F,
-    val end: Float = 0.0F,
-    val bottom: Float = 0.0F
-) {
-    constructor(marginAll: Float) : this(marginAll, marginAll, marginAll, marginAll)
-}

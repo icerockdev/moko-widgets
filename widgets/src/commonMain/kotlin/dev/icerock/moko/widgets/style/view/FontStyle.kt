@@ -2,6 +2,8 @@
  * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
 
-package dev.icerock.moko.widgets.core
+package dev.icerock.moko.widgets.style.view
 
-typealias VFC<T> = (context: ViewFactoryContext, widget: T) -> View
+enum class FontStyle {
+    BOLD, MEDIUM
+}

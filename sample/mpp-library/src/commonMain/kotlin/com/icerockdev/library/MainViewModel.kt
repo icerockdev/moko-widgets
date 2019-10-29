@@ -9,13 +9,13 @@ import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 
-interface IMainViewModel {
+interface MainViewModelContract {
     val state: LiveData<State<String, String>>
 
     fun onChangeStatePressed()
 }
 
-class MainViewModel(val title: String) : ViewModel(), IMainViewModel {
+class MainViewModel(val title: String) : ViewModel(), MainViewModelContract {
     private val _state: MutableLiveData<State<String, String>> = MutableLiveData(initialValue = State.Empty())
     override val state: LiveData<State<String, String>> = _state
 

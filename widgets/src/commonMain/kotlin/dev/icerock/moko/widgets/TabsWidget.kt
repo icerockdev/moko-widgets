@@ -1,10 +1,16 @@
+/*
+ * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
+ */
+
 package dev.icerock.moko.widgets
 
 import dev.icerock.moko.mvvm.livedata.LiveData
-import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.desc.StringDesc
-import dev.icerock.moko.resources.desc.desc
-import dev.icerock.moko.widgets.core.*
+import dev.icerock.moko.widgets.core.VFC
+import dev.icerock.moko.widgets.core.View
+import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.style.background.Background
 
 expect var tabsWidgetViewFactory: VFC<TabsWidget>
@@ -55,32 +61,16 @@ class TabsWidget(
 }
 
 val WidgetScope.tabsFactory: VFC<TabsWidget>
-    get() {
-        val factory = properties[TabsWidget.FactoryKey] as? VFC<TabsWidget>
-        return (factory ?: tabsWidgetViewFactory)
-    }
+        by WidgetScope.readProperty(TabsWidget.FactoryKey, ::tabsWidgetViewFactory)
 
 var WidgetScope.Builder.tabsFactory: VFC<TabsWidget>
-    get() {
-        return scope.tabsFactory
-    }
-    set(value) {
-        scope.properties[TabsWidget.FactoryKey] = value
-    }
+        by WidgetScope.readWriteProperty(TabsWidget.FactoryKey, WidgetScope::tabsFactory)
 
 val WidgetScope.tabsStyle: TabsWidget.Style
-    get() {
-        val style = properties[TabsWidget.StyleKey] as? TabsWidget.Style
-        return style ?: TabsWidget.Style()
-    }
+        by WidgetScope.readProperty(TabsWidget.StyleKey) { TabsWidget.Style() }
 
 var WidgetScope.Builder.tabsStyle: TabsWidget.Style
-    get() {
-        return scope.tabsStyle
-    }
-    set(value) {
-        scope.properties[TabsWidget.StyleKey] = value
-    }
+        by WidgetScope.readWriteProperty(TabsWidget.StyleKey, WidgetScope::tabsStyle)
 
 fun WidgetScope.tabs(
     factory: VFC<TabsWidget> = this.tabsFactory,

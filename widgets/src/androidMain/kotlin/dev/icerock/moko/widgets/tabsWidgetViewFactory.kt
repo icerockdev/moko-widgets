@@ -1,8 +1,17 @@
+/*
+ * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
+ */
+
 package dev.icerock.moko.widgets
 
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.FrameLayout
+import android.widget.HorizontalScrollView
+import android.widget.LinearLayout
+import android.widget.TabHost
+import android.widget.TabWidget
+import android.widget.TextView
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.lifecycle.Observer
 import dev.icerock.moko.resources.desc.StringDesc

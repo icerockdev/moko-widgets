@@ -1,12 +1,20 @@
+/*
+ * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
+ */
+
 package dev.icerock.moko.widgets
 
-import dev.icerock.moko.widgets.core.*
+import dev.icerock.moko.widgets.core.VFC
+import dev.icerock.moko.widgets.core.View
+import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Orientation
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-expect var linearWidgetFactory: VFC<LinearWidget>
+expect var linearWidgetViewFactory: VFC<LinearWidget>
 
 class LinearWidget(
     private val factory: VFC<LinearWidget>,
@@ -31,16 +39,16 @@ class LinearWidget(
 }
 
 val WidgetScope.linearFactory: VFC<LinearWidget>
-    get() {
-        val factory = properties[LinearWidget.FactoryKey] as? VFC<LinearWidget>
-        return factory ?: linearWidgetFactory
-    }
+        by WidgetScope.readProperty(LinearWidget.FactoryKey, ::linearWidgetViewFactory)
+
+var WidgetScope.Builder.linearFactory: VFC<LinearWidget>
+        by WidgetScope.readWriteProperty(LinearWidget.FactoryKey, WidgetScope::linearFactory)
 
 val WidgetScope.linearStyle: LinearWidget.Style
-    get() {
-        val style = properties[LinearWidget.StyleKey] as? LinearWidget.Style
-        return style ?: LinearWidget.Style()
-    }
+        by WidgetScope.readProperty(LinearWidget.StyleKey) { LinearWidget.Style() }
+
+var WidgetScope.Builder.linearStyle: LinearWidget.Style
+        by WidgetScope.readWriteProperty(LinearWidget.StyleKey, WidgetScope::linearStyle)
 
 fun WidgetScope.linear(
     factory: VFC<LinearWidget> = this.linearFactory,

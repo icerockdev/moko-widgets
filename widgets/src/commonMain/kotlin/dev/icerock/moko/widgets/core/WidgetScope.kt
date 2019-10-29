@@ -1,10 +1,14 @@
+/*
+ * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
+ */
+
 package dev.icerock.moko.widgets.core
 
 import kotlin.properties.ReadOnlyProperty
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-class WidgetScope(internal val properties: MutableMap<Key, Any>) {
+class WidgetScope(private val properties: MutableMap<Key, Any>) {
 
     constructor() : this(properties = mutableMapOf<Key, Any>())
 
@@ -12,6 +16,10 @@ class WidgetScope(internal val properties: MutableMap<Key, Any>) {
         properties = parent?.properties?.deepMutableCopy() ?: mutableMapOf()
     ) {
         Builder(scope = this).builder()
+    }
+
+    fun childScope(builder: Builder.() -> Unit): WidgetScope {
+        return WidgetScope(parent = this, builder = builder)
     }
 
     interface Key
@@ -48,8 +56,4 @@ private fun <K, V> Map<K, V>.deepMutableCopy(): MutableMap<K, V> = mutableMapOf<
 
 fun buildWidget(scope: WidgetScope, builder: WidgetScope.() -> Widget): Widget {
     return scope.builder()
-}
-
-fun WidgetScope.childScope(builder: WidgetScope.Builder.() -> Unit): WidgetScope {
-    return WidgetScope(parent = this, builder = builder)
 }

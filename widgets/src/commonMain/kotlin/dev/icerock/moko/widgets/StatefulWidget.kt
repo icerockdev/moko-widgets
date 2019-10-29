@@ -1,11 +1,19 @@
+/*
+ * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
+ */
+
 package dev.icerock.moko.widgets
 
-import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.mvvm.State
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.data
 import dev.icerock.moko.mvvm.livedata.error
-import dev.icerock.moko.widgets.core.*
+import dev.icerock.moko.widgets.core.VFC
+import dev.icerock.moko.widgets.core.View
+import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.core.WidgetScope
+import dev.icerock.moko.widgets.style.background.Background
 
 expect var statefulWidgetViewFactory: VFC<StatefulWidget<*, *>>
 
@@ -48,32 +56,16 @@ class StatefulWidget<T, E> private constructor(
 }
 
 val WidgetScope.statefulFactory: VFC<StatefulWidget<*, *>>
-    get() {
-        val factory = properties[StatefulWidget.FactoryKey] as? VFC<StatefulWidget<*, *>>
-        return (factory ?: statefulWidgetViewFactory)
-    }
+        by WidgetScope.readProperty(StatefulWidget.FactoryKey, ::statefulWidgetViewFactory)
 
 var WidgetScope.Builder.statefulFactory: VFC<StatefulWidget<*, *>>
-    get() {
-        return scope.statefulFactory
-    }
-    set(value) {
-        scope.properties[StatefulWidget.FactoryKey] = value
-    }
+        by WidgetScope.readWriteProperty(StatefulWidget.FactoryKey, WidgetScope::statefulFactory)
 
 val WidgetScope.statefulStyle: StatefulWidget.Style
-    get() {
-        val style = properties[StatefulWidget.StyleKey] as? StatefulWidget.Style
-        return style ?: StatefulWidget.Style()
-    }
+        by WidgetScope.readProperty(StatefulWidget.StyleKey) { StatefulWidget.Style() }
 
 var WidgetScope.Builder.statefulStyle: StatefulWidget.Style
-    get() {
-        return scope.statefulStyle
-    }
-    set(value) {
-        scope.properties[StatefulWidget.StyleKey] = value
-    }
+        by WidgetScope.readWriteProperty(StatefulWidget.StyleKey, WidgetScope::statefulStyle)
 
 fun <T, E> WidgetScope.stateful(
     factory: VFC<StatefulWidget<T, E>> = this.statefulFactory,

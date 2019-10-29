@@ -1,13 +1,21 @@
+/*
+ * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
+ */
+
 package dev.icerock.moko.widgets
 
-import com.icerockdev.mpp.widgets.style.view.MarginValues
-import com.icerockdev.mpp.widgets.style.view.Margined
-import com.icerockdev.mpp.widgets.style.view.TextStyle
-import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.resources.desc.StringDesc
-import dev.icerock.moko.widgets.core.*
+import dev.icerock.moko.widgets.core.VFC
+import dev.icerock.moko.widgets.core.View
+import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.Margined
+import dev.icerock.moko.widgets.style.view.TextStyle
+import dev.icerock.moko.widgets.style.view.WidgetSize
 
 expect var buttonWidgetViewFactory: VFC<ButtonWidget>
 
@@ -35,16 +43,16 @@ class ButtonWidget(
 }
 
 val WidgetScope.buttonFactory: VFC<ButtonWidget>
-    get() {
-        val factory = properties[ButtonWidget.FactoryKey] as? VFC<ButtonWidget>
-        return factory ?: buttonWidgetViewFactory
-    }
+        by WidgetScope.readProperty(ButtonWidget.FactoryKey, ::buttonWidgetViewFactory)
+
+var WidgetScope.Builder.buttonFactory: VFC<ButtonWidget>
+        by WidgetScope.readWriteProperty(ButtonWidget.FactoryKey, WidgetScope::buttonFactory)
 
 val WidgetScope.buttonStyle: ButtonWidget.Style
-    get() {
-        val style = properties[ButtonWidget.StyleKey] as? ButtonWidget.Style
-        return style ?: ButtonWidget.Style()
-    }
+        by WidgetScope.readProperty(ButtonWidget.StyleKey) { ButtonWidget.Style() }
+
+var WidgetScope.Builder.buttonStyle: ButtonWidget.Style
+        by WidgetScope.readWriteProperty(ButtonWidget.StyleKey, WidgetScope::buttonStyle)
 
 fun WidgetScope.button(
     factory: VFC<ButtonWidget> = this.buttonFactory,

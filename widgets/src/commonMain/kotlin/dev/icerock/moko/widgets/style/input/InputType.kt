@@ -1,4 +1,8 @@
-package com.icerockdev.mpp.widgets.style.input
+/*
+ * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
+ */
+
+package dev.icerock.moko.widgets.style.input
 
 enum class InputType(val mask: String?) {
     EMAIL(null),

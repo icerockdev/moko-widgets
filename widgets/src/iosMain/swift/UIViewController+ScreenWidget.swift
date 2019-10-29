@@ -1,8 +1,6 @@
-//
-//  UIViewController+ScreenWidget.swift
-//  Created by Andrey Tchernov on 13/06/2019.
-//  Copyright © 2019 IceRock Development. All rights reserved.
-//
+/*
+ * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
+ */
 
 import UIKit
 import MultiPlatformLibrary
