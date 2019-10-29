@@ -9,6 +9,7 @@ import dev.icerock.moko.core.Parcelize
 import dev.icerock.moko.mvvm.livedata.map
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.button
+import dev.icerock.moko.widgets.buttonStyle
 import dev.icerock.moko.widgets.core.Screen
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
@@ -32,7 +33,6 @@ import dev.icerock.moko.widgets.tabs
 import dev.icerock.moko.widgets.text
 
 open class MainScreen(
-    private val widgetScope: WidgetScope,
     private val theme: Theme
 ) : Screen<MainViewModel, MainScreen.Args>() {
     override fun createViewModel(arguments: Args): MainViewModel {
@@ -40,89 +40,110 @@ open class MainScreen(
     }
 
     override fun createWidget(viewModel: MainViewModel): Widget {
-        return profileScreen(viewModel)
-    }
-
-    private fun profileScreen(viewModel: MainViewModel): Widget {
-        return with(widgetScope) {
-            linear(
-                style = theme.profileContainerStyle,
-                childs = listOf(
-                    input(
-                        label = const("Имя*"),
-                        field = viewModel.nameField
-                    ),
-                    input(
-                        label = const("Никнейм*"),
-                        field = viewModel.nicknameField
-                    ),
-                    input(
-                        label = const("О себе"),
-                        field = viewModel.aboutField,
-                        maxLines = const(null)
-                    ),
-                    text(
-                        text = const("ЛИЧНАЯ ИНФОРМАЦИЯ"),
-                        style = theme.headerStyle
-                    ),
-                    input(
-                        label = const("Email"),
-                        field = viewModel.emailField,
-                        inputType = InputType.EMAIL
-                    ),
-                    input(
-                        label = const("Телефон"),
-                        field = viewModel.phoneField,
-                        inputType = InputType.PHONE
-                    ),
-                    input(
-                        label = const("Дата рождения"),
-                        field = viewModel.birthdayField,
-                        inputType = InputType.DATE
-                    ),
-                    singleChoice(
-                        label = const("Пол"),
-                        field = viewModel.genderField,
-                        values = viewModel.genders,
-                        cancelLabel = const("Отмена")
-                    ),
-                    button(
-                        text = const("Сохранить"),
-                        onTap = viewModel::onSavePressed
-                    )
+        return with(WidgetScope()) {
+            tabs {
+                tab(
+                    title = const("profile default"),
+                    body = profileScreen(viewModel)
                 )
-            )
+                tab(
+                    title = const("profile custom"),
+                    body = theme.profileWidgetScope.profileScreen(viewModel)
+                )
+                tab(
+                    title = const("demo"),
+                    body = demoScreen(viewModel)
+                )
+            }
         }
     }
 
-    private fun demoScreen(viewModel: MainViewModel): Widget {
-        return buildWidget(scope = widgetScope) {
-            val errorScope = childScope {
-                this.flatAlertStyle = flatAlertStyle.copy(
-                    background = Background(
-                        color = 0xFF00FF00
-                    )
+    private fun WidgetScope.profileScreen(viewModel: MainViewModel): Widget {
+        return linear(
+            style = theme.profileContainerStyle,
+            childs = listOf(
+                input(
+                    label = const("Имя*"),
+                    field = viewModel.nameField
+                ),
+                input(
+                    label = const("Никнейм*"),
+                    field = viewModel.nicknameField
+                ),
+                input(
+                    label = const("О себе"),
+                    field = viewModel.aboutField,
+                    maxLines = const(null)
+                ),
+                text(
+                    text = const("ЛИЧНАЯ ИНФОРМАЦИЯ"),
+                    style = theme.headerStyle
+                ),
+                input(
+                    label = const("Email"),
+                    field = viewModel.emailField,
+                    inputType = InputType.EMAIL
+                ),
+                input(
+                    label = const("Телефон"),
+                    field = viewModel.phoneField,
+                    inputType = InputType.PHONE
+                ),
+                input(
+                    label = const("Дата рождения"),
+                    field = viewModel.birthdayField,
+                    inputType = InputType.DATE
+                ),
+                singleChoice(
+                    label = const("Пол"),
+                    field = viewModel.genderField,
+                    values = viewModel.genders,
+                    cancelLabel = const("Отмена")
+                ),
+                button(
+                    text = const("Сохранить"),
+                    onTap = viewModel::onSavePressed
                 )
-            }
-            val dataScope = childScope {
-                this.flatAlertStyle = flatAlertStyle.copy(
-                    background = Background(
-                        color = 0xFFFF00FF
-                    )
-                )
-            }
+            )
+        )
+    }
 
-            linear(
-                childs = listOf(
-                    linear(
-                        style = linearStyle.copy(
-                            orientation = Orientation.HORIZONTAL,
-                            size = WidgetSize(
-                                width = SizeSpec.AS_PARENT,
-                                height = SizeSpec.WRAP_CONTENT
-                            )
-                        ),
-                        childs = listOf(
+    private fun WidgetScope.demoScreen(viewModel: MainViewModel): Widget {
+        val errorScope = childScope {
+            this.flatAlertStyle = flatAlertStyle.copy(
+                background = Background(
+                    color = 0xFF00FF00
+                )
+            )
+        }
+        val dataScope = childScope {
+            this.flatAlertStyle = flatAlertStyle.copy(
+                background = Background(
+                    color = 0xFFFF00FF
+                )
+            )
+        }
+        val buttonsScope = childScope {
+            this.buttonStyle = buttonStyle.copy(
+                size = WidgetSize(
+                    width = SizeSpec.WRAP_CONTENT,
+                    height = SizeSpec.WRAP_CONTENT
+                )
+            )
+        }
+
+        return linear(
+            childs = listOf(
+                linear(
+                    style = linearStyle.copy(
+                        orientation = Orientation.HORIZONTAL,
+                        size = WidgetSize(
+                            width = SizeSpec.AS_PARENT,
+                            height = SizeSpec.WRAP_CONTENT
+                        )
+                    ),
+                    childs = with(buttonsScope) {
+                        listOf(
                             button(
                                 text = "change state".desc().asLiveData(),
                                 onTap = viewModel::onChangeStatePressed
@@ -132,48 +153,48 @@ open class MainScreen(
                                 onTap = {}
                             )
                         )
+                    }
+                ),
+                stateful(
+                    style = statefulStyle.copy(
+                        background = statefulStyle.background.copy(
+                            shape = statefulStyle.background.shape.copy(type = ShapeType.OVAL)
+                        )
                     ),
-                    stateful(
-                        style = statefulStyle.copy(
-                            background = statefulStyle.background.copy(
-                                shape = statefulStyle.background.shape.copy(type = ShapeType.OVAL)
-                            )
-                        ),
-                        state = viewModel.state,
-                        empty = {
-                            flatAlert(message = "empty".desc().asLiveData())
-                        },
-                        loading = {
-                            flatAlert(
-                                style = flatAlertStyle.copy(
-                                    background = Background(
-                                        color = 0xFFFF0000
-                                    )
-                                ),
-                                message = "loading".desc().asLiveData()
-                            )
-                        },
-                        data = { data ->
-                            buildWidget(dataScope) {
-                                tabs {
-                                    tab(
-                                        title = "first page".desc().asLiveData(),
-                                        body = flatAlert(message = data.map { it?.desc() })
-                                    )
-                                    tab(
-                                        title = "second page".desc().asLiveData(),
-                                        body = flatAlert(message = "SECOND".desc().asLiveData())
-                                    )
-                                }
+                    state = viewModel.state,
+                    empty = {
+                        flatAlert(message = "empty".desc().asLiveData())
+                    },
+                    loading = {
+                        flatAlert(
+                            style = flatAlertStyle.copy(
+                                background = Background(
+                                    color = 0xFFFF0000
+                                )
+                            ),
+                            message = "loading".desc().asLiveData()
+                        )
+                    },
+                    data = { data ->
+                        buildWidget(dataScope) {
+                            tabs {
+                                tab(
+                                    title = "first page".desc().asLiveData(),
+                                    body = flatAlert(message = data.map { it?.desc() })
+                                )
+                                tab(
+                                    title = "second page".desc().asLiveData(),
+                                    body = flatAlert(message = "SECOND".desc().asLiveData())
+                                )
                             }
-                        },
-                        error = { error ->
-                            errorScope.flatAlert(message = error.map { it?.desc() })
                         }
-                    )
+                    },
+                    error = { error ->
+                        errorScope.flatAlert(message = error.map { it?.desc() })
+                    }
                 )
             )
-        }
+        )
     }
 
     @Parcelize

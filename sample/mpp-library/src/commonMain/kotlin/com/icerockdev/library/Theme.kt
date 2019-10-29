@@ -143,7 +143,7 @@ object Theme {
         dropDownBackground = null
     )
 
-    val mainWidgetScope = WidgetScope {
+    val profileWidgetScope = WidgetScope {
         this.inputStyle = Theme.inputStyle
         this.textStyle = Theme.headerStyle
         this.buttonStyle = Theme.buttonStyle

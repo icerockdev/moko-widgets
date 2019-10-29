@@ -46,16 +46,18 @@ class WidgetScope(private val properties: MutableMap<Key, Any>) {
                 }
             }
 
-        internal inline fun <reified T : Any> readWriteProperty(key: Key, readProperty: KProperty<T>) =
-            object : ReadWriteProperty<Builder, T> {
-                override fun setValue(thisRef: Builder, property: KProperty<*>, value: T) {
-                    thisRef.scope.properties[key] = value
-                }
-
-                override fun getValue(thisRef: Builder, property: KProperty<*>): T {
-                    return readProperty.call(thisRef.scope)
-                }
+        internal inline fun <reified T : Any> readWriteProperty(
+            key: Key,
+            crossinline readProperty: WidgetScope.() -> T
+        ) = object : ReadWriteProperty<Builder, T> {
+            override fun setValue(thisRef: Builder, property: KProperty<*>, value: T) {
+                thisRef.scope.properties[key] = value
             }
+
+            override fun getValue(thisRef: Builder, property: KProperty<*>): T {
+                return thisRef.scope.readProperty()
+            }
+        }
     }
 }
 
