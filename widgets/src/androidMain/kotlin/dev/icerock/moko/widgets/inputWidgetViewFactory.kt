@@ -34,6 +34,16 @@ actual var inputWidgetViewFactory: VFC<InputWidget> = { viewFactoryContext: View
         ).apply {
             applyMargin(context, style.margins)
         }
+
+        style.labelTextStyle.color?.also {
+            val hintColor = ColorStateList.valueOf(it.argb.toInt())
+            defaultHintTextColor = hintColor
+        }
+
+        style.errorTextStyle.color?.also {
+            val errorColor = ColorStateList.valueOf(it.argb.toInt())
+            setErrorTextColor(errorColor)
+        }
     }
 
     val editText = TextInputEditText(context).apply {
@@ -44,13 +54,15 @@ actual var inputWidgetViewFactory: VFC<InputWidget> = { viewFactoryContext: View
             // EditText's default background have paddings 4dp, while we not change background to own we just change margins
             // https://stackoverflow.com/questions/31735291/removing-the-left-padding-on-an-android-edittext/44497551
             marginStart = (-4).dp(context)
-            marginEnd = 4.dp(context)
+            marginEnd = (-4).dp(context)
         }
 
         applyStyle(style.textStyle)
         applyInputType(inputWidget.inputType)
 
-        backgroundTintList = ColorStateList.valueOf(style.underLineColor.argb.toInt())
+        style.underLineColor?.also {
+            backgroundTintList = ColorStateList.valueOf(it.argb.toInt())
+        }
 
         setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) inputWidget.field.validate()

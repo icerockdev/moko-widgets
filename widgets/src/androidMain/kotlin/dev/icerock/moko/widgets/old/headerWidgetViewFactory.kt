@@ -7,9 +7,9 @@ package dev.icerock.moko.widgets.old
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 
-actual var headerWidgetViewFactory: VFC<HeaderWidget> = { context: ViewFactoryContext,
-                                                          widget: HeaderWidget ->
-    TODO()
+//actual var headerWidgetViewFactory: VFC<HeaderWidget> = { context: ViewFactoryContext,
+//                                                          widget: HeaderWidget ->
+//    TODO()
 //    val layoutInflater = LayoutInflater.from(context.context)
 //    val binding: WidgetHeaderBinding =
 //        DataBindingUtil.inflate(layoutInflater, R.layout.widget_header, context.parent, false)
@@ -37,4 +37,4 @@ actual var headerWidgetViewFactory: VFC<HeaderWidget> = { context: ViewFactoryCo
 //    binding.lifecycleOwner = context.lifecycleOwner
 //
 //    binding.root
-}
+//}

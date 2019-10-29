@@ -43,24 +43,31 @@ open class MainScreen(
         return with(WidgetScope()) {
             tabs {
                 tab(
-                    title = const("profile default"),
-                    body = profileScreen(viewModel)
+                    title = const("P#1"),
+                    body = socialProfileScreen(viewModel)
                 )
                 tab(
-                    title = const("profile custom"),
-                    body = theme.profileWidgetScope.profileScreen(viewModel)
+                    title = const("P#2"),
+                    body = theme.socialWidgetScope.socialProfileScreen(viewModel)
                 )
                 tab(
-                    title = const("demo"),
+                    title = const("P#3"),
+                    body = theme.mcommerceWidgetScope.mcommerceProfileScreen(viewModel)
+                )
+                tab(
+                    title = const("P#4"),
+                    body = theme.cryptoWidgetScope.cryptoProfileScreen(viewModel)
+                )
+                tab(
+                    title = const("D"),
                     body = demoScreen(viewModel)
                 )
             }
         }
     }
 
-    private fun WidgetScope.profileScreen(viewModel: MainViewModel): Widget {
+    private fun WidgetScope.socialProfileScreen(viewModel: MainViewModel): Widget {
         return linear(
-            style = theme.profileContainerStyle,
             childs = listOf(
                 input(
                     label = const("Имя*"),
@@ -76,8 +83,7 @@ open class MainScreen(
                     maxLines = const(null)
                 ),
                 text(
-                    text = const("ЛИЧНАЯ ИНФОРМАЦИЯ"),
-                    style = theme.headerStyle
+                    text = const("ЛИЧНАЯ ИНФОРМАЦИЯ")
                 ),
                 input(
                     label = const("Email"),
@@ -102,6 +108,73 @@ open class MainScreen(
                 ),
                 button(
                     text = const("Сохранить"),
+                    onTap = viewModel::onSavePressed
+                )
+            )
+        )
+    }
+
+    private fun WidgetScope.mcommerceProfileScreen(viewModel: MainViewModel): Widget {
+        return linear(
+            childs = listOf(
+                input(
+                    label = const("Ваше имя"),
+                    field = viewModel.nameField
+                ),
+                input(
+                    label = const("Дата рождения"),
+                    field = viewModel.birthdayField,
+                    inputType = InputType.DATE
+                ),
+                input(
+                    label = const("Телефон"),
+                    field = viewModel.phoneField,
+                    inputType = InputType.PHONE
+                ),
+                button(
+                    text = const("Подтвердить"),
+                    onTap = viewModel::onSavePressed
+                )
+            )
+        )
+    }
+
+    private fun WidgetScope.cryptoProfileScreen(viewModel: MainViewModel): Widget {
+        return linear(
+            childs = listOf(
+                input(
+                    label = const("Name"),
+                    field = viewModel.nameField
+                ),
+                input(
+                    label = const("Phone number"),
+                    field = viewModel.phoneField,
+                    inputType = InputType.PHONE
+                ),
+                input(
+                    label = const("Email"),
+                    field = viewModel.emailField,
+                    inputType = InputType.EMAIL
+                ),
+                input(
+                    label = const("Password"),
+                    field = viewModel.passwordField,
+                    inputType = InputType.PASSWORD
+                ),
+                input(
+                    label = const("Repeat password"),
+                    field = viewModel.repeatPasswordField,
+                    inputType = InputType.PASSWORD
+                ),
+                button(
+                    text = const("Join"),
+                    onTap = viewModel::onSavePressed
+                ),
+                text(
+                    text = const("or")
+                ),
+                button(
+                    text = const("Try Demo"),
                     onTap = viewModel::onSavePressed
                 )
             )

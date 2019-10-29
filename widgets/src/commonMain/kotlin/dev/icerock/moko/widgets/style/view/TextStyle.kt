@@ -7,7 +7,7 @@ package dev.icerock.moko.widgets.style.view
 import dev.icerock.moko.graphics.Color
 
 data class TextStyle(
-    val size: Int = 15,
-    val color: Color = Colors.black,
-    val fontStyle: FontStyle = FontStyle.MEDIUM
+    val size: Int? = null,
+    val color: Color? = null,
+    val fontStyle: FontStyle? = null
 )

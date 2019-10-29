@@ -21,6 +21,7 @@ import dev.icerock.moko.widgets.style.background.Direction
 import dev.icerock.moko.widgets.style.background.Orientation
 import dev.icerock.moko.widgets.style.background.Shape
 import dev.icerock.moko.widgets.style.background.ShapeType
+import dev.icerock.moko.widgets.style.view.Colors
 import dev.icerock.moko.widgets.style.view.FontStyle
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
@@ -62,7 +63,6 @@ object Theme {
             fontStyle = FontStyle.MEDIUM // Roboto-regular weight 400
         ),
         errorTextStyle = errorTextStyle,
-        counterEnabled = false,
         underLineColor = Color.grayUnderline,
         padding = PaddingValues(
             padding = 16f
@@ -143,11 +143,85 @@ object Theme {
         dropDownBackground = null
     )
 
-    val profileWidgetScope = WidgetScope {
+    val socialWidgetScope = WidgetScope {
         this.inputStyle = Theme.inputStyle
         this.textStyle = Theme.headerStyle
         this.buttonStyle = Theme.buttonStyle
         this.linearStyle = Theme.profileContainerStyle
+        this.singleChoiceStyle = Theme.singleChoiceStyle
+    }
+
+    val mcommerceWidgetScope = WidgetScope {
+        this.inputStyle = Theme.inputStyle.copy(
+            textStyle = TextStyle(
+                size = 16,
+                color = Color(0x4B, 0x4F, 0x4E, 0xFF),
+                fontStyle = FontStyle.MEDIUM // ProximaNova-Semibold weight 600
+            ),
+            labelTextStyle = TextStyle(
+                size = 12,
+                color = Color(0x99, 0x9E, 0x9C, 0xFF), // #999e9cff
+                fontStyle = FontStyle.MEDIUM // ProximaNova-Regular weight 400
+            ),
+            underLineColor = Color(0x00, 0x00, 0x00, 0x1F) // #0000001f
+        )
+        this.buttonStyle = Theme.buttonStyle.copy(
+            textStyle = TextStyle(
+                size = 17,
+                color = Color.white,
+                fontStyle = FontStyle.MEDIUM // Roboto-medium weight 500
+            ),
+            background = Background(
+                color = 0xff00492c, //#00492cff
+                colorDisabled = 0x8000492c,
+                shape = Shape(
+                    type = ShapeType.RECTANGLE,
+                    corners = Corners(radii = 4f)
+                )
+            )
+        )
+        this.linearStyle = Theme.profileContainerStyle
+    }
+
+    val cryptoWidgetScope = WidgetScope {
+        this.inputStyle = Theme.inputStyle.copy(
+            textStyle = TextStyle(
+                size = 16,
+                color = Colors.white, // #ffffffff
+                fontStyle = FontStyle.MEDIUM // Gotham Pro
+            ),
+            labelTextStyle = TextStyle(
+                size = 12,
+                color = Color(0xA6, 0xA6, 0xA6, 0xFF), // #a6a6a6ff
+                fontStyle = FontStyle.MEDIUM // Gotham Pro
+            ),
+            underLineColor = Colors.white
+        )
+        this.textStyle = Theme.headerStyle.copy(
+            textStyle = TextStyle(
+                size = 14,
+                color = Colors.white, // #ffffffff
+                fontStyle = FontStyle.MEDIUM // Gotham Pro
+            )
+        )
+        this.buttonStyle = Theme.buttonStyle.copy(
+            size = WidgetSize(
+                width = SizeSpec.AS_PARENT,
+                height = 48
+            ),
+            background = Background(
+                color = 0xFF1375f8,
+                shape = Shape(
+                    type = ShapeType.RECTANGLE,
+                    corners = Corners(radii = 22f)
+                )
+            )
+        )
+        this.linearStyle = Theme.profileContainerStyle.copy(
+            background = Background(
+                color = Colors.black.argb
+            )
+        )
         this.singleChoiceStyle = Theme.singleChoiceStyle
     }
 }

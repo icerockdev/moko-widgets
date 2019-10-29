@@ -33,7 +33,7 @@ class ButtonWidget(
     data class Style(
         val size: WidgetSize = WidgetSize(),
         val textStyle: TextStyle = TextStyle(),
-        val isAllCaps: Boolean = false,
+        val isAllCaps: Boolean? = null,
         override val margins: MarginValues = MarginValues(),
         val background: Background? = null
     ) : Margined

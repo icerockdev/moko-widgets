@@ -8,7 +8,13 @@ import android.widget.TextView
 import dev.icerock.moko.widgets.style.view.TextStyle
 
 fun TextView.applyStyle(textStyle: TextStyle) {
-    setTextColor(textStyle.color.argb.toInt())
-    textSize = textStyle.size.toFloat()
-    applyFontStyle(textStyle.fontStyle)
+    textStyle.color?.also {
+        setTextColor(it.argb.toInt())
+    }
+    textStyle.size?.also {
+        textSize = it.toFloat()
+    }
+    textStyle.fontStyle?.also {
+        applyFontStyle(it)
+    }
 }

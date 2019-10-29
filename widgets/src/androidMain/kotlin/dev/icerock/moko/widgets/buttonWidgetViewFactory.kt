@@ -7,12 +7,12 @@ package dev.icerock.moko.widgets
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.RippleDrawable
-import android.util.TypedValue
 import android.widget.Button
 import android.widget.LinearLayout
 import androidx.lifecycle.Observer
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.old.applyStyle
 import dev.icerock.moko.widgets.style.background.buildBackground
 import dev.icerock.moko.widgets.style.ext.applyMargin
 import dev.icerock.moko.widgets.style.ext.toPlatformSize
@@ -39,9 +39,10 @@ actual var buttonWidgetViewFactory: VFC<ButtonWidget> = { context: ViewFactoryCo
 
             background = rippleDrawable
         }
-        setTextColor(style.textStyle.color.argb.toInt())
-        setTextSize(TypedValue.COMPLEX_UNIT_SP, style.textStyle.size.toFloat())
-        isAllCaps = style.isAllCaps
+
+        applyStyle(style.textStyle)
+
+        style.isAllCaps?.also { isAllCaps = it }
     }
 
     val enabledLiveData = widget.enabled

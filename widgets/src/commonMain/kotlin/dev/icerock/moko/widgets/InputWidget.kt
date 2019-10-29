@@ -15,7 +15,6 @@ import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.input.InputType
-import dev.icerock.moko.widgets.style.view.Colors
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.Margined
 import dev.icerock.moko.widgets.style.view.Padded
@@ -42,7 +41,6 @@ class InputWidget(
      * @property textStyle style of user input text
      * @property labelTextStyle floating label text style
      * @property errorTextStyle error message text style
-     * @property counterEnabled true, if need to show symbol counter
      * @property underLineColor color of the underline
      * @property padding @see com.icerockdev.mpp.widget.style.view.Padded
      * @property margins @see com.icerockdev.mpp.widget.style.view.Margined
@@ -51,10 +49,9 @@ class InputWidget(
     data class Style(
         val size: WidgetSize = WidgetSize(),
         val textStyle: TextStyle = TextStyle(),
-        val labelTextStyle: TextStyle = TextStyle(size = 12),
-        val errorTextStyle: TextStyle = labelTextStyle,
-        val counterEnabled: Boolean = false,
-        val underLineColor: Color = Colors.black,
+        val labelTextStyle: TextStyle = TextStyle(),
+        val errorTextStyle: TextStyle = TextStyle(),
+        val underLineColor: Color? = null,
         override val padding: PaddingValues = PaddingValues(),
         override val margins: MarginValues = MarginValues(),
         val background: Background? = null

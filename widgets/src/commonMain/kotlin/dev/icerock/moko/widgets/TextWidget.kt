@@ -11,6 +11,7 @@ import dev.icerock.moko.widgets.core.View
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
+import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.Margined
 import dev.icerock.moko.widgets.style.view.Padded
@@ -35,6 +36,14 @@ class TextWidget(
         override val padding: PaddingValues = PaddingValues(),
         override val margins: MarginValues = MarginValues()
     ) : Padded, Margined
+
+//    data class HeaderStyle(
+//        val size: WidgetSize = WidgetSize(),
+//        val textStyle: TextStyle = TextStyle(),
+//        override val margins: MarginValues = MarginValues(),
+//        val underlineColor: Int = 0xFF000000.toInt(),
+//        val background: Background? = null
+//    ) : Margined
 
     object FactoryKey : WidgetScope.Key
     object StyleKey : WidgetScope.Key

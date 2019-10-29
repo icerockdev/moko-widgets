@@ -51,6 +51,13 @@ class MainViewModel(val title: String) : ViewModel(), MainViewModelContract {
             else null
         }
     }
+    val passwordField: FormField<String, StringDesc> = FormField("123456", liveBlock { null })
+    val repeatPasswordField: FormField<String, StringDesc> = FormField("1234567") { repeatPasswordData ->
+        repeatPasswordData.mergeWith(passwordField.data) { repeatPassword, password ->
+            if (repeatPassword != password) "should be same".desc() as StringDesc
+            else null
+        }
+    }
 
     private val fields = listOf(
         nameField,
