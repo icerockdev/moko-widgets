@@ -16,14 +16,14 @@ import dev.icerock.moko.widgets.style.background.ShapeType
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-class MainScreen(
+open class MainScreen(
     private val widgetScope: WidgetScope
-) : Screen<MainViewModel, MainScreen.Args>() {
-    override fun createViewModel(arguments: Args): MainViewModel {
+) : Screen<IMainViewModel, MainScreen.Args>() {
+    override fun createViewModel(arguments: Args): IMainViewModel {
         return MainViewModel(title = arguments.title)
     }
 
-    override fun createWidget(viewModel: MainViewModel): Widget {
+    override fun createWidget(viewModel: IMainViewModel): Widget {
         return buildWidget(scope = widgetScope) {
             val errorScope = childScope {
                 this.flatAlertStyle = flatAlertStyle.copy(

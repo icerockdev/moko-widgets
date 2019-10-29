@@ -65,8 +65,18 @@ actual var tabsWidgetViewFactory: VFC<TabsWidget> = { context: ViewFactoryContex
 
     widget.tabs.forEachIndexed { index, tab ->
         fun createIndicator(stringDesc: StringDesc): View {
-            val tabContainer = FrameLayout(ContextThemeWrapper(ctx, android.R.style.Widget_Material_Tab))
-            val text = TextView(ContextThemeWrapper(ctx, android.R.style.Widget_Material_ActionBar_TabText)).apply {
+            val tabContainer = FrameLayout(
+                if (tabHost.isInEditMode) ctx else ContextThemeWrapper(
+                    ctx,
+                    android.R.style.Widget_Material_Tab
+                )
+            )
+            val text = TextView(
+                if (tabHost.isInEditMode) ctx else ContextThemeWrapper(
+                    ctx,
+                    android.R.style.Widget_Material_ActionBar_TabText
+                )
+            ).apply {
                 text = stringDesc.toString(ctx)
             }
             tabContainer.addView(text)

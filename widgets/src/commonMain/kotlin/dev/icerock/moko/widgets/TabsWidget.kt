@@ -1,7 +1,9 @@
 package dev.icerock.moko.widgets
 
 import dev.icerock.moko.mvvm.livedata.LiveData
+import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.desc.StringDesc
+import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.core.*
 import dev.icerock.moko.widgets.style.background.Background
 

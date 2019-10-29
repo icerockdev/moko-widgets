@@ -4,8 +4,8 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.RippleDrawable
 import android.util.TypedValue
+import android.widget.Button
 import android.widget.LinearLayout
-import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.Observer
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.ViewFactoryContext
@@ -20,7 +20,7 @@ actual var buttonWidgetViewFactory: VFC<ButtonWidget> = { context: ViewFactoryCo
     val parent = context.parent
     val style = widget.style
 
-    val button = AppCompatButton(ctx).apply {
+    val button = Button(ctx).apply {
         layoutParams = LinearLayout.LayoutParams(
             style.size.width.toPlatformSize(dm),
             style.size.height.toPlatformSize(dm)

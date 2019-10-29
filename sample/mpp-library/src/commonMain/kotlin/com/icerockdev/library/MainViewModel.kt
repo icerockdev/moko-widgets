@@ -9,11 +9,17 @@ import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 
-class MainViewModel(val title: String) : ViewModel() {
-    private val _state: MutableLiveData<State<String, String>> = MutableLiveData(initialValue = State.Empty())
-    val state: LiveData<State<String, String>> = _state
+interface IMainViewModel {
+    val state: LiveData<State<String, String>>
 
-    fun onChangeStatePressed() {
+    fun onChangeStatePressed()
+}
+
+class MainViewModel(val title: String) : ViewModel(), IMainViewModel {
+    private val _state: MutableLiveData<State<String, String>> = MutableLiveData(initialValue = State.Empty())
+    override val state: LiveData<State<String, String>> = _state
+
+    override fun onChangeStatePressed() {
         when (state.value) {
             is State.Empty -> _state.value = State.Loading()
             is State.Loading -> {
