@@ -24,6 +24,7 @@ expect var singleChoiceWidgetViewFactory: VFC<SingleChoiceWidget>
 class SingleChoiceWidget(
     private val factory: VFC<SingleChoiceWidget>,
     val style: Style,
+    val id: Id,
     val field: FormField<Int?, StringDesc>,
     val label: LiveData<StringDesc>,
     val cancelLabel: LiveData<StringDesc>,
@@ -52,6 +53,8 @@ class SingleChoiceWidget(
 
     object FactoryKey : WidgetScope.Key
     object StyleKey : WidgetScope.Key
+
+    interface Id : WidgetScope.Id
 }
 
 val WidgetScope.singleChoiceFactory: VFC<SingleChoiceWidget>
@@ -69,6 +72,7 @@ var WidgetScope.Builder.singleChoiceStyle: SingleChoiceWidget.Style
 fun WidgetScope.singleChoice(
     factory: VFC<SingleChoiceWidget> = this.singleChoiceFactory,
     style: SingleChoiceWidget.Style = this.singleChoiceStyle,
+    id: SingleChoiceWidget.Id,
     field: FormField<Int?, StringDesc>,
     label: LiveData<StringDesc>,
     cancelLabel: LiveData<StringDesc>,
@@ -76,6 +80,7 @@ fun WidgetScope.singleChoice(
 ) = SingleChoiceWidget(
     factory = factory,
     style = style,
+    id = id,
     field = field,
     label = label,
     cancelLabel = cancelLabel,

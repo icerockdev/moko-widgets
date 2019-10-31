@@ -4,13 +4,13 @@
 
 package com.icerockdev
 
-import com.icerockdev.library.MainScreen
 import com.icerockdev.library.MainViewModel
-import com.icerockdev.library.Theme
+import com.icerockdev.library.screen.MainScreen
 import dev.icerock.moko.widgets.core.ScreenActivity
+import dev.icerock.moko.widgets.core.WidgetScope
 
 class MainActivity : ScreenActivity<MainViewModel, MainScreen.Args, MainScreen>() {
-    override fun createScreen(): MainScreen = MainScreen(Theme)
+    override fun createScreen(): MainScreen = MainScreen(WidgetScope())
 
     override fun getArgs(): MainScreen.Args = MainScreen.Args("test")
 

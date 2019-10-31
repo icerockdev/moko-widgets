@@ -4,17 +4,17 @@
 
 import android.content.Context
 import android.util.AttributeSet
-import com.icerockdev.library.MainScreen
 import com.icerockdev.library.MainViewModel
-import com.icerockdev.library.Theme
+import com.icerockdev.library.screen.MainScreen
 import dev.icerock.moko.widgets.core.BasePreviewView
 import dev.icerock.moko.widgets.core.Screen
+import dev.icerock.moko.widgets.core.WidgetScope
 
 class PreviewView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : BasePreviewView<MainViewModel, MainScreen.Args>(context, attrs, defStyleAttr) {
     override fun createScreen(): Screen<MainViewModel, MainScreen.Args> =
-        MainScreen(Theme)
+        MainScreen(WidgetScope())
 
     override fun createContract(): MainViewModel = TODO()
 //        object : MainViewModel {

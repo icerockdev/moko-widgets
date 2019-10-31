@@ -21,9 +21,10 @@ expect var buttonWidgetViewFactory: VFC<ButtonWidget>
 
 class ButtonWidget(
     private val factory: VFC<ButtonWidget>,
+    val style: Style,
+    val id: Id?,
     val text: LiveData<StringDesc>,
     val enabled: LiveData<Boolean>?,
-    val style: Style = Style(),
     val onTap: () -> Unit
 ) : Widget() {
     override fun buildView(viewFactoryContext: ViewFactoryContext): View {
@@ -40,6 +41,8 @@ class ButtonWidget(
 
     internal object FactoryKey : WidgetScope.Key
     internal object StyleKey : WidgetScope.Key
+
+    interface Id : WidgetScope.Id
 }
 
 val WidgetScope.buttonFactory: VFC<ButtonWidget>
@@ -57,12 +60,14 @@ var WidgetScope.Builder.buttonStyle: ButtonWidget.Style
 fun WidgetScope.button(
     factory: VFC<ButtonWidget> = this.buttonFactory,
     style: ButtonWidget.Style = this.buttonStyle,
+    id: ButtonWidget.Id? = null,
     text: LiveData<StringDesc>,
     enabled: LiveData<Boolean>? = null,
     onTap: () -> Unit
 ) = ButtonWidget(
     factory = factory,
     style = style,
+    id = id,
     text = text,
     enabled = enabled,
     onTap = onTap

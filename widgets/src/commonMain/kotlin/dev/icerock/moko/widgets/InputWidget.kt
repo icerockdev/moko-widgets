@@ -27,6 +27,7 @@ expect var inputWidgetViewFactory: VFC<InputWidget>
 class InputWidget(
     private val factory: VFC<InputWidget>,
     val style: Style,
+    val id: Id,
     val label: LiveData<StringDesc>,
     val field: FormField<String, StringDesc>,
     val enabled: LiveData<Boolean>?,
@@ -59,6 +60,8 @@ class InputWidget(
 
     object FactoryKey : WidgetScope.Key
     object StyleKey : WidgetScope.Key
+
+    interface Id : WidgetScope.Id
 }
 
 val WidgetScope.inputFactory: VFC<InputWidget>
@@ -76,6 +79,7 @@ var WidgetScope.Builder.inputStyle: InputWidget.Style
 fun WidgetScope.input(
     factory: VFC<InputWidget> = this.inputFactory,
     style: InputWidget.Style = this.inputStyle,
+    id: InputWidget.Id,
     label: LiveData<StringDesc>,
     field: FormField<String, StringDesc>,
     enabled: LiveData<Boolean>? = null,
@@ -84,6 +88,7 @@ fun WidgetScope.input(
 ) = InputWidget(
     factory = factory,
     style = style,
+    id = id,
     label = label,
     field = field,
     enabled = enabled,

@@ -35,6 +35,8 @@ class WidgetScope(private val properties: MutableMap<Key, Any>) {
 
     interface Key
 
+    interface Id
+
     class Builder(val scope: WidgetScope)
 
     companion object {
