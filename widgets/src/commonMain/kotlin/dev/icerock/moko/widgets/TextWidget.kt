@@ -46,8 +46,8 @@ class TextWidget(
 //        val textStyle: TextStyle = TextStyle(),
 //        val size: WidgetSize = WidgetSize(),
 
-    object FactoryKey : WidgetScope.Key
-    object StyleKey : WidgetScope.Key
+    object FactoryKey : WidgetScope.Key<VFC<TextWidget>>
+    object StyleKey : WidgetScope.Key<Style>
 
     interface Id : WidgetScope.Id
 }

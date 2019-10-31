@@ -5,12 +5,19 @@
 package com.icerockdev
 
 import com.icerockdev.library.MainViewModel
+import com.icerockdev.library.Theme
 import com.icerockdev.library.screen.MainScreen
 import dev.icerock.moko.widgets.core.ScreenActivity
 import dev.icerock.moko.widgets.core.WidgetScope
 
 class MainActivity : ScreenActivity<MainViewModel, MainScreen.Args, MainScreen>() {
-    override fun createScreen(): MainScreen = MainScreen(WidgetScope())
+    override fun createScreen(): MainScreen = MainScreen(
+        widgetScope = WidgetScope(),
+        cryptoScope = Theme.cryptoWidgetScope,
+        social1Scope = WidgetScope(),
+        social2Scope = Theme.socialWidgetScope,
+        mcommerceScope = Theme.mcommerceWidgetScope
+    )
 
     override fun getArgs(): MainScreen.Args = MainScreen.Args("test")
 

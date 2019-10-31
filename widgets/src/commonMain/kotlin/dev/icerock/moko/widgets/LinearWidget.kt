@@ -37,8 +37,8 @@ class LinearWidget(
         override val padding: PaddingValues = PaddingValues()
     ) : Padded
 
-    internal object FactoryKey : WidgetScope.Key
-    internal object StyleKey : WidgetScope.Key
+    internal object FactoryKey : WidgetScope.Key<VFC<LinearWidget>>
+    internal object StyleKey : WidgetScope.Key<Style>
 }
 
 val WidgetScope.linearFactory: VFC<LinearWidget>

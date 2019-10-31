@@ -58,8 +58,8 @@ class InputWidget(
         val background: Background? = null
     ) : Padded, Margined
 
-    object FactoryKey : WidgetScope.Key
-    object StyleKey : WidgetScope.Key
+    object FactoryKey : WidgetScope.Key<VFC<InputWidget>>
+    object StyleKey : WidgetScope.Key<Style>
 
     interface Id : WidgetScope.Id
 }
@@ -76,9 +76,17 @@ val WidgetScope.inputStyle: InputWidget.Style
 var WidgetScope.Builder.inputStyle: InputWidget.Style
         by WidgetScope.readWriteProperty(InputWidget.StyleKey, WidgetScope::inputStyle)
 
+fun WidgetScope.getInputStyle(id: InputWidget.Id): InputWidget.Style {
+    return getIdProperty(id, InputWidget.StyleKey, ::inputStyle)
+}
+
+fun WidgetScope.Builder.setInputStyle(style: InputWidget.Style, vararg ids: InputWidget.Id) {
+    ids.forEach { setIdProperty(it, InputWidget.StyleKey, style) }
+}
+
 fun WidgetScope.input(
     factory: VFC<InputWidget> = this.inputFactory,
-    style: InputWidget.Style = this.inputStyle,
+    style: InputWidget.Style,
     id: InputWidget.Id,
     label: LiveData<StringDesc>,
     field: FormField<String, StringDesc>,
@@ -88,6 +96,45 @@ fun WidgetScope.input(
 ) = InputWidget(
     factory = factory,
     style = style,
+    id = id,
+    label = label,
+    field = field,
+    enabled = enabled,
+    inputType = inputType,
+    maxLines = maxLines
+)
+
+fun WidgetScope.input(
+    factory: VFC<InputWidget> = this.inputFactory,
+    id: InputWidget.Id,
+    label: LiveData<StringDesc>,
+    field: FormField<String, StringDesc>,
+    enabled: LiveData<Boolean>? = null,
+    inputType: InputType = InputType.PLAIN_TEXT,
+    maxLines: LiveData<Int?>? = null
+) = InputWidget(
+    factory = factory,
+    style = this.getInputStyle(id),
+    id = id,
+    label = label,
+    field = field,
+    enabled = enabled,
+    inputType = inputType,
+    maxLines = maxLines
+)
+
+fun WidgetScope.input(
+    factory: VFC<InputWidget> = this.inputFactory,
+    style: (InputWidget.Style) -> InputWidget.Style,
+    id: InputWidget.Id,
+    label: LiveData<StringDesc>,
+    field: FormField<String, StringDesc>,
+    enabled: LiveData<Boolean>? = null,
+    inputType: InputType = InputType.PLAIN_TEXT,
+    maxLines: LiveData<Int?>? = null
+) = InputWidget(
+    factory = factory,
+    style = style(this.getInputStyle(id)),
     id = id,
     label = label,
     field = field,

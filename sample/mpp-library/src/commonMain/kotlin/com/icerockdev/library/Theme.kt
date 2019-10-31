@@ -4,6 +4,7 @@
 
 package com.icerockdev.library
 
+import com.icerockdev.library.screen.CryptoProfileScreen
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.InputWidget
@@ -14,6 +15,7 @@ import dev.icerock.moko.widgets.buttonStyle
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.inputStyle
 import dev.icerock.moko.widgets.linearStyle
+import dev.icerock.moko.widgets.setButtonStyle
 import dev.icerock.moko.widgets.singleChoiceStyle
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Corners
@@ -184,7 +186,7 @@ object Theme {
     }
 
     val cryptoWidgetScope = WidgetScope {
-        this.inputStyle = Theme.inputStyle.copy(
+        inputStyle = Theme.inputStyle.copy(
             textStyle = TextStyle(
                 size = 16,
                 color = Colors.white, // #ffffffff
@@ -197,14 +199,14 @@ object Theme {
             ),
             underLineColor = Colors.white
         )
-        this.textStyle = Theme.headerStyle.copy(
+        textStyle = Theme.headerStyle.copy(
             textStyle = TextStyle(
                 size = 14,
                 color = Colors.white, // #ffffffff
                 fontStyle = FontStyle.MEDIUM // Gotham Pro
             )
         )
-        this.buttonStyle = Theme.buttonStyle.copy(
+        buttonStyle = Theme.buttonStyle.copy(
             size = WidgetSize(
                 width = SizeSpec.AS_PARENT,
                 height = 48
@@ -217,11 +219,22 @@ object Theme {
                 )
             )
         )
-        this.linearStyle = Theme.profileContainerStyle.copy(
+        setButtonStyle(
+            buttonStyle.copy(
+                background = Background(
+                    color = 0xFF303030,
+                    shape = Shape(
+                        type = ShapeType.RECTANGLE,
+                        corners = Corners(radii = 22f)
+                    )
+                )
+            ), CryptoProfileScreen.Id.TryDemoButton
+        )
+        linearStyle = Theme.profileContainerStyle.copy(
             background = Background(
                 color = Colors.black.argb
             )
         )
-        this.singleChoiceStyle = Theme.singleChoiceStyle
+        singleChoiceStyle = Theme.singleChoiceStyle
     }
 }

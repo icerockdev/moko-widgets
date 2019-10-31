@@ -39,8 +39,8 @@ class ButtonWidget(
         val background: Background? = null
     ) : Margined
 
-    internal object FactoryKey : WidgetScope.Key
-    internal object StyleKey : WidgetScope.Key
+    internal object FactoryKey : WidgetScope.Key<VFC<ButtonWidget>>
+    internal object StyleKey : WidgetScope.Key<Style>
 
     interface Id : WidgetScope.Id
 }
@@ -57,9 +57,17 @@ val WidgetScope.buttonStyle: ButtonWidget.Style
 var WidgetScope.Builder.buttonStyle: ButtonWidget.Style
         by WidgetScope.readWriteProperty(ButtonWidget.StyleKey, WidgetScope::buttonStyle)
 
+fun WidgetScope.getButtonStyle(id: ButtonWidget.Id): ButtonWidget.Style {
+    return getIdProperty(id, ButtonWidget.StyleKey, ::buttonStyle)
+}
+
+fun WidgetScope.Builder.setButtonStyle(style: ButtonWidget.Style, vararg ids: ButtonWidget.Id) {
+    ids.forEach { setIdProperty(it, ButtonWidget.StyleKey, style) }
+}
+
 fun WidgetScope.button(
     factory: VFC<ButtonWidget> = this.buttonFactory,
-    style: ButtonWidget.Style = this.buttonStyle,
+    style: ButtonWidget.Style,
     id: ButtonWidget.Id? = null,
     text: LiveData<StringDesc>,
     enabled: LiveData<Boolean>? = null,
@@ -67,6 +75,37 @@ fun WidgetScope.button(
 ) = ButtonWidget(
     factory = factory,
     style = style,
+    id = id,
+    text = text,
+    enabled = enabled,
+    onTap = onTap
+)
+
+fun WidgetScope.button(
+    factory: VFC<ButtonWidget> = this.buttonFactory,
+    id: ButtonWidget.Id? = null,
+    text: LiveData<StringDesc>,
+    enabled: LiveData<Boolean>? = null,
+    onTap: () -> Unit
+) = ButtonWidget(
+    factory = factory,
+    style = id?.let { this.getButtonStyle(it) } ?: this.buttonStyle,
+    id = id,
+    text = text,
+    enabled = enabled,
+    onTap = onTap
+)
+
+fun WidgetScope.button(
+    factory: VFC<ButtonWidget> = this.buttonFactory,
+    style: (ButtonWidget.Style) -> ButtonWidget.Style,
+    id: ButtonWidget.Id? = null,
+    text: LiveData<StringDesc>,
+    enabled: LiveData<Boolean>? = null,
+    onTap: () -> Unit
+) = ButtonWidget(
+    factory = factory,
+    style = style(id?.let { this.getButtonStyle(it) } ?: this.buttonStyle),
     id = id,
     text = text,
     enabled = enabled,

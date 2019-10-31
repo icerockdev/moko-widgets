@@ -51,8 +51,8 @@ class StatefulWidget<T, E> private constructor(
         val background: Background = Background()
     )
 
-    internal object FactoryKey : WidgetScope.Key
-    internal object StyleKey : WidgetScope.Key
+    internal object FactoryKey : WidgetScope.Key<VFC<StatefulWidget<*, *>>>
+    internal object StyleKey : WidgetScope.Key<Style>
 }
 
 val WidgetScope.statefulFactory: VFC<StatefulWidget<*, *>>

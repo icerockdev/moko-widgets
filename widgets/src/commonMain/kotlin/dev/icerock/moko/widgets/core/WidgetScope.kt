@@ -11,12 +11,19 @@ import kotlin.properties.ReadOnlyProperty
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-class WidgetScope(private val properties: MutableMap<Key, Any>) {
+class WidgetScope(
+    private val properties: MutableMap<Key<*>, Any>,
+    private val idProperties: MutableMap<Pair<Id, Key<*>>, Any>
+) {
 
-    constructor() : this(properties = mutableMapOf<Key, Any>())
+    constructor() : this(
+        properties = mutableMapOf(),
+        idProperties = mutableMapOf()
+    )
 
     constructor(parent: WidgetScope? = null, builder: Builder.() -> Unit) : this(
-        properties = parent?.properties?.deepMutableCopy() ?: mutableMapOf()
+        properties = parent?.properties?.deepMutableCopy() ?: mutableMapOf(),
+        idProperties = parent?.idProperties?.deepMutableCopy() ?: mutableMapOf()
     ) {
         Builder(scope = this).builder()
     }
@@ -33,14 +40,22 @@ class WidgetScope(private val properties: MutableMap<Key, Any>) {
         return value.asLiveData()
     }
 
-    interface Key
+    interface Key<T>
 
     interface Id
 
-    class Builder(val scope: WidgetScope)
+    class Builder(val scope: WidgetScope) {
+        internal fun <T : Any> setIdProperty(id: Id, key: Key<T>, value: T) {
+            scope.idProperties[id to key] = value
+        }
+    }
+
+    internal fun <T : Any> getIdProperty(id: Id, key: Key<T>, fallback: () -> T): T {
+        return idProperties[id to key] as? T ?: fallback()
+    }
 
     companion object {
-        internal inline fun <reified T : Any> readProperty(key: Key, crossinline fallback: () -> T) =
+        internal inline fun <reified T : Any> readProperty(key: Key<T>, crossinline fallback: () -> T) =
             object : ReadOnlyProperty<WidgetScope, T> {
                 override fun getValue(thisRef: WidgetScope, property: KProperty<*>): T {
                     val factory = thisRef.properties[key] as? T
@@ -49,7 +64,7 @@ class WidgetScope(private val properties: MutableMap<Key, Any>) {
             }
 
         internal inline fun <reified T : Any> readWriteProperty(
-            key: Key,
+            key: Key<T>,
             crossinline readProperty: WidgetScope.() -> T
         ) = object : ReadWriteProperty<Builder, T> {
             override fun setValue(thisRef: Builder, property: KProperty<*>, value: T) {

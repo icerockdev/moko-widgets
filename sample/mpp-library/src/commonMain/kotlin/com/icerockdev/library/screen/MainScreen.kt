@@ -5,7 +5,6 @@
 package com.icerockdev.library.screen
 
 import com.icerockdev.library.MainViewModel
-import com.icerockdev.library.Theme
 import dev.icerock.moko.core.Parcelable
 import dev.icerock.moko.core.Parcelize
 import dev.icerock.moko.widgets.core.Screen
@@ -14,7 +13,11 @@ import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.tabs
 
 open class MainScreen(
-    private val widgetScope: WidgetScope
+    private val widgetScope: WidgetScope,
+    private val cryptoScope: WidgetScope,
+    private val social1Scope: WidgetScope,
+    private val social2Scope: WidgetScope,
+    private val mcommerceScope: WidgetScope
 ) : Screen<MainViewModel, MainScreen.Args>() {
     override fun createViewModel(arguments: Args): MainViewModel {
         return MainViewModel(title = arguments.title)
@@ -24,20 +27,20 @@ open class MainScreen(
         return with(widgetScope) {
             tabs {
                 tab(
+                    title = const("P#4"),
+                    body = cryptoScope.cryptoProfileScreen(viewModel)
+                )
+                tab(
                     title = const("P#1"),
-                    body = socialProfileScreen(viewModel)
+                    body = social1Scope.socialProfileScreen(viewModel)
                 )
                 tab(
                     title = const("P#2"),
-                    body = Theme.socialWidgetScope.socialProfileScreen(viewModel)
+                    body = social2Scope.socialProfileScreen(viewModel)
                 )
                 tab(
                     title = const("P#3"),
-                    body = Theme.mcommerceWidgetScope.mcommerceProfileScreen(viewModel)
-                )
-                tab(
-                    title = const("P#4"),
-                    body = Theme.cryptoWidgetScope.cryptoProfileScreen(viewModel)
+                    body = mcommerceScope.mcommerceProfileScreen(viewModel)
                 )
                 tab(
                     title = const("D"),

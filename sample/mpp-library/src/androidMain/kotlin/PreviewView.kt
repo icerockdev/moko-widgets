@@ -10,18 +10,18 @@ import dev.icerock.moko.widgets.core.BasePreviewView
 import dev.icerock.moko.widgets.core.Screen
 import dev.icerock.moko.widgets.core.WidgetScope
 
-class PreviewView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : BasePreviewView<MainViewModel, MainScreen.Args>(context, attrs, defStyleAttr) {
-    override fun createScreen(): Screen<MainViewModel, MainScreen.Args> =
-        MainScreen(WidgetScope())
-
-    override fun createContract(): MainViewModel = TODO()
-//        object : MainViewModel {
-//        override val state: LiveData<State<String, String>> =
-//            MutableLiveData(initialValue = State.Loading())
+//class PreviewView @JvmOverloads constructor(
+//    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+//) : BasePreviewView<MainViewModel, MainScreen.Args>(context, attrs, defStyleAttr) {
+//    override fun createScreen(): Screen<MainViewModel, MainScreen.Args> =
+//        MainScreen(WidgetScope())
 //
-//        override fun onChangeStatePressed() {
-//        }
-//    }
-}
+//    override fun createContract(): MainViewModel = TODO()
+////        object : MainViewModel {
+////        override val state: LiveData<State<String, String>> =
+////            MutableLiveData(initialValue = State.Loading())
+////
+////        override fun onChangeStatePressed() {
+////        }
+////    }
+//}

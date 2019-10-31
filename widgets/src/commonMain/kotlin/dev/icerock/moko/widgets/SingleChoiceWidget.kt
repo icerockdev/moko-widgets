@@ -51,8 +51,8 @@ class SingleChoiceWidget(
         val dropDownBackground: Background? = null
     ) : Margined
 
-    object FactoryKey : WidgetScope.Key
-    object StyleKey : WidgetScope.Key
+    object FactoryKey : WidgetScope.Key<VFC<SingleChoiceWidget>>
+    object StyleKey : WidgetScope.Key<Style>
 
     interface Id : WidgetScope.Id
 }

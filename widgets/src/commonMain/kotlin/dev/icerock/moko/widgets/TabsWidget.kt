@@ -56,8 +56,8 @@ class TabsWidget(
         val background: Background = Background()
     )
 
-    internal object FactoryKey : WidgetScope.Key
-    internal object StyleKey : WidgetScope.Key
+    internal object FactoryKey : WidgetScope.Key<VFC<TabsWidget>>
+    internal object StyleKey : WidgetScope.Key<Style>
 }
 
 val WidgetScope.tabsFactory: VFC<TabsWidget>
