@@ -7,6 +7,7 @@ package dev.icerock.moko.widgets.core
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
+import dev.icerock.moko.widgets.TextWidget
 import kotlin.properties.ReadOnlyProperty
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
@@ -51,6 +52,7 @@ class WidgetScope(
     }
 
     internal fun <T : Any> getIdProperty(id: Id, key: Key<T>, fallback: () -> T): T {
+        @Suppress("UNCHECKED_CAST")
         return idProperties[id to key] as? T ?: fallback()
     }
 

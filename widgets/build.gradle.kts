@@ -8,6 +8,7 @@ plugins {
     id("kotlin-kapt")
     id("dev.icerock.mobile.multiplatform")
     id("maven-publish")
+    id("dev.icerock.mobile.multiplatform-widgets-generator")
 }
 
 group = "dev.icerock.moko"

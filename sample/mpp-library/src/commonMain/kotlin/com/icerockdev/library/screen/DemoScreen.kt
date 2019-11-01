@@ -9,6 +9,7 @@ import dev.icerock.moko.core.Parcelable
 import dev.icerock.moko.core.Parcelize
 import dev.icerock.moko.mvvm.livedata.map
 import dev.icerock.moko.resources.desc.desc
+import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.buttonStyle
 import dev.icerock.moko.widgets.core.Screen
@@ -17,9 +18,9 @@ import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.core.asLiveData
 import dev.icerock.moko.widgets.core.buildWidget
 import dev.icerock.moko.widgets.flatAlert
+import dev.icerock.moko.widgets.flatAlertFactory
 import dev.icerock.moko.widgets.flatAlertStyle
 import dev.icerock.moko.widgets.linear
-import dev.icerock.moko.widgets.linearStyle
 import dev.icerock.moko.widgets.stateful
 import dev.icerock.moko.widgets.statefulStyle
 import dev.icerock.moko.widgets.style.background.Background
@@ -64,13 +65,15 @@ open class DemoScreen(
             linear(
                 childs = listOf(
                     linear(
-                        style = linearStyle.copy(
-                            orientation = Orientation.HORIZONTAL,
-                            size = WidgetSize(
-                                width = SizeSpec.AS_PARENT,
-                                height = SizeSpec.WRAP_CONTENT
+                        styled = {
+                            it.copy(
+                                orientation = Orientation.HORIZONTAL,
+                                size = WidgetSize(
+                                    width = SizeSpec.AS_PARENT,
+                                    height = SizeSpec.WRAP_CONTENT
+                                )
                             )
-                        ),
+                        },
                         childs = with(buttonsScope) {
                             kotlin.collections.listOf(
                                 button(
@@ -96,6 +99,7 @@ open class DemoScreen(
                         },
                         loading = {
                             flatAlert(
+                                factory = flatAlertFactory,
                                 style = flatAlertStyle.copy(
                                     background = Background(
                                         color = 0xFFFF0000
@@ -106,16 +110,18 @@ open class DemoScreen(
                         },
                         data = { data ->
                             buildWidget(dataScope) {
-                                tabs {
-                                    tab(
-                                        title = "first page".desc().asLiveData(),
-                                        body = flatAlert(message = data.map { it?.desc() })
+                                tabs(
+                                    tabs = listOf(
+                                        TabsWidget.TabWidget(
+                                            title = const("first page"),
+                                            body = flatAlert(message = data.map { it?.desc() })
+                                        ),
+                                        TabsWidget.TabWidget(
+                                            title = const("second page"),
+                                            body = flatAlert(message = "SECOND".desc().asLiveData())
+                                        )
                                     )
-                                    tab(
-                                        title = "second page".desc().asLiveData(),
-                                        body = flatAlert(message = "SECOND".desc().asLiveData())
-                                    )
-                                }
+                                )
                             }
                         },
                         error = { error ->

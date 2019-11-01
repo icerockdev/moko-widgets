@@ -6,6 +6,4 @@ package dev.icerock.moko.widgets
 
 import dev.icerock.moko.widgets.core.VFC
 
-actual var linearWidgetViewFactory: VFC<LinearWidget>
-    get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-    set(value) {}
+actual var linearWidgetViewFactory: VFC<LinearWidget> = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.

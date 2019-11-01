@@ -12,6 +12,7 @@ import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.View
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.core.WidgetDef
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.view.MarginValues
@@ -21,6 +22,7 @@ import dev.icerock.moko.widgets.style.view.WidgetSize
 
 expect var singleChoiceWidgetViewFactory: VFC<SingleChoiceWidget>
 
+@WidgetDef
 class SingleChoiceWidget(
     private val factory: VFC<SingleChoiceWidget>,
     val style: Style,
@@ -51,38 +53,5 @@ class SingleChoiceWidget(
         val dropDownBackground: Background? = null
     ) : Margined
 
-    object FactoryKey : WidgetScope.Key<VFC<SingleChoiceWidget>>
-    object StyleKey : WidgetScope.Key<Style>
-
     interface Id : WidgetScope.Id
 }
-
-val WidgetScope.singleChoiceFactory: VFC<SingleChoiceWidget>
-        by WidgetScope.readProperty(SingleChoiceWidget.FactoryKey, ::singleChoiceWidgetViewFactory)
-
-var WidgetScope.Builder.singleChoiceFactory: VFC<SingleChoiceWidget>
-        by WidgetScope.readWriteProperty(SingleChoiceWidget.FactoryKey, WidgetScope::singleChoiceFactory)
-
-val WidgetScope.singleChoiceStyle: SingleChoiceWidget.Style
-        by WidgetScope.readProperty(SingleChoiceWidget.StyleKey) { SingleChoiceWidget.Style() }
-
-var WidgetScope.Builder.singleChoiceStyle: SingleChoiceWidget.Style
-        by WidgetScope.readWriteProperty(SingleChoiceWidget.StyleKey, WidgetScope::singleChoiceStyle)
-
-fun WidgetScope.singleChoice(
-    factory: VFC<SingleChoiceWidget> = this.singleChoiceFactory,
-    style: SingleChoiceWidget.Style = this.singleChoiceStyle,
-    id: SingleChoiceWidget.Id,
-    field: FormField<Int?, StringDesc>,
-    label: LiveData<StringDesc>,
-    cancelLabel: LiveData<StringDesc>,
-    values: LiveData<List<StringDesc>>
-) = SingleChoiceWidget(
-    factory = factory,
-    style = style,
-    id = id,
-    field = field,
-    label = label,
-    cancelLabel = cancelLabel,
-    values = values
-)

@@ -8,6 +8,7 @@ import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.View
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.core.WidgetDef
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Orientation
@@ -18,9 +19,11 @@ import dev.icerock.moko.widgets.style.view.WidgetSize
 
 expect var linearWidgetViewFactory: VFC<LinearWidget>
 
+@WidgetDef
 class LinearWidget(
     private val factory: VFC<LinearWidget>,
     val style: Style,
+    val id: Id?,
     val childs: List<Widget>
 ) : Widget() {
     override fun buildView(viewFactoryContext: ViewFactoryContext): View {
@@ -37,28 +40,5 @@ class LinearWidget(
         override val padding: PaddingValues = PaddingValues()
     ) : Padded
 
-    internal object FactoryKey : WidgetScope.Key<VFC<LinearWidget>>
-    internal object StyleKey : WidgetScope.Key<Style>
+    interface Id: WidgetScope.Id
 }
-
-val WidgetScope.linearFactory: VFC<LinearWidget>
-        by WidgetScope.readProperty(LinearWidget.FactoryKey, ::linearWidgetViewFactory)
-
-var WidgetScope.Builder.linearFactory: VFC<LinearWidget>
-        by WidgetScope.readWriteProperty(LinearWidget.FactoryKey, WidgetScope::linearFactory)
-
-val WidgetScope.linearStyle: LinearWidget.Style
-        by WidgetScope.readProperty(LinearWidget.StyleKey) { LinearWidget.Style() }
-
-var WidgetScope.Builder.linearStyle: LinearWidget.Style
-        by WidgetScope.readWriteProperty(LinearWidget.StyleKey, WidgetScope::linearStyle)
-
-fun WidgetScope.linear(
-    factory: VFC<LinearWidget> = this.linearFactory,
-    style: LinearWidget.Style = this.linearStyle,
-    childs: List<Widget>
-) = LinearWidget(
-    factory = factory,
-    style = style,
-    childs = childs
-)

@@ -58,7 +58,7 @@ actual var inputWidgetViewFactory: VFC<InputWidget> = { viewFactoryContext: View
         }
 
         applyStyle(style.textStyle)
-        applyInputType(inputWidget.inputType)
+        inputWidget.inputType?.also { applyInputType(it) }
 
         style.underLineColor?.also {
             backgroundTintList = ColorStateList.valueOf(it.argb.toInt())

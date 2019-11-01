@@ -10,6 +10,7 @@ import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.View
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.core.WidgetDef
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.Margined
@@ -20,6 +21,7 @@ import dev.icerock.moko.widgets.style.view.WidgetSize
 
 expect var textWidgetViewFactory: VFC<TextWidget>
 
+@WidgetDef
 class TextWidget(
     private val factory: VFC<TextWidget>,
     val text: LiveData<StringDesc>,
@@ -46,32 +48,5 @@ class TextWidget(
 //        val textStyle: TextStyle = TextStyle(),
 //        val size: WidgetSize = WidgetSize(),
 
-    object FactoryKey : WidgetScope.Key<VFC<TextWidget>>
-    object StyleKey : WidgetScope.Key<Style>
-
     interface Id : WidgetScope.Id
 }
-
-val WidgetScope.textFactory: VFC<TextWidget>
-        by WidgetScope.readProperty(TextWidget.FactoryKey, ::textWidgetViewFactory)
-
-var WidgetScope.Builder.textFactory: VFC<TextWidget>
-        by WidgetScope.readWriteProperty(TextWidget.FactoryKey, WidgetScope::textFactory)
-
-val WidgetScope.textStyle: TextWidget.Style
-        by WidgetScope.readProperty(TextWidget.StyleKey) { TextWidget.Style() }
-
-var WidgetScope.Builder.textStyle: TextWidget.Style
-        by WidgetScope.readWriteProperty(TextWidget.StyleKey, WidgetScope::textStyle)
-
-fun WidgetScope.text(
-    factory: VFC<TextWidget> = this.textFactory,
-    style: TextWidget.Style = this.textStyle,
-    id: TextWidget.Id? = null,
-    text: LiveData<StringDesc>
-) = TextWidget(
-    factory = factory,
-    style = style,
-    id = id,
-    text = text
-)

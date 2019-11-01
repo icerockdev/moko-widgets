@@ -6,6 +6,6 @@ package dev.icerock.moko.widgets.old
 
 import dev.icerock.moko.widgets.core.VFC
 
-actual var headerWidgetViewFactory: VFC<HeaderWidget> = { _, _ ->
-    TODO("must be initialized from iOS swift part")
-}
+//actual var headerWidgetViewFactory: VFC<HeaderWidget> = { _, _ ->
+//    TODO("must be initialized from iOS swift part")
+//}

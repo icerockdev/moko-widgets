@@ -7,6 +7,7 @@ package com.icerockdev.library.screen
 import com.icerockdev.library.MainViewModel
 import dev.icerock.moko.core.Parcelable
 import dev.icerock.moko.core.Parcelize
+import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.core.Screen
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
@@ -25,28 +26,30 @@ open class MainScreen(
 
     override fun createWidget(viewModel: MainViewModel): Widget {
         return with(widgetScope) {
-            tabs {
-                tab(
-                    title = const("P#4"),
-                    body = cryptoScope.cryptoProfileScreen(viewModel)
+            tabs(
+                tabs = listOf(
+                    TabsWidget.TabWidget(
+                        title = const("P#4"),
+                        body = cryptoScope.cryptoProfileScreen(viewModel)
+                    ),
+                    TabsWidget.TabWidget(
+                        title = const("P#1"),
+                        body = social1Scope.socialProfileScreen(viewModel)
+                    ),
+                    TabsWidget.TabWidget(
+                        title = const("P#2"),
+                        body = social2Scope.socialProfileScreen(viewModel)
+                    ),
+                    TabsWidget.TabWidget(
+                        title = const("P#3"),
+                        body = mcommerceScope.mcommerceProfileScreen(viewModel)
+                    ),
+                    TabsWidget.TabWidget(
+                        title = const("D"),
+                        body = demoScreen(viewModel)
+                    )
                 )
-                tab(
-                    title = const("P#1"),
-                    body = social1Scope.socialProfileScreen(viewModel)
-                )
-                tab(
-                    title = const("P#2"),
-                    body = social2Scope.socialProfileScreen(viewModel)
-                )
-                tab(
-                    title = const("P#3"),
-                    body = mcommerceScope.mcommerceProfileScreen(viewModel)
-                )
-                tab(
-                    title = const("D"),
-                    body = demoScreen(viewModel)
-                )
-            }
+            )
         }
     }
 

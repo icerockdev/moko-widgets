@@ -12,6 +12,7 @@ import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.View
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.core.WidgetDef
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.input.InputType
@@ -24,6 +25,7 @@ import dev.icerock.moko.widgets.style.view.WidgetSize
 
 expect var inputWidgetViewFactory: VFC<InputWidget>
 
+@WidgetDef
 class InputWidget(
     private val factory: VFC<InputWidget>,
     val style: Style,
@@ -31,7 +33,7 @@ class InputWidget(
     val label: LiveData<StringDesc>,
     val field: FormField<String, StringDesc>,
     val enabled: LiveData<Boolean>?,
-    val inputType: InputType,
+    val inputType: InputType?,
     val maxLines: LiveData<Int?>?
 ) : Widget() {
     override fun buildView(viewFactoryContext: ViewFactoryContext): View =
@@ -58,87 +60,5 @@ class InputWidget(
         val background: Background? = null
     ) : Padded, Margined
 
-    object FactoryKey : WidgetScope.Key<VFC<InputWidget>>
-    object StyleKey : WidgetScope.Key<Style>
-
     interface Id : WidgetScope.Id
 }
-
-val WidgetScope.inputFactory: VFC<InputWidget>
-        by WidgetScope.readProperty(InputWidget.FactoryKey, ::inputWidgetViewFactory)
-
-var WidgetScope.Builder.inputFactory: VFC<InputWidget>
-        by WidgetScope.readWriteProperty(InputWidget.FactoryKey, WidgetScope::inputFactory)
-
-val WidgetScope.inputStyle: InputWidget.Style
-        by WidgetScope.readProperty(InputWidget.StyleKey) { InputWidget.Style() }
-
-var WidgetScope.Builder.inputStyle: InputWidget.Style
-        by WidgetScope.readWriteProperty(InputWidget.StyleKey, WidgetScope::inputStyle)
-
-fun WidgetScope.getInputStyle(id: InputWidget.Id): InputWidget.Style {
-    return getIdProperty(id, InputWidget.StyleKey, ::inputStyle)
-}
-
-fun WidgetScope.Builder.setInputStyle(style: InputWidget.Style, vararg ids: InputWidget.Id) {
-    ids.forEach { setIdProperty(it, InputWidget.StyleKey, style) }
-}
-
-fun WidgetScope.input(
-    factory: VFC<InputWidget> = this.inputFactory,
-    style: InputWidget.Style,
-    id: InputWidget.Id,
-    label: LiveData<StringDesc>,
-    field: FormField<String, StringDesc>,
-    enabled: LiveData<Boolean>? = null,
-    inputType: InputType = InputType.PLAIN_TEXT,
-    maxLines: LiveData<Int?>? = null
-) = InputWidget(
-    factory = factory,
-    style = style,
-    id = id,
-    label = label,
-    field = field,
-    enabled = enabled,
-    inputType = inputType,
-    maxLines = maxLines
-)
-
-fun WidgetScope.input(
-    factory: VFC<InputWidget> = this.inputFactory,
-    id: InputWidget.Id,
-    label: LiveData<StringDesc>,
-    field: FormField<String, StringDesc>,
-    enabled: LiveData<Boolean>? = null,
-    inputType: InputType = InputType.PLAIN_TEXT,
-    maxLines: LiveData<Int?>? = null
-) = InputWidget(
-    factory = factory,
-    style = this.getInputStyle(id),
-    id = id,
-    label = label,
-    field = field,
-    enabled = enabled,
-    inputType = inputType,
-    maxLines = maxLines
-)
-
-fun WidgetScope.input(
-    factory: VFC<InputWidget> = this.inputFactory,
-    style: (InputWidget.Style) -> InputWidget.Style,
-    id: InputWidget.Id,
-    label: LiveData<StringDesc>,
-    field: FormField<String, StringDesc>,
-    enabled: LiveData<Boolean>? = null,
-    inputType: InputType = InputType.PLAIN_TEXT,
-    maxLines: LiveData<Int?>? = null
-) = InputWidget(
-    factory = factory,
-    style = style(this.getInputStyle(id)),
-    id = id,
-    label = label,
-    field = field,
-    enabled = enabled,
-    inputType = inputType,
-    maxLines = maxLines
-)

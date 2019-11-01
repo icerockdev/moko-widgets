@@ -10,15 +10,16 @@ import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.View
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
-import dev.icerock.moko.widgets.core.WidgetScope
+import dev.icerock.moko.widgets.core.WidgetDef
 import dev.icerock.moko.widgets.style.background.Background
 
 expect var tabsWidgetViewFactory: VFC<TabsWidget>
 
+@WidgetDef
 class TabsWidget(
     private val factory: VFC<TabsWidget>,
     val style: Style,
-    val tabs: List<TabWidget>
+    @Suppress("RemoveRedundantQualifierName") val tabs: List<TabsWidget.TabWidget> // for correct codegen
 ) : Widget() {
 
     class TabWidget(
@@ -55,32 +56,4 @@ class TabsWidget(
     data class Style(
         val background: Background = Background()
     )
-
-    internal object FactoryKey : WidgetScope.Key<VFC<TabsWidget>>
-    internal object StyleKey : WidgetScope.Key<Style>
-}
-
-val WidgetScope.tabsFactory: VFC<TabsWidget>
-        by WidgetScope.readProperty(TabsWidget.FactoryKey, ::tabsWidgetViewFactory)
-
-var WidgetScope.Builder.tabsFactory: VFC<TabsWidget>
-        by WidgetScope.readWriteProperty(TabsWidget.FactoryKey, WidgetScope::tabsFactory)
-
-val WidgetScope.tabsStyle: TabsWidget.Style
-        by WidgetScope.readProperty(TabsWidget.StyleKey) { TabsWidget.Style() }
-
-var WidgetScope.Builder.tabsStyle: TabsWidget.Style
-        by WidgetScope.readWriteProperty(TabsWidget.StyleKey, WidgetScope::tabsStyle)
-
-fun WidgetScope.tabs(
-    factory: VFC<TabsWidget> = this.tabsFactory,
-    style: TabsWidget.Style = this.tabsStyle,
-    builder: TabsWidget.Builder.() -> Unit
-): TabsWidget {
-    return TabsWidget.Builder()
-        .apply(builder)
-        .build(
-            factory = factory,
-            style = style
-        )
 }
