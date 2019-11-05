@@ -1,0 +1,55 @@
+package dev.icerock.moko.widgets.units
+
+import android.content.Context
+import android.view.View
+import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.RecyclerView
+import dev.icerock.moko.mvvm.livedata.LiveData
+import dev.icerock.moko.mvvm.livedata.MutableLiveData
+import dev.icerock.moko.units.UnitItem
+import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.core.Widget
+
+actual abstract class WidgetsUnitItem<T> actual constructor(
+    override val itemId: Long,
+    val data: T
+) : UnitItem {
+    actual abstract val reuseId: String
+    actual abstract fun createWidget(data: LiveData<T>): Widget
+
+    override val viewType: Int by lazy { reuseId.hashCode() }
+
+    override fun createViewHolder(parent: ViewGroup, lifecycleOwner: LifecycleOwner): RecyclerView.ViewHolder {
+        val mutableData: MutableLiveData<T> = MutableLiveData(initialValue = data)
+        val widget: Widget = createWidget(mutableData)
+        val context: Context = parent.context
+        val view: View = createView(widget, context, lifecycleOwner, parent)
+        return ViewHolder(mutableData, view)
+    }
+
+    override fun bindViewHolder(viewHolder: RecyclerView.ViewHolder) {
+        val widgetViewHolder = viewHolder as ViewHolder<T>
+        widgetViewHolder.mutableData.value = data
+    }
+
+    private fun createView(
+        widget: Widget,
+        context: Context,
+        lifecycleOwner: LifecycleOwner,
+        parent: ViewGroup
+    ): View {
+        return widget.buildView(
+            ViewFactoryContext(
+                context = context,
+                lifecycleOwner = lifecycleOwner,
+                parent = parent
+            )
+        )
+    }
+
+    private class ViewHolder<T>(
+        val mutableData: MutableLiveData<T>,
+        view: View
+    ) : RecyclerView.ViewHolder(view)
+}

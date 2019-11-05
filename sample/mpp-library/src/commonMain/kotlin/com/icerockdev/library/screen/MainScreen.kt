@@ -9,6 +9,7 @@ import dev.icerock.moko.core.Parcelable
 import dev.icerock.moko.core.Parcelize
 import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.core.Screen
+import dev.icerock.moko.widgets.core.ViewModelProvider
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.tabs
@@ -18,16 +19,19 @@ open class MainScreen(
     private val cryptoScope: WidgetScope,
     private val social1Scope: WidgetScope,
     private val social2Scope: WidgetScope,
-    private val mcommerceScope: WidgetScope
-) : Screen<MainViewModel, MainScreen.Args>() {
-    override fun createViewModel(arguments: Args): MainViewModel {
-        return MainViewModel(title = arguments.title)
-    }
+    private val mcommerceScope: WidgetScope,
+    private val viewModelProvider: ViewModelProvider<MainViewModel, Args>
+) : Screen<MainViewModel, MainScreen.Args>(),
+    ViewModelProvider<MainViewModel, MainScreen.Args> by viewModelProvider {
 
     override fun createWidget(viewModel: MainViewModel): Widget {
         return with(widgetScope) {
             tabs(
                 tabs = listOf(
+                    TabsWidget.TabWidget(
+                        title = const("U"),
+                        body = UsersScreen(this, viewModel).createWidget()
+                    ),
                     TabsWidget.TabWidget(
                         title = const("P#4"),
                         body = cryptoScope.cryptoProfileScreen(viewModel)
@@ -54,19 +58,19 @@ open class MainScreen(
     }
 
     private fun WidgetScope.socialProfileScreen(viewModel: MainViewModel): Widget {
-        return SocialProfileScreen(this).createWidget(viewModel)
+        return SocialProfileScreen(this, viewModel).createWidget()
     }
 
     private fun WidgetScope.mcommerceProfileScreen(viewModel: MainViewModel): Widget {
-        return McommerceProfileScreen(this).createWidget(viewModel)
+        return McommerceProfileScreen(this, viewModel).createWidget()
     }
 
     private fun WidgetScope.cryptoProfileScreen(viewModel: MainViewModel): Widget {
-        return CryptoProfileScreen(this).createWidget(viewModel)
+        return CryptoProfileScreen(this, viewModel).createWidget()
     }
 
     private fun WidgetScope.demoScreen(viewModel: MainViewModel): Widget {
-        return DemoScreen(this).createWidget(viewModel)
+        return DemoScreen(this, viewModel).createWidget()
     }
 
     @Parcelize

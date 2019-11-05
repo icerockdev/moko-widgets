@@ -4,15 +4,13 @@
 
 package com.icerockdev.library.screen
 
-import com.icerockdev.library.MainViewModel
-import dev.icerock.moko.core.Parcelable
-import dev.icerock.moko.core.Parcelize
+import dev.icerock.moko.mvvm.State
+import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.map
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.buttonStyle
-import dev.icerock.moko.widgets.core.Screen
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.core.asLiveData
@@ -31,13 +29,10 @@ import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.tabs
 
 open class DemoScreen(
-    private val widgetScope: WidgetScope
-) : Screen<MainViewModel, DemoScreen.Args>() {
-    override fun createViewModel(arguments: Args): MainViewModel {
-        return MainViewModel(title = arguments.title)
-    }
-
-    override fun createWidget(viewModel: MainViewModel): Widget {
+    private val widgetScope: WidgetScope,
+    private val viewModel: ViewModelContract
+) {
+    fun createWidget(): Widget {
         return with(widgetScope) {
             val errorScope = childScope {
                 this.flatAlertStyle = flatAlertStyle.copy(
@@ -75,7 +70,7 @@ open class DemoScreen(
                             )
                         },
                         childs = with(buttonsScope) {
-                            kotlin.collections.listOf(
+                            listOf(
                                 button(
                                     text = "change state".desc().asLiveData(),
                                     onTap = viewModel::onChangeStatePressed
@@ -133,6 +128,10 @@ open class DemoScreen(
         }
     }
 
-    @Parcelize
-    data class Args(val title: String) : Parcelable
+
+    interface ViewModelContract {
+        val state: LiveData<State<String, String>>
+
+        fun onChangeStatePressed()
+    }
 }

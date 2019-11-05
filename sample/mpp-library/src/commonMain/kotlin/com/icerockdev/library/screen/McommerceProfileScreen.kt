@@ -4,13 +4,11 @@
 
 package com.icerockdev.library.screen
 
-import com.icerockdev.library.MainViewModel
-import dev.icerock.moko.core.Parcelable
-import dev.icerock.moko.core.Parcelize
+import dev.icerock.moko.fields.FormField
+import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.button
-import dev.icerock.moko.widgets.core.Screen
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.input
@@ -18,13 +16,10 @@ import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.style.input.InputType
 
 class McommerceProfileScreen(
-    private val widgetScope: WidgetScope
-) : Screen<MainViewModel, McommerceProfileScreen.Args>() {
-    override fun createViewModel(arguments: Args): MainViewModel {
-        return MainViewModel(title = arguments.title)
-    }
-
-    override fun createWidget(viewModel: MainViewModel): Widget {
+    private val widgetScope: WidgetScope,
+    private val viewModel: ViewModelContract
+) {
+    fun createWidget(): Widget {
         return with(widgetScope) {
             linear(
                 childs = listOf(
@@ -62,6 +57,12 @@ class McommerceProfileScreen(
         object SubmitButton : ButtonWidget.Id
     }
 
-    @Parcelize
-    data class Args(val title: String) : Parcelable
+
+    interface ViewModelContract {
+        val birthdayField: FormField<String, StringDesc>
+        val phoneField: FormField<String, StringDesc>
+        val nameField: FormField<String, StringDesc>
+
+        fun onSavePressed()
+    }
 }

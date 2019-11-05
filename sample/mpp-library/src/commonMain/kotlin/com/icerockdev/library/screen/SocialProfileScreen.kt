@@ -4,15 +4,14 @@
 
 package com.icerockdev.library.screen
 
-import com.icerockdev.library.MainViewModel
-import dev.icerock.moko.core.Parcelable
-import dev.icerock.moko.core.Parcelize
+import dev.icerock.moko.fields.FormField
+import dev.icerock.moko.mvvm.livedata.LiveData
+import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.SingleChoiceWidget
 import dev.icerock.moko.widgets.TextWidget
 import dev.icerock.moko.widgets.button
-import dev.icerock.moko.widgets.core.Screen
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.input
@@ -22,13 +21,10 @@ import dev.icerock.moko.widgets.style.input.InputType
 import dev.icerock.moko.widgets.text
 
 class SocialProfileScreen(
-    private val widgetScope: WidgetScope
-) : Screen<MainViewModel, SocialProfileScreen.Args>() {
-    override fun createViewModel(arguments: Args): MainViewModel {
-        return MainViewModel(title = arguments.title)
-    }
-
-    override fun createWidget(viewModel: MainViewModel): Widget {
+    private val widgetScope: WidgetScope,
+    private val viewModel: ViewModelContract
+) {
+    fun createWidget(): Widget {
         return with(widgetScope) {
             linear(
                 childs = listOf(
@@ -99,6 +95,16 @@ class SocialProfileScreen(
         object GenderChoice : SingleChoiceWidget.Id
     }
 
-    @Parcelize
-    data class Args(val title: String) : Parcelable
+    interface ViewModelContract {
+        val genders: LiveData<List<StringDesc>>
+        val genderField: FormField<Int?, StringDesc>
+        val birthdayField: FormField<String, StringDesc>
+        val phoneField: FormField<String, StringDesc>
+        val emailField: FormField<String, StringDesc>
+        val aboutField: FormField<String, StringDesc>
+        val nicknameField: FormField<String, StringDesc>
+        val nameField: FormField<String, StringDesc>
+
+        fun onSavePressed()
+    }
 }
