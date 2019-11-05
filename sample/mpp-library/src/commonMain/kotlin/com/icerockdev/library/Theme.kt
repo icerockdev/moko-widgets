@@ -67,7 +67,7 @@ object Theme {
         errorTextStyle = errorTextStyle,
         underLineColor = Color.grayUnderline,
         padding = PaddingValues(
-            padding = 16f
+            padding = 0f
         ),
         margins = MarginValues(
             bottom = 8f

@@ -4,14 +4,13 @@
 
 package dev.icerock.moko.widgets
 
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.lifecycle.Observer
 import dev.icerock.moko.mvvm.State
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.View
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.style.background.buildBackground
+import dev.icerock.moko.widgets.style.applyStyle
 
 actual var statefulWidgetViewFactory: VFC<StatefulWidget<*, *>> = { context: ViewFactoryContext,
                                                                     widget: StatefulWidget<*, *> ->
@@ -20,7 +19,7 @@ actual var statefulWidgetViewFactory: VFC<StatefulWidget<*, *>> = { context: Vie
     val style = widget.style
 
     val root = FrameLayout(ctx).apply {
-        background = style.background.buildBackground(ctx)
+        applyStyle(style)
     }
 
     val factoryContext = ViewFactoryContext(ctx, lifecycleOwner, root)
@@ -49,9 +48,5 @@ actual var statefulWidgetViewFactory: VFC<StatefulWidget<*, *>> = { context: Vie
         currentView.visibility = View.VISIBLE
     })
 
-    root.layoutParams = ViewGroup.LayoutParams(
-        ViewGroup.LayoutParams.MATCH_PARENT,
-        ViewGroup.LayoutParams.MATCH_PARENT
-    )
     root
 }

@@ -17,6 +17,9 @@ import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.Margined
+import dev.icerock.moko.widgets.style.view.Padded
+import dev.icerock.moko.widgets.style.view.PaddingValues
+import dev.icerock.moko.widgets.style.view.Sized
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
@@ -44,14 +47,15 @@ class SingleChoiceWidget(
      * @property dropDownBackground widget's dropdown view background, might be null if not required
      */
     data class Style(
-        val size: WidgetSize = WidgetSize(),
+        override val size: WidgetSize = WidgetSize(),
+        override val margins: MarginValues? = null,
+        override val padding: PaddingValues? = null,
         val textStyle: TextStyle = TextStyle(),
         val labelTextStyle: TextStyle = TextStyle(),
         val dropDownTextColor: Color? = null,
         val underlineColor: Color? = null,
-        override val margins: MarginValues = MarginValues(),
         val dropDownBackground: Background? = null
-    ) : Margined
+    ) : Widget.Style, Margined, Sized, Padded
 
     interface Id : WidgetScope.Id
 }

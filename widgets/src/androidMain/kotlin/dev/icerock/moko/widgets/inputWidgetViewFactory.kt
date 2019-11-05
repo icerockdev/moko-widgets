@@ -14,9 +14,8 @@ import com.google.android.material.textfield.TextInputLayout
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.old.applyInputType
-import dev.icerock.moko.widgets.old.applyStyle
-import dev.icerock.moko.widgets.style.ext.applyMargin
-import dev.icerock.moko.widgets.style.ext.toPlatformSize
+import dev.icerock.moko.widgets.style.applyStyle
+import dev.icerock.moko.widgets.style.applyTextStyle
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.dp
 
@@ -24,16 +23,10 @@ actual var inputWidgetViewFactory: VFC<InputWidget> = { viewFactoryContext: View
                                                         inputWidget: InputWidget ->
     val context = viewFactoryContext.androidContext
     val lifecycleOwner = viewFactoryContext.lifecycleOwner
-    val dm = context.resources.displayMetrics
     val style = inputWidget.style
 
     val textInputLayout = TextInputLayout(context).apply {
-        layoutParams = ViewGroup.MarginLayoutParams(
-            style.size.width.toPlatformSize(dm),
-            style.size.height.toPlatformSize(dm)
-        ).apply {
-            applyMargin(context, style.margins)
-        }
+        applyStyle(style)
 
         style.labelTextStyle.color?.also {
             val hintColor = ColorStateList.valueOf(it.argb.toInt())
@@ -57,7 +50,7 @@ actual var inputWidgetViewFactory: VFC<InputWidget> = { viewFactoryContext: View
             marginEnd = (-4).dp(context)
         }
 
-        applyStyle(style.textStyle)
+        applyTextStyle(style.textStyle)
         inputWidget.inputType?.also { applyInputType(it) }
 
         style.underLineColor?.also {

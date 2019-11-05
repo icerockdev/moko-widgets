@@ -17,17 +17,16 @@ import androidx.lifecycle.Observer
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.style.applyStyle
 
 actual var tabsWidgetViewFactory: VFC<TabsWidget> = { context: ViewFactoryContext,
                                                       widget: TabsWidget ->
     val ctx = context.context
     val lifecycleOwner = context.lifecycleOwner
+    val style = widget.style
 
     val tabHost = TabHost(ctx).apply {
-        layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
-        )
+        applyStyle(style)
         id = android.R.id.tabhost
     }
 

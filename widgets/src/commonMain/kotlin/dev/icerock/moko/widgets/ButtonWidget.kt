@@ -13,8 +13,13 @@ import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.view.Backgrounded
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.Margined
+import dev.icerock.moko.widgets.style.view.Padded
+import dev.icerock.moko.widgets.style.view.PaddingValues
+import dev.icerock.moko.widgets.style.view.SizeSpec
+import dev.icerock.moko.widgets.style.view.Sized
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
@@ -33,12 +38,16 @@ class ButtonWidget(
     OptionalId<ButtonWidget.Id> {
 
     data class Style(
-        val size: WidgetSize = WidgetSize(),
+        override val size: WidgetSize = WidgetSize(
+            width = SizeSpec.WRAP_CONTENT,
+            height = SizeSpec.WRAP_CONTENT
+        ),
+        override val background: Background? = null,
+        override val margins: MarginValues? = null,
+        override val padding: PaddingValues? = null,
         val textStyle: TextStyle = TextStyle(),
-        val isAllCaps: Boolean? = null,
-        override val margins: MarginValues = MarginValues(),
-        val background: Background? = null
-    ) : Margined
+        val isAllCaps: Boolean? = null
+    ) : Widget.Style, Margined, Sized, Backgrounded, Padded
 
     interface Id : WidgetScope.Id
 }

@@ -10,7 +10,7 @@ data class PaddingValues(
     val end: Float = 0.0F,
     val bottom: Float = 0.0F
 ) {
-    constructor(padding: Float = 0.0F) : this(
+    constructor(padding: Float) : this(
         start = padding,
         top = padding,
         end = padding,

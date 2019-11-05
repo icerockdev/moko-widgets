@@ -12,13 +12,12 @@ import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.buttonStyle
 import dev.icerock.moko.widgets.core.AnyWidget
-import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.core.asLiveData
 import dev.icerock.moko.widgets.flatAlert
-import dev.icerock.moko.widgets.flatAlertFactory
 import dev.icerock.moko.widgets.flatAlertStyle
 import dev.icerock.moko.widgets.linear
+import dev.icerock.moko.widgets.progressBar
 import dev.icerock.moko.widgets.stateful
 import dev.icerock.moko.widgets.statefulStyle
 import dev.icerock.moko.widgets.style.background.Background
@@ -84,24 +83,16 @@ open class DemoScreen(
                     ),
                     stateful(
                         style = statefulStyle.copy(
-                            background = statefulStyle.background.copy(
-                                shape = statefulStyle.background.shape.copy(type = ShapeType.OVAL)
-                            )
+                            background = statefulStyle.background?.run {
+                                copy(shape = shape.copy(type = ShapeType.OVAL))
+                            }
                         ),
                         state = viewModel.state,
                         empty = {
                             flatAlert(message = "empty".desc().asLiveData())
                         },
                         loading = {
-                            flatAlert(
-                                factory = flatAlertFactory,
-                                style = flatAlertStyle.copy(
-                                    background = Background(
-                                        color = 0xFFFF0000
-                                    )
-                                ),
-                                message = "loading".desc().asLiveData()
-                            )
+                            progressBar()
                         },
                         data = { data ->
                             with(dataScope) {

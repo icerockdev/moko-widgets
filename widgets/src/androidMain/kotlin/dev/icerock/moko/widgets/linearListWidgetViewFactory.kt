@@ -14,6 +14,7 @@ import dev.icerock.moko.units.UnitItem
 import dev.icerock.moko.units.adapter.UnitsRecyclerViewAdapter
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.style.applyStyle
 import dev.icerock.moko.widgets.style.background.buildBackground
 import dev.icerock.moko.widgets.style.ext.applyPadding
 import dev.icerock.moko.widgets.style.ext.toPlatformSize
@@ -43,7 +44,7 @@ actual var linearListWidgetViewFactory: VFC<LinearListWidget> = { viewFactoryCon
         )
         if (!haveSwipeRefreshListener) {
             clipToPadding = false
-            applyPadding(style.padding)
+            style.padding?.also { applyPadding(it) }
         }
 
         if (style.background != null && !haveSwipeRefreshListener) {
@@ -56,16 +57,9 @@ actual var linearListWidgetViewFactory: VFC<LinearListWidget> = { viewFactoryCon
 
     val resultView: View = if (haveSwipeRefreshListener) {
         val swipeRefreshLayout = SwipeRefreshLayout(context).apply {
-            layoutParams = ViewGroup.LayoutParams(
-                style.size.width.toPlatformSize(dm),
-                style.size.height.toPlatformSize(dm)
-            )
-            clipToPadding = false
-            applyPadding(style.padding)
+            applyStyle(style)
 
-            if (style.background != null) {
-                background = style.background.buildBackground(context)
-            }
+            clipToPadding = false
 
             setOnRefreshListener {
                 widget.onRefresh?.invoke {

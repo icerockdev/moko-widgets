@@ -15,6 +15,10 @@ import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.view.Backgrounded
+import dev.icerock.moko.widgets.style.view.SizeSpec
+import dev.icerock.moko.widgets.style.view.Sized
+import dev.icerock.moko.widgets.style.view.WidgetSize
 
 expect var statefulWidgetViewFactory: VFC<StatefulWidget<*, *>>
 
@@ -52,8 +56,12 @@ class StatefulWidget<T, E> private constructor(
     )
 
     data class Style(
-        val background: Background = Background()
-    )
+        override val size: WidgetSize = WidgetSize(
+            width = SizeSpec.AS_PARENT,
+            height = SizeSpec.AS_PARENT
+        ),
+        override val background: Background? = null
+    ) : Widget.Style, Sized, Backgrounded
 
     internal object FactoryKey : WidgetScope.Key<VFC<StatefulWidget<*, *>>>
     internal object StyleKey : WidgetScope.Key<Style>

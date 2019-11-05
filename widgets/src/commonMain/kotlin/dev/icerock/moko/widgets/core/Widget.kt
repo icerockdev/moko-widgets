@@ -12,4 +12,6 @@ abstract class Widget<T : Widget<T>> {
     fun buildView(viewFactoryContext: ViewFactoryContext): View {
         return factory(viewFactoryContext, this as T)
     }
+
+    interface Style
 }

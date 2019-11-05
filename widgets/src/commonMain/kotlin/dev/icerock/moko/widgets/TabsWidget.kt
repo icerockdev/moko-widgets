@@ -14,6 +14,10 @@ import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.view.Backgrounded
+import dev.icerock.moko.widgets.style.view.SizeSpec
+import dev.icerock.moko.widgets.style.view.Sized
+import dev.icerock.moko.widgets.style.view.WidgetSize
 
 expect var tabsWidgetViewFactory: VFC<TabsWidget>
 
@@ -34,8 +38,12 @@ class TabsWidget(
     )
 
     data class Style(
-        val background: Background = Background()
-    )
+        override val size: WidgetSize = WidgetSize(
+            width = SizeSpec.AS_PARENT,
+            height = SizeSpec.AS_PARENT
+        ),
+        override val background: Background? = null
+    ) : Widget.Style, Backgrounded, Sized
 
     interface Id : WidgetScope.Id
 }

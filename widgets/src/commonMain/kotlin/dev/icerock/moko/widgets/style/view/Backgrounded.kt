@@ -4,12 +4,8 @@
 
 package dev.icerock.moko.widgets.style.view
 
-/**
- * Defines a widget that has margins.
- *
- * @property margins margins for four sides
- */
-interface Margined {
-    val margins: MarginValues?
-}
+import dev.icerock.moko.widgets.style.background.Background
 
+interface Backgrounded {
+    val background: Background?
+}

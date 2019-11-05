@@ -1,3 +1,7 @@
+/*
+ * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
+ */
+
 package dev.icerock.moko.widgets
 
 import dev.icerock.moko.widgets.core.AnyWidget
@@ -9,11 +13,13 @@ import dev.icerock.moko.widgets.core.WidgetDef
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Orientation
+import dev.icerock.moko.widgets.style.view.Backgrounded
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.Margined
 import dev.icerock.moko.widgets.style.view.Padded
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.SizeSpec
+import dev.icerock.moko.widgets.style.view.Sized
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
 expect var scrollWidgetViewFactory: VFC<ScrollWidget>
@@ -26,15 +32,15 @@ class ScrollWidget(
     val child: AnyWidget
 ) : Widget<ScrollWidget>(), Styled<ScrollWidget.Style>, OptionalId<ScrollWidget.Id> {
     data class Style(
-        val size: WidgetSize = WidgetSize(
+        override val size: WidgetSize = WidgetSize(
             width = SizeSpec.AS_PARENT,
             height = SizeSpec.AS_PARENT
         ),
-        val orientation: Orientation = Orientation.VERTICAL,
-        val background: Background? = null,
-        override val margins: MarginValues = MarginValues(),
-        override val padding: PaddingValues = PaddingValues()
-    ) : Padded, Margined
+        override val background: Background? = null,
+        override val margins: MarginValues? = null,
+        override val padding: PaddingValues? = null,
+        val orientation: Orientation = Orientation.VERTICAL
+    ) : Widget.Style, Padded, Margined, Sized, Backgrounded
 
     interface Id : WidgetScope.Id
 }

@@ -16,7 +16,7 @@ import androidx.core.widget.TextViewCompat
 import androidx.lifecycle.Observer
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.style.background.buildBackground
+import dev.icerock.moko.widgets.style.applyStyle
 import dev.icerock.moko.widgets.utils.dp
 
 actual var flatAlertWidgetViewFactory: VFC<FlatAlertWidget> = { context: ViewFactoryContext,
@@ -25,11 +25,7 @@ actual var flatAlertWidgetViewFactory: VFC<FlatAlertWidget> = { context: ViewFac
     val style = widget.style
 
     val container = FrameLayout(ctx).apply {
-        layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
-        )
-        background = style.background.buildBackground(ctx)
+        applyStyle(style)
     }
 
     val rowsContainer = LinearLayout(ctx).apply {
