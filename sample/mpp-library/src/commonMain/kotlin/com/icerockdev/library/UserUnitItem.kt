@@ -20,7 +20,7 @@ class UserUnitItem(
 ) : WidgetsUnitItem<UserUnitItem.Data>(itemId, data) {
     override val reuseId: String = "UserUnitItem"
 
-    override fun createWidget(data: LiveData<Data>): Widget {
+    override fun createWidget(data: LiveData<Data>): Widget<*> {
         return with(widgetScope) {
             linear(
                 styled = {

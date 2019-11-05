@@ -14,16 +14,16 @@ import dev.icerock.moko.widgets.core.Widget
 
 expect var mediaWidgetViewFactory: VFC<MediaWidget>
 
-class MediaWidget(
-    private val factory: VFC<MediaWidget> = mediaWidgetViewFactory,
-    val type: MediaFormField.Type,
-    val field: FormField<Bitmap?, StringDesc>,
-    val onTap: () -> Unit
-) : Widget() {
-    override fun buildView(viewFactoryContext: ViewFactoryContext): View =
-        factory(viewFactoryContext, this)
-
-    fun onWidgetPressed() {
-        onTap()
-    }
-}
+class MediaWidget()
+//    private val factory: VFC<MediaWidget> = mediaWidgetViewFactory,
+//    val type: MediaFormField.Type,
+//    val field: FormField<Bitmap?, StringDesc>,
+//    val onTap: () -> Unit
+//) : Widget() {
+//    override fun buildView(viewFactoryContext: ViewFactoryContext): View =
+//        factory(viewFactoryContext, this)
+//
+//    fun onWidgetPressed() {
+//        onTap()
+//    }
+//}

@@ -22,33 +22,33 @@ import dev.icerock.moko.widgets.style.view.WidgetSize
 
 expect var switchWidgetViewFactory: VFC<SwitchWidget>
 
-class SwitchWidget(
-    private val factory: VFC<SwitchWidget> = switchWidgetViewFactory,
-    val style: SwitchStyle,
-    val label: LiveData<StringDesc>,
-    val state: MutableLiveData<Boolean>
-) : Widget() {
-
-    override fun buildView(viewFactoryContext: ViewFactoryContext): View =
-        factory(viewFactoryContext, this)
-
-    /**
-     * @property size desired size of widget
-     * @property labelTextStyle floating label text style
-     * @property padding @see com.icerockdev.mpp.widget.style.view.Padded
-     * @property margins @see com.icerockdev.mpp.widget.style.view.Margined
-     * @property background widget's background, might be null if not required
-     * @property switchColor switch background, might be null if default
-     */
-
-    //TODO: Add icon
-
-    data class SwitchStyle(
-        val size: WidgetSize = WidgetSize(),
-        val labelTextStyle: TextStyle = TextStyle(size = 14),
-        override val padding: PaddingValues = PaddingValues(),
-        override val margins: MarginValues = MarginValues(),
-        val background: Background? = null,
-        val switchColor: ColorStyle? = null
-    ) : Padded, Margined
-}
+class SwitchWidget()
+//    private val factory: VFC<SwitchWidget> = switchWidgetViewFactory,
+//    val style: SwitchStyle,
+//    val label: LiveData<StringDesc>,
+//    val state: MutableLiveData<Boolean>
+//) : Widget() {
+//
+//    override fun buildView(viewFactoryContext: ViewFactoryContext): View =
+//        factory(viewFactoryContext, this)
+//
+//    /**
+//     * @property size desired size of widget
+//     * @property labelTextStyle floating label text style
+//     * @property padding @see com.icerockdev.mpp.widget.style.view.Padded
+//     * @property margins @see com.icerockdev.mpp.widget.style.view.Margined
+//     * @property background widget's background, might be null if not required
+//     * @property switchColor switch background, might be null if default
+//     */
+//
+//    //TODO: Add icon
+//
+//    data class SwitchStyle(
+//        val size: WidgetSize = WidgetSize(),
+//        val labelTextStyle: TextStyle = TextStyle(size = 14),
+//        override val padding: PaddingValues = PaddingValues(),
+//        override val margins: MarginValues = MarginValues(),
+//        val background: Background? = null,
+//        val switchColor: ColorStyle? = null
+//    ) : Padded, Margined
+//}

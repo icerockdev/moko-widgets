@@ -8,9 +8,9 @@ import dev.icerock.moko.fields.FormField
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.resources.desc.StringDesc
+import dev.icerock.moko.widgets.core.RequireId
+import dev.icerock.moko.widgets.core.Styled
 import dev.icerock.moko.widgets.core.VFC
-import dev.icerock.moko.widgets.core.View
-import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
 import dev.icerock.moko.widgets.core.WidgetScope
@@ -27,17 +27,17 @@ expect var inputWidgetViewFactory: VFC<InputWidget>
 
 @WidgetDef
 class InputWidget(
-    private val factory: VFC<InputWidget>,
-    val style: Style,
-    val id: Id,
+    override val factory: VFC<InputWidget>,
+    override val style: Style,
+    override val id: Id,
     val label: LiveData<StringDesc>,
     val field: FormField<String, StringDesc>,
     val enabled: LiveData<Boolean>?,
     val inputType: InputType?,
     val maxLines: LiveData<Int?>?
-) : Widget() {
-    override fun buildView(viewFactoryContext: ViewFactoryContext): View =
-        factory(viewFactoryContext, this)
+) : Widget<InputWidget>(),
+    Styled<InputWidget.Style>,
+    RequireId<InputWidget.Id> {
 
     /**
      * @property size desired size of widget

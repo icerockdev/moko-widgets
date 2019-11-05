@@ -55,23 +55,23 @@ actual var dateWidgetViewFactory: VFC<DateWidget> = { context: ViewFactoryContex
 //    binding.root
 }
 
-private fun processDateInput(widget: DateWidget, input: String, completed: Boolean) {
-    widget.field.data.value = if (input.isBlank()) {
-        Date.Empty
-    } else if (!completed) {
-        Date.Incomplete
-    } else {
-        val splitted = input.split(".").map { it.toInt() }
-
-        Date.Filled(
-            splitted[2],
-            splitted[1],
-            splitted[0]
-        )
-    }
-
-    widget.field.validate()
-}
+//private fun processDateInput(widget: DateWidget, input: String, completed: Boolean) {
+//    widget.field.data.value = if (input.isBlank()) {
+//        Date.Empty
+//    } else if (!completed) {
+//        Date.Incomplete
+//    } else {
+//        val splitted = input.split(".").map { it.toInt() }
+//
+//        Date.Filled(
+//            splitted[2],
+//            splitted[1],
+//            splitted[0]
+//        )
+//    }
+//
+//    widget.field.validate()
+//}
 
 //fun WidgetDateBinding.setupListeners(
 //    field: FormField<Date?, StringDesc>

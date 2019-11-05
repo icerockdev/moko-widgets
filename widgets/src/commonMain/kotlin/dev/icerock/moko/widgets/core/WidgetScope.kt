@@ -7,7 +7,6 @@ package dev.icerock.moko.widgets.core
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
-import dev.icerock.moko.widgets.TextWidget
 import kotlin.properties.ReadOnlyProperty
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
@@ -84,8 +83,4 @@ private fun <K, V> Map<K, V>.deepMutableCopy(): MutableMap<K, V> = mutableMapOf<
     forEach { (key, value) ->
         it[key] = value
     }
-}
-
-fun buildWidget(scope: WidgetScope, builder: WidgetScope.() -> Widget): Widget {
-    return scope.builder()
 }

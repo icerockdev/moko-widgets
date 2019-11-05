@@ -16,32 +16,32 @@ import dev.icerock.moko.widgets.style.view.WidgetSize
 
 expect var formWidgetViewFactory: VFC<FormWidget>
 
-class FormWidget(
-    private val factory: VFC<FormWidget> = formWidgetViewFactory,
-    val style: FormStyle,
-    val isLoading: LiveData<Boolean>
-) : Widget() {
-
-    val items: MutableList<Widget> = mutableListOf()
-
-    override fun buildView(viewFactoryContext: ViewFactoryContext): View =
-        factory(viewFactoryContext, this)
-
-    fun add(widget: Widget) {
-        items.add(widget)
-    }
-
-    data class FormStyle(
-        val size: WidgetSize = WidgetSize(SizeSpec.WRAP_CONTENT, SizeSpec.WRAP_CONTENT),
-        val orientation: Group.Orientation = Group.Orientation.VERTICAL,
-        val spacing: Float = 0.0F,
-        override val padding: PaddingValues = PaddingValues(0.0F)
-    ) : Padded
-
-    class Group {
-        enum class Orientation {
-            HORIZONTAL,
-            VERTICAL
-        }
-    }
-}
+class FormWidget()
+//    private val factory: VFC<FormWidget> = formWidgetViewFactory,
+//    val style: FormStyle,
+//    val isLoading: LiveData<Boolean>
+//) : Widget() {
+//
+//    val items: MutableList<Widget> = mutableListOf()
+//
+//    override fun buildView(viewFactoryContext: ViewFactoryContext): View =
+//        factory(viewFactoryContext, this)
+//
+//    fun add(widget: Widget) {
+//        items.add(widget)
+//    }
+//
+//    data class FormStyle(
+//        val size: WidgetSize = WidgetSize(SizeSpec.WRAP_CONTENT, SizeSpec.WRAP_CONTENT),
+//        val orientation: Group.Orientation = Group.Orientation.VERTICAL,
+//        val spacing: Float = 0.0F,
+//        override val padding: PaddingValues = PaddingValues(0.0F)
+//    ) : Padded
+//
+//    class Group {
+//        enum class Orientation {
+//            HORIZONTAL,
+//            VERTICAL
+//        }
+//    }
+//}

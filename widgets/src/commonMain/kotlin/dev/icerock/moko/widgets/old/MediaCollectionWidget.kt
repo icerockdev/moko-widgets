@@ -15,14 +15,14 @@ import dev.icerock.moko.widgets.core.Widget
 
 expect var mediaCollectionWidgetViewFactory: VFC<MediaCollectionWidget>
 
-class MediaCollectionWidget(
-    private val factory: VFC<MediaCollectionWidget> = mediaCollectionWidgetViewFactory,
-    val type: MediaType,
-    val field: FormField<List<Media>, StringDesc>,
-    val itemClickListener: (Media) -> Unit,
-    val addListener: () -> Unit,
-    val deleteListener: (Media) -> Unit
-) : Widget() {
-    override fun buildView(viewFactoryContext: ViewFactoryContext): View =
-        factory(viewFactoryContext, this)
-}
+class MediaCollectionWidget()
+//    private val factory: VFC<MediaCollectionWidget> = mediaCollectionWidgetViewFactory,
+//    val type: MediaType,
+//    val field: FormField<List<Media>, StringDesc>,
+//    val itemClickListener: (Media) -> Unit,
+//    val addListener: () -> Unit,
+//    val deleteListener: (Media) -> Unit
+//) : Widget() {
+//    override fun buildView(viewFactoryContext: ViewFactoryContext): View =
+//        factory(viewFactoryContext, this)
+//}

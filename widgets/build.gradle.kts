@@ -21,10 +21,6 @@ android {
         minSdkVersion(Versions.Android.minSdk)
         targetSdkVersion(Versions.Android.targetSdk)
     }
-
-    dataBinding {
-        isEnabled = true
-    }
 }
 
 dependencies {

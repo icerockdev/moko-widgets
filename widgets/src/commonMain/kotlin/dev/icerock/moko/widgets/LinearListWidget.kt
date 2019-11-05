@@ -6,9 +6,9 @@ package dev.icerock.moko.widgets
 
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.units.UnitItem
+import dev.icerock.moko.widgets.core.OptionalId
+import dev.icerock.moko.widgets.core.Styled
 import dev.icerock.moko.widgets.core.VFC
-import dev.icerock.moko.widgets.core.View
-import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
 import dev.icerock.moko.widgets.core.WidgetScope
@@ -23,14 +23,15 @@ expect var linearListWidgetViewFactory: VFC<LinearListWidget>
 
 @WidgetDef
 class LinearListWidget(
-    private val factory: VFC<LinearListWidget>,
-    val style: Style,
-    val id: Id?,
+    override val factory: VFC<LinearListWidget>,
+    override val style: Style,
+    override val id: Id?,
     val items: LiveData<List<UnitItem>>,
     val onReachEnd: (() -> Unit)?,
     val onRefresh: ((completion: () -> Unit) -> Unit)?
-) : Widget() {
-    override fun buildView(viewFactoryContext: ViewFactoryContext): View = factory(viewFactoryContext, this)
+) : Widget<LinearListWidget>(),
+    Styled<LinearListWidget.Style>,
+    OptionalId<LinearListWidget.Id> {
 
     data class Style(
         val orientation: Orientation = Orientation.VERTICAL,

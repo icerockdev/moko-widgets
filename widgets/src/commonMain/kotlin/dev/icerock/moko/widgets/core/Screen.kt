@@ -7,7 +7,7 @@ package dev.icerock.moko.widgets.core
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 
 abstract class Screen<VM : ViewModel, Args> : ViewModelProvider<VM, Args> {
-    abstract fun createWidget(viewModel: VM): Widget
+    abstract fun createWidget(viewModel: VM): AnyWidget
 }
 
 interface ViewModelProvider<VM : ViewModel, Args> {

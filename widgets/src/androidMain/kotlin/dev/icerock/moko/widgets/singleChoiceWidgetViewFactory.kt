@@ -27,7 +27,6 @@ import dev.icerock.moko.widgets.utils.dp
 
 actual var singleChoiceWidgetViewFactory: VFC<SingleChoiceWidget> = { viewFactoryContext: ViewFactoryContext,
                                                                       singleChoiceWidget: SingleChoiceWidget ->
-
     val context = viewFactoryContext.androidContext
     val lifecycleOwner = viewFactoryContext.lifecycleOwner
     val dm = context.resources.displayMetrics

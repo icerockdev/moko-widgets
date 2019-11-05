@@ -4,9 +4,10 @@
 
 package dev.icerock.moko.widgets
 
+import dev.icerock.moko.widgets.core.AnyWidget
+import dev.icerock.moko.widgets.core.OptionalId
+import dev.icerock.moko.widgets.core.Styled
 import dev.icerock.moko.widgets.core.VFC
-import dev.icerock.moko.widgets.core.View
-import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
 import dev.icerock.moko.widgets.core.WidgetScope
@@ -21,14 +22,13 @@ expect var linearWidgetViewFactory: VFC<LinearWidget>
 
 @WidgetDef
 class LinearWidget(
-    private val factory: VFC<LinearWidget>,
-    val style: Style,
-    val id: Id?,
-    val childs: List<Widget>
-) : Widget() {
-    override fun buildView(viewFactoryContext: ViewFactoryContext): View {
-        return factory(viewFactoryContext, this)
-    }
+    override val factory: VFC<LinearWidget>,
+    override val style: Style,
+    override val id: Id?,
+    val childs: List<AnyWidget>
+) : Widget<LinearWidget>(),
+    Styled<LinearWidget.Style>,
+    OptionalId<LinearWidget.Id> {
 
     data class Style(
         val background: Background? = null,
@@ -40,5 +40,5 @@ class LinearWidget(
         override val padding: PaddingValues = PaddingValues()
     ) : Padded
 
-    interface Id: WidgetScope.Id
+    interface Id : WidgetScope.Id
 }

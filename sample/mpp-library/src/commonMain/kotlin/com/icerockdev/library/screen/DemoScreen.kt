@@ -11,10 +11,10 @@ import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.buttonStyle
+import dev.icerock.moko.widgets.core.AnyWidget
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.core.asLiveData
-import dev.icerock.moko.widgets.core.buildWidget
 import dev.icerock.moko.widgets.flatAlert
 import dev.icerock.moko.widgets.flatAlertFactory
 import dev.icerock.moko.widgets.flatAlertStyle
@@ -32,7 +32,7 @@ open class DemoScreen(
     private val widgetScope: WidgetScope,
     private val viewModel: ViewModelContract
 ) {
-    fun createWidget(): Widget {
+    fun createWidget(): AnyWidget {
         return with(widgetScope) {
             val errorScope = childScope {
                 this.flatAlertStyle = flatAlertStyle.copy(
@@ -104,7 +104,7 @@ open class DemoScreen(
                             )
                         },
                         data = { data ->
-                            buildWidget(dataScope) {
+                            with(dataScope) {
                                 tabs(
                                     tabs = listOf(
                                         TabsWidget.TabWidget(

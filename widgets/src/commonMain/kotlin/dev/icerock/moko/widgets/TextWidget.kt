@@ -6,12 +6,13 @@ package dev.icerock.moko.widgets
 
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.resources.desc.StringDesc
+import dev.icerock.moko.widgets.core.OptionalId
+import dev.icerock.moko.widgets.core.Styled
 import dev.icerock.moko.widgets.core.VFC
-import dev.icerock.moko.widgets.core.View
-import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
 import dev.icerock.moko.widgets.core.WidgetScope
+import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.Margined
 import dev.icerock.moko.widgets.style.view.Padded
@@ -23,30 +24,21 @@ expect var textWidgetViewFactory: VFC<TextWidget>
 
 @WidgetDef
 class TextWidget(
-    private val factory: VFC<TextWidget>,
-    val text: LiveData<StringDesc>,
-    val style: Style,
-    val id: Id?
-) : Widget() {
-
-    override fun buildView(viewFactoryContext: ViewFactoryContext): View =
-        factory(viewFactoryContext, this)
+    override val factory: VFC<TextWidget>,
+    override val style: Style,
+    override val id: Id?,
+    val text: LiveData<StringDesc>
+) : Widget<TextWidget>(),
+    Styled<TextWidget.Style>,
+    OptionalId<TextWidget.Id> {
 
     data class Style(
         val size: WidgetSize = WidgetSize(),
+        val background: Background? = null,
         val textStyle: TextStyle = TextStyle(),
         override val padding: PaddingValues = PaddingValues(),
         override val margins: MarginValues = MarginValues()
     ) : Padded, Margined
-
-//    data class HeaderStyle(
-
-//    ) : Margined
-//        val background: Background? = null
-//        val underlineColor: Int = 0xFF000000.toInt(),
-//        override val margins: MarginValues = MarginValues(),
-//        val textStyle: TextStyle = TextStyle(),
-//        val size: WidgetSize = WidgetSize(),
 
     interface Id : WidgetScope.Id
 }

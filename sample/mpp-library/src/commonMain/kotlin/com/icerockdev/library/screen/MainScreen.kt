@@ -8,9 +8,9 @@ import com.icerockdev.library.MainViewModel
 import dev.icerock.moko.core.Parcelable
 import dev.icerock.moko.core.Parcelize
 import dev.icerock.moko.widgets.TabsWidget
+import dev.icerock.moko.widgets.core.AnyWidget
 import dev.icerock.moko.widgets.core.Screen
 import dev.icerock.moko.widgets.core.ViewModelProvider
-import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.tabs
 
@@ -24,7 +24,7 @@ open class MainScreen(
 ) : Screen<MainViewModel, MainScreen.Args>(),
     ViewModelProvider<MainViewModel, MainScreen.Args> by viewModelProvider {
 
-    override fun createWidget(viewModel: MainViewModel): Widget {
+    override fun createWidget(viewModel: MainViewModel): AnyWidget {
         return with(widgetScope) {
             tabs(
                 tabs = listOf(
@@ -57,19 +57,19 @@ open class MainScreen(
         }
     }
 
-    private fun WidgetScope.socialProfileScreen(viewModel: MainViewModel): Widget {
+    private fun WidgetScope.socialProfileScreen(viewModel: MainViewModel): AnyWidget {
         return SocialProfileScreen(this, viewModel).createWidget()
     }
 
-    private fun WidgetScope.mcommerceProfileScreen(viewModel: MainViewModel): Widget {
+    private fun WidgetScope.mcommerceProfileScreen(viewModel: MainViewModel): AnyWidget {
         return McommerceProfileScreen(this, viewModel).createWidget()
     }
 
-    private fun WidgetScope.cryptoProfileScreen(viewModel: MainViewModel): Widget {
+    private fun WidgetScope.cryptoProfileScreen(viewModel: MainViewModel): AnyWidget {
         return CryptoProfileScreen(this, viewModel).createWidget()
     }
 
-    private fun WidgetScope.demoScreen(viewModel: MainViewModel): Widget {
+    private fun WidgetScope.demoScreen(viewModel: MainViewModel): AnyWidget {
         return DemoScreen(this, viewModel).createWidget()
     }
 

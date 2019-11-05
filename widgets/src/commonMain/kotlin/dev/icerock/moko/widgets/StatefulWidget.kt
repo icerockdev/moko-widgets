@@ -8,9 +8,10 @@ import dev.icerock.moko.mvvm.State
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.data
 import dev.icerock.moko.mvvm.livedata.error
+import dev.icerock.moko.widgets.core.AnyWidget
+import dev.icerock.moko.widgets.core.OptionalId
+import dev.icerock.moko.widgets.core.Styled
 import dev.icerock.moko.widgets.core.VFC
-import dev.icerock.moko.widgets.core.View
-import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.style.background.Background
@@ -18,27 +19,30 @@ import dev.icerock.moko.widgets.style.background.Background
 expect var statefulWidgetViewFactory: VFC<StatefulWidget<*, *>>
 
 class StatefulWidget<T, E> private constructor(
-    private val factory: VFC<StatefulWidget<T, E>>,
-    val style: Style,
+    override val factory: VFC<StatefulWidget<T, E>>,
+    override val style: Style,
+    override val id: Id?,
     val stateLiveData: LiveData<State<T, E>>,
-    val emptyWidget: Widget,
-    val loadingWidget: Widget,
-    val dataWidget: Widget,
-    val errorWidget: Widget
-) : Widget() {
-    override fun buildView(viewFactoryContext: ViewFactoryContext): View =
-        factory(viewFactoryContext, this)
+    val emptyWidget: AnyWidget,
+    val loadingWidget: AnyWidget,
+    val dataWidget: AnyWidget,
+    val errorWidget: AnyWidget
+) : Widget<StatefulWidget<T, E>>(),
+    Styled<StatefulWidget.Style>,
+    OptionalId<StatefulWidget.Id> {
 
     constructor(
         factory: VFC<StatefulWidget<T, E>>,
+        id: Id?,
         style: Style,
         stateLiveData: LiveData<State<T, E>>,
-        emptyWidget: () -> Widget,
-        loadingWidget: () -> Widget,
-        dataWidget: (LiveData<T?>) -> Widget,
-        errorWidget: (LiveData<E?>) -> Widget
+        emptyWidget: () -> AnyWidget,
+        loadingWidget: () -> AnyWidget,
+        dataWidget: (LiveData<T?>) -> AnyWidget,
+        errorWidget: (LiveData<E?>) -> AnyWidget
     ) : this(
         factory = factory,
+        id = id,
         style = style,
         stateLiveData = stateLiveData,
         emptyWidget = emptyWidget(),
@@ -53,6 +57,8 @@ class StatefulWidget<T, E> private constructor(
 
     internal object FactoryKey : WidgetScope.Key<VFC<StatefulWidget<*, *>>>
     internal object StyleKey : WidgetScope.Key<Style>
+
+    interface Id : WidgetScope.Id
 }
 
 val WidgetScope.statefulFactory: VFC<StatefulWidget<*, *>>
@@ -70,15 +76,17 @@ var WidgetScope.Builder.statefulStyle: StatefulWidget.Style
 fun <T, E> WidgetScope.stateful(
     factory: VFC<StatefulWidget<T, E>> = this.statefulFactory,
     style: StatefulWidget.Style = this.statefulStyle,
+    id: StatefulWidget.Id? = null,
     state: LiveData<State<T, E>>,
-    empty: () -> Widget,
-    loading: () -> Widget,
-    data: (LiveData<T?>) -> Widget,
-    error: (LiveData<E?>) -> Widget
+    empty: () -> AnyWidget,
+    loading: () -> AnyWidget,
+    data: (LiveData<T?>) -> AnyWidget,
+    error: (LiveData<E?>) -> AnyWidget
 ): StatefulWidget<T, E> {
     return StatefulWidget(
         factory = factory,
         style = style,
+        id = id,
         stateLiveData = state,
         emptyWidget = empty,
         loadingWidget = loading,

@@ -14,11 +14,11 @@ import dev.icerock.moko.widgets.core.Widget
 
 expect var filesWidgetViewFactory: VFC<FilesWidget>
 
-class FilesWidget(
-    private val factory: VFC<FilesWidget> = filesWidgetViewFactory,
-    val field: FormField<List<File>, StringDesc>,
-    val addListener: () -> Unit
-) : Widget() {
-    override fun buildView(viewFactoryContext: ViewFactoryContext): View =
-        factory(viewFactoryContext, this)
-}
+class FilesWidget()
+//    private val factory: VFC<FilesWidget> = filesWidgetViewFactory,
+//    val field: FormField<List<File>, StringDesc>,
+//    val addListener: () -> Unit
+//) : Widget() {
+//    override fun buildView(viewFactoryContext: ViewFactoryContext): View =
+//        factory(viewFactoryContext, this)
+//}

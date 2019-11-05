@@ -14,25 +14,25 @@ import dev.icerock.moko.widgets.core.Widget
 
 expect var gridListWidgetViewFactory: VFC<GridListWidget>
 
-class GridListWidget(
-    private val factory: VFC<GridListWidget>,
-    val items: LiveData<List<UnitItem>>,
-    val style: Style,
-    val onReachEnd: (() -> Unit)?,
-    val onRefresh: (() -> Unit)?
-) : Widget() {
-
-    override fun buildView(viewFactoryContext: ViewFactoryContext): View =
-        factory(viewFactoryContext, this)
-
-    enum class Orientation {
-        VERTICAL,
-        HORIZONTAL
-    }
-
-    data class Style(
-        val spanCount: Int = 2,
-        val orientation: Orientation = Orientation.VERTICAL,
-        val paddingValues: PaddingValues = PaddingValues()
-    )
-}
+class GridListWidget()
+//    private val factory: VFC<GridListWidget>,
+//    val items: LiveData<List<UnitItem>>,
+//    val style: Style,
+//    val onReachEnd: (() -> Unit)?,
+//    val onRefresh: (() -> Unit)?
+//) : Widget() {
+//
+//    override fun buildView(viewFactoryContext: ViewFactoryContext): View =
+//        factory(viewFactoryContext, this)
+//
+//    enum class Orientation {
+//        VERTICAL,
+//        HORIZONTAL
+//    }
+//
+//    data class Style(
+//        val spanCount: Int = 2,
+//        val orientation: Orientation = Orientation.VERTICAL,
+//        val paddingValues: PaddingValues = PaddingValues()
+//    )
+//}

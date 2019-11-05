@@ -6,54 +6,36 @@ package dev.icerock.moko.widgets
 
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.resources.desc.StringDesc
+import dev.icerock.moko.widgets.core.AnyWidget
+import dev.icerock.moko.widgets.core.OptionalId
+import dev.icerock.moko.widgets.core.Styled
 import dev.icerock.moko.widgets.core.VFC
-import dev.icerock.moko.widgets.core.View
-import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
+import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.style.background.Background
 
 expect var tabsWidgetViewFactory: VFC<TabsWidget>
 
 @WidgetDef
 class TabsWidget(
-    private val factory: VFC<TabsWidget>,
-    val style: Style,
-    @Suppress("RemoveRedundantQualifierName") val tabs: List<TabsWidget.TabWidget> // for correct codegen
-) : Widget() {
+    override val factory: VFC<TabsWidget>,
+    override val style: Style,
+    override val id: Id?,
+    @Suppress("RemoveRedundantQualifierName")
+    val tabs: List<TabsWidget.TabWidget> // for correct codegen
+) : Widget<TabsWidget>(),
+    Styled<TabsWidget.Style>,
+    OptionalId<TabsWidget.Id> {
 
     class TabWidget(
         val title: LiveData<StringDesc>,
-        val body: Widget
+        val body: AnyWidget
     )
-
-    class Builder() {
-        private val tabs: MutableList<TabWidget> = mutableListOf()
-
-        fun tab(
-            title: LiveData<StringDesc>,
-            body: Widget
-        ) {
-            TabWidget(
-                title = title,
-                body = body
-            ).also { tabs.add(it) }
-        }
-
-        fun build(
-            factory: VFC<TabsWidget>,
-            style: Style
-        ): TabsWidget = TabsWidget(
-            factory = factory,
-            style = style,
-            tabs = tabs
-        )
-    }
-
-    override fun buildView(viewFactoryContext: ViewFactoryContext): View =
-        factory(viewFactoryContext, this)
 
     data class Style(
         val background: Background = Background()
     )
+
+    interface Id : WidgetScope.Id
 }

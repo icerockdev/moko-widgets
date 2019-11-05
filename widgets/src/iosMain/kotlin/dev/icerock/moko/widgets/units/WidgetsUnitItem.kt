@@ -6,5 +6,5 @@ import dev.icerock.moko.widgets.core.Widget
 
 actual abstract class WidgetsUnitItem<T> actual constructor(itemId: Long, data: T) : UnitItem {
     actual abstract val reuseId: String
-    actual abstract fun createWidget(data: LiveData<T>): Widget
+    actual abstract fun createWidget(data: LiveData<T>): Widget<*>
 }

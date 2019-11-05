@@ -14,11 +14,11 @@ import dev.icerock.moko.widgets.core.Widget
 
 expect var timeWidgetViewFactory: VFC<TimeWidget>
 
-class TimeWidget(
-    private val factory: VFC<TimeWidget> = timeWidgetViewFactory,
-    val label: LiveData<StringDesc>,
-    val field: FormField<Time?, StringDesc>
-) : Widget() {
-    override fun buildView(viewFactoryContext: ViewFactoryContext): View =
-        factory(viewFactoryContext, this)
-}
+class TimeWidget()
+//    private val factory: VFC<TimeWidget> = timeWidgetViewFactory,
+//    val label: LiveData<StringDesc>,
+//    val field: FormField<Time?, StringDesc>
+//) : Widget() {
+//    override fun buildView(viewFactoryContext: ViewFactoryContext): View =
+//        factory(viewFactoryContext, this)
+//}
