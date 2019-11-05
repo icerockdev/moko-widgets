@@ -8,9 +8,11 @@ import dev.icerock.moko.mvvm.State
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.map
 import dev.icerock.moko.resources.desc.desc
+import dev.icerock.moko.widgets.ContainerWidget
 import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.buttonStyle
+import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.AnyWidget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.core.asLiveData
@@ -23,9 +25,11 @@ import dev.icerock.moko.widgets.statefulStyle
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Orientation
 import dev.icerock.moko.widgets.style.background.ShapeType
+import dev.icerock.moko.widgets.style.view.Alignment
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.tabs
+import dev.icerock.moko.widgets.text
 
 open class DemoScreen(
     private val widgetScope: WidgetScope,
@@ -89,10 +93,28 @@ open class DemoScreen(
                         ),
                         state = viewModel.state,
                         empty = {
-                            flatAlert(message = "empty".desc().asLiveData())
+                            container(
+                                childs = mapOf(
+                                    text(
+                                        styled = {
+                                            it.copy(
+                                                size = WidgetSize(
+                                                    width = SizeSpec.WRAP_CONTENT,
+                                                    height = SizeSpec.WRAP_CONTENT
+                                                )
+                                            )
+                                        },
+                                        text = const("empty")
+                                    ) to ContainerWidget.ChildSpec(alignment = Alignment.CENTER)
+                                )
+                            )
                         },
                         loading = {
-                            progressBar()
+                            container(
+                                childs = mapOf(
+                                    progressBar() to ContainerWidget.ChildSpec(alignment = Alignment.CENTER)
+                                )
+                            )
                         },
                         data = { data ->
                             with(dataScope) {
