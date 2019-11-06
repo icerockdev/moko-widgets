@@ -1,10 +1,12 @@
 package com.icerockdev.library.screen
 
 import dev.icerock.moko.mvvm.livedata.LiveData
+import dev.icerock.moko.mvvm.livedata.map
 import dev.icerock.moko.units.UnitItem
 import dev.icerock.moko.widgets.core.AnyWidget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.linearList
+import dev.icerock.moko.widgets.units.styled
 
 class UsersScreen(
     private val widgetScope: WidgetScope,
@@ -13,7 +15,10 @@ class UsersScreen(
     fun createWidget(): AnyWidget {
         return with(widgetScope) {
             linearList(
-                items = viewModel.items
+                //TODO: Relocate mapping in linearList(...)
+                items = viewModel.items.map{ units ->
+                    units.map { it.styled(this) }
+                }
             )
         }
     }

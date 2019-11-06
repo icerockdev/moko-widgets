@@ -3,6 +3,7 @@ package com.icerockdev.library
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.map
 import dev.icerock.moko.resources.desc.desc
+import dev.icerock.moko.widgets.core.AnyWidget
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.linear
@@ -14,13 +15,12 @@ import dev.icerock.moko.widgets.text
 import dev.icerock.moko.widgets.units.WidgetsUnitItem
 
 class UserUnitItem(
-    private val widgetScope: WidgetScope,
     itemId: Long,
     data: Data
 ) : WidgetsUnitItem<UserUnitItem.Data>(itemId, data) {
     override val reuseId: String = "UserUnitItem"
 
-    override fun createWidget(data: LiveData<Data>): Widget<*> {
+    override fun createWidget(data: LiveData<Data>): AnyWidget {
         return with(widgetScope) {
             linear(
                 styled = {
