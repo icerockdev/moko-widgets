@@ -29,12 +29,12 @@ open class MainScreen(
             tabs(
                 tabs = listOf(
                     TabsWidget.TabWidget(
-                        title = const("P#2"),
-                        body = social2Scope.socialProfileScreen(viewModel)
-                    ),
-                    TabsWidget.TabWidget(
                         title = const("U"),
                         body = UsersScreen(this, viewModel).createWidget()
+                    ),
+                    TabsWidget.TabWidget(
+                        title = const("P#2"),
+                        body = social2Scope.socialProfileScreen(viewModel)
                     ),
                     TabsWidget.TabWidget(
                         title = const("P#4"),

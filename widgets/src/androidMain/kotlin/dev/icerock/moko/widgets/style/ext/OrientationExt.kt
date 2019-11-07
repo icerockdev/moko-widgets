@@ -6,6 +6,8 @@ package dev.icerock.moko.widgets.style.ext
 
 import android.graphics.drawable.GradientDrawable
 import android.widget.LinearLayout
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import dev.icerock.moko.widgets.style.background.Direction
 import dev.icerock.moko.widgets.style.background.Orientation
 
@@ -23,4 +25,14 @@ internal fun Direction.toPlatformOrientation(): GradientDrawable.Orientation = w
 internal fun Orientation.toLinearLayoutOrientation(): Int = when (this) {
     Orientation.HORIZONTAL -> LinearLayout.HORIZONTAL
     Orientation.VERTICAL -> LinearLayout.VERTICAL
+}
+
+internal fun Orientation.toRecyclerView(): Int = when (this) {
+    Orientation.VERTICAL -> RecyclerView.VERTICAL
+    Orientation.HORIZONTAL -> RecyclerView.HORIZONTAL
+}
+
+internal fun Orientation.toStaggeredGridLayoutManager(): Int = when (this) {
+    Orientation.VERTICAL -> StaggeredGridLayoutManager.VERTICAL
+    Orientation.HORIZONTAL -> StaggeredGridLayoutManager.HORIZONTAL
 }

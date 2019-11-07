@@ -6,29 +6,20 @@ package dev.icerock.moko.widgets
 
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.LifecycleOwner
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import dev.icerock.moko.units.UnitItem
 import dev.icerock.moko.units.adapter.UnitsRecyclerViewAdapter
 import dev.icerock.moko.widgets.core.VFC
-import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.applyStyle
 import dev.icerock.moko.widgets.style.background.buildBackground
 import dev.icerock.moko.widgets.style.ext.applyPadding
 import dev.icerock.moko.widgets.style.ext.toPlatformSize
+import dev.icerock.moko.widgets.style.ext.toStaggeredGridLayoutManager
 import dev.icerock.moko.widgets.utils.bind
+import dev.icerock.moko.widgets.view.UnitItemDecorator
 
-private fun LinearListWidget.Orientation.toRecyclerView(): Int {
-    return when (this) {
-        LinearListWidget.Orientation.VERTICAL -> RecyclerView.VERTICAL
-        LinearListWidget.Orientation.HORIZONTAL -> RecyclerView.HORIZONTAL
-    }
-}
-
-actual var linearListWidgetViewFactory: VFC<LinearListWidget> = { viewFactoryContext: ViewFactoryContext,
-                                                                  widget: LinearListWidget ->
+actual var collectionWidgetViewFactory: VFC<CollectionWidget> = { viewFactoryContext, widget ->
     val context = viewFactoryContext.androidContext
     val lifecycleOwner = viewFactoryContext.lifecycleOwner
     val style = widget.style
@@ -51,7 +42,10 @@ actual var linearListWidgetViewFactory: VFC<LinearListWidget> = { viewFactoryCon
             background = style.background.buildBackground(context)
         }
 
-        layoutManager = LinearLayoutManager(context, style.orientation.toRecyclerView(), style.reversed)
+        layoutManager = StaggeredGridLayoutManager(
+            widget.style.spanCount,
+            widget.style.orientation.toStaggeredGridLayoutManager()
+        )
         adapter = unitsAdapter
     }
 
@@ -80,34 +74,11 @@ actual var linearListWidgetViewFactory: VFC<LinearListWidget> = { viewFactoryCon
         unitsAdapter.units = when {
             widget.onReachEnd == null -> list
             list.isEmpty() -> list
-            else -> list.subList(0, list.lastIndex) + BindingClassDecorator(list.last()) {
+            else -> list.subList(0, list.lastIndex) + UnitItemDecorator(list.last()) {
                 widget.onReachEnd.invoke()
             }
         }
     }
 
     resultView
-}
-
-class BindingClassDecorator(
-    private val decorated: UnitItem,
-    val onBind: () -> Unit
-) : UnitItem {
-
-//    init {
-//        layoutParams = decorated.layoutParams
-//    }
-
-    override val itemId: Long get() = decorated.itemId
-
-    override val viewType: Int get() = decorated.viewType
-
-    override fun bindViewHolder(viewHolder: RecyclerView.ViewHolder) {
-        decorated.bindViewHolder(viewHolder)
-        onBind()
-    }
-
-    override fun createViewHolder(parent: ViewGroup, lifecycleOwner: LifecycleOwner): RecyclerView.ViewHolder {
-        return decorated.createViewHolder(parent, lifecycleOwner)
-    }
 }

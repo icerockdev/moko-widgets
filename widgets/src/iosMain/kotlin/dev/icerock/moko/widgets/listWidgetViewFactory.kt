@@ -6,6 +6,6 @@ package dev.icerock.moko.widgets
 
 import dev.icerock.moko.widgets.core.VFC
 
-actual var linearListWidgetViewFactory: VFC<LinearListWidget> = { _, _ ->
+actual var listWidgetViewFactory: VFC<ListWidget> = { _, _ ->
     TODO("must be initialized from iOS swift part")
 }
