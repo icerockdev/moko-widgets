@@ -17,14 +17,10 @@ import dev.icerock.moko.widgets.core.AnyWidget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.core.asLiveData
 import dev.icerock.moko.widgets.flatAlert
-import dev.icerock.moko.widgets.flatAlertStyle
 import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.progressBar
 import dev.icerock.moko.widgets.stateful
-import dev.icerock.moko.widgets.statefulStyle
-import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Orientation
-import dev.icerock.moko.widgets.style.background.ShapeType
 import dev.icerock.moko.widgets.style.view.Alignment
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
@@ -37,20 +33,6 @@ open class DemoScreen(
 ) {
     fun createWidget(): AnyWidget {
         return with(widgetScope) {
-            val errorScope = childScope {
-                this.flatAlertStyle = flatAlertStyle.copy(
-                    background = Background(
-                        color = 0xFF00FF00
-                    )
-                )
-            }
-            val dataScope = childScope {
-                this.flatAlertStyle = flatAlertStyle.copy(
-                    background = Background(
-                        color = 0xFFFF00FF
-                    )
-                )
-            }
             val buttonsScope = childScope {
                 this.buttonStyle = buttonStyle.copy(
                     size = WidgetSize(
@@ -86,11 +68,6 @@ open class DemoScreen(
                         }
                     ),
                     stateful(
-                        style = statefulStyle.copy(
-                            background = statefulStyle.background?.run {
-                                copy(shape = shape.copy(type = ShapeType.OVAL))
-                            }
-                        ),
                         state = viewModel.state,
                         empty = {
                             container(
@@ -117,23 +94,21 @@ open class DemoScreen(
                             )
                         },
                         data = { data ->
-                            with(dataScope) {
-                                tabs(
-                                    tabs = listOf(
-                                        TabsWidget.TabWidget(
-                                            title = const("first page"),
-                                            body = flatAlert(message = data.map { it?.desc() })
-                                        ),
-                                        TabsWidget.TabWidget(
-                                            title = const("second page"),
-                                            body = flatAlert(message = "SECOND".desc().asLiveData())
-                                        )
+                            tabs(
+                                tabs = listOf(
+                                    TabsWidget.TabWidget(
+                                        title = const("first page"),
+                                        body = flatAlert(message = data.map { it?.desc() })
+                                    ),
+                                    TabsWidget.TabWidget(
+                                        title = const("second page"),
+                                        body = flatAlert(message = "SECOND".desc().asLiveData())
                                     )
                                 )
-                            }
+                            )
                         },
                         error = { error ->
-                            errorScope.flatAlert(message = error.map { it?.desc() })
+                            flatAlert(message = error.map { it?.desc() })
                         }
                     )
                 )

@@ -9,6 +9,7 @@ import dev.icerock.moko.widgets.collection
 import dev.icerock.moko.widgets.core.AnyWidget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.list
+import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.tabs
 
 class UsersScreen(
@@ -23,14 +24,24 @@ class UsersScreen(
                         title = const("list"),
                         body = list(
                             id = Id.List,
-                            items = viewModel.items
+                            items = viewModel.items,
+                            styled = {
+                                it.copy(
+                                    padding = PaddingValues(8f)
+                                )
+                            }
                         )
                     ),
                     TabsWidget.TabWidget(
                         title = const("collection"),
                         body = collection(
                             id = Id.Collection,
-                            items = viewModel.items
+                            items = viewModel.items,
+                            styled = {
+                                it.copy(
+                                    padding = PaddingValues(8f)
+                                )
+                            }
                         )
                     )
                 )

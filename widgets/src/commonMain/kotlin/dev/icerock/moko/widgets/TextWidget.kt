@@ -19,6 +19,7 @@ import dev.icerock.moko.widgets.style.view.Margined
 import dev.icerock.moko.widgets.style.view.Padded
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.Sized
+import dev.icerock.moko.widgets.style.view.TextAlignment
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
@@ -39,7 +40,8 @@ class TextWidget(
         override val background: Background? = null,
         override val padding: PaddingValues? = null,
         override val margins: MarginValues? = null,
-        val textStyle: TextStyle = TextStyle()
+        val textStyle: TextStyle? = null,
+        val textAlignment: TextAlignment? = null
     ) : Widget.Style, Padded, Margined, Sized, Backgrounded
 
     interface Id : WidgetScope.Id

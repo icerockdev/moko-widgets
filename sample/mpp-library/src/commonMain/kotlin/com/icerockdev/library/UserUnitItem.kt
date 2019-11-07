@@ -3,8 +3,10 @@ package com.icerockdev.library
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.map
 import dev.icerock.moko.resources.desc.desc
+import dev.icerock.moko.widgets.core.Image
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
+import dev.icerock.moko.widgets.image
 import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.style.background.Orientation
 import dev.icerock.moko.widgets.style.view.PaddingValues
@@ -29,13 +31,38 @@ class UserUnitItem(
                             width = SizeSpec.AS_PARENT,
                             height = SizeSpec.WRAP_CONTENT
                         ),
-                        orientation = Orientation.VERTICAL,
-                        padding = PaddingValues(top = 8f, start = 8f, end = 8f)
+                        orientation = Orientation.HORIZONTAL,
+                        padding = PaddingValues(padding = 8f)
                     )
                 },
                 childs = listOf(
-                    text(text = const("Name:")),
-                    text(text = data.map { it.name.desc() })
+                    image(
+                        styled = {
+                            it.copy(
+                                size = WidgetSize(
+                                    width = 48,
+                                    height = 48
+                                )
+                            )
+                        },
+                        image = data.map { Image.network(it.avatarUrl) }
+                    ),
+                    linear(
+                        styled = {
+                            it.copy(
+                                size = WidgetSize(
+                                    width = SizeSpec.AS_PARENT,
+                                    height = SizeSpec.WRAP_CONTENT
+                                ),
+                                orientation = Orientation.VERTICAL,
+                                padding = PaddingValues(start = 8f)
+                            )
+                        },
+                        childs = listOf(
+                            text(text = const("Name:")),
+                            text(text = data.map { it.name.desc() })
+                        )
+                    )
                 )
             )
         }

@@ -18,18 +18,21 @@ import dev.icerock.moko.widgets.inputStyle
 import dev.icerock.moko.widgets.linearStyle
 import dev.icerock.moko.widgets.setButtonStyle
 import dev.icerock.moko.widgets.setLinearStyle
+import dev.icerock.moko.widgets.setTextStyle
 import dev.icerock.moko.widgets.singleChoiceStyle
 import dev.icerock.moko.widgets.style.background.Background
-import dev.icerock.moko.widgets.style.background.Corners
+import dev.icerock.moko.widgets.style.background.Border
 import dev.icerock.moko.widgets.style.background.Direction
+import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.background.Orientation
 import dev.icerock.moko.widgets.style.background.Shape
-import dev.icerock.moko.widgets.style.background.ShapeType
+import dev.icerock.moko.widgets.style.background.StateBackground
 import dev.icerock.moko.widgets.style.view.Colors
 import dev.icerock.moko.widgets.style.view.FontStyle
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.SizeSpec
+import dev.icerock.moko.widgets.style.view.TextAlignment
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.style.view.rgba
@@ -89,15 +92,41 @@ object Theme {
         ),
         isAllCaps = false,
         margins = MarginValues(),
-        background = Background(
-            colors = listOf(0xffb83af3, 0xff6950fb),
-            colorsDisabled = listOf(0x80b83af3, 0x806950fb),
-            direction = Direction.TR_BL,
-            shape = Shape(
-                type = ShapeType.RECTANGLE,
-                corners = Corners(radii = 16f)
+        background = {
+            val fill = Fill.Gradient(
+                colors = listOf(
+                    Color(0xB8, 0x3A, 0xF3, 0xFF),
+                    Color(0x69, 0x50, 0xFB, 0xFF)
+                ),
+                direction = Direction.TR_BL
             )
-        )
+            val normalBackground = Background(
+                fill = fill,
+                shape = Shape.Rectangle(cornerRadius = 16f)
+            )
+            val pressedBackground = normalBackground.copy(
+                fill = fill.copy(
+                    colors = listOf(
+                        Color(0xB8, 0x3A, 0xF3, 0xBB),
+                        Color(0x69, 0x50, 0xFB, 0xBB)
+                    )
+                )
+            )
+            val disabledBackground = normalBackground.copy(
+                fill = fill.copy(
+                    colors = listOf(
+                        Color(0xB8, 0x3A, 0xF3, 0x80),
+                        Color(0x69, 0x50, 0xFB, 0x80)
+                    )
+                )
+            )
+
+            StateBackground(
+                normal = normalBackground,
+                disabled = disabledBackground,
+                pressed = pressedBackground
+            )
+        }()
     )
 
     val headerTextStyle: TextStyle = TextStyle(
@@ -154,10 +183,12 @@ object Theme {
         this.linearStyle = Theme.profileContainerStyle
         this.singleChoiceStyle = Theme.singleChoiceStyle
 
-        setLinearStyle(linearStyle.copy(
-            padding = PaddingValues(),
-            margins = MarginValues(bottom = 8f)
-        ), SocialProfileScreen.Id.AgreementContainer)
+        setLinearStyle(
+            linearStyle.copy(
+                padding = PaddingValues(),
+                margins = MarginValues(bottom = 8f)
+            ), SocialProfileScreen.Id.AgreementContainer
+        )
     }
 
     val mcommerceWidgetScope = WidgetScope {
@@ -180,14 +211,23 @@ object Theme {
                 color = Color.white,
                 fontStyle = FontStyle.MEDIUM // Roboto-medium weight 500
             ),
-            background = Background(
-                color = 0xff00492c, //#00492cff
-                colorDisabled = 0x8000492c,
-                shape = Shape(
-                    type = ShapeType.RECTANGLE,
-                    corners = Corners(radii = 4f)
+            background = {
+                val normalBackground = Background(
+                    fill = Fill.Solid(color = Color(0x00, 0x49, 0x2C, 0xFF)),
+                    shape = Shape.Rectangle(cornerRadius = 4f)
                 )
-            )
+                val disabledBackground = normalBackground.copy(
+                    fill = Fill.Solid(color = Color(0x00, 0x49, 0x2C, 0x80))
+                )
+                val pressedBackground = normalBackground.copy(
+                    fill = Fill.Solid(color = Color(0x00, 0x49, 0x2C, 0xBB))
+                )
+                StateBackground(
+                    normal = normalBackground,
+                    disabled = disabledBackground,
+                    pressed = pressedBackground
+                )
+            }()
         )
         this.linearStyle = Theme.profileContainerStyle
     }
@@ -218,28 +258,57 @@ object Theme {
                 width = SizeSpec.AS_PARENT,
                 height = 48
             ),
-            background = Background(
-                color = 0xFF1375f8,
-                shape = Shape(
-                    type = ShapeType.RECTANGLE,
-                    corners = Corners(radii = 22f)
+            background = {
+                val normalBackground = Background(
+                    fill = Fill.Solid(color = Color(0x13, 0x75, 0xF8, 0xFF)),
+                    shape = Shape.Rectangle(cornerRadius = 22f)
                 )
-            )
+                val disabledBackground = normalBackground.copy(
+                    fill = Fill.Solid(color = Color(0x13, 0x75, 0xF8, 0x80))
+                )
+                val pressedBackground = normalBackground.copy(
+                    fill = Fill.Solid(color = Color(0x13, 0x75, 0xF8, 0xBB))
+                )
+                StateBackground(
+                    normal = normalBackground,
+                    disabled = disabledBackground,
+                    pressed = pressedBackground
+                )
+            }()
         )
         setButtonStyle(
             buttonStyle.copy(
-                background = Background(
-                    color = 0xFF303030,
-                    shape = Shape(
-                        type = ShapeType.RECTANGLE,
-                        corners = Corners(radii = 22f)
+                background = {
+                    val normalBackground = Background(
+                        fill = Fill.Solid(color = Color(0x30, 0x30, 0x30, 0xFF)),
+                        shape = Shape.Rectangle(cornerRadius = 22f),
+                        border = Border(
+                            color = Colors.white,
+                            width = 1f
+                        )
                     )
-                )
+                    val disabledBackground = normalBackground.copy(
+                        fill = Fill.Solid(color = Color(0x30, 0x30, 0x30, 0x80))
+                    )
+                    val pressedBackground = normalBackground.copy(
+                        fill = Fill.Solid(color = Color(0x30, 0x30, 0x30, 0xBB))
+                    )
+                    StateBackground(
+                        normal = normalBackground,
+                        disabled = disabledBackground,
+                        pressed = pressedBackground
+                    )
+                }()
             ), CryptoProfileScreen.Id.TryDemoButton
+        )
+        setTextStyle(
+            textStyle.copy(
+                textAlignment = TextAlignment.CENTER
+            ), CryptoProfileScreen.Id.DelimiterText
         )
         linearStyle = Theme.profileContainerStyle.copy(
             background = Background(
-                color = Colors.black.argb
+                fill = Fill.Solid(Colors.black)
             )
         )
         singleChoiceStyle = Theme.singleChoiceStyle

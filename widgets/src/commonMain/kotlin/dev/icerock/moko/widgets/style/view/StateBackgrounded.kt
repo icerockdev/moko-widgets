@@ -4,9 +4,8 @@
 
 package dev.icerock.moko.widgets.style.view
 
-import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.StateBackground
 
-interface Backgrounded {
-    val background: Background?
+interface StateBackgrounded {
+    val background: StateBackground?
 }
-

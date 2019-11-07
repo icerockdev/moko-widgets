@@ -4,8 +4,8 @@
 
 package dev.icerock.moko.widgets.style.background
 
-data class Background(
-    val fill: Fill? = null,
-    val border: Border? = null,
-    val shape: Shape? = null
+data class StateBackground(
+    val normal: Background,
+    val disabled: Background,
+    val pressed: Background
 )

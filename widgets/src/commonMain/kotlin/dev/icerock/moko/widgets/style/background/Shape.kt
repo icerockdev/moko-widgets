@@ -4,8 +4,7 @@
 
 package dev.icerock.moko.widgets.style.background
 
-data class Background(
-    val fill: Fill? = null,
-    val border: Border? = null,
-    val shape: Shape? = null
-)
+sealed class Shape {
+    data class Rectangle(val cornerRadius: Float? = null) : Shape()
+    object Oval : Shape()
+}

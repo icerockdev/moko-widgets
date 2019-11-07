@@ -4,11 +4,13 @@
 
 package dev.icerock.moko.widgets
 
+import android.view.Gravity
 import android.widget.TextView
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.applyStyle
 import dev.icerock.moko.widgets.style.applyTextStyle
+import dev.icerock.moko.widgets.style.view.TextAlignment
 import dev.icerock.moko.widgets.utils.bind
 
 actual var textWidgetViewFactory: VFC<TextWidget> = { viewFactoryContext: ViewFactoryContext,
@@ -19,7 +21,15 @@ actual var textWidgetViewFactory: VFC<TextWidget> = { viewFactoryContext: ViewFa
 
     val textView = TextView(context).apply {
         applyStyle(style)
-        applyTextStyle(style.textStyle)
+        style.textStyle?.also { applyTextStyle(it) }
+
+        when (style.textAlignment) {
+            TextAlignment.LEFT -> gravity = Gravity.LEFT
+            TextAlignment.CENTER -> gravity = Gravity.CENTER
+            TextAlignment.RIGHT -> gravity = Gravity.RIGHT
+            null -> {
+            }
+        }
     }
 
     textWidget.text.bind(lifecycleOwner) { textView.text = it?.toString(context) }
