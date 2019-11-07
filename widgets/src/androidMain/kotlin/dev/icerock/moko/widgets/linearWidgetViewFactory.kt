@@ -4,17 +4,17 @@
 
 package dev.icerock.moko.widgets
 
-import android.widget.LinearLayout
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.applyStyle
 import dev.icerock.moko.widgets.style.ext.toLinearLayoutOrientation
+import dev.icerock.moko.widgets.view.MarginedLinearLayout
 
 actual var linearWidgetViewFactory: VFC<LinearWidget> = { context, widget ->
     val ctx = context.context
     val style = widget.style
 
-    val container = LinearLayout(ctx).apply {
+    val container = MarginedLinearLayout(ctx).apply {
         applyStyle(style)
         orientation = style.orientation.toLinearLayoutOrientation()
     }

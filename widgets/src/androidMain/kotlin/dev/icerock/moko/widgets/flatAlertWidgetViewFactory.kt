@@ -18,17 +18,19 @@ import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.applyStyle
 import dev.icerock.moko.widgets.utils.dp
+import dev.icerock.moko.widgets.view.MarginedFrameLayout
+import dev.icerock.moko.widgets.view.MarginedLinearLayout
 
 actual var flatAlertWidgetViewFactory: VFC<FlatAlertWidget> = { context: ViewFactoryContext,
                                                                 widget: FlatAlertWidget ->
     val ctx = context.context
     val style = widget.style
 
-    val container = FrameLayout(ctx).apply {
+    val container = MarginedFrameLayout(ctx).apply {
         applyStyle(style)
     }
 
-    val rowsContainer = LinearLayout(ctx).apply {
+    val rowsContainer = MarginedLinearLayout(ctx).apply {
         layoutParams = FrameLayout.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT,

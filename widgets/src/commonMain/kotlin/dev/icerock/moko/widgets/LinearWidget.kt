@@ -14,6 +14,8 @@ import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Orientation
 import dev.icerock.moko.widgets.style.view.Backgrounded
+import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.Margined
 import dev.icerock.moko.widgets.style.view.Padded
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.SizeSpec
@@ -39,8 +41,9 @@ class LinearWidget(
         ),
         override val background: Background? = null,
         override val padding: PaddingValues? = null,
+        override val margins: MarginValues? = null,
         val orientation: Orientation = Orientation.VERTICAL
-    ) : Widget.Style, Padded, Sized, Backgrounded
+    ) : Widget.Style, Padded, Sized, Backgrounded, Margined
 
     interface Id : WidgetScope.Id
 }

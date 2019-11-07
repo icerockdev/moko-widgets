@@ -18,6 +18,8 @@ import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.applyStyle
+import dev.icerock.moko.widgets.view.MarginedFrameLayout
+import dev.icerock.moko.widgets.view.MarginedLinearLayout
 
 actual var tabsWidgetViewFactory: VFC<TabsWidget> = { context: ViewFactoryContext,
                                                       widget: TabsWidget ->
@@ -30,7 +32,7 @@ actual var tabsWidgetViewFactory: VFC<TabsWidget> = { context: ViewFactoryContex
         id = android.R.id.tabhost
     }
 
-    val container = LinearLayout(ctx).apply {
+    val container = MarginedLinearLayout(ctx).apply {
         layoutParams = FrameLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
@@ -60,7 +62,7 @@ actual var tabsWidgetViewFactory: VFC<TabsWidget> = { context: ViewFactoryContex
     tabsScroll.addView(tabWidget)
     container.addView(tabsScroll)
 
-    val content = FrameLayout(ctx).apply {
+    val content = MarginedFrameLayout(ctx).apply {
         layoutParams = LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT

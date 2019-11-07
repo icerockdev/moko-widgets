@@ -24,6 +24,7 @@ import dev.icerock.moko.widgets.style.applyTextStyle
 import dev.icerock.moko.widgets.style.ext.toPlatformSize
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.dp
+import dev.icerock.moko.widgets.view.MarginedFrameLayout
 
 actual var singleChoiceWidgetViewFactory: VFC<SingleChoiceWidget> = { viewFactoryContext: ViewFactoryContext,
                                                                       singleChoiceWidget: SingleChoiceWidget ->
@@ -32,7 +33,7 @@ actual var singleChoiceWidgetViewFactory: VFC<SingleChoiceWidget> = { viewFactor
     val dm = context.resources.displayMetrics
     val style = singleChoiceWidget.style
 
-    val container = FrameLayout(context).apply {
+    val container = MarginedFrameLayout(context).apply {
         applyStyle(style)
     }
 

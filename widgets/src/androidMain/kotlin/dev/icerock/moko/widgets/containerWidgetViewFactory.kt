@@ -11,13 +11,14 @@ import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.applyStyle
 import dev.icerock.moko.widgets.style.view.Alignment
+import dev.icerock.moko.widgets.view.MarginedFrameLayout
 
 actual var containerWidgetViewFactory: VFC<ContainerWidget> = { viewFactoryContext, widget ->
     val context = viewFactoryContext.androidContext
     val lifecycleOwner = viewFactoryContext.lifecycleOwner
     val style = widget.style
 
-    val root = FrameLayout(context).apply {
+    val root = MarginedFrameLayout(context).apply {
         applyStyle(style)
     }
 
