@@ -10,7 +10,7 @@ import android.widget.FrameLayout
 
 // we should manually convert MarginLayoutParams to FrameLayout.LayoutParams because of
 // https://android.googlesource.com/platform/frameworks/base/+/2dd20a6%5E%21/
-class MarginedFrameLayout(context: Context) : FrameLayout(context) {
+internal open class MarginedFrameLayout(context: Context) : FrameLayout(context) {
     override fun generateLayoutParams(lp: ViewGroup.LayoutParams): LayoutParams {
         return when (lp) {
             is LayoutParams -> LayoutParams(lp)
@@ -19,3 +19,4 @@ class MarginedFrameLayout(context: Context) : FrameLayout(context) {
         }
     }
 }
+

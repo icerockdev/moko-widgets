@@ -35,7 +35,7 @@ open class DemoScreen(
         return with(widgetScope) {
             val buttonsScope = childScope {
                 this.buttonStyle = buttonStyle.copy(
-                    size = WidgetSize(
+                    size = WidgetSize.Const(
                         width = SizeSpec.WRAP_CONTENT,
                         height = SizeSpec.WRAP_CONTENT
                     )
@@ -48,7 +48,7 @@ open class DemoScreen(
                         styled = {
                             it.copy(
                                 orientation = Orientation.HORIZONTAL,
-                                size = WidgetSize(
+                                size = WidgetSize.Const(
                                     width = SizeSpec.AS_PARENT,
                                     height = SizeSpec.WRAP_CONTENT
                                 )
@@ -75,7 +75,7 @@ open class DemoScreen(
                                     text(
                                         styled = {
                                             it.copy(
-                                                size = WidgetSize(
+                                                size = WidgetSize.Const(
                                                     width = SizeSpec.WRAP_CONTENT,
                                                     height = SizeSpec.WRAP_CONTENT
                                                 )

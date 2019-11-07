@@ -8,14 +8,13 @@ import android.content.res.ColorStateList
 import android.widget.Switch
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.style.applyStyle
+import dev.icerock.moko.widgets.style.withSize
 
 actual var switchWidgetViewFactory: VFC<SwitchWidget> = { viewFactoryContext, widget ->
     val context = viewFactoryContext.androidContext
     val style = widget.style
 
     Switch(context).apply {
-        applyStyle(style)
-
         style.switchColor?.also { colorStyle ->
             val thumbStates = ColorStateList(
                 arrayOf(
@@ -40,5 +39,5 @@ actual var switchWidgetViewFactory: VFC<SwitchWidget> = { viewFactoryContext, wi
             thumbDrawable.setTintList(thumbStates)
             trackDrawable.setTintList(trackStates)
         }
-    }
+    }.withSize(style.size).apply { applyStyle(style) }
 }

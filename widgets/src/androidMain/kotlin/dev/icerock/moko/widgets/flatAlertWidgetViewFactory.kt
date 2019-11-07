@@ -17,6 +17,7 @@ import androidx.lifecycle.Observer
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.applyStyle
+import dev.icerock.moko.widgets.style.withSize
 import dev.icerock.moko.widgets.utils.dp
 import dev.icerock.moko.widgets.view.MarginedFrameLayout
 import dev.icerock.moko.widgets.view.MarginedLinearLayout
@@ -26,9 +27,7 @@ actual var flatAlertWidgetViewFactory: VFC<FlatAlertWidget> = { context: ViewFac
     val ctx = context.context
     val style = widget.style
 
-    val container = MarginedFrameLayout(ctx).apply {
-        applyStyle(style)
-    }
+    val container = MarginedFrameLayout(ctx)
 
     val rowsContainer = MarginedLinearLayout(ctx).apply {
         layoutParams = FrameLayout.LayoutParams(
@@ -149,5 +148,5 @@ actual var flatAlertWidgetViewFactory: VFC<FlatAlertWidget> = { context: ViewFac
         })
     }
 
-    container
+    container.withSize(style.size).apply { applyStyle(style) }
 }

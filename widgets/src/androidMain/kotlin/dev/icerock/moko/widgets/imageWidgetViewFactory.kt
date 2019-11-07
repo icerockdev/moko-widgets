@@ -8,6 +8,7 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.style.applyStyle
+import dev.icerock.moko.widgets.style.withSize
 import dev.icerock.moko.widgets.utils.bind
 
 actual var imageWidgetViewFactory: VFC<ImageWidget> = { viewFactoryContext, widget ->
@@ -15,8 +16,11 @@ actual var imageWidgetViewFactory: VFC<ImageWidget> = { viewFactoryContext, widg
     val lifecycleOwner = viewFactoryContext.lifecycleOwner
     val style = widget.style
 
-    val imageView = ImageView(context).apply {
-        applyStyle(style)
+    val imageView = ImageView(context)
+
+    when (style.scaleType) {
+        ImageWidget.ScaleType.FILL -> imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+        ImageWidget.ScaleType.FIT -> imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE
     }
 
     widget.image.bind(lifecycleOwner) { image ->
@@ -30,5 +34,5 @@ actual var imageWidgetViewFactory: VFC<ImageWidget> = { viewFactoryContext, widg
             .into(imageView)
     }
 
-    imageView
+    imageView.withSize(style.size).apply { applyStyle(style) }
 }

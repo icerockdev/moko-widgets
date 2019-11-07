@@ -14,23 +14,15 @@ import dev.icerock.moko.widgets.style.ext.toPlatformSize
 import dev.icerock.moko.widgets.style.view.Backgrounded
 import dev.icerock.moko.widgets.style.view.Margined
 import dev.icerock.moko.widgets.style.view.Padded
-import dev.icerock.moko.widgets.style.view.Sized
+import dev.icerock.moko.widgets.style.view.StateBackgrounded
+import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.view.AspectRatioFrameLayout
 
 fun View.applyStyle(style: Widget.Style) {
-    val dm = context.resources.displayMetrics
-
-    if (style is Sized && style is Margined) {
-        layoutParams = ViewGroup.MarginLayoutParams(
-            style.size.width.toPlatformSize(dm),
-            style.size.height.toPlatformSize(dm)
-        ).apply {
-            style.margins?.also { applyMargin(context, it) }
+    if (style is Margined) {
+        style.margins?.also {
+            (layoutParams as? ViewGroup.MarginLayoutParams)?.applyMargin(context, it)
         }
-    } else if (style is Sized) {
-        layoutParams = ViewGroup.LayoutParams(
-            style.size.width.toPlatformSize(dm),
-            style.size.height.toPlatformSize(dm)
-        )
     }
 
     if (style is Padded) {
@@ -40,4 +32,54 @@ fun View.applyStyle(style: Widget.Style) {
     if (style is Backgrounded) {
         style.background?.also { background = it.buildBackground(context) }
     }
+
+    if (style is StateBackgrounded) {
+        style.background?.also { background = it.buildBackground(context) }
+    }
+}
+
+fun View.withSize(size: WidgetSize): View {
+    val dm = context.resources.displayMetrics
+
+    val aspectRatioFrameLayout = when (size) {
+        is WidgetSize.Const -> {
+            layoutParams = ViewGroup.MarginLayoutParams(
+                size.width.toPlatformSize(dm),
+                size.height.toPlatformSize(dm)
+            )
+            return this
+        }
+        is WidgetSize.AspectByWidth -> {
+            AspectRatioFrameLayout(
+                context = context,
+                aspectRatio = size.aspectRatio,
+                aspectByWidth = true
+            ).apply {
+                layoutParams = ViewGroup.MarginLayoutParams(
+                    size.width.toPlatformSize(dm),
+                    0
+                )
+            }
+        }
+        is WidgetSize.AspectByHeight -> {
+            AspectRatioFrameLayout(
+                context = context,
+                aspectRatio = size.aspectRatio,
+                aspectByWidth = false
+            ).apply {
+                layoutParams = ViewGroup.MarginLayoutParams(
+                    0,
+                    size.height.toPlatformSize(dm)
+                )
+            }
+        }
+    }
+
+    layoutParams = ViewGroup.LayoutParams(
+        ViewGroup.LayoutParams.MATCH_PARENT,
+        ViewGroup.LayoutParams.MATCH_PARENT
+    )
+    aspectRatioFrameLayout.addView(this)
+
+    return aspectRatioFrameLayout
 }

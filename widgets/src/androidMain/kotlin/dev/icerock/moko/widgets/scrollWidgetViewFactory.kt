@@ -10,7 +10,7 @@ import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.applyStyle
 import dev.icerock.moko.widgets.style.background.Orientation
-import dev.icerock.moko.widgets.style.background.buildBackground
+import dev.icerock.moko.widgets.style.withSize
 
 actual var scrollWidgetViewFactory: VFC<ScrollWidget> = { viewFactoryContext, widget ->
     val context = viewFactoryContext.androidContext
@@ -21,8 +21,6 @@ actual var scrollWidgetViewFactory: VFC<ScrollWidget> = { viewFactoryContext, wi
     else HorizontalScrollView(context)
 
     with(scrollView) {
-        applyStyle(style)
-
         val body = widget.child.buildView(
             ViewFactoryContext(
                 context = context,
@@ -34,5 +32,5 @@ actual var scrollWidgetViewFactory: VFC<ScrollWidget> = { viewFactoryContext, wi
         addView(body)
     }
 
-    scrollView
+    scrollView.withSize(style.size).apply { applyStyle(style) }
 }

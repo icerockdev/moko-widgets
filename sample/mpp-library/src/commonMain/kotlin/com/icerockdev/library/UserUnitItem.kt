@@ -1,3 +1,7 @@
+/*
+ * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
+ */
+
 package com.icerockdev.library
 
 import dev.icerock.moko.mvvm.livedata.LiveData
@@ -27,7 +31,7 @@ class UserUnitItem(
             linear(
                 styled = {
                     it.copy(
-                        size = WidgetSize(
+                        size = WidgetSize.Const(
                             width = SizeSpec.AS_PARENT,
                             height = SizeSpec.WRAP_CONTENT
                         ),
@@ -39,7 +43,7 @@ class UserUnitItem(
                     image(
                         styled = {
                             it.copy(
-                                size = WidgetSize(
+                                size = WidgetSize.Const(
                                     width = 48,
                                     height = 48
                                 )
@@ -50,7 +54,7 @@ class UserUnitItem(
                     linear(
                         styled = {
                             it.copy(
-                                size = WidgetSize(
+                                size = WidgetSize.Const(
                                     width = SizeSpec.AS_PARENT,
                                     height = SizeSpec.WRAP_CONTENT
                                 ),

@@ -36,7 +36,7 @@ class TextWidget(
     OptionalId<TextWidget.Id> {
 
     data class Style(
-        override val size: WidgetSize = WidgetSize(),
+        override val size: WidgetSize = WidgetSize.Const(),
         override val background: Background? = null,
         override val padding: PaddingValues? = null,
         override val margins: MarginValues? = null,

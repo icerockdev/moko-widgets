@@ -47,7 +47,7 @@ class SingleChoiceWidget(
      * @property dropDownBackground widget's dropdown view background, might be null if not required
      */
     data class Style(
-        override val size: WidgetSize = WidgetSize(),
+        override val size: WidgetSize = WidgetSize.Const(),
         override val margins: MarginValues? = null,
         override val padding: PaddingValues? = null,
         val textStyle: TextStyle = TextStyle(),

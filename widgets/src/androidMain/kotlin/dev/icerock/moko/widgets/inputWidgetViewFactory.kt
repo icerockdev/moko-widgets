@@ -16,6 +16,7 @@ import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.applyInputType
 import dev.icerock.moko.widgets.style.applyStyle
 import dev.icerock.moko.widgets.style.applyTextStyle
+import dev.icerock.moko.widgets.style.withSize
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.dp
 
@@ -26,8 +27,6 @@ actual var inputWidgetViewFactory: VFC<InputWidget> = { viewFactoryContext: View
     val style = inputWidget.style
 
     val textInputLayout = TextInputLayout(context).apply {
-        applyStyle(style)
-
         style.labelTextStyle.color?.also {
             val hintColor = ColorStateList.valueOf(it.argb.toInt())
             defaultHintTextColor = hintColor
@@ -102,7 +101,7 @@ actual var inputWidgetViewFactory: VFC<InputWidget> = { viewFactoryContext: View
         }
     }
 
-    textInputLayout
+    textInputLayout.withSize(style.size).apply { applyStyle(style) }
 
 ////    binding.setupListeners(widget.field)
 //    binding.hint.applyStyle(style.labelTextStyle)

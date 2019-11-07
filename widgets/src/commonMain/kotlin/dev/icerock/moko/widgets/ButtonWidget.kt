@@ -38,7 +38,7 @@ class ButtonWidget(
     OptionalId<ButtonWidget.Id> {
 
     data class Style(
-        override val size: WidgetSize = WidgetSize(
+        override val size: WidgetSize = WidgetSize.Const(
             width = SizeSpec.WRAP_CONTENT,
             height = SizeSpec.WRAP_CONTENT
         ),

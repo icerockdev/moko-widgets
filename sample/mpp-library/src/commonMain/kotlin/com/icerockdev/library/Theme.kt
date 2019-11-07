@@ -55,7 +55,7 @@ object Theme {
     )
 
     val inputStyle: InputWidget.Style = InputWidget.Style(
-        size = WidgetSize(
+        size = WidgetSize.Const(
             width = SizeSpec.AS_PARENT,
             height = SizeSpec.WRAP_CONTENT
         ),
@@ -81,7 +81,7 @@ object Theme {
     )
 
     val buttonStyle: ButtonWidget.Style = ButtonWidget.Style(
-        size = WidgetSize(
+        size = WidgetSize.Const(
             width = SizeSpec.AS_PARENT,
             height = 50
         ),
@@ -146,7 +146,7 @@ object Theme {
     val profileContainerStyle: LinearWidget.Style = LinearWidget.Style(
         background = null,
         orientation = Orientation.VERTICAL,
-        size = WidgetSize(
+        size = WidgetSize.Const(
             width = SizeSpec.AS_PARENT,
             height = SizeSpec.WRAP_CONTENT
         ),
@@ -154,7 +154,7 @@ object Theme {
     )
 
     val singleChoiceStyle: SingleChoiceWidget.Style = SingleChoiceWidget.Style(
-        size = WidgetSize(
+        size = WidgetSize.Const(
             width = SizeSpec.AS_PARENT,
             height = SizeSpec.WRAP_CONTENT
         ),
@@ -254,7 +254,7 @@ object Theme {
             )
         )
         buttonStyle = Theme.buttonStyle.copy(
-            size = WidgetSize(
+            size = WidgetSize.Const(
                 width = SizeSpec.AS_PARENT,
                 height = 48
             ),

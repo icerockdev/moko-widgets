@@ -10,7 +10,7 @@ import android.widget.LinearLayout
 
 // we should manually convert MarginLayoutParams to LinearLayout.LayoutParams because of
 // https://android.googlesource.com/platform/frameworks/base/+/2dd20a6%5E%21/
-class MarginedLinearLayout(context: Context) : LinearLayout(context) {
+internal class MarginedLinearLayout(context: Context) : LinearLayout(context) {
     override fun generateLayoutParams(lp: ViewGroup.LayoutParams): LayoutParams {
         return when (lp) {
             is LayoutParams -> LayoutParams(lp)

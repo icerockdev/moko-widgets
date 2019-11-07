@@ -29,6 +29,10 @@ open class MainScreen(
             tabs(
                 tabs = listOf(
                     TabsWidget.TabWidget(
+                        title = const("P"),
+                        body = PostsScreen(this, viewModel).createWidget()
+                    ),
+                    TabsWidget.TabWidget(
                         title = const("U"),
                         body = UsersScreen(this, viewModel).createWidget()
                     ),

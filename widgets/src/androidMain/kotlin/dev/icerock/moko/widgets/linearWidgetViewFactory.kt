@@ -8,6 +8,7 @@ import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.applyStyle
 import dev.icerock.moko.widgets.style.ext.toLinearLayoutOrientation
+import dev.icerock.moko.widgets.style.withSize
 import dev.icerock.moko.widgets.view.MarginedLinearLayout
 
 actual var linearWidgetViewFactory: VFC<LinearWidget> = { context, widget ->
@@ -15,7 +16,6 @@ actual var linearWidgetViewFactory: VFC<LinearWidget> = { context, widget ->
     val style = widget.style
 
     val container = MarginedLinearLayout(ctx).apply {
-        applyStyle(style)
         orientation = style.orientation.toLinearLayoutOrientation()
     }
 
@@ -30,5 +30,5 @@ actual var linearWidgetViewFactory: VFC<LinearWidget> = { context, widget ->
         container.addView(view)
     }
 
-    container
+    container.withSize(style.size).apply { applyStyle(style) }
 }

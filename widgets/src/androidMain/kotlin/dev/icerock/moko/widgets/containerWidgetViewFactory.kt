@@ -11,6 +11,7 @@ import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.applyStyle
 import dev.icerock.moko.widgets.style.view.Alignment
+import dev.icerock.moko.widgets.style.withSize
 import dev.icerock.moko.widgets.view.MarginedFrameLayout
 
 actual var containerWidgetViewFactory: VFC<ContainerWidget> = { viewFactoryContext, widget ->
@@ -18,9 +19,7 @@ actual var containerWidgetViewFactory: VFC<ContainerWidget> = { viewFactoryConte
     val lifecycleOwner = viewFactoryContext.lifecycleOwner
     val style = widget.style
 
-    val root = MarginedFrameLayout(context).apply {
-        applyStyle(style)
-    }
+    val root = MarginedFrameLayout(context)
 
     widget.childs.forEach { (childWidget, childSpec) ->
         val childView = childWidget.buildView(
@@ -49,5 +48,5 @@ actual var containerWidgetViewFactory: VFC<ContainerWidget> = { viewFactoryConte
         root.addView(childView)
     }
 
-    root
+    root.withSize(style.size).apply { applyStyle(style) }
 }

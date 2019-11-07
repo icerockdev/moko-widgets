@@ -40,7 +40,7 @@ class SwitchWidget(
      * @property switchColor switch background, might be null if default
      */
     data class Style(
-        override val size: WidgetSize = WidgetSize(
+        override val size: WidgetSize = WidgetSize.Const(
             width = SizeSpec.WRAP_CONTENT,
             height = SizeSpec.WRAP_CONTENT
         ),

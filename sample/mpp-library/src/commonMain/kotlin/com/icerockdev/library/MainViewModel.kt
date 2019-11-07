@@ -7,6 +7,7 @@ package com.icerockdev.library
 import com.icerockdev.library.screen.CryptoProfileScreen
 import com.icerockdev.library.screen.DemoScreen
 import com.icerockdev.library.screen.McommerceProfileScreen
+import com.icerockdev.library.screen.PostsScreen
 import com.icerockdev.library.screen.SocialProfileScreen
 import com.icerockdev.library.screen.UsersScreen
 import dev.icerock.moko.fields.FormField
@@ -27,7 +28,8 @@ class MainViewModel(
     val title: String,
     val unitsFactory: UnitsFactory
 ) : ViewModel(), CryptoProfileScreen.ViewModelContract, DemoScreen.ViewModelContract,
-    McommerceProfileScreen.ViewModelContract, SocialProfileScreen.ViewModelContract, UsersScreen.ViewModelContract {
+    McommerceProfileScreen.ViewModelContract, SocialProfileScreen.ViewModelContract, UsersScreen.ViewModelContract,
+    PostsScreen.ViewModelContract {
     private val _items = MutableLiveData<List<UnitItem>>(initialValue = with(unitsFactory) {
         listOf(
             "Aleksey Mikhailov",
@@ -84,6 +86,38 @@ class MainViewModel(
 
     override val agreement: MutableLiveData<Boolean> = MutableLiveData(false)
 
+    override val posts: LiveData<List<PostsScreen.PostItem>> = MutableLiveData(
+        listOf(
+            PostItem(
+                id = 1,
+                nickname = "@alex009".desc(),
+                imageUrl = "https://images.unsplash.com/photo-1531804055935-76f44d7c3621",
+                viewsCount = "24.5K".desc(),
+                title = "Test post".desc(),
+                tags = null,
+                onClick = { println("clicked 1!") }
+            ),
+            PostItem(
+                id = 2,
+                nickname = "@alex009".desc(),
+                imageUrl = "https://images.unsplash.com/photo-1531804055935-76f44d7c3621",
+                viewsCount = "24.5K".desc(),
+                title = "Test post 2".desc(),
+                tags = null,
+                onClick = { println("clicked 2!") }
+            ),
+            PostItem(
+                id = 3,
+                nickname = "@alex009".desc(),
+                imageUrl = "https://images.unsplash.com/photo-1531804055935-76f44d7c3621",
+                viewsCount = "24.5K".desc(),
+                title = "Test post 3".desc(),
+                tags = "#tag1 #tag3".desc(),
+                onClick = { println("clicked 3!") }
+            )
+        )
+    )
+
     private val fields = listOf(
         nameField,
         nicknameField,
@@ -117,4 +151,14 @@ class MainViewModel(
             onClick: () -> Unit
         ): UnitItem
     }
+
+    data class PostItem(
+        override val id: Long,
+        override val nickname: StringDesc,
+        override val imageUrl: String,
+        override val viewsCount: StringDesc,
+        override val title: StringDesc,
+        override val tags: StringDesc?,
+        override val onClick: () -> Unit
+    ) : PostsScreen.PostItem
 }

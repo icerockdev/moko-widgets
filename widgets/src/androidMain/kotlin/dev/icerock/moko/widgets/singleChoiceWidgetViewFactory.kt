@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.Spinner
 import com.google.android.material.textfield.TextInputEditText
@@ -19,9 +18,9 @@ import dev.icerock.moko.mvvm.livedata.mergeWith
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.applyStyle
-import dev.icerock.moko.widgets.style.background.buildBackground
 import dev.icerock.moko.widgets.style.applyTextStyle
-import dev.icerock.moko.widgets.style.ext.toPlatformSize
+import dev.icerock.moko.widgets.style.background.buildBackground
+import dev.icerock.moko.widgets.style.withSize
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.dp
 import dev.icerock.moko.widgets.view.MarginedFrameLayout
@@ -33,14 +32,12 @@ actual var singleChoiceWidgetViewFactory: VFC<SingleChoiceWidget> = { viewFactor
     val dm = context.resources.displayMetrics
     val style = singleChoiceWidget.style
 
-    val container = MarginedFrameLayout(context).apply {
-        applyStyle(style)
-    }
+    val container = MarginedFrameLayout(context)
 
     val textInputLayout = TextInputLayout(context).apply {
-        layoutParams = ViewGroup.LayoutParams(
-            style.size.width.toPlatformSize(dm),
-            style.size.height.toPlatformSize(dm)
+        layoutParams = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
         )
     }
 
@@ -121,5 +118,5 @@ actual var singleChoiceWidgetViewFactory: VFC<SingleChoiceWidget> = { viewFactor
         spinner.adapter = ArrayAdapter(context, R.layout.item_spinner, items)
     }
 
-    container
+    container.withSize(style.size).apply { applyStyle(style) }
 }

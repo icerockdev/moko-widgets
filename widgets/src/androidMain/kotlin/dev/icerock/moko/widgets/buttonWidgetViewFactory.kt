@@ -4,16 +4,13 @@
 
 package dev.icerock.moko.widgets
 
-import android.content.res.ColorStateList
-import android.graphics.Color
-import android.graphics.drawable.RippleDrawable
 import android.widget.Button
 import androidx.lifecycle.Observer
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.applyStyle
-import dev.icerock.moko.widgets.style.background.buildBackground
 import dev.icerock.moko.widgets.style.applyTextStyle
+import dev.icerock.moko.widgets.style.withSize
 
 actual var buttonWidgetViewFactory: VFC<ButtonWidget> = { context: ViewFactoryContext,
                                                           widget: ButtonWidget ->
@@ -21,17 +18,6 @@ actual var buttonWidgetViewFactory: VFC<ButtonWidget> = { context: ViewFactoryCo
     val style = widget.style
 
     val button = Button(ctx).apply {
-        applyStyle(style)
-
-        style.background?.let {
-            val rippleDrawable = RippleDrawable(
-                ColorStateList.valueOf(Color.GRAY),
-                it.buildBackground(ctx), null
-            )
-
-            background = rippleDrawable
-        }
-
         applyTextStyle(style.textStyle)
 
         style.isAllCaps?.also { isAllCaps = it }
@@ -52,5 +38,5 @@ actual var buttonWidgetViewFactory: VFC<ButtonWidget> = { context: ViewFactoryCo
         button.text = text?.toString(ctx)
     })
 
-    button
+    button.withSize(style.size).apply { applyStyle(style) }
 }

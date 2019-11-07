@@ -32,7 +32,7 @@ class ScrollWidget(
     val child: AnyWidget
 ) : Widget<ScrollWidget>(), Styled<ScrollWidget.Style>, OptionalId<ScrollWidget.Id> {
     data class Style(
-        override val size: WidgetSize = WidgetSize(
+        override val size: WidgetSize = WidgetSize.Const(
             width = SizeSpec.AS_PARENT,
             height = SizeSpec.AS_PARENT
         ),

@@ -52,7 +52,7 @@ class InputWidget(
      * @property background widget's background, might be null if not required
      */
     data class Style(
-        override val size: WidgetSize = WidgetSize(),
+        override val size: WidgetSize = WidgetSize.Const(),
         override val background: Background? = null,
         override val padding: PaddingValues? = null,
         override val margins: MarginValues? = null,

@@ -16,6 +16,11 @@ fun StateBackground.buildBackground(context: Context) = StateListDrawable().also
         intArrayOf(-android.R.attr.state_enabled),
         disabled.buildBackground(context)
     )
+    // TODO Ripple?
+//    val rippleDrawable = RippleDrawable(
+//        ColorStateList.valueOf(Color.GRAY),
+//        it.buildBackground(ctx), null
+//    )
     selector.addState(
         intArrayOf(android.R.attr.state_pressed),
         pressed.buildBackground(context)

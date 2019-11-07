@@ -11,6 +11,7 @@ import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.applyStyle
 import dev.icerock.moko.widgets.style.applyTextStyle
 import dev.icerock.moko.widgets.style.view.TextAlignment
+import dev.icerock.moko.widgets.style.withSize
 import dev.icerock.moko.widgets.utils.bind
 
 actual var textWidgetViewFactory: VFC<TextWidget> = { viewFactoryContext: ViewFactoryContext,
@@ -20,7 +21,6 @@ actual var textWidgetViewFactory: VFC<TextWidget> = { viewFactoryContext: ViewFa
     val style = textWidget.style
 
     val textView = TextView(context).apply {
-        applyStyle(style)
         style.textStyle?.also { applyTextStyle(it) }
 
         when (style.textAlignment) {
@@ -34,5 +34,5 @@ actual var textWidgetViewFactory: VFC<TextWidget> = { viewFactoryContext: ViewFa
 
     textWidget.text.bind(lifecycleOwner) { textView.text = it?.toString(context) }
 
-    textView
+    textView.withSize(style.size).apply { applyStyle(style) }
 }

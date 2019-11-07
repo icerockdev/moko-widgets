@@ -14,4 +14,5 @@ package dev.icerock.moko.widgets.style.view
 object SizeSpec {
     const val AS_PARENT: Int = -1
     const val WRAP_CONTENT: Int = -2
+    const val DYNAMIC: Int = -3
 }

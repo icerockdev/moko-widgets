@@ -18,6 +18,7 @@ import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.applyStyle
+import dev.icerock.moko.widgets.style.withSize
 import dev.icerock.moko.widgets.view.MarginedFrameLayout
 import dev.icerock.moko.widgets.view.MarginedLinearLayout
 
@@ -28,7 +29,6 @@ actual var tabsWidgetViewFactory: VFC<TabsWidget> = { context: ViewFactoryContex
     val style = widget.style
 
     val tabHost = TabHost(ctx).apply {
-        applyStyle(style)
         id = android.R.id.tabhost
     }
 
@@ -111,5 +111,5 @@ actual var tabsWidgetViewFactory: VFC<TabsWidget> = { context: ViewFactoryContex
         tabHost.addTab(tabSpec)
     }
 
-    tabHost
+    tabHost.withSize(style.size).apply { applyStyle(style) }
 }

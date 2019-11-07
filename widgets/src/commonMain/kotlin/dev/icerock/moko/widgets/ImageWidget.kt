@@ -31,12 +31,18 @@ class ImageWidget(
     OptionalId<ImageWidget.Id> {
 
     data class Style(
-        override val size: WidgetSize = WidgetSize(
+        override val size: WidgetSize = WidgetSize.Const(
             width = SizeSpec.WRAP_CONTENT,
             height = SizeSpec.WRAP_CONTENT
         ),
-        override val margins: MarginValues? = null
+        override val margins: MarginValues? = null,
+        val scaleType: ScaleType? = null
     ) : Widget.Style, Sized, Margined
+
+    enum class ScaleType {
+        FILL,
+        FIT
+    }
 
     interface Id : WidgetScope.Id
 }

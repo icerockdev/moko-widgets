@@ -11,6 +11,7 @@ import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.View
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.applyStyle
+import dev.icerock.moko.widgets.style.withSize
 import dev.icerock.moko.widgets.view.MarginedFrameLayout
 
 actual var statefulWidgetViewFactory: VFC<StatefulWidget<*, *>> = { context: ViewFactoryContext,
@@ -19,9 +20,7 @@ actual var statefulWidgetViewFactory: VFC<StatefulWidget<*, *>> = { context: Vie
     val lifecycleOwner = context.lifecycleOwner
     val style = widget.style
 
-    val root = MarginedFrameLayout(ctx).apply {
-        applyStyle(style)
-    }
+    val root = MarginedFrameLayout(ctx)
 
     val factoryContext = ViewFactoryContext(ctx, lifecycleOwner, root)
 
@@ -49,5 +48,5 @@ actual var statefulWidgetViewFactory: VFC<StatefulWidget<*, *>> = { context: Vie
         currentView.visibility = View.VISIBLE
     })
 
-    root
+    root.withSize(style.size).apply { applyStyle(style) }
 }

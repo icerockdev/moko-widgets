@@ -5,17 +5,14 @@
 package dev.icerock.moko.widgets
 
 import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import dev.icerock.moko.units.adapter.UnitsRecyclerViewAdapter
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.style.applyStyle
-import dev.icerock.moko.widgets.style.background.buildBackground
-import dev.icerock.moko.widgets.style.ext.applyPadding
-import dev.icerock.moko.widgets.style.ext.toPlatformSize
 import dev.icerock.moko.widgets.style.ext.toStaggeredGridLayoutManager
+import dev.icerock.moko.widgets.style.withSize
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.view.UnitItemDecorator
 
@@ -29,19 +26,7 @@ actual var collectionWidgetViewFactory: VFC<CollectionWidget> = { viewFactoryCon
 
     val unitsAdapter = UnitsRecyclerViewAdapter(lifecycleOwner)
     val recyclerView = RecyclerView(context).apply {
-        layoutParams = ViewGroup.LayoutParams(
-            if (haveSwipeRefreshListener) ViewGroup.LayoutParams.MATCH_PARENT else style.size.width.toPlatformSize(dm),
-            if (haveSwipeRefreshListener) ViewGroup.LayoutParams.MATCH_PARENT else style.size.height.toPlatformSize(dm)
-        )
-        if (!haveSwipeRefreshListener) {
-            clipToPadding = false
-            style.padding?.also { applyPadding(it) }
-        }
-
-        if (style.background != null && !haveSwipeRefreshListener) {
-            background = style.background.buildBackground(context)
-        }
-
+        clipToPadding = false
         layoutManager = StaggeredGridLayoutManager(
             widget.style.spanCount,
             widget.style.orientation.toStaggeredGridLayoutManager()
@@ -51,8 +36,6 @@ actual var collectionWidgetViewFactory: VFC<CollectionWidget> = { viewFactoryCon
 
     val resultView: View = if (haveSwipeRefreshListener) {
         val swipeRefreshLayout = SwipeRefreshLayout(context).apply {
-            applyStyle(style)
-
             clipToPadding = false
 
             setOnRefreshListener {
@@ -80,5 +63,5 @@ actual var collectionWidgetViewFactory: VFC<CollectionWidget> = { viewFactoryCon
         }
     }
 
-    resultView
+    resultView.withSize(style.size).apply { applyStyle(style) }
 }
