@@ -5,7 +5,6 @@
 package dev.icerock.moko.widgets.style
 
 import android.widget.TextView
-import dev.icerock.moko.widgets.old.applyFontStyle
 import dev.icerock.moko.widgets.style.view.TextStyle
 
 
