@@ -6,10 +6,13 @@ package com.icerockdev.library.screen
 
 import dev.icerock.moko.fields.FormField
 import dev.icerock.moko.mvvm.livedata.LiveData
+import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.InputWidget
+import dev.icerock.moko.widgets.LinearWidget
 import dev.icerock.moko.widgets.SingleChoiceWidget
+import dev.icerock.moko.widgets.SwitchWidget
 import dev.icerock.moko.widgets.TextWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.core.AnyWidget
@@ -19,6 +22,7 @@ import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.scroll
 import dev.icerock.moko.widgets.singleChoice
 import dev.icerock.moko.widgets.style.input.InputType
+import dev.icerock.moko.widgets.switchLabeled
 import dev.icerock.moko.widgets.text
 
 class SocialProfileScreen(
@@ -75,6 +79,13 @@ class SocialProfileScreen(
                             values = viewModel.genders,
                             cancelLabel = const("Отмена")
                         ),
+                        switchLabeled(
+                            switchId = Id.AgreementSwitch,
+                            switchState = viewModel.agreement,
+                            text = const("Согласен с условиями пользования"),
+                            linearId = Id.AgreementContainer,
+                            textId = Id.AgreementText
+                        ),
                         button(
                             id = Id.SubmitButton,
                             text = const("Сохранить"),
@@ -87,6 +98,9 @@ class SocialProfileScreen(
     }
 
     object Id {
+        object AgreementText : TextWidget.Id
+        object AgreementContainer : LinearWidget.Id
+        object AgreementSwitch : SwitchWidget.Id
         object NameInput : InputWidget.Id
         object NickNameInput : InputWidget.Id
         object AboutInput : InputWidget.Id
@@ -99,6 +113,7 @@ class SocialProfileScreen(
     }
 
     interface ViewModelContract {
+        val agreement: MutableLiveData<Boolean>
         val genders: LiveData<List<StringDesc>>
         val genderField: FormField<Int?, StringDesc>
         val birthdayField: FormField<String, StringDesc>

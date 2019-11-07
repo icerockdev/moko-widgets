@@ -29,6 +29,10 @@ open class MainScreen(
             tabs(
                 tabs = listOf(
                     TabsWidget.TabWidget(
+                        title = const("P#2"),
+                        body = social2Scope.socialProfileScreen(viewModel)
+                    ),
+                    TabsWidget.TabWidget(
                         title = const("U"),
                         body = UsersScreen(this, viewModel).createWidget()
                     ),
@@ -39,10 +43,6 @@ open class MainScreen(
                     TabsWidget.TabWidget(
                         title = const("P#1"),
                         body = social1Scope.socialProfileScreen(viewModel)
-                    ),
-                    TabsWidget.TabWidget(
-                        title = const("P#2"),
-                        body = social2Scope.socialProfileScreen(viewModel)
                     ),
                     TabsWidget.TabWidget(
                         title = const("P#3"),

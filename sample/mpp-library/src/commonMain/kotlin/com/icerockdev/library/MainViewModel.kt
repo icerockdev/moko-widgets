@@ -82,6 +82,8 @@ class MainViewModel(
         }
     }
 
+    override val agreement: MutableLiveData<Boolean> = MutableLiveData(false)
+
     private val fields = listOf(
         nameField,
         nicknameField,

@@ -5,6 +5,7 @@
 package com.icerockdev.library
 
 import com.icerockdev.library.screen.CryptoProfileScreen
+import com.icerockdev.library.screen.SocialProfileScreen
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.InputWidget
@@ -16,6 +17,7 @@ import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.inputStyle
 import dev.icerock.moko.widgets.linearStyle
 import dev.icerock.moko.widgets.setButtonStyle
+import dev.icerock.moko.widgets.setLinearStyle
 import dev.icerock.moko.widgets.singleChoiceStyle
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Corners
@@ -151,6 +153,11 @@ object Theme {
         this.buttonStyle = Theme.buttonStyle
         this.linearStyle = Theme.profileContainerStyle
         this.singleChoiceStyle = Theme.singleChoiceStyle
+
+        setLinearStyle(linearStyle.copy(
+            padding = PaddingValues(),
+            margins = MarginValues(bottom = 8f)
+        ), SocialProfileScreen.Id.AgreementContainer)
     }
 
     val mcommerceWidgetScope = WidgetScope {
