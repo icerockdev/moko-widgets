@@ -40,7 +40,7 @@ class LinearListWidget(
         override val background: Background? = null,
         override val padding: PaddingValues? = null,
         override val margins: MarginValues? = null,
-        val orientation: Orientation = Orientation.VERTICAL,
+        val orientation: Orientation = Orientation.VERTICAL, // FIXME: NOT SUPPORTED ON IOS
         val reversed: Boolean = false
     ) : Widget.Style, Padded, Margined, Sized, Backgrounded
 
