@@ -3,6 +3,10 @@
  */
 
 object Deps {
+    object Plugins {
+        val mokoWidgets = "dev.icerock.moko.widgets:gradle-plugin:${Versions.Plugins.mokoWidgets}"
+    }
+
     object Libs {
         object Android {
             val kotlinStdLib = AndroidLibrary(

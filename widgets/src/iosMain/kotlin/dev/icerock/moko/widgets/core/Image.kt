@@ -4,14 +4,23 @@
 
 package dev.icerock.moko.widgets.core
 
+import dev.icerock.moko.media.Bitmap
 import dev.icerock.moko.resources.DrawableResource
 
-actual class Image {
-    actual constructor(drawableResource: DrawableResource) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
-    actual constructor(url: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+actual abstract class Image {
+
+    actual companion object {
+        actual fun resource(drawableResource: DrawableResource): Image {
+            TODO()
+        }
+
+        actual fun network(url: String): Image {
+            TODO()
+        }
+
+        actual fun bitmap(bitmap: Bitmap): Image {
+            TODO()
+        }
     }
 }

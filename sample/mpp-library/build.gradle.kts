@@ -25,7 +25,8 @@ android {
 }
 
 val deps = listOf(
-    Deps.Libs.MultiPlatform.mokoUnits
+    Deps.Libs.MultiPlatform.mokoUnits,
+    Deps.Libs.MultiPlatform.mokoWidgets
 )
 
 setupFramework(
@@ -39,8 +40,6 @@ dependencies {
     deps.forEach { mppLibrary(it) }
 
     androidLibrary(Deps.Libs.Android.recyclerView)
-
-    mppModule(MultiPlatformModule(name = ":widgets"))
 }
 //
 //multiplatformUnits {

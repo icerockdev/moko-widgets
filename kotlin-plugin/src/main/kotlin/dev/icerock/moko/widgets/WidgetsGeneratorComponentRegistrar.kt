@@ -6,7 +6,6 @@ package dev.icerock.moko.widgets
 
 import com.google.auto.service.AutoService
 import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
-import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.com.intellij.mock.MockProject
 import org.jetbrains.kotlin.compiler.plugin.ComponentRegistrar
@@ -22,8 +21,9 @@ open class WidgetsGeneratorComponentRegistrar : ComponentRegistrar {
     ) {
         val messageCollector = configuration.get(CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY, MessageCollector.NONE)
 
-        fun log(string: String) = messageCollector.report(CompilerMessageSeverity.WARNING, string)
-
-        CollectAdditionalSourcesExtension.registerExtension(project, GenerateSourcesExtension())
+        CollectAdditionalSourcesExtension.registerExtension(
+            project,
+            GenerateSourcesExtension(messageCollector)
+        )
     }
 }

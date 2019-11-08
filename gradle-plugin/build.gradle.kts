@@ -6,6 +6,7 @@ plugins {
     `kotlin-dsl`
     id("maven-publish")
     id("kotlin-kapt")
+    id("com.github.kukuhyoniatmoko.buildconfigkotlin") version "1.0.5"
 }
 
 dependencies {
@@ -16,6 +17,12 @@ dependencies {
 
     compileOnly("com.google.auto.service:auto-service:1.0-rc6")
     kapt("com.google.auto.service:auto-service:1.0-rc6")
+}
+
+buildConfigKotlin {
+    sourceSet("main") {
+        buildConfig(name = "compilerPluginVersion", value = Versions.Plugins.mokoWidgets)
+    }
 }
 
 publishing {
@@ -32,7 +39,7 @@ publishing {
         register("plugin", MavenPublication::class) {
             groupId = "dev.icerock.moko.widgets"
             artifactId = "gradle-plugin"
-            version = Versions.Libs.MultiPlatform.mokoWidgets
+            version = Versions.Plugins.mokoWidgets
 
             from(components["java"])
         }

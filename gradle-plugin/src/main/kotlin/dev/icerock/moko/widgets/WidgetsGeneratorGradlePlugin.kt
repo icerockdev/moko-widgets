@@ -13,8 +13,11 @@ open class WidgetsGeneratorGradlePlugin : org.gradle.api.Plugin<Project> {
     override fun apply(project: Project) {
         project.afterEvaluate {
             val mpp = project.extensions.getByType(KotlinMultiplatformExtension::class.java)
-            val genDir = File(project.buildDir, "generated/mokoWidgets")
-            mpp.sourceSets.getByName(KotlinSourceSet.COMMON_MAIN_SOURCE_SET_NAME).kotlin.srcDir(genDir.path)
+            mpp.sourceSets.getByName(KotlinSourceSet.COMMON_MAIN_SOURCE_SET_NAME).kotlin.srcDir(getGenerationDir().path)
         }
     }
+}
+
+fun Project.getGenerationDir(): File {
+    return File(project.buildDir, "generated/mokoWidgets")
 }

@@ -1,22 +1,30 @@
 /*
  * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
     id("kotlin")
     id("maven-publish")
     id("kotlin-kapt")
+    id("com.github.johnrengelman.shadow") version "5.1.0"
 }
 
 dependencies {
     implementation(Deps.Libs.MultiPlatform.kotlinStdLib.android!!)
 
-    implementation("com.squareup:kotlinpoet:1.3.0")
+    compile(project(":kotlin-common-plugin"))
 
     compileOnly("org.jetbrains.kotlin:kotlin-compiler")
 
     compileOnly("com.google.auto.service:auto-service:1.0-rc6")
     kapt("com.google.auto.service:auto-service:1.0-rc6")
+}
+
+val shadowJar: ShadowJar by tasks
+shadowJar.apply {
+    classifier = ""
+    configurations = listOf(project.configurations.compile.get())
 }
 
 publishing {
@@ -32,10 +40,10 @@ publishing {
     publications {
         register("plugin", MavenPublication::class) {
             groupId = "dev.icerock.moko.widgets"
-            artifactId = "kotlin-native-plugin"
-            version = Versions.Libs.MultiPlatform.mokoWidgets
+            artifactId = project.name
+            version = Versions.Plugins.mokoWidgets
 
-            from(components["java"])
+            artifact(shadowJar)
         }
     }
 }

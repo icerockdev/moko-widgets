@@ -15,17 +15,32 @@ pluginManagement {
         maven { url = uri("https://dl.bintray.com/icerockdev/plugins") }
     }
     resolutionStrategy.eachPlugin {
-        when(requested.id.id) {
-            "dev.icerock.mobile.multiplatform-widgets-generator" -> useModule("dev.icerock.moko.widgets:gradle-plugin:0.1.0")
+        when (requested.id.id) {
+            "dev.icerock.mobile.multiplatform-widgets-generator" -> useModule(Deps.Plugins.mokoWidgets)
         }
     }
 }
 
 enableFeaturePreview("GRADLE_METADATA")
 
-include(":widgets")
+val properties = startParameter.projectProperties
+
+// ./gradlew -PpluginPublish publishPluginPublicationToMavenLocal
+val pluginPublish: Boolean = properties.containsKey("pluginPublish")
+
+// ./gradlew -PlibraryPublish publishToMavenLocal
+val libraryPublish: Boolean = properties.containsKey("libraryPublish")
+
+include(":kotlin-common-plugin")
 include(":kotlin-plugin")
 include(":kotlin-native-plugin")
 include(":gradle-plugin")
-include(":sample:android-app")
-include(":sample:mpp-library")
+
+if (!pluginPublish) {
+    include(":widgets")
+
+    if (!libraryPublish) {
+        include(":sample:android-app")
+        include(":sample:mpp-library")
+    }
+}

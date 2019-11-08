@@ -10,6 +10,11 @@ object Versions {
     }
 
     const val kotlin = "1.3.50"
+    private const val mokoWidgets = "0.1.0-SNAPSHOT"
+
+    object Plugins {
+        const val mokoWidgets = Versions.mokoWidgets
+    }
 
     object Libs {
         object Android {
@@ -25,7 +30,7 @@ object Versions {
         object MultiPlatform {
             const val coroutines = "1.3.0"
 
-            const val mokoWidgets = "0.1.0"
+            const val mokoWidgets = Versions.mokoWidgets
             const val mokoResources = "0.4.0"
             const val mokoMvvm = "0.3.0"
             const val mokoFields = "0.1.0"
