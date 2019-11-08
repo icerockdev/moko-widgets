@@ -4,8 +4,8 @@
 
 package com.icerockdev.library
 
-import com.icerockdev.library.screen.CryptoProfileScreen
-import com.icerockdev.library.screen.SocialProfileScreen
+import com.icerockdev.library.sample.CryptoProfileScreen
+import com.icerockdev.library.sample.SocialProfileScreen
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.InputWidget

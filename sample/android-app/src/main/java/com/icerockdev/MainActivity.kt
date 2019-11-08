@@ -5,16 +5,13 @@
 package com.icerockdev
 
 import com.icerockdev.library.Factory
-import com.icerockdev.library.MainViewModel
-import com.icerockdev.library.Theme
-import com.icerockdev.library.screen.MainScreen
+import com.icerockdev.library.screen.HostScreen
 import dev.icerock.moko.widgets.core.ScreenActivity
-import dev.icerock.moko.widgets.core.WidgetScope
 
-class MainActivity : ScreenActivity<MainViewModel, MainScreen.Args, MainScreen>() {
-    override fun createScreen(): MainScreen = Factory().createMainScreen()
+class MainActivity : ScreenActivity<HostScreen.DummyVM, HostScreen.Args, HostScreen>() {
+    override fun createScreen(): HostScreen = Factory().createMainScreen()
 
-    override fun getArgs(): MainScreen.Args = MainScreen.Args("test")
+    override fun getArgs(): HostScreen.Args = HostScreen.Args("test")
 
-    override val viewModelClass: Class<MainViewModel> = MainViewModel::class.java
+    override val viewModelClass: Class<HostScreen.DummyVM> = HostScreen.DummyVM::class.java
 }

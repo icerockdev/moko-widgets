@@ -2,9 +2,12 @@
  * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
 
-package com.icerockdev.library.screen
+package com.icerockdev.library.sample
 
 import dev.icerock.moko.fields.FormField
+import dev.icerock.moko.fields.liveBlock
+import dev.icerock.moko.fields.validate
+import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.InputWidget
@@ -17,7 +20,7 @@ import dev.icerock.moko.widgets.style.input.InputType
 
 class McommerceProfileScreen(
     private val widgetScope: WidgetScope,
-    private val viewModel: ViewModelContract
+    private val viewModel: McommerceProfileViewModelContract
 ) {
     fun createWidget(): AnyWidget {
         return with(widgetScope) {
@@ -56,13 +59,28 @@ class McommerceProfileScreen(
         object PhoneInput : InputWidget.Id
         object SubmitButton : ButtonWidget.Id
     }
+}
 
+interface McommerceProfileViewModelContract {
+    val birthdayField: FormField<String, StringDesc>
+    val phoneField: FormField<String, StringDesc>
+    val nameField: FormField<String, StringDesc>
 
-    interface ViewModelContract {
-        val birthdayField: FormField<String, StringDesc>
-        val phoneField: FormField<String, StringDesc>
-        val nameField: FormField<String, StringDesc>
+    fun onSavePressed()
+}
 
-        fun onSavePressed()
+class McommerceProfileViewModel() : ViewModel(), McommerceProfileViewModelContract {
+    override val nameField: FormField<String, StringDesc> = FormField("Aleksey", liveBlock { null })
+    override val phoneField: FormField<String, StringDesc> = FormField("+79999999999", liveBlock { null })
+    override val birthdayField: FormField<String, StringDesc> = FormField("31.05.1993", liveBlock { null })
+
+    private val fields = listOf(
+        nameField,
+        phoneField,
+        birthdayField
+    )
+
+    override fun onSavePressed() {
+        fields.validate()
     }
 }

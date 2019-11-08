@@ -2,15 +2,16 @@
  * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
 
-package com.icerockdev.library.screen
+package com.icerockdev.library.sample
 
 import dev.icerock.moko.mvvm.State
 import dev.icerock.moko.mvvm.livedata.LiveData
+import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.mvvm.livedata.map
+import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.button
-import dev.icerock.moko.widgets.buttonStyle
 import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.AnyWidget
 import dev.icerock.moko.widgets.core.WidgetScope
@@ -19,52 +20,23 @@ import dev.icerock.moko.widgets.flatAlert
 import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.progressBar
 import dev.icerock.moko.widgets.stateful
-import dev.icerock.moko.widgets.style.background.Orientation
 import dev.icerock.moko.widgets.style.view.Alignment
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.tabs
 import dev.icerock.moko.widgets.text
 
-open class DemoScreen(
+open class StateScreen(
     private val widgetScope: WidgetScope,
-    private val viewModel: ViewModelContract
+    private val viewModel: StateViewModelContract
 ) {
     fun createWidget(): AnyWidget {
         return with(widgetScope) {
-            val buttonsScope = childScope {
-                this.buttonStyle = buttonStyle.copy(
-                    size = WidgetSize.Const(
-                        width = SizeSpec.WRAP_CONTENT,
-                        height = SizeSpec.WRAP_CONTENT
-                    )
-                )
-            }
-
             linear(
                 childs = listOf(
-                    linear(
-                        styled = {
-                            it.copy(
-                                orientation = Orientation.HORIZONTAL,
-                                size = WidgetSize.Const(
-                                    width = SizeSpec.AS_PARENT,
-                                    height = SizeSpec.WRAP_CONTENT
-                                )
-                            )
-                        },
-                        childs = with(buttonsScope) {
-                            listOf(
-                                button(
-                                    text = "change state".desc().asLiveData(),
-                                    onTap = viewModel::onChangeStatePressed
-                                ),
-                                button(
-                                    text = "just button".desc().asLiveData(),
-                                    onTap = {}
-                                )
-                            )
-                        }
+                    button(
+                        text = "change state".desc().asLiveData(),
+                        onTap = viewModel::onChangeStatePressed
                     ),
                     stateful(
                         state = viewModel.state,
@@ -114,11 +86,26 @@ open class DemoScreen(
             )
         }
     }
+}
 
+interface StateViewModelContract {
+    val state: LiveData<State<String, String>>
 
-    interface ViewModelContract {
-        val state: LiveData<State<String, String>>
+    fun onChangeStatePressed()
+}
 
-        fun onChangeStatePressed()
+class StateViewModel : ViewModel(), StateViewModelContract {
+    private val _state: MutableLiveData<State<String, String>> = MutableLiveData(initialValue = State.Empty())
+    override val state: LiveData<State<String, String>> = _state
+
+    override fun onChangeStatePressed() {
+        when (state.value) {
+            is State.Empty -> _state.value = State.Loading()
+            is State.Loading -> {
+                _state.value = State.Data(data = "hello!")
+            }
+            is State.Data -> _state.value = State.Error(error = "this is error")
+            is State.Error -> _state.value = State.Empty()
+        }
     }
 }
