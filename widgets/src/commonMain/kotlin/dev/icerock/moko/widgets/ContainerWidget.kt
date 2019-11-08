@@ -30,7 +30,7 @@ class ContainerWidget(
     override val style: Style,
     override val id: Id?,
     @Suppress("RemoveRedundantQualifierName")
-    val childs: Map<AnyWidget, ContainerWidget.ChildSpec>
+    val childs: Map<AnyWidget, Alignment>
 ) : Widget<ContainerWidget>(),
     Styled<ContainerWidget.Style>,
     OptionalId<ContainerWidget.Id> {
@@ -46,8 +46,4 @@ class ContainerWidget(
     ) : Widget.Style, Sized, Padded, Margined, Backgrounded
 
     interface Id : WidgetScope.Id
-
-    data class ChildSpec(
-        val alignment: Alignment
-    )
 }

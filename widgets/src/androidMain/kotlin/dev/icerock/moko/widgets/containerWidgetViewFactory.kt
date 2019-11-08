@@ -21,7 +21,7 @@ actual var containerWidgetViewFactory: VFC<ContainerWidget> = { viewFactoryConte
 
     val root = MarginedFrameLayout(context)
 
-    widget.childs.forEach { (childWidget, childSpec) ->
+    widget.childs.forEach { (childWidget, childAlignment) ->
         val childView = childWidget.buildView(
             ViewFactoryContext(
                 context = context,
@@ -36,7 +36,7 @@ actual var containerWidgetViewFactory: VFC<ContainerWidget> = { viewFactoryConte
             is ViewGroup.MarginLayoutParams -> FrameLayout.LayoutParams(clp)
             else -> FrameLayout.LayoutParams(clp)
         }
-        lp.gravity = when (childSpec.alignment) {
+        lp.gravity = when (childAlignment) {
             Alignment.CENTER -> Gravity.CENTER
             Alignment.LEFT -> Gravity.LEFT
             Alignment.RIGHT -> Gravity.RIGHT

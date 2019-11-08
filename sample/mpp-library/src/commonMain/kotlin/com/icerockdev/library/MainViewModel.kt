@@ -125,7 +125,9 @@ class MainViewModel(
         emailField,
         phoneField,
         birthdayField,
-        genderField
+        genderField,
+        passwordField,
+        repeatPasswordField
     )
 
     override fun onChangeStatePressed() {

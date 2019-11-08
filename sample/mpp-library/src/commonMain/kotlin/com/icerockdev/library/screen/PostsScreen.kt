@@ -31,7 +31,6 @@ class PostsScreen(
                         data = post
                     )
                 }
-
             },
             styled = {
                 it.copy(

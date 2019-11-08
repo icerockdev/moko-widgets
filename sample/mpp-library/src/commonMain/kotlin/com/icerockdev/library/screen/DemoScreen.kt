@@ -8,7 +8,6 @@ import dev.icerock.moko.mvvm.State
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.map
 import dev.icerock.moko.resources.desc.desc
-import dev.icerock.moko.widgets.ContainerWidget
 import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.buttonStyle
@@ -82,14 +81,14 @@ open class DemoScreen(
                                             )
                                         },
                                         text = const("empty")
-                                    ) to ContainerWidget.ChildSpec(alignment = Alignment.CENTER)
+                                    ) to Alignment.CENTER
                                 )
                             )
                         },
                         loading = {
                             container(
                                 childs = mapOf(
-                                    progressBar() to ContainerWidget.ChildSpec(alignment = Alignment.CENTER)
+                                    progressBar() to Alignment.CENTER
                                 )
                             )
                         },

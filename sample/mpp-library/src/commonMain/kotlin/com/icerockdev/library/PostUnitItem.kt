@@ -8,7 +8,6 @@ import com.icerockdev.library.screen.PostsScreen
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.map
-import dev.icerock.moko.widgets.ContainerWidget
 import dev.icerock.moko.widgets.ImageWidget
 import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.AnyWidget
@@ -19,7 +18,6 @@ import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Direction
 import dev.icerock.moko.widgets.style.background.Fill
-import dev.icerock.moko.widgets.style.background.Shape
 import dev.icerock.moko.widgets.style.view.Alignment
 import dev.icerock.moko.widgets.style.view.Colors
 import dev.icerock.moko.widgets.style.view.MarginValues
@@ -52,8 +50,7 @@ class PostUnitItem(
                         aspectRatio = 0.73f
                     ),
                     background = Background(
-                        fill = Fill.Solid(Color(0xB8, 0x3A, 0xF3, 0xFF)),
-                        shape = Shape.Rectangle(cornerRadius = 16f)
+                        fill = Fill.Solid(Color(0x66, 0x66, 0x66, 0xFF))
                     ),
                     margins = MarginValues(4f)
                 )
@@ -64,9 +61,9 @@ class PostUnitItem(
                         it.copy(scaleType = ImageWidget.ScaleType.FILL)
                     },
                     image = data.map { Image.network(it.imageUrl) }
-                ) to ContainerWidget.ChildSpec(alignment = Alignment.CENTER),
-                createHeader(data) to ContainerWidget.ChildSpec(alignment = Alignment.TOP),
-                createFooter(data) to ContainerWidget.ChildSpec(alignment = Alignment.BOTTOM)
+                ) to Alignment.CENTER,
+                createHeader(data) to Alignment.TOP,
+                createFooter(data) to Alignment.BOTTOM
             )
         )
     }
@@ -103,7 +100,7 @@ class PostUnitItem(
                         )
                     },
                     text = data.map { it.nickname }
-                ) to ContainerWidget.ChildSpec(alignment = Alignment.CENTER)
+                ) to Alignment.CENTER
             )
         )
     }
@@ -164,7 +161,7 @@ class PostUnitItem(
                         )
                     },
                     childs = regularItems
-                ) to ContainerWidget.ChildSpec(alignment = Alignment.CENTER)
+                ) to Alignment.CENTER
             )
         )
     }
