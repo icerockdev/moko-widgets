@@ -109,7 +109,6 @@
 			buildConfigurationList = 287628111F319065007FA12B /* Build configuration list for PBXNativeTarget "TestProj" */;
 			buildPhases = (
 				DDE4C06D580BF457BEDF8D0A /* [CP] Check Pods Manifest.lock */,
-				4539A7AE235186AF0081362B /* R.swift */,
 				287627FB1F319065007FA12B /* Sources */,
 				287627FC1F319065007FA12B /* Frameworks */,
 				287627FD1F319065007FA12B /* Resources */,
@@ -188,26 +187,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TestProj/Pods-TestProj-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
-		};
-		4539A7AE235186AF0081362B /* R.swift */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"$TEMP_DIR/rswift-lastrun",
-			);
-			name = R.swift;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				$SRCROOT/R.generated.swift,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"$PODS_ROOT/R.swift/rswift\" generate \"$SRCROOT/R.generated.swift\"\n";
 		};
 		DDE4C06D580BF457BEDF8D0A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
