@@ -5,7 +5,7 @@
 package com.icerockdev.library
 
 import com.icerockdev.library.sample.UsersViewModel
-import com.icerockdev.library.screen.HostScreen
+import com.icerockdev.library.units.UserUnitItem
 import dev.icerock.moko.units.UnitItem
 import dev.icerock.moko.widgets.core.WidgetScope
 
@@ -14,7 +14,7 @@ class SharedFactory {
         WidgetScope()
     }
 
-    private val usersUnitsFactory by lazy {
+    val usersUnitsFactory by lazy {
         object : UsersViewModel.UnitsFactory {
             override fun createUserUnit(
                 itemId: Long,
@@ -31,16 +31,5 @@ class SharedFactory {
                 )
             )
         }
-    }
-
-    fun createMainScreen(): HostScreen {
-        return HostScreen(
-            widgetScope = mainWidgetScope,
-            cryptoScope = Theme.cryptoWidgetScope,
-            social1Scope = mainWidgetScope,
-            social2Scope = Theme.socialWidgetScope,
-            mcommerceScope = Theme.mcommerceWidgetScope,
-            usersUnitsFactory = usersUnitsFactory
-        )
     }
 }

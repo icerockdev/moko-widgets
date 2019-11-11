@@ -2,8 +2,10 @@
  * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
 
-package com.icerockdev.library
+package com.icerockdev.library.sample
 
+import com.icerockdev.library.SharedFactory
+import com.icerockdev.library.Theme
 import dev.icerock.moko.core.Parcelable
 import dev.icerock.moko.core.Parcelize
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcher
@@ -11,77 +13,29 @@ import dev.icerock.moko.mvvm.dispatcher.EventsDispatcherOwner
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
-import dev.icerock.moko.resources.DrawableResource
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
+import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.AnyWidget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.linear
+import dev.icerock.moko.widgets.screen.Args
+import dev.icerock.moko.widgets.screen.BottomNavigationItem
+import dev.icerock.moko.widgets.screen.BottomNavigationScreen
+import dev.icerock.moko.widgets.screen.NavigationScreen
+import dev.icerock.moko.widgets.screen.Screen
+import dev.icerock.moko.widgets.screen.WidgetScreen
+import dev.icerock.moko.widgets.screen.getArgument
+import dev.icerock.moko.widgets.screen.getViewModel
+import dev.icerock.moko.widgets.screen.listen
 import dev.icerock.moko.widgets.style.view.Alignment
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.tabs
 import dev.icerock.moko.widgets.text
 import kotlin.reflect.KClass
-
-sealed class Args {
-    data class Parcel<T : Parcelable>(val args: T) : Args()
-    object Empty : Args()
-}
-
-expect abstract class Screen<Arg : Args> {
-    inline fun <reified VM : ViewModel, Key : Any> getViewModel(key: Key, crossinline viewModelFactory: () -> VM): VM
-
-    fun <T : Any> createEventsDispatcher(): EventsDispatcher<T>
-
-    fun dispatchNavigation(actions: Navigation.() -> Unit)
-}
-
-expect abstract class WidgetScreen<Arg : Args>() : Screen<Arg> {
-    abstract fun createContentWidget(): AnyWidget
-}
-
-inline fun <Arg : Args, reified VM : ViewModel> Screen<Arg>.getViewModel(crossinline viewModelFactory: () -> VM): VM {
-    return getViewModel(Unit, viewModelFactory)
-}
-
-expect fun <T : Parcelable> Screen<Args.Parcel<T>>.getArgument(): T
-
-interface Navigation {
-    fun <S : Screen<Args.Empty>> routeToScreen(screen: KClass<S>)
-    fun <Arg : Parcelable, S : Screen<Args.Parcel<Arg>>> routeToScreen(screen: KClass<S>, argument: Arg)
-}
-
-expect abstract class BottomNavigationScreen() : Screen<Args.Empty> {
-    abstract val items: List<BottomNavigationItem>
-}
-
-data class BottomNavigationItem(
-    val id: Int,
-    val title: StringDesc,
-    val icon: DrawableResource? = null,
-    val screen: KClass<out Screen<Args.Empty>>
-)
-
-expect abstract class NavigationScreen() : Screen<Args.Empty> {
-    abstract val rootScreen: KClass<out Screen<Args.Empty>>
-}
-
-expect abstract class DrawerNavigationScreen() : Screen<Args.Empty> {
-    abstract val header: Any? // what info in header?
-    abstract val items: List<DrawerNavigationItem>
-    abstract val secondaryItems: List<DrawerNavigationItem>
-}
-
-data class DrawerNavigationItem(
-    val id: Int,
-    val title: StringDesc,
-    val icon: DrawableResource? = null,
-    val screen: KClass<out Screen<Args.Empty>>
-)
-
-expect fun <T : Any> EventsDispatcher<T>.listen(screen: Screen<*>, listener: T)
 
 class ProductScreen : WidgetScreen<Args.Parcel<ProductScreen.Args>>(), ProductViewModel.EventsListener {
     override fun createContentWidget(): AnyWidget {
@@ -174,6 +128,11 @@ class MyBottomNavigationScreen : BottomNavigationScreen() {
             id = 2,
             title = "Cart".desc(),
             screen = CartNavigationScreen::class
+        ),
+        BottomNavigationItem(
+            id = 3,
+            title = "Widgets".desc(),
+            screen = WidgetsScreen::class
         )
     )
 }
@@ -195,7 +154,64 @@ class CartNavigationScreen : NavigationScreen() {
 //    }::class
 //}
 
-// RESERVED FUNCTION
-fun getRootScreen(): KClass<out Screen<Args.Empty>> {
-    return MyBottomNavigationScreen::class
+class WidgetsScreen : WidgetScreen<Args.Empty>() {
+    private val sharedFactory = SharedFactory() // TODO change system
+
+    override fun createContentWidget(): AnyWidget {
+        return with(WidgetScope()) {
+            tabs(
+                tabs = listOf(
+                    TabsWidget.TabWidget(
+                        title = const("P"),
+                        body = PostsScreen(
+                            widgetScope = this,
+                            viewModel = PostsViewModel()
+                        ).createWidget()
+                    ),
+                    TabsWidget.TabWidget(
+                        title = const("U"),
+                        body = UsersScreen(
+                            widgetScope = this,
+                            viewModel = UsersViewModel(sharedFactory.usersUnitsFactory)
+                        ).createWidget()
+                    ),
+                    TabsWidget.TabWidget(
+                        title = const("P#2"),
+                        body = SocialProfileScreen(
+                            widgetScope = Theme.socialWidgetScope,
+                            viewModel = SocialProfileViewModel()
+                        ).createWidget()
+                    ),
+                    TabsWidget.TabWidget(
+                        title = const("P#4"),
+                        body = CryptoProfileScreen(
+                            widgetScope = Theme.cryptoWidgetScope,
+                            viewModel = CryptoProfileViewModel()
+                        ).createWidget()
+                    ),
+                    TabsWidget.TabWidget(
+                        title = const("P#1"),
+                        body = SocialProfileScreen(
+                            widgetScope = this,
+                            viewModel = SocialProfileViewModel()
+                        ).createWidget()
+                    ),
+                    TabsWidget.TabWidget(
+                        title = const("P#3"),
+                        body = McommerceProfileScreen(
+                            widgetScope = Theme.mcommerceWidgetScope,
+                            viewModel = McommerceProfileViewModel()
+                        ).createWidget()
+                    ),
+                    TabsWidget.TabWidget(
+                        title = const("D"),
+                        body = StateScreen(
+                            widgetScope = this,
+                            viewModel = StateViewModel()
+                        ).createWidget()
+                    )
+                )
+            )
+        }
+    }
 }

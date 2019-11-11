@@ -4,7 +4,7 @@
 
 package com.icerockdev.library.sample
 
-import com.icerockdev.library.PostUnitItem
+import com.icerockdev.library.units.PostUnitItem
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.mvvm.livedata.map
