@@ -10,6 +10,8 @@ import dev.icerock.moko.widgets.core.AnyWidget
 import dev.icerock.moko.widgets.core.OptionalId
 import dev.icerock.moko.widgets.core.Styled
 import dev.icerock.moko.widgets.core.VFC
+import dev.icerock.moko.widgets.core.View
+import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
 import dev.icerock.moko.widgets.core.WidgetScope
@@ -23,14 +25,16 @@ expect var tabsWidgetViewFactory: VFC<TabsWidget>
 
 @WidgetDef
 class TabsWidget(
-    override val factory: VFC<TabsWidget>,
+    val factory: VFC<TabsWidget>,
     override val style: Style,
     override val id: Id?,
     @Suppress("RemoveRedundantQualifierName")
     val tabs: List<TabsWidget.TabWidget> // for correct codegen
-) : Widget<TabsWidget>(),
-    Styled<TabsWidget.Style>,
-    OptionalId<TabsWidget.Id> {
+) : Widget(), Styled<TabsWidget.Style>, OptionalId<TabsWidget.Id> {
+
+    override fun buildView(viewFactoryContext: ViewFactoryContext): View {
+        return factory(viewFactoryContext, this)
+    }
 
     class TabWidget(
         val title: LiveData<StringDesc>,

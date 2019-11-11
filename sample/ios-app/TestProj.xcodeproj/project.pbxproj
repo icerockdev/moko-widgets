@@ -8,9 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		2B70A10DE02726CA8E6981EB /* Pods_TestProj.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8D683A7C91DCD56058C7435 /* Pods_TestProj.framework */; };
-		4539A79F23508B950081362B /* SimpleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4539A79E23508B950081362B /* SimpleCell.xib */; };
-		4539A7A22350957E0081362B /* SimpleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4539A7A12350957E0081362B /* SimpleCell.swift */; };
-		4539A7B0235188090081362B /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4539A7AF235188090081362B /* R.generated.swift */; };
 		45D74FCC22BFDDFD00CAB0C8 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D74FCB22BFDDFD00CAB0C8 /* TestViewController.swift */; };
 		45F4791D219463C7003D25FA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45F47912219463C7003D25FA /* LaunchScreen.storyboard */; };
 		45F4791E219463C7003D25FA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45F47914219463C7003D25FA /* Main.storyboard */; };
@@ -20,9 +17,6 @@
 
 /* Begin PBXFileReference section */
 		287627FF1F319065007FA12B /* mokoSampleUnits.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mokoSampleUnits.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		4539A79E23508B950081362B /* SimpleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SimpleCell.xib; sourceTree = "<group>"; };
-		4539A7A12350957E0081362B /* SimpleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleCell.swift; sourceTree = "<group>"; };
-		4539A7AF235188090081362B /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = SOURCE_ROOT; };
 		45964D362282A1FD00C16658 /* mpp-library */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "mpp-library"; path = "../mpp-library"; sourceTree = "<group>"; };
 		45D74FCB22BFDDFD00CAB0C8 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		45F47913219463C7003D25FA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -78,20 +72,9 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		4539A7A02350956C0081362B /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				4539A79E23508B950081362B /* SimpleCell.xib */,
-				4539A7A12350957E0081362B /* SimpleCell.swift */,
-			);
-			path = Cells;
-			sourceTree = "<group>";
-		};
 		45F47910219463C7003D25FA /* src */ = {
 			isa = PBXGroup;
 			children = (
-				4539A7AF235188090081362B /* R.generated.swift */,
-				4539A7A02350956C0081362B /* Cells */,
 				45F47911219463C7003D25FA /* Resources */,
 				45F4791A219463C7003D25FA /* Assets.xcassets */,
 				45F4791B219463C7003D25FA /* AppDelegate.swift */,
@@ -183,7 +166,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				45F4791E219463C7003D25FA /* Main.storyboard in Resources */,
-				4539A79F23508B950081362B /* SimpleCell.xib in Resources */,
 				45F4791D219463C7003D25FA /* LaunchScreen.storyboard in Resources */,
 				45F47921219463C7003D25FA /* Assets.xcassets in Resources */,
 			);
@@ -258,8 +240,6 @@
 			files = (
 				45D74FCC22BFDDFD00CAB0C8 /* TestViewController.swift in Sources */,
 				45F47922219463C7003D25FA /* AppDelegate.swift in Sources */,
-				4539A7A22350957E0081362B /* SimpleCell.swift in Sources */,
-				4539A7B0235188090081362B /* R.generated.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

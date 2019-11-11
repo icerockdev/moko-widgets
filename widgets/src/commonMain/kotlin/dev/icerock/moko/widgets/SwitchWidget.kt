@@ -8,6 +8,8 @@ import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.widgets.core.RequireId
 import dev.icerock.moko.widgets.core.Styled
 import dev.icerock.moko.widgets.core.VFC
+import dev.icerock.moko.widgets.core.View
+import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
 import dev.icerock.moko.widgets.core.WidgetScope
@@ -26,11 +28,15 @@ expect var switchWidgetViewFactory: VFC<SwitchWidget>
 
 @WidgetDef
 class SwitchWidget(
-    override val factory: VFC<SwitchWidget>,
+    val factory: VFC<SwitchWidget>,
     override val style: Style,
     override val id: Id,
     val state: MutableLiveData<Boolean>
-) : Widget<SwitchWidget>(), Styled<SwitchWidget.Style>, RequireId<SwitchWidget.Id> {
+) : Widget(), Styled<SwitchWidget.Style>, RequireId<SwitchWidget.Id> {
+
+    override fun buildView(viewFactoryContext: ViewFactoryContext): View {
+        return factory(viewFactoryContext, this)
+    }
 
     /**
      * @property size @see dev.icerock.moko.widgets.style.view.Sized

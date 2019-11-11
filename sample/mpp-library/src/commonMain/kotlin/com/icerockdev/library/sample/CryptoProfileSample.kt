@@ -15,7 +15,7 @@ import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.TextWidget
 import dev.icerock.moko.widgets.button
-import dev.icerock.moko.widgets.core.AnyWidget
+import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.input
 import dev.icerock.moko.widgets.linear
@@ -26,7 +26,7 @@ class CryptoProfileScreen(
     private val widgetScope: WidgetScope,
     private val viewModel: CryptoProfileContract
 ) {
-    fun createWidget(): AnyWidget {
+    fun createWidget(): Widget {
         return with(widgetScope) {
             linear(
                 childs = listOf(

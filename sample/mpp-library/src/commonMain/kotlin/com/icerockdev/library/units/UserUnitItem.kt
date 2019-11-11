@@ -7,8 +7,8 @@ package com.icerockdev.library.units
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.map
 import dev.icerock.moko.resources.desc.desc
-import dev.icerock.moko.widgets.core.Image
 import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.core.Image
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.image
 import dev.icerock.moko.widgets.linear
@@ -26,7 +26,7 @@ class UserUnitItem(
 ) : WidgetsUnitItem<UserUnitItem.Data>(itemId, data) {
     override val reuseId: String = "UserUnitItem"
 
-    override fun createWidget(data: LiveData<Data>): Widget<*> {
+    override fun createWidget(data: LiveData<Data>): Widget {
         return with(widgetScope) {
             linear(
                 styled = {

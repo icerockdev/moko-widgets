@@ -8,6 +8,8 @@ import dev.icerock.moko.widgets.core.AnyWidget
 import dev.icerock.moko.widgets.core.OptionalId
 import dev.icerock.moko.widgets.core.Styled
 import dev.icerock.moko.widgets.core.VFC
+import dev.icerock.moko.widgets.core.View
+import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
 import dev.icerock.moko.widgets.core.WidgetScope
@@ -26,13 +28,15 @@ expect var linearWidgetViewFactory: VFC<LinearWidget>
 
 @WidgetDef
 class LinearWidget(
-    override val factory: VFC<LinearWidget>,
+    val factory: VFC<LinearWidget>,
     override val style: Style,
     override val id: Id?,
     val childs: List<AnyWidget>
-) : Widget<LinearWidget>(),
-    Styled<LinearWidget.Style>,
-    OptionalId<LinearWidget.Id> {
+) : Widget(), Styled<LinearWidget.Style>, OptionalId<LinearWidget.Id> {
+
+    override fun buildView(viewFactoryContext: ViewFactoryContext): View {
+        return factory(viewFactoryContext, this)
+    }
 
     data class Style(
         override val size: WidgetSize = WidgetSize.Const(

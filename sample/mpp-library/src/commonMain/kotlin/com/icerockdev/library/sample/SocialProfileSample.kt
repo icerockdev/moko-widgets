@@ -21,7 +21,7 @@ import dev.icerock.moko.widgets.SingleChoiceWidget
 import dev.icerock.moko.widgets.SwitchWidget
 import dev.icerock.moko.widgets.TextWidget
 import dev.icerock.moko.widgets.button
-import dev.icerock.moko.widgets.core.AnyWidget
+import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.input
 import dev.icerock.moko.widgets.linear
@@ -35,7 +35,7 @@ class SocialProfileScreen(
     private val widgetScope: WidgetScope,
     private val viewModel: SocialProfileViewModelContract
 ) {
-    fun createWidget(): AnyWidget {
+    fun createWidget(): Widget {
         return with(widgetScope) {
             scroll(
                 child = linear(

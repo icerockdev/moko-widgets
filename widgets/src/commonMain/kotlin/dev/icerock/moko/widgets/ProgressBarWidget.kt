@@ -8,6 +8,8 @@ import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.widgets.core.OptionalId
 import dev.icerock.moko.widgets.core.Styled
 import dev.icerock.moko.widgets.core.VFC
+import dev.icerock.moko.widgets.core.View
+import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
 import dev.icerock.moko.widgets.core.WidgetScope
@@ -23,12 +25,14 @@ expect var progressBarWidgetViewFactory: VFC<ProgressBarWidget>
 
 @WidgetDef
 class ProgressBarWidget(
-    override val factory: VFC<ProgressBarWidget>,
+    val factory: VFC<ProgressBarWidget>,
     override val style: Style,
     override val id: Id?
-) : Widget<ProgressBarWidget>(),
-    Styled<ProgressBarWidget.Style>,
-    OptionalId<ProgressBarWidget.Id> {
+) : Widget(), Styled<ProgressBarWidget.Style>, OptionalId<ProgressBarWidget.Id> {
+
+    override fun buildView(viewFactoryContext: ViewFactoryContext): View {
+        return factory(viewFactoryContext, this)
+    }
 
     data class Style(
         override val size: WidgetSize = WidgetSize.Const(

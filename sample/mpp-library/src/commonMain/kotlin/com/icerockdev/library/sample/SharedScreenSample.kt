@@ -18,7 +18,7 @@ import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.container
-import dev.icerock.moko.widgets.core.AnyWidget
+import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.screen.Args
@@ -38,7 +38,7 @@ import dev.icerock.moko.widgets.text
 import kotlin.reflect.KClass
 
 class ProductScreen : WidgetScreen<Args.Parcel<ProductScreen.Args>>(), ProductViewModel.EventsListener {
-    override fun createContentWidget(): AnyWidget {
+    override fun createContentWidget(): Widget {
         val arg = getArgument()
         val viewModel = getViewModel {
             ProductViewModel(
@@ -85,7 +85,7 @@ class ProductViewModel(
 }
 
 class CartScreen : WidgetScreen<Args.Empty>() {
-    override fun createContentWidget(): AnyWidget {
+    override fun createContentWidget(): Widget {
         return with(WidgetScope()) {
             container(
                 styled = { it.copy(size = WidgetSize.Const(SizeSpec.AS_PARENT, SizeSpec.AS_PARENT)) },
@@ -98,7 +98,7 @@ class CartScreen : WidgetScreen<Args.Empty>() {
 }
 
 class ProductsScreen : WidgetScreen<Args.Empty>() {
-    override fun createContentWidget(): AnyWidget {
+    override fun createContentWidget(): Widget {
         return with(WidgetScope()) {
             container(
                 styled = { it.copy(size = WidgetSize.Const(SizeSpec.AS_PARENT, SizeSpec.AS_PARENT)) },
@@ -157,7 +157,7 @@ class CartNavigationScreen : NavigationScreen() {
 class WidgetsScreen : WidgetScreen<Args.Empty>() {
     private val sharedFactory = SharedFactory() // TODO change system
 
-    override fun createContentWidget(): AnyWidget {
+    override fun createContentWidget(): Widget {
         return with(WidgetScope()) {
             tabs(
                 tabs = listOf(

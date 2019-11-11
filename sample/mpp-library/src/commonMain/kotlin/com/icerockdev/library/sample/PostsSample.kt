@@ -13,7 +13,7 @@ import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.CollectionWidget
 import dev.icerock.moko.widgets.collection
-import dev.icerock.moko.widgets.core.AnyWidget
+import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.style.view.PaddingValues
 
@@ -21,9 +21,9 @@ class PostsScreen(
     private val widgetScope: WidgetScope,
     private val viewModel: PostsViewModelContract
 ) {
-    fun createWidget(): AnyWidget = widgetScope.createWidget()
+    fun createWidget(): Widget = widgetScope.createWidget()
 
-    private fun WidgetScope.createWidget(): AnyWidget {
+    private fun WidgetScope.createWidget(): Widget {
         return collection(
             id = Id.Collection,
             items = viewModel.posts.map { posts ->

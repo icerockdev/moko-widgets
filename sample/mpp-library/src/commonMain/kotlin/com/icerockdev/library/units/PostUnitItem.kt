@@ -10,7 +10,7 @@ import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.map
 import dev.icerock.moko.widgets.ImageWidget
 import dev.icerock.moko.widgets.container
-import dev.icerock.moko.widgets.core.AnyWidget
+import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.Image
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.image
@@ -35,13 +35,13 @@ class PostUnitItem(
 ) : WidgetsUnitItem<PostsViewModelContract.PostItem>(itemId, data) {
     override val reuseId: String = "PostUnitItem"
 
-    override fun createWidget(data: LiveData<PostsViewModelContract.PostItem>): AnyWidget {
+    override fun createWidget(data: LiveData<PostsViewModelContract.PostItem>): Widget {
         return with(widgetScope) {
             createBody(data)
         }
     }
 
-    private fun WidgetScope.createBody(data: LiveData<PostsViewModelContract.PostItem>): AnyWidget {
+    private fun WidgetScope.createBody(data: LiveData<PostsViewModelContract.PostItem>): Widget {
         return container(
             styled = {
                 it.copy(
@@ -68,7 +68,7 @@ class PostUnitItem(
         )
     }
 
-    private fun WidgetScope.createHeader(data: LiveData<PostsViewModelContract.PostItem>): AnyWidget {
+    private fun WidgetScope.createHeader(data: LiveData<PostsViewModelContract.PostItem>): Widget {
         return container(
             styled = {
                 it.copy(
@@ -105,7 +105,7 @@ class PostUnitItem(
         )
     }
 
-    private fun WidgetScope.createFooter(data: LiveData<PostsViewModelContract.PostItem>): AnyWidget {
+    private fun WidgetScope.createFooter(data: LiveData<PostsViewModelContract.PostItem>): Widget {
         val regularItems = listOf(
             text(
                 styled = {

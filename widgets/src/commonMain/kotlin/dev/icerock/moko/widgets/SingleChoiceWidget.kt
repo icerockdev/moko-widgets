@@ -11,6 +11,8 @@ import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.core.RequireId
 import dev.icerock.moko.widgets.core.Styled
 import dev.icerock.moko.widgets.core.VFC
+import dev.icerock.moko.widgets.core.View
+import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
 import dev.icerock.moko.widgets.core.WidgetScope
@@ -27,16 +29,18 @@ expect var singleChoiceWidgetViewFactory: VFC<SingleChoiceWidget>
 
 @WidgetDef
 class SingleChoiceWidget(
-    override val factory: VFC<SingleChoiceWidget>,
+    val factory: VFC<SingleChoiceWidget>,
     override val style: Style,
     override val id: Id,
     val field: FormField<Int?, StringDesc>,
     val label: LiveData<StringDesc>,
     val cancelLabel: LiveData<StringDesc>,
     val values: LiveData<List<StringDesc>>
-) : Widget<SingleChoiceWidget>(),
-    Styled<SingleChoiceWidget.Style>,
-    RequireId<SingleChoiceWidget.Id> {
+) : Widget(), Styled<SingleChoiceWidget.Style>, RequireId<SingleChoiceWidget.Id> {
+
+    override fun buildView(viewFactoryContext: ViewFactoryContext): View {
+        return factory(viewFactoryContext, this)
+    }
 
     /**
      * @property size desired size of widget

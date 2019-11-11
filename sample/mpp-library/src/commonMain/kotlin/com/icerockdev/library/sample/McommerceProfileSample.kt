@@ -12,7 +12,7 @@ import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.button
-import dev.icerock.moko.widgets.core.AnyWidget
+import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.input
 import dev.icerock.moko.widgets.linear
@@ -22,7 +22,7 @@ class McommerceProfileScreen(
     private val widgetScope: WidgetScope,
     private val viewModel: McommerceProfileViewModelContract
 ) {
-    fun createWidget(): AnyWidget {
+    fun createWidget(): Widget {
         return with(widgetScope) {
             linear(
                 childs = listOf(

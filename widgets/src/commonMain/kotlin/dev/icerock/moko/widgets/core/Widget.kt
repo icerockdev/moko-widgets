@@ -4,14 +4,10 @@
 
 package dev.icerock.moko.widgets.core
 
-typealias AnyWidget = Widget<*>
+typealias AnyWidget = Widget
 
-abstract class Widget<T : Widget<T>> {
-    protected abstract val factory: VFC<T>
-
-    fun buildView(viewFactoryContext: ViewFactoryContext): View {
-        return factory(viewFactoryContext, this as T)
-    }
+abstract class Widget {
+    abstract fun buildView(viewFactoryContext: ViewFactoryContext): View
 
     interface Style
 }

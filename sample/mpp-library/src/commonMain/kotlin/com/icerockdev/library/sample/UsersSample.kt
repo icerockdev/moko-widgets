@@ -13,7 +13,7 @@ import dev.icerock.moko.widgets.CollectionWidget
 import dev.icerock.moko.widgets.ListWidget
 import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.collection
-import dev.icerock.moko.widgets.core.AnyWidget
+import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.list
 import dev.icerock.moko.widgets.style.view.PaddingValues
@@ -26,7 +26,7 @@ class UsersScreen(
     private val widgetScope: WidgetScope,
     private val viewModel: UsersViewModelContract
 ) {
-    fun createWidget(): AnyWidget {
+    fun createWidget(): Widget {
         return with(widgetScope) {
             tabs(
                 tabs = listOf(

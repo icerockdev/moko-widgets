@@ -9,6 +9,8 @@ import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.core.OptionalId
 import dev.icerock.moko.widgets.core.Styled
 import dev.icerock.moko.widgets.core.VFC
+import dev.icerock.moko.widgets.core.View
+import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
 import dev.icerock.moko.widgets.core.WidgetScope
@@ -27,13 +29,15 @@ expect var textWidgetViewFactory: VFC<TextWidget>
 
 @WidgetDef
 class TextWidget(
-    override val factory: VFC<TextWidget>,
+    val factory: VFC<TextWidget>,
     override val style: Style,
     override val id: Id?,
     val text: LiveData<StringDesc>
-) : Widget<TextWidget>(),
-    Styled<TextWidget.Style>,
-    OptionalId<TextWidget.Id> {
+) : Widget(), Styled<TextWidget.Style>, OptionalId<TextWidget.Id> {
+
+    override fun buildView(viewFactoryContext: ViewFactoryContext): View {
+        return factory(viewFactoryContext, this)
+    }
 
     data class Style(
         override val size: WidgetSize = WidgetSize.Const(),

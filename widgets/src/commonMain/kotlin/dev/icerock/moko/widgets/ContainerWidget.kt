@@ -8,6 +8,8 @@ import dev.icerock.moko.widgets.core.AnyWidget
 import dev.icerock.moko.widgets.core.OptionalId
 import dev.icerock.moko.widgets.core.Styled
 import dev.icerock.moko.widgets.core.VFC
+import dev.icerock.moko.widgets.core.View
+import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
 import dev.icerock.moko.widgets.core.WidgetScope
@@ -26,14 +28,16 @@ expect var containerWidgetViewFactory: VFC<ContainerWidget>
 
 @WidgetDef
 class ContainerWidget(
-    override val factory: VFC<ContainerWidget>,
+    val factory: VFC<ContainerWidget>,
     override val style: Style,
     override val id: Id?,
     @Suppress("RemoveRedundantQualifierName")
     val childs: Map<AnyWidget, Alignment>
-) : Widget<ContainerWidget>(),
-    Styled<ContainerWidget.Style>,
-    OptionalId<ContainerWidget.Id> {
+) : Widget(), Styled<ContainerWidget.Style>, OptionalId<ContainerWidget.Id> {
+
+    override fun buildView(viewFactoryContext: ViewFactoryContext): View {
+        return factory(viewFactoryContext, this)
+    }
 
     data class Style(
         override val size: WidgetSize = WidgetSize.Const(

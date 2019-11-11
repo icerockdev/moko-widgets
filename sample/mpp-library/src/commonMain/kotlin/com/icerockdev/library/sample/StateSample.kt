@@ -13,7 +13,7 @@ import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.container
-import dev.icerock.moko.widgets.core.AnyWidget
+import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.core.asLiveData
 import dev.icerock.moko.widgets.flatAlert
@@ -30,7 +30,7 @@ open class StateScreen(
     private val widgetScope: WidgetScope,
     private val viewModel: StateViewModelContract
 ) {
-    fun createWidget(): AnyWidget {
+    fun createWidget(): Widget {
         return with(widgetScope) {
             linear(
                 childs = listOf(

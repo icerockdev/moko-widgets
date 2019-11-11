@@ -9,6 +9,8 @@ import dev.icerock.moko.widgets.core.Image
 import dev.icerock.moko.widgets.core.OptionalId
 import dev.icerock.moko.widgets.core.Styled
 import dev.icerock.moko.widgets.core.VFC
+import dev.icerock.moko.widgets.core.View
+import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
 import dev.icerock.moko.widgets.core.WidgetScope
@@ -22,13 +24,15 @@ expect var imageWidgetViewFactory: VFC<ImageWidget>
 
 @WidgetDef
 class ImageWidget(
-    override val factory: VFC<ImageWidget>,
+    val factory: VFC<ImageWidget>,
     override val style: Style,
     override val id: Id?,
     val image: LiveData<Image>
-) : Widget<ImageWidget>(),
-    Styled<ImageWidget.Style>,
-    OptionalId<ImageWidget.Id> {
+) : Widget(), Styled<ImageWidget.Style>, OptionalId<ImageWidget.Id> {
+
+    override fun buildView(viewFactoryContext: ViewFactoryContext): View {
+        return factory(viewFactoryContext, this)
+    }
 
     data class Style(
         override val size: WidgetSize = WidgetSize.Const(

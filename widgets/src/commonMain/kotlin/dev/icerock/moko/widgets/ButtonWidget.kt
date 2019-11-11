@@ -9,6 +9,8 @@ import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.core.OptionalId
 import dev.icerock.moko.widgets.core.Styled
 import dev.icerock.moko.widgets.core.VFC
+import dev.icerock.moko.widgets.core.View
+import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
 import dev.icerock.moko.widgets.core.WidgetScope
@@ -27,15 +29,17 @@ expect var buttonWidgetViewFactory: VFC<ButtonWidget>
 
 @WidgetDef
 class ButtonWidget(
-    override val factory: VFC<ButtonWidget>,
+    val factory: VFC<ButtonWidget>,
     override val style: Style,
     override val id: Id?,
     val text: LiveData<StringDesc>,
     val enabled: LiveData<Boolean>?,
     val onTap: () -> Unit
-) : Widget<ButtonWidget>(),
-    Styled<ButtonWidget.Style>,
-    OptionalId<ButtonWidget.Id> {
+) : Widget(), Styled<ButtonWidget.Style>, OptionalId<ButtonWidget.Id> {
+
+    override fun buildView(viewFactoryContext: ViewFactoryContext): View {
+        return factory(viewFactoryContext, this)
+    }
 
     data class Style(
         override val size: WidgetSize = WidgetSize.Const(

@@ -10,6 +10,8 @@ import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.core.OptionalId
 import dev.icerock.moko.widgets.core.Styled
 import dev.icerock.moko.widgets.core.VFC
+import dev.icerock.moko.widgets.core.View
+import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
 import dev.icerock.moko.widgets.core.WidgetScope
@@ -23,7 +25,7 @@ expect var flatAlertWidgetViewFactory: VFC<FlatAlertWidget>
 
 @WidgetDef
 class FlatAlertWidget(
-    override val factory: VFC<FlatAlertWidget>,
+    val factory: VFC<FlatAlertWidget>,
     override val style: Style,
     override val id: Id?,
     val title: LiveData<StringDesc?>?,
@@ -31,9 +33,11 @@ class FlatAlertWidget(
     val drawable: LiveData<DrawableResource?>?,
     val buttonText: LiveData<StringDesc?>?,
     val onTap: (() -> Unit)?
-) : Widget<FlatAlertWidget>(),
-    Styled<FlatAlertWidget.Style>,
-    OptionalId<FlatAlertWidget.Id> {
+) : Widget(), Styled<FlatAlertWidget.Style>, OptionalId<FlatAlertWidget.Id> {
+
+    override fun buildView(viewFactoryContext: ViewFactoryContext): View {
+        return factory(viewFactoryContext, this)
+    }
 
     data class Style(
         override val size: WidgetSize = WidgetSize.Const(

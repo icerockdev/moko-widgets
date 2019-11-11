@@ -4,10 +4,11 @@
 
 package dev.icerock.moko.widgets
 
-import dev.icerock.moko.widgets.core.AnyWidget
 import dev.icerock.moko.widgets.core.OptionalId
 import dev.icerock.moko.widgets.core.Styled
 import dev.icerock.moko.widgets.core.VFC
+import dev.icerock.moko.widgets.core.View
+import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
 import dev.icerock.moko.widgets.core.WidgetScope
@@ -26,11 +27,16 @@ expect var scrollWidgetViewFactory: VFC<ScrollWidget>
 
 @WidgetDef
 class ScrollWidget(
-    override val factory: VFC<ScrollWidget>,
+    val factory: VFC<ScrollWidget>,
     override val style: Style,
     override val id: Id?,
-    val child: AnyWidget
-) : Widget<ScrollWidget>(), Styled<ScrollWidget.Style>, OptionalId<ScrollWidget.Id> {
+    val child: Widget
+) : Widget(), Styled<ScrollWidget.Style>, OptionalId<ScrollWidget.Id> {
+
+    override fun buildView(viewFactoryContext: ViewFactoryContext): View {
+        return factory(viewFactoryContext, this)
+    }
+
     data class Style(
         override val size: WidgetSize = WidgetSize.Const(
             width = SizeSpec.AS_PARENT,

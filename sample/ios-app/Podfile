@@ -14,5 +14,4 @@ target 'TestProj' do
   # MultiPlatformLibrary
   pod 'MultiPlatformLibrary', :path => '../mpp-library'
   pod 'MultiPlatformLibraryUnits/Core', :git => 'https://github.com/icerockdev/moko-units.git', :tag => 'release/0.1.1'
-  pod 'MultiPlatformLibraryUnits/R.swift', :git => 'https://github.com/icerockdev/moko-units.git', :tag => 'release/0.1.1'
 end

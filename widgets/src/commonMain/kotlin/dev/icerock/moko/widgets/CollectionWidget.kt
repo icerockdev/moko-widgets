@@ -9,6 +9,8 @@ import dev.icerock.moko.units.UnitItem
 import dev.icerock.moko.widgets.core.RequireId
 import dev.icerock.moko.widgets.core.Styled
 import dev.icerock.moko.widgets.core.VFC
+import dev.icerock.moko.widgets.core.View
+import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
 import dev.icerock.moko.widgets.core.WidgetScope
@@ -26,15 +28,17 @@ expect var collectionWidgetViewFactory: VFC<CollectionWidget>
 
 @WidgetDef
 class CollectionWidget(
-    override val factory: VFC<CollectionWidget>,
+    val factory: VFC<CollectionWidget>,
     override val style: Style,
     override val id: Id,
     val items: LiveData<List<UnitItem>>,
     val onReachEnd: (() -> Unit)?,
     val onRefresh: ((completion: () -> Unit) -> Unit)?
-) : Widget<CollectionWidget>(),
-    Styled<CollectionWidget.Style>,
-    RequireId<CollectionWidget.Id> {
+) : Widget(), Styled<CollectionWidget.Style>, RequireId<CollectionWidget.Id> {
+
+    override fun buildView(viewFactoryContext: ViewFactoryContext): View {
+        return factory(viewFactoryContext, this)
+    }
 
     data class Style(
         override val size: WidgetSize = WidgetSize.Const(),

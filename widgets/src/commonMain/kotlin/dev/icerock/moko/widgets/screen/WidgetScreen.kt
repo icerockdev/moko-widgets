@@ -4,8 +4,8 @@
 
 package dev.icerock.moko.widgets.screen
 
-import dev.icerock.moko.widgets.core.AnyWidget
+import dev.icerock.moko.widgets.core.Widget
 
 expect abstract class WidgetScreen<Arg : Args>() : Screen<Arg> {
-    abstract fun createContentWidget(): AnyWidget
+    abstract fun createContentWidget(): Widget
 }
