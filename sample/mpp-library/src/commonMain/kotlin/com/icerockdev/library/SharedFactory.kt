@@ -1,3 +1,7 @@
+/*
+ * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
+ */
+
 package com.icerockdev.library
 
 import com.icerockdev.library.sample.UsersViewModel
@@ -5,7 +9,7 @@ import com.icerockdev.library.screen.HostScreen
 import dev.icerock.moko.units.UnitItem
 import dev.icerock.moko.widgets.core.WidgetScope
 
-class Factory {
+class SharedFactory {
     val mainWidgetScope by lazy {
         WidgetScope()
     }

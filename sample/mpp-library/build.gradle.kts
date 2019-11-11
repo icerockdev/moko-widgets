@@ -40,6 +40,8 @@ dependencies {
     deps.forEach { mppLibrary(it) }
 
     androidLibrary(Deps.Libs.Android.recyclerView)
+    androidLibrary(Deps.Libs.Android.appCompat)
+    androidLibrary(Deps.Libs.Android.material)
 }
 //
 //multiplatformUnits {

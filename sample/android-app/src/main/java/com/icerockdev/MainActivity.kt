@@ -4,14 +4,39 @@
 
 package com.icerockdev
 
-import com.icerockdev.library.Factory
-import com.icerockdev.library.screen.HostScreen
-import dev.icerock.moko.widgets.core.ScreenActivity
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import com.icerockdev.library.Screen
+import com.icerockdev.library.getRootScreen
 
-class MainActivity : ScreenActivity<HostScreen.DummyVM, HostScreen.Args, HostScreen>() {
-    override fun createScreen(): HostScreen = Factory().createMainScreen()
+//class MainActivity : ScreenActivity<HostScreen.DummyVM, HostScreen.Args, HostScreen>() {
+//    override fun createScreen(): HostScreen = SharedFactory().createMainScreen()
+//
+//    override fun getArgs(): HostScreen.Args = HostScreen.Args("test")
+//
+//    override val viewModelClass: Class<HostScreen.DummyVM> = HostScreen.DummyVM::class.java
+//}
 
-    override fun getArgs(): HostScreen.Args = HostScreen.Args("test")
+class HostActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    override val viewModelClass: Class<HostScreen.DummyVM> = HostScreen.DummyVM::class.java
+        if (savedInstanceState == null) {
+            val rootScreen = getRootScreen()
+            val screenInstance = rootScreen.java.newInstance()
+
+            supportFragmentManager.beginTransaction()
+                .replace(android.R.id.content, screenInstance)
+                .commit()
+        }
+    }
+
+    override fun onBackPressed() {
+        val rootScreen = supportFragmentManager.findFragmentById(android.R.id.content)
+        if (rootScreen is Screen<*>) {
+            if (rootScreen.onBackPressed()) return
+        }
+
+        super.onBackPressed()
+    }
 }
