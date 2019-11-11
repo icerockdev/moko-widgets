@@ -6,23 +6,32 @@ package dev.icerock.moko.widgets.screen
 
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcher
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
-import platform.Foundation.NSCoder
 import platform.UIKit.UIViewController
 
 actual abstract class Screen<Arg : Args> {
+    val viewModelStore = mutableMapOf<Any, ViewModel>()
+    var arg: Arg? = null
+    var navigation: Navigation? = null
+
     actual inline fun <reified VM : ViewModel, Key : Any> getViewModel(
         key: Key,
         crossinline viewModelFactory: () -> VM
     ): VM {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val stored = viewModelStore[key]
+        if (stored != null) return stored as VM
+
+        val created = viewModelFactory()
+        viewModelStore[key] = created
+        return created
     }
 
     actual fun <T : Any> createEventsDispatcher(): EventsDispatcher<T> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return EventsDispatcher()
     }
 
     actual fun dispatchNavigation(actions: Navigation.() -> Unit) {
+        navigation?.actions()
     }
 
-    abstract fun createView(): UIViewController
+    abstract fun createViewController(): UIViewController
 }

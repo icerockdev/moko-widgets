@@ -6,7 +6,6 @@ package dev.icerock.moko.widgets
 
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.resources.desc.StringDesc
-import dev.icerock.moko.widgets.core.AnyWidget
 import dev.icerock.moko.widgets.core.OptionalId
 import dev.icerock.moko.widgets.core.Styled
 import dev.icerock.moko.widgets.core.VFC
@@ -38,7 +37,7 @@ class TabsWidget(
 
     class TabWidget(
         val title: LiveData<StringDesc>,
-        val body: AnyWidget
+        val body: Widget
     )
 
     data class Style(

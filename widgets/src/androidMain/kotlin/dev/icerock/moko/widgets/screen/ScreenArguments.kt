@@ -5,7 +5,7 @@
 package dev.icerock.moko.widgets.screen
 
 import android.os.Bundle
-import dev.icerock.moko.core.Parcelable
+import dev.icerock.moko.parcelize.Parcelable
 
 private const val sScreenArgsParameter = "args"
 

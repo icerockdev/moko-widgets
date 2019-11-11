@@ -4,7 +4,6 @@
 
 package dev.icerock.moko.widgets
 
-import dev.icerock.moko.widgets.core.AnyWidget
 import dev.icerock.moko.widgets.core.OptionalId
 import dev.icerock.moko.widgets.core.Styled
 import dev.icerock.moko.widgets.core.VFC
@@ -32,7 +31,7 @@ class ContainerWidget(
     override val style: Style,
     override val id: Id?,
     @Suppress("RemoveRedundantQualifierName")
-    val childs: Map<AnyWidget, Alignment>
+    val childs: Map<Widget, Alignment>
 ) : Widget(), Styled<ContainerWidget.Style>, OptionalId<ContainerWidget.Id> {
 
     override fun buildView(viewFactoryContext: ViewFactoryContext): View {

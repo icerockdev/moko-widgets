@@ -10,7 +10,9 @@ import platform.UIKit.UIViewController
 actual abstract class WidgetScreen<Arg : Args> actual constructor() : Screen<Arg>() {
     actual abstract fun createContentWidget(): Widget
 
-    override fun createView(): UIViewController {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun createViewController(): UIViewController {
+        return WidgetViewController().apply {
+            widget = createContentWidget()
+        }
     }
 }

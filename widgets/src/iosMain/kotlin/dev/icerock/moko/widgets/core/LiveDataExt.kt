@@ -4,8 +4,9 @@
 
 package dev.icerock.moko.widgets.core
 
-abstract class Widget {
-    abstract fun buildView(viewFactoryContext: ViewFactoryContext): View
+import dev.icerock.moko.mvvm.livedata.LiveData
 
-    interface Style
+fun <T> LiveData<T>.bind(setter: (T) -> Unit) {
+    setter(value)
+    addObserver(setter)
 }

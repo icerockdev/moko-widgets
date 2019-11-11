@@ -5,7 +5,8 @@
 package dev.icerock.moko.widgets
 
 import dev.icerock.moko.widgets.core.VFC
+import platform.UIKit.UIView
 
-actual var imageWidgetViewFactory: VFC<ImageWidget>
-    get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-    set(value) {}
+actual var imageWidgetViewFactory: VFC<ImageWidget> = { _, _ ->
+    UIView()
+}

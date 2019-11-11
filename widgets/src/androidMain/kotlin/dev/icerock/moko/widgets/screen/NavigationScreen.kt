@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.appcompat.widget.Toolbar
-import dev.icerock.moko.core.Parcelable
+import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.widgets.core.View
 import kotlin.reflect.KClass
 

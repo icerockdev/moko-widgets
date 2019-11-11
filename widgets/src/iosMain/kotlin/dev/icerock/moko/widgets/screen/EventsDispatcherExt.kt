@@ -10,4 +10,5 @@ actual fun <T : Any> EventsDispatcher<T>.listen(
     screen: Screen<*>,
     listener: T
 ) {
+    this.listener = listener
 }

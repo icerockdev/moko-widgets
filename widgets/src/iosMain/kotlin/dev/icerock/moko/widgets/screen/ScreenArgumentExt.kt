@@ -4,8 +4,13 @@
 
 package dev.icerock.moko.widgets.screen
 
-import dev.icerock.moko.core.Parcelable
+import dev.icerock.moko.parcelize.Parcelable
 
 actual fun <T : Parcelable> Screen<Args.Parcel<T>>.getArgument(): T {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    val container = requireNotNull(arg) { "argument can't be null" }
+    return container.args
+}
+
+fun <T : Parcelable> Screen<Args.Parcel<T>>.setArgument(value: T) {
+    arg = Args.Parcel(value)
 }

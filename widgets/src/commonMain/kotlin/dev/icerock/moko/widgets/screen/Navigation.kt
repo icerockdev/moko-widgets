@@ -4,7 +4,7 @@
 
 package dev.icerock.moko.widgets.screen
 
-import dev.icerock.moko.core.Parcelable
+import dev.icerock.moko.parcelize.Parcelable
 import kotlin.reflect.KClass
 
 interface Navigation {

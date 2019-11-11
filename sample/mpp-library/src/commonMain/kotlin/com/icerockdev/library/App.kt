@@ -11,6 +11,10 @@ import kotlin.reflect.KClass
 
 object App {
     val rootScreen: KClass<out Screen<Args.Empty>> = MyBottomNavigationScreen::class
+
+    fun createRootScreen(): Screen<Args.Empty> {
+        return MyBottomNavigationScreen()
+    }
 }
 
 

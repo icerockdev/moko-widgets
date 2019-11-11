@@ -4,7 +4,7 @@
 
 package dev.icerock.moko.widgets.screen
 
-import dev.icerock.moko.core.Parcelable
+import dev.icerock.moko.parcelize.Parcelable
 
 sealed class Args {
     data class Parcel<T : Parcelable>(val args: T) : Args()

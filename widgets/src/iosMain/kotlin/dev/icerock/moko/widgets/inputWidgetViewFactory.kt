@@ -5,7 +5,8 @@
 package dev.icerock.moko.widgets
 
 import dev.icerock.moko.widgets.core.VFC
+import platform.UIKit.UIView
 
 actual var inputWidgetViewFactory: VFC<InputWidget> = { _, _ ->
-    TODO("must be initialized from iOS swift part")
+    UIView()
 }

@@ -5,7 +5,7 @@
 package dev.icerock.moko.widgets.screen
 
 import androidx.fragment.app.Fragment
-import dev.icerock.moko.core.Parcelable
+import dev.icerock.moko.parcelize.Parcelable
 import kotlin.reflect.KClass
 
 internal class FragmentNavigation(private val fragment: Fragment) :

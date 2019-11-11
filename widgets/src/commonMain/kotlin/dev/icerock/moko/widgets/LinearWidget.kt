@@ -4,7 +4,6 @@
 
 package dev.icerock.moko.widgets
 
-import dev.icerock.moko.widgets.core.AnyWidget
 import dev.icerock.moko.widgets.core.OptionalId
 import dev.icerock.moko.widgets.core.Styled
 import dev.icerock.moko.widgets.core.VFC
@@ -31,7 +30,7 @@ class LinearWidget(
     val factory: VFC<LinearWidget>,
     override val style: Style,
     override val id: Id?,
-    val childs: List<AnyWidget>
+    val childs: List<Widget>
 ) : Widget(), Styled<LinearWidget.Style>, OptionalId<LinearWidget.Id> {
 
     override fun buildView(viewFactoryContext: ViewFactoryContext): View {

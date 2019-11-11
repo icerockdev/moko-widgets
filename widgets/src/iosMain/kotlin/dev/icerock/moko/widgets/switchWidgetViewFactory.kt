@@ -5,7 +5,8 @@
 package dev.icerock.moko.widgets
 
 import dev.icerock.moko.widgets.core.VFC
+import platform.UIKit.UIView
 
-actual var switchWidgetViewFactory: VFC<SwitchWidget>
-    get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-    set(value) {}
+actual var switchWidgetViewFactory: VFC<SwitchWidget> = { _, _ ->
+    UIView()
+}

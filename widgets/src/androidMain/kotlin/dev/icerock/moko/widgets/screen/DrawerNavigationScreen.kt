@@ -6,7 +6,7 @@ package dev.icerock.moko.widgets.screen
 
 import android.content.Context
 import android.view.ViewGroup
-import dev.icerock.moko.core.Parcelable
+import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.widgets.core.View
 import kotlin.reflect.KClass
 

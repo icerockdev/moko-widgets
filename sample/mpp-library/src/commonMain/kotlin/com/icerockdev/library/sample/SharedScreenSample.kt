@@ -6,13 +6,13 @@ package com.icerockdev.library.sample
 
 import com.icerockdev.library.SharedFactory
 import com.icerockdev.library.Theme
-import dev.icerock.moko.core.Parcelable
-import dev.icerock.moko.core.Parcelize
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcher
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcherOwner
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import dev.icerock.moko.parcelize.Parcelable
+import dev.icerock.moko.parcelize.Parcelize
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.TabsWidget
@@ -113,6 +113,7 @@ class ProductsScreen : WidgetScreen<Args.Empty>() {
     }
 
     private fun onProductPressed() {
+        println("go to product!")
         dispatchNavigation { routeToScreen(ProductScreen::class, ProductScreen.Args(10)) }
     }
 }

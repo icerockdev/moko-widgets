@@ -11,7 +11,7 @@ actual abstract class DrawerNavigationScreen actual constructor() : Screen<Args.
     actual abstract val items: List<DrawerNavigationItem>
     actual abstract val secondaryItems: List<DrawerNavigationItem>
 
-    override fun createView(): UIViewController {
+    override fun createViewController(): UIViewController {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

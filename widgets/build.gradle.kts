@@ -34,6 +34,12 @@ dependencies {
     mppLibrary(Deps.Libs.MultiPlatform.mokoUnits)
     mppLibrary(Deps.Libs.MultiPlatform.mokoMedia)
     mppLibrary(Deps.Libs.MultiPlatform.mokoGraphics)
+    mppLibrary(Deps.Libs.MultiPlatform.mokoParcelize)
+    mppLibrary(
+        MultiPlatformLibrary(
+            common = "dev.icerock.moko:core:0.1.0"
+        )
+    )
 
     androidLibrary(Deps.Libs.Android.appCompat)
     androidLibrary(Deps.Libs.Android.recyclerView)
