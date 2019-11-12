@@ -14,7 +14,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		287627FF1F319065007FA12B /* mokoSampleUnits.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mokoSampleUnits.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		287627FF1F319065007FA12B /* moko-widgets.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "moko-widgets.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		45964D362282A1FD00C16658 /* mpp-library */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "mpp-library"; path = "../mpp-library"; sourceTree = "<group>"; };
 		45F47913219463C7003D25FA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		45F4791A219463C7003D25FA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -63,7 +63,7 @@
 		287628001F319065007FA12B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				287627FF1F319065007FA12B /* mokoSampleUnits.app */,
+				287627FF1F319065007FA12B /* moko-widgets.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -114,7 +114,7 @@
 			);
 			name = TestProj;
 			productName = TestProj;
-			productReference = 287627FF1F319065007FA12B /* mokoSampleUnits.app */;
+			productReference = 287627FF1F319065007FA12B /* moko-widgets.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -257,8 +257,8 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = src/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.icerock.moko.sample.units;
-				PRODUCT_NAME = mokoSampleUnits;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.icerock.moko.sample.widgets;
+				PRODUCT_NAME = "moko-widgets";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
@@ -275,8 +275,8 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = src/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.icerock.moko.sample.units;
-				PRODUCT_NAME = mokoSampleUnits;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.icerock.moko.sample.widgets;
+				PRODUCT_NAME = "moko-widgets";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
