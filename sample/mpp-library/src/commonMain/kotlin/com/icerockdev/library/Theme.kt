@@ -10,12 +10,14 @@ import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.LinearWidget
+import dev.icerock.moko.widgets.ScrollWidget
 import dev.icerock.moko.widgets.SingleChoiceWidget
 import dev.icerock.moko.widgets.TextWidget
 import dev.icerock.moko.widgets.buttonStyle
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.inputStyle
 import dev.icerock.moko.widgets.linearStyle
+import dev.icerock.moko.widgets.scrollStyle
 import dev.icerock.moko.widgets.setButtonStyle
 import dev.icerock.moko.widgets.setLinearStyle
 import dev.icerock.moko.widgets.setTextStyle
@@ -306,7 +308,8 @@ object Theme {
                 textAlignment = TextAlignment.CENTER
             ), CryptoProfileScreen.Id.DelimiterText
         )
-        linearStyle = Theme.profileContainerStyle.copy(
+        linearStyle = Theme.profileContainerStyle
+        scrollStyle = ScrollWidget.Style(
             background = Background(
                 fill = Fill.Solid(Colors.black)
             )

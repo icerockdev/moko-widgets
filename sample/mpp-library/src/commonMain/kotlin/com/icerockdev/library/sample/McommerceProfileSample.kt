@@ -16,6 +16,7 @@ import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.input
 import dev.icerock.moko.widgets.linear
+import dev.icerock.moko.widgets.scroll
 import dev.icerock.moko.widgets.style.input.InputType
 
 class McommerceProfileScreen(
@@ -24,29 +25,31 @@ class McommerceProfileScreen(
 ) {
     fun createWidget(): Widget {
         return with(widgetScope) {
-            linear(
-                childs = listOf(
-                    input(
-                        id = Id.NameInput,
-                        label = const("Ваше имя"),
-                        field = viewModel.nameField
-                    ),
-                    input(
-                        id = Id.BirthdayInput,
-                        label = const("Дата рождения"),
-                        field = viewModel.birthdayField,
-                        inputType = InputType.DATE
-                    ),
-                    input(
-                        id = Id.PhoneInput,
-                        label = const("Телефон"),
-                        field = viewModel.phoneField,
-                        inputType = InputType.PHONE
-                    ),
-                    button(
-                        id = Id.SubmitButton,
-                        text = const("Подтвердить"),
-                        onTap = viewModel::onSavePressed
+            scroll(
+                child = linear(
+                    childs = listOf(
+                        input(
+                            id = Id.NameInput,
+                            label = const("Ваше имя"),
+                            field = viewModel.nameField
+                        ),
+                        input(
+                            id = Id.BirthdayInput,
+                            label = const("Дата рождения"),
+                            field = viewModel.birthdayField,
+                            inputType = InputType.DATE
+                        ),
+                        input(
+                            id = Id.PhoneInput,
+                            label = const("Телефон"),
+                            field = viewModel.phoneField,
+                            inputType = InputType.PHONE
+                        ),
+                        button(
+                            id = Id.SubmitButton,
+                            text = const("Подтвердить"),
+                            onTap = viewModel::onSavePressed
+                        )
                     )
                 )
             )
