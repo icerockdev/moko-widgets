@@ -9,6 +9,7 @@ import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.mvvm.livedata.map
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.button
@@ -69,22 +70,38 @@ open class StateScreen(
                                 tabs = listOf(
                                     TabsWidget.TabWidget(
                                         title = const("first page"),
-                                        body = flatAlert(message = data.map { it?.desc() })
+                                        body = flatAlertWrapped(message = data.map { it?.desc() })
                                     ),
                                     TabsWidget.TabWidget(
                                         title = const("second page"),
-                                        body = flatAlert(message = "SECOND".desc().asLiveData())
+                                        body = flatAlertWrapped(message = "SECOND".desc().asLiveData())
                                     )
                                 )
                             )
                         },
                         error = { error ->
-                            flatAlert(message = error.map { it?.desc() })
+                            flatAlertWrapped(message = error.map { it?.desc() })
                         }
                     )
                 )
             )
         }
+    }
+
+    private fun WidgetScope.flatAlertWrapped(message: LiveData<StringDesc?>): Widget {
+        return container(
+            styled = {
+                it.copy(
+                    size = WidgetSize.Const(
+                        width = SizeSpec.AS_PARENT,
+                        height = SizeSpec.AS_PARENT
+                    )
+                )
+            },
+            childs = mapOf(
+                flatAlert(message = message) to Alignment.CENTER
+            )
+        )
     }
 }
 

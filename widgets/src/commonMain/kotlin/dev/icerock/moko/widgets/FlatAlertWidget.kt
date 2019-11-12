@@ -41,8 +41,8 @@ class FlatAlertWidget(
 
     data class Style(
         override val size: WidgetSize = WidgetSize.Const(
-            width = SizeSpec.AS_PARENT,
-            height = SizeSpec.AS_PARENT
+            width = SizeSpec.WRAP_CONTENT,
+            height = SizeSpec.WRAP_CONTENT
         ),
         override val background: Background? = null
     ) : Widget.Style, Sized, Backgrounded

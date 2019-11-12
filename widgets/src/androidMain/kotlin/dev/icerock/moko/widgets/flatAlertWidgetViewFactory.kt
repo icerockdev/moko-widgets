@@ -7,7 +7,6 @@ package dev.icerock.moko.widgets
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -19,7 +18,6 @@ import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.applyStyle
 import dev.icerock.moko.widgets.style.withSize
 import dev.icerock.moko.widgets.utils.dp
-import dev.icerock.moko.widgets.view.MarginedFrameLayout
 import dev.icerock.moko.widgets.view.MarginedLinearLayout
 
 actual var flatAlertWidgetViewFactory: VFC<FlatAlertWidget> = { context: ViewFactoryContext,
@@ -27,18 +25,9 @@ actual var flatAlertWidgetViewFactory: VFC<FlatAlertWidget> = { context: ViewFac
     val ctx = context.context
     val style = widget.style
 
-    val container = MarginedFrameLayout(ctx)
-
     val rowsContainer = MarginedLinearLayout(ctx).apply {
-        layoutParams = FrameLayout.LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            Gravity.CENTER
-        )
         orientation = LinearLayout.VERTICAL
     }
-
-    container.addView(rowsContainer)
 
     // drawable
     val drawableLiveData = widget.drawable
@@ -148,5 +137,5 @@ actual var flatAlertWidgetViewFactory: VFC<FlatAlertWidget> = { context: ViewFac
         })
     }
 
-    container.withSize(style.size).apply { applyStyle(style) }
+    rowsContainer.withSize(style.size).apply { applyStyle(style) }
 }
