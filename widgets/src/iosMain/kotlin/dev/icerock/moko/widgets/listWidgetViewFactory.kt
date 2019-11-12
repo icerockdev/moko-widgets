@@ -8,5 +8,6 @@ import dev.icerock.moko.widgets.core.VFC
 import platform.UIKit.UIView
 
 actual var listWidgetViewFactory: VFC<ListWidget> = { _, _ ->
+    // TODO add factory implementation
     UIView()
 }

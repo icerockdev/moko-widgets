@@ -8,5 +8,6 @@ import dev.icerock.moko.widgets.core.VFC
 import platform.UIKit.UIView
 
 actual var singleChoiceWidgetViewFactory: VFC<SingleChoiceWidget> = { _, _ ->
+    // TODO add factory implementation
     UIView()
 }

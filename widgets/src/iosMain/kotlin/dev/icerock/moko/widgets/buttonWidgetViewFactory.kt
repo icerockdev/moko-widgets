@@ -15,6 +15,7 @@ import platform.UIKit.UIControlStateNormal
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
 actual var buttonWidgetViewFactory: VFC<ButtonWidget> = { viewController, widget ->
+    // TODO add styles support
     val style = widget.style
 
     val button = UIButton.buttonWithType(buttonType = UIButtonTypeRoundedRect)
