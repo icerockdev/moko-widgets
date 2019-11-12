@@ -12,14 +12,21 @@ import platform.UIKit.UIButton
 import platform.UIKit.UIButtonTypeRoundedRect
 import platform.UIKit.UIControlEventTouchUpInside
 import platform.UIKit.UIControlStateNormal
+import platform.UIKit.UILayoutConstraintAxisHorizontal
+import platform.UIKit.UILayoutConstraintAxisVertical
+import platform.UIKit.UILayoutPriorityRequired
+import platform.UIKit.setContentHuggingPriority
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
 actual var buttonWidgetViewFactory: VFC<ButtonWidget> = { viewController, widget ->
     // TODO add styles support
     val style = widget.style
 
-    val button = UIButton.buttonWithType(buttonType = UIButtonTypeRoundedRect)
-    button.translatesAutoresizingMaskIntoConstraints = false
+    val button = UIButton.buttonWithType(buttonType = UIButtonTypeRoundedRect).apply {
+        translatesAutoresizingMaskIntoConstraints = false
+        setContentHuggingPriority(UILayoutPriorityRequired, forAxis = UILayoutConstraintAxisHorizontal)
+        setContentHuggingPriority(UILayoutPriorityRequired, forAxis = UILayoutConstraintAxisVertical)
+    }
 
     widget.text.bind {
         button.setTitle(title = it.localized(), forState = UIControlStateNormal)
