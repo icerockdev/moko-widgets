@@ -163,20 +163,6 @@ class WidgetsScreen : WidgetScreen<Args.Empty>() {
             tabs(
                 tabs = listOf(
                     TabsWidget.TabWidget(
-                        title = const("P"),
-                        body = PostsScreen(
-                            widgetScope = this,
-                            viewModel = PostsViewModel()
-                        ).createWidget()
-                    ),
-                    TabsWidget.TabWidget(
-                        title = const("U"),
-                        body = UsersScreen(
-                            widgetScope = this,
-                            viewModel = UsersViewModel(sharedFactory.usersUnitsFactory)
-                        ).createWidget()
-                    ),
-                    TabsWidget.TabWidget(
                         title = const("P#2"),
                         body = SocialProfileScreen(
                             widgetScope = Theme.socialWidgetScope,
@@ -209,6 +195,20 @@ class WidgetsScreen : WidgetScreen<Args.Empty>() {
                         body = StateScreen(
                             widgetScope = this,
                             viewModel = StateViewModel()
+                        ).createWidget()
+                    ),
+                    TabsWidget.TabWidget(
+                        title = const("P"),
+                        body = PostsScreen(
+                            widgetScope = this,
+                            viewModel = PostsViewModel()
+                        ).createWidget()
+                    ),
+                    TabsWidget.TabWidget(
+                        title = const("U"),
+                        body = UsersScreen(
+                            widgetScope = this,
+                            viewModel = UsersViewModel(sharedFactory.usersUnitsFactory)
                         ).createWidget()
                     )
                 )
