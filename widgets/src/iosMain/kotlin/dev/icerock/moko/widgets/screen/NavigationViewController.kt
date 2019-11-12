@@ -17,8 +17,6 @@ class NavigationViewController(val screen: NavigationScreen) :
         val rootScreen = screen.rootScreen.instantiate()
         val rootViewController = rootScreen.createViewController()
         setViewControllers(listOf(rootViewController))
-
-        rootViewController.navigationItem.title = rootScreen.toString()
     }
 
     inner class Nav : Navigation {

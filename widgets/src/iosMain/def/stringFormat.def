@@ -1,0 +1,9 @@
+language = Objective-C
+---
+#import <Foundation/NSString.h>
+#import <Foundation/NSBundle.h>
+
+NSString* pluralizedString(NSBundle* bundle, NSString* resourceId, int number) {
+  NSString* localized = [bundle localizedStringForKey: resourceId value: nil table: nil];
+  return [NSString localizedStringWithFormat:localized, number];
+}

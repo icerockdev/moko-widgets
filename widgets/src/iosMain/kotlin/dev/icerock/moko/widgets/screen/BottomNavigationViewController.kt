@@ -5,6 +5,7 @@
 package dev.icerock.moko.widgets.screen
 
 import dev.icerock.moko.parcelize.Parcelable
+import dev.icerock.moko.widgets.utils.localized
 import platform.UIKit.UITabBarController
 import platform.UIKit.UITabBarItem
 import platform.UIKit.tabBarItem
@@ -18,7 +19,7 @@ class BottomNavigationViewController(val screen: BottomNavigationScreen) :
         val viewControllers = items.map {
             val screen = it.screen.instantiate()
             screen.createViewController().apply {
-                tabBarItem = UITabBarItem(title = it.title.toString(), image = null, selectedImage = null)
+                tabBarItem = UITabBarItem(title = it.title.localized(), image = null, selectedImage = null)
             }
         }
         setViewControllers(viewControllers = viewControllers)

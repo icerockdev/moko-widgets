@@ -6,19 +6,13 @@ package dev.icerock.moko.widgets
 
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.bind
-import kotlinx.cinterop.ObjCAction
-import kotlinx.cinterop.cstr
-import platform.Foundation.NSSelectorFromString
+import dev.icerock.moko.widgets.utils.localized
+import dev.icerock.moko.widgets.utils.setEventHandler
 import platform.UIKit.UIButton
 import platform.UIKit.UIButtonTypeRoundedRect
-import platform.UIKit.UIControl
 import platform.UIKit.UIControlEventTouchUpInside
-import platform.UIKit.UIControlEvents
 import platform.UIKit.UIControlStateNormal
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
-import platform.darwin.NSObject
-import platform.objc.OBJC_ASSOCIATION_RETAIN
-import platform.objc.objc_setAssociatedObject
 
 actual var buttonWidgetViewFactory: VFC<ButtonWidget> = { viewController, widget ->
     val style = widget.style
@@ -27,7 +21,7 @@ actual var buttonWidgetViewFactory: VFC<ButtonWidget> = { viewController, widget
     button.translatesAutoresizingMaskIntoConstraints = false
 
     widget.text.bind {
-        button.setTitle(title = it.toString(), forState = UIControlStateNormal)
+        button.setTitle(title = it.localized(), forState = UIControlStateNormal)
     }
 
     button.setEventHandler(UIControlEventTouchUpInside) {
@@ -35,29 +29,4 @@ actual var buttonWidgetViewFactory: VFC<ButtonWidget> = { viewController, widget
     }
 
     button
-}
-
-fun UIControl.setEventHandler(controlEvent: UIControlEvents, action: () -> Unit) {
-    val target = LambdaTarget(action)
-
-    addTarget(
-        target = target,
-        action = NSSelectorFromString("action"),
-        forControlEvents = controlEvent
-    )
-
-    objc_setAssociatedObject(
-        `object` = this,
-        key = "event$controlEvent".cstr,
-        value = target,
-        policy = OBJC_ASSOCIATION_RETAIN
-    )
-}
-
-class LambdaTarget(val lambda: () -> Unit) : NSObject() {
-
-    @ObjCAction
-    fun action() {
-        lambda()
-    }
 }

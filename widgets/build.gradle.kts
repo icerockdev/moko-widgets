@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+
 /*
  * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
@@ -56,6 +58,17 @@ publishing {
         credentials {
             username = System.getProperty("BINTRAY_USER")
             password = System.getProperty("BINTRAY_KEY")
+        }
+    }
+}
+
+kotlin {
+    targets.filterIsInstance<KotlinNativeTarget>().forEach { target ->
+        target.compilations.getByName("main") {
+            val pluralsFormat by cinterops.creating {
+                defFile(project.file("src/iosMain/def/stringFormat.def"))
+                packageName("dev.icerock.plural")
+            }
         }
     }
 }
