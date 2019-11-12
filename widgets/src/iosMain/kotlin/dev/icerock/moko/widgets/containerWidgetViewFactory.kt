@@ -25,6 +25,7 @@ actual var containerWidgetViewFactory: VFC<ContainerWidget> = { viewController, 
 
     widget.childs.forEach { (childWidget, childAlignment) ->
         val childView = childWidget.buildView(viewController)
+        childView.translatesAutoresizingMaskIntoConstraints = false
 
         root.addSubview(childView)
 
