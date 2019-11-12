@@ -3,17 +3,11 @@ package dev.icerock.moko.widgets
 import dev.icerock.moko.widgets.core.VFC
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGRectZero
-import platform.UIKit.UIColor
-import platform.UIKit.UILabel
 import platform.UIKit.UIScrollView
 import platform.UIKit.addSubview
-import platform.UIKit.backgroundColor
 import platform.UIKit.bottomAnchor
-import platform.UIKit.heightAnchor
-import platform.UIKit.leadingAnchor
 import platform.UIKit.leftAnchor
 import platform.UIKit.topAnchor
-import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 import platform.UIKit.widthAnchor
 
@@ -26,7 +20,7 @@ actual var scrollWidgetViewFactory: VFC<ScrollWidget> = { viewController, widget
 
     val childView = widget.child.buildView(viewController)
     childView.translatesAutoresizingMaskIntoConstraints = false
-    
+
     with(scrollView) {
         addSubview(childView)
 
