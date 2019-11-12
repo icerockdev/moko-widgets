@@ -5,9 +5,19 @@
 package dev.icerock.moko.widgets
 
 import dev.icerock.moko.widgets.core.VFC
-import platform.UIKit.UIView
+import platform.UIKit.UIActivityIndicatorView
+import platform.UIKit.UIActivityIndicatorViewStyleWhiteLarge
+import platform.UIKit.UIColor
+import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
-actual var progressBarWidgetViewFactory: VFC<ProgressBarWidget> = { _, _ ->
-    // TODO add factory implementation
-    UIView()
+actual var progressBarWidgetViewFactory: VFC<ProgressBarWidget> = { viewController, widget ->
+    // TODO add styles support
+    val style = widget.style
+
+    val activityIndicator = UIActivityIndicatorView(activityIndicatorStyle = UIActivityIndicatorViewStyleWhiteLarge)
+    activityIndicator.color = UIColor.grayColor
+    activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+    activityIndicator.startAnimating()
+
+    activityIndicator
 }
