@@ -5,9 +5,22 @@
 package dev.icerock.moko.widgets
 
 import dev.icerock.moko.widgets.core.VFC
-import platform.UIKit.UIView
+import dev.icerock.moko.widgets.core.bind
+import dev.icerock.moko.widgets.utils.localized
+import platform.CoreGraphics.CGRectMake
+import platform.UIKit.UILabel
+import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
-actual var textWidgetViewFactory: VFC<TextWidget> = { _, _ ->
-    // TODO add factory implementation
-    UIView()
+actual var textWidgetViewFactory: VFC<TextWidget> = { viewController, widget ->
+    // TODO add styles support
+    val style = widget.style
+
+    val label = UILabel(frame = CGRectMake(0.0, 0.0, 0.0, 0.0))
+    label.translatesAutoresizingMaskIntoConstraints = false
+
+    widget.text.bind {
+        label.text = it.localized()
+    }
+
+    label
 }
