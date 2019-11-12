@@ -5,9 +5,31 @@
 package dev.icerock.moko.widgets
 
 import dev.icerock.moko.widgets.core.VFC
-import platform.UIKit.UIView
+import dev.icerock.moko.widgets.core.bind
+import dev.icerock.moko.widgets.utils.setEventHandler
+import kotlinx.cinterop.readValue
+import platform.CoreGraphics.CGRectZero
+import platform.UIKit.UIControlEventValueChanged
+import platform.UIKit.UISwitch
+import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
-actual var switchWidgetViewFactory: VFC<SwitchWidget> = { _, _ ->
-    // TODO add factory implementation
-    UIView()
+actual var switchWidgetViewFactory: VFC<SwitchWidget> = { viewController, widget ->
+    // TODO add styles support
+    val style = widget.style
+
+    val switch = UISwitch(frame = CGRectZero.readValue())
+    switch.translatesAutoresizingMaskIntoConstraints = false
+
+    widget.state.bind { switch.on = it }
+
+    switch.setEventHandler(UIControlEventValueChanged) {
+        val on = switch.on
+        val current = widget.state.value
+
+        if (on != current) {
+            widget.state.value = on
+        }
+    }
+
+    switch
 }
