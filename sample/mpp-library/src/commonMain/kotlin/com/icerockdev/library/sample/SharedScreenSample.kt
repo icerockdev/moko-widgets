@@ -162,49 +162,49 @@ class WidgetsScreen : WidgetScreen<Args.Empty>() {
         return with(WidgetScope()) {
             tabs(
                 tabs = listOf(
-                    TabsWidget.TabWidget(
+                    TabsWidget.Tab(
                         title = const("P#2"),
                         body = SocialProfileScreen(
                             widgetScope = Theme.socialWidgetScope,
                             viewModel = SocialProfileViewModel()
                         ).createWidget()
                     ),
-                    TabsWidget.TabWidget(
+                    TabsWidget.Tab(
                         title = const("P#4"),
                         body = CryptoProfileScreen(
                             widgetScope = Theme.cryptoWidgetScope,
                             viewModel = CryptoProfileViewModel()
                         ).createWidget()
                     ),
-                    TabsWidget.TabWidget(
+                    TabsWidget.Tab(
                         title = const("P#1"),
                         body = SocialProfileScreen(
                             widgetScope = this,
                             viewModel = SocialProfileViewModel()
                         ).createWidget()
                     ),
-                    TabsWidget.TabWidget(
+                    TabsWidget.Tab(
                         title = const("P#3"),
                         body = McommerceProfileScreen(
                             widgetScope = Theme.mcommerceWidgetScope,
                             viewModel = McommerceProfileViewModel()
                         ).createWidget()
                     ),
-                    TabsWidget.TabWidget(
+                    TabsWidget.Tab(
                         title = const("D"),
                         body = StateScreen(
                             widgetScope = this,
                             viewModel = StateViewModel()
                         ).createWidget()
                     ),
-                    TabsWidget.TabWidget(
+                    TabsWidget.Tab(
                         title = const("P"),
                         body = PostsScreen(
                             widgetScope = this,
                             viewModel = PostsViewModel()
                         ).createWidget()
                     ),
-                    TabsWidget.TabWidget(
+                    TabsWidget.Tab(
                         title = const("U"),
                         body = UsersScreen(
                             widgetScope = this,

@@ -30,7 +30,7 @@ class UsersScreen(
         return with(widgetScope) {
             tabs(
                 tabs = listOf(
-                    TabsWidget.TabWidget(
+                    TabsWidget.Tab(
                         title = const("list"),
                         body = list(
                             id = Id.List,
@@ -44,7 +44,7 @@ class UsersScreen(
                             onReachEnd = viewModel::loadNextPage
                         )
                     ),
-                    TabsWidget.TabWidget(
+                    TabsWidget.Tab(
                         title = const("collection"),
                         body = collection(
                             id = Id.Collection,

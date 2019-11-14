@@ -28,14 +28,14 @@ class TabsWidget(
     override val style: Style,
     override val id: Id?,
     @Suppress("RemoveRedundantQualifierName")
-    val tabs: List<TabsWidget.TabWidget> // for correct codegen
+    val tabs: List<TabsWidget.Tab> // for correct codegen
 ) : Widget(), Styled<TabsWidget.Style>, OptionalId<TabsWidget.Id> {
 
     override fun buildView(viewFactoryContext: ViewFactoryContext): View {
         return factory(viewFactoryContext, this)
     }
 
-    class TabWidget(
+    class Tab(
         val title: LiveData<StringDesc>,
         val body: Widget
     )

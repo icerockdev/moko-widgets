@@ -68,11 +68,11 @@ open class StateScreen(
                         data = { data ->
                             tabs(
                                 tabs = listOf(
-                                    TabsWidget.TabWidget(
+                                    TabsWidget.Tab(
                                         title = const("first page"),
                                         body = flatAlertWrapped(message = data.map { it?.desc() })
                                     ),
-                                    TabsWidget.TabWidget(
+                                    TabsWidget.Tab(
                                         title = const("second page"),
                                         body = flatAlertWrapped(message = "SECOND".desc().asLiveData())
                                     )
