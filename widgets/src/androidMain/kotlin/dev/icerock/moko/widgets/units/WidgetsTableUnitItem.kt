@@ -15,7 +15,7 @@ import dev.icerock.moko.units.UnitItem
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 
-actual abstract class WidgetsUnitItem<T> actual constructor(
+actual abstract class WidgetsTableUnitItem<T> actual constructor(
     override val itemId: Long,
     val data: T
 ) : UnitItem {

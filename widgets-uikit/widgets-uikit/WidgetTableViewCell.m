@@ -12,6 +12,10 @@ static void initialize_viewFactoryHolder() {
     viewFactoryHolder = [[NSMutableDictionary alloc] init];
 }
 
+@implementation WidgetFactoryResult
+
+@end
+
 @implementation WidgetTableViewCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(nullable NSString *)reuseIdentifier {
@@ -21,8 +25,14 @@ static void initialize_viewFactoryHolder() {
             return self;
         }
       
-        UIView *(^viewFactory)(void) = viewFactoryHolder[reuseIdentifier];
-        UIView *widgetView = viewFactory();
+        WidgetFactoryResult *(^viewFactory)(UIViewController*) = viewFactoryHolder[reuseIdentifier];
+        
+        // temporary hack
+        UIViewController* vc = UIApplication.sharedApplication.keyWindow.rootViewController;
+        
+        WidgetFactoryResult* result = viewFactory(vc);
+        UIView *widgetView = result.view;
+        self.cellTag = result.cellTag;
 
         [self.contentView addSubview:widgetView];
 
@@ -35,7 +45,8 @@ static void initialize_viewFactoryHolder() {
     return self;
 }
 
-+ (void)setViewFactory:(UIView *(^)(void))factory toReuseIdentifier:(nonnull NSString *)reuseIdentifer {
++ (void)setViewFactory:(nonnull WidgetFactoryResult *(^)(UIViewController*))factory
+     toReuseIdentifier:(nonnull NSString *)reuseIdentifer {
     [viewFactoryHolder setObject:factory forKey:reuseIdentifer];
 }
 

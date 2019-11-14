@@ -17,13 +17,13 @@ import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.text
-import dev.icerock.moko.widgets.units.WidgetsUnitItem
+import dev.icerock.moko.widgets.units.WidgetsTableUnitItem
 
 class UserUnitItem(
     private val widgetScope: WidgetScope,
     itemId: Long,
     data: Data
-) : WidgetsUnitItem<UserUnitItem.Data>(itemId, data) {
+) : WidgetsTableUnitItem<UserUnitItem.Data>(itemId, data) {
     override val reuseId: String = "UserUnitItem"
 
     override fun createWidget(data: LiveData<Data>): Widget {

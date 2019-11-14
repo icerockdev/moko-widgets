@@ -4,8 +4,18 @@
 
 #import <UIKit/UITableViewCell.h>
 
+@interface WidgetFactoryResult: NSObject
+
+@property (nonnull) UIView *view;
+@property (nonnull) id cellTag;
+
+@end
+
 @interface WidgetTableViewCell : UITableViewCell
 
-+ (void)setViewFactory:(UIView *(^)(void))factory toReuseIdentifier:(NSString *)reuseIdentifer;
+@property (nonnull) id cellTag;
+
++ (void)setViewFactory:(nonnull WidgetFactoryResult *(^)(UIViewController *))factory
+     toReuseIdentifier:(nonnull NSString *)reuseIdentifer;
 
 @end

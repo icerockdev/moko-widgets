@@ -5,7 +5,7 @@
 package dev.icerock.moko.widgets
 
 import dev.icerock.moko.mvvm.livedata.LiveData
-import dev.icerock.moko.units.UnitItem
+import dev.icerock.moko.units.TableUnitItem
 import dev.icerock.moko.widgets.core.RequireId
 import dev.icerock.moko.widgets.core.Styled
 import dev.icerock.moko.widgets.core.VFC
@@ -30,7 +30,7 @@ class ListWidget(
     val factory: VFC<ListWidget>,
     override val style: Style,
     override val id: Id,
-    val items: LiveData<List<UnitItem>>,
+    val items: LiveData<List<TableUnitItem>>,
     val onReachEnd: (() -> Unit)?,
     val onRefresh: ((completion: () -> Unit) -> Unit)?
 ) : Widget(), Styled<ListWidget.Style>, RequireId<ListWidget.Id> {

@@ -10,8 +10,8 @@ import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.map
 import dev.icerock.moko.widgets.ImageWidget
 import dev.icerock.moko.widgets.container
-import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.Image
+import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.image
 import dev.icerock.moko.widgets.linear
@@ -26,13 +26,13 @@ import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.text
-import dev.icerock.moko.widgets.units.WidgetsUnitItem
+import dev.icerock.moko.widgets.units.WidgetsCollectionUnitItem
 
 class PostUnitItem(
     private val widgetScope: WidgetScope,
     itemId: Long,
     data: PostsViewModelContract.PostItem
-) : WidgetsUnitItem<PostsViewModelContract.PostItem>(itemId, data) {
+) : WidgetsCollectionUnitItem<PostsViewModelContract.PostItem>(itemId, data) {
     override val reuseId: String = "PostUnitItem"
 
     override fun createWidget(data: LiveData<PostsViewModelContract.PostItem>): Widget {

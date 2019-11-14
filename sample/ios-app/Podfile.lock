@@ -1,28 +1,16 @@
 PODS:
   - MultiPlatformLibrary (0.1.0)
-  - MultiPlatformLibraryUnits/Core (0.1.0):
-    - MultiPlatformLibrary
 
 DEPENDENCIES:
   - MultiPlatformLibrary (from `../mpp-library`)
-  - MultiPlatformLibraryUnits/Core (from `https://github.com/icerockdev/moko-units.git`, tag `release/0.1.1`)
 
 EXTERNAL SOURCES:
   MultiPlatformLibrary:
     :path: "../mpp-library"
-  MultiPlatformLibraryUnits:
-    :git: https://github.com/icerockdev/moko-units.git
-    :tag: release/0.1.1
-
-CHECKOUT OPTIONS:
-  MultiPlatformLibraryUnits:
-    :git: https://github.com/icerockdev/moko-units.git
-    :tag: release/0.1.1
 
 SPEC CHECKSUMS:
   MultiPlatformLibrary: 176fb8ade516666cd47e93de1b71ba0441a541bb
-  MultiPlatformLibraryUnits: 44eda0f9372f8a095225fae2579916208ca2c8d3
 
-PODFILE CHECKSUM: 3ab8c508ee255ca277e19a4624de4db5608a53b4
+PODFILE CHECKSUM: e16e009c25ad378f1adbfb5d2e479bde2078ec1d
 
 COCOAPODS: 1.8.3

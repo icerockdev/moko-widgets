@@ -8,7 +8,8 @@ import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.mvvm.livedata.map
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
-import dev.icerock.moko.units.UnitItem
+import dev.icerock.moko.units.CollectionUnitItem
+import dev.icerock.moko.units.TableUnitItem
 import dev.icerock.moko.widgets.CollectionWidget
 import dev.icerock.moko.widgets.ListWidget
 import dev.icerock.moko.widgets.TabsWidget
@@ -34,7 +35,7 @@ class UsersScreen(
                         title = const("list"),
                         body = list(
                             id = Id.List,
-                            items = viewModel.items,
+                            items = viewModel.tableItems,
                             styled = {
                                 it.copy(
                                     padding = PaddingValues(8f)
@@ -48,7 +49,7 @@ class UsersScreen(
                         title = const("collection"),
                         body = collection(
                             id = Id.Collection,
-                            items = viewModel.items,
+                            items = viewModel.collectionItems,
                             styled = {
                                 it.copy(
                                     padding = PaddingValues(8f)
@@ -70,7 +71,8 @@ class UsersScreen(
 }
 
 interface UsersViewModelContract {
-    val items: LiveData<List<UnitItem>>
+    val tableItems: LiveData<List<TableUnitItem>>
+    val collectionItems: LiveData<List<CollectionUnitItem>>
 
     fun refresh(completion: () -> Unit)
     fun loadNextPage()
@@ -87,10 +89,22 @@ class UsersViewModel(
             "Nikolay Igotti"
         )
     )
-    override val items: LiveData<List<UnitItem>> = _items.map { items ->
+    override val tableItems: LiveData<List<TableUnitItem>> = _items.map { items ->
         items.map { name ->
             val id = name.hashCode().toLong()
-            unitsFactory.createUserUnit(
+            unitsFactory.createUserTableUnit(
+                itemId = id,
+                name = name,
+                avatarUrl = "https://avatars0.githubusercontent.com/u/5010169"
+            ) {
+                println("clicked $name user")
+            }
+        }
+    }
+    override val collectionItems: LiveData<List<CollectionUnitItem>> = _items.map { items ->
+        items.map { name ->
+            val id = name.hashCode().toLong()
+            unitsFactory.createUserCollectionUnit(
                 itemId = id,
                 name = name,
                 avatarUrl = "https://avatars0.githubusercontent.com/u/5010169"
@@ -129,11 +143,18 @@ class UsersViewModel(
     }
 
     interface UnitsFactory {
-        fun createUserUnit(
+        fun createUserTableUnit(
             itemId: Long,
             name: String,
             avatarUrl: String,
             onClick: () -> Unit
-        ): UnitItem
+        ): TableUnitItem
+
+        fun createUserCollectionUnit(
+            itemId: Long,
+            name: String,
+            avatarUrl: String,
+            onClick: () -> Unit
+        ): CollectionUnitItem
     }
 }

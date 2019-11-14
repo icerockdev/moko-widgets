@@ -12,15 +12,17 @@ actual abstract class Image {
 
     actual companion object {
         actual fun resource(drawableResource: DrawableResource): Image {
-            TODO()
+            return DummyImage()
         }
 
         actual fun network(url: String): Image {
-            TODO()
+            return DummyImage()
         }
 
         actual fun bitmap(bitmap: Bitmap): Image {
-            TODO()
+            return DummyImage()
         }
     }
 }
+
+class DummyImage(): Image()

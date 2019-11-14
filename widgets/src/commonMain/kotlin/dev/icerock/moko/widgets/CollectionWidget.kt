@@ -5,7 +5,7 @@
 package dev.icerock.moko.widgets
 
 import dev.icerock.moko.mvvm.livedata.LiveData
-import dev.icerock.moko.units.UnitItem
+import dev.icerock.moko.units.CollectionUnitItem
 import dev.icerock.moko.widgets.core.RequireId
 import dev.icerock.moko.widgets.core.Styled
 import dev.icerock.moko.widgets.core.VFC
@@ -31,7 +31,7 @@ class CollectionWidget(
     val factory: VFC<CollectionWidget>,
     override val style: Style,
     override val id: Id,
-    val items: LiveData<List<UnitItem>>,
+    val items: LiveData<List<CollectionUnitItem>>,
     val onReachEnd: (() -> Unit)?,
     val onRefresh: ((completion: () -> Unit) -> Unit)?
 ) : Widget(), Styled<CollectionWidget.Style>, RequireId<CollectionWidget.Id> {

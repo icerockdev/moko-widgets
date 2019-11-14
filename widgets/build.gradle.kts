@@ -62,11 +62,6 @@ publishing {
     }
 }
 
-val uikitAdditionsCompile by tasks.creating(Exec::class) {
-    workingDir = File(projectDir, "../widgets-uikit")
-    commandLine = "xcodebuild -scheme UniversalLib build".split(" ")
-}
-
 kotlin {
     targets.filterIsInstance<KotlinNativeTarget>().forEach { target ->
         target.compilations.getByName("main") {
@@ -77,6 +72,18 @@ kotlin {
             val uiKitAdditions by cinterops.creating {
                 defFile(project.file("src/iosMain/def/UIKitAdditions.def"))
                 includeDirs("$projectDir/../widgets-uikit/widgets-uikit")
+
+                val buildConfig = when(target.name) {
+                    "iosArm64" -> "-sdk iphoneos -arch arm64"
+                    "iosX64" -> "-sdk iphonesimulator -arch x86_64"
+                    else -> throw IllegalArgumentException("invalid target $target")
+                }
+
+                val uikitAdditionsCompile= tasks.create("${interopProcessingTaskName}Compile", Exec::class) {
+                    group = "interop"
+                    workingDir = File(projectDir, "../widgets-uikit")
+                    commandLine = "xcodebuild -target WidgetsUIKit -configuration Release $buildConfig build".split(" ")
+                }
 
                 tasks.getByName(interopProcessingTaskName).dependsOn(uikitAdditionsCompile)
             }
