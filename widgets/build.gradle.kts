@@ -62,12 +62,23 @@ publishing {
     }
 }
 
+val uikitAdditionsCompile by tasks.creating(Exec::class) {
+    workingDir = File(projectDir, "../widgets-uikit")
+    commandLine = "xcodebuild -scheme UniversalLib build".split(" ")
+}
+
 kotlin {
     targets.filterIsInstance<KotlinNativeTarget>().forEach { target ->
         target.compilations.getByName("main") {
             val pluralsFormat by cinterops.creating {
                 defFile(project.file("src/iosMain/def/stringFormat.def"))
                 packageName("dev.icerock.plural")
+            }
+            val uiKitAdditions by cinterops.creating {
+                defFile(project.file("src/iosMain/def/UIKitAdditions.def"))
+                includeDirs("$projectDir/../widgets-uikit/widgets-uikit")
+
+                tasks.getByName(interopProcessingTaskName).dependsOn(uikitAdditionsCompile)
             }
         }
     }

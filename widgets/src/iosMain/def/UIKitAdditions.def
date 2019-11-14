@@ -1,0 +1,7 @@
+depends = UIKit CFNetwork CoreFoundation CoreGraphics CoreImage CoreText CoreVideo EAGL FileProvider Foundation IOSurface ImageIO Metal OpenGLESCommon QuartzCore Security UserNotifications darwin posix
+language = Objective-C
+headers = WidgetTableViewCell.h
+package = dev.icerock.moko.widgets.uikit
+linkerOpts = -framework UIKit
+staticLibraries = libWidgetsUIKit.a
+libraryPaths = ../widgets-uikit/build/
