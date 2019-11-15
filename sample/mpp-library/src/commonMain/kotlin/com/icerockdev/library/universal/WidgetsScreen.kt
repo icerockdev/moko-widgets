@@ -25,8 +25,9 @@ import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.WidgetScreen
 import dev.icerock.moko.widgets.tabs
 
-class WidgetsScreen : WidgetScreen<Args.Empty>() {
-    private val sharedFactory = SharedFactory() // TODO change system
+class WidgetsScreen(
+    private val sharedFactory: SharedFactory
+) : WidgetScreen<Args.Empty>() {
 
     override fun createContentWidget(): Widget {
         return with(WidgetScope()) {

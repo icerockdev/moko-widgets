@@ -9,8 +9,9 @@ import dev.icerock.moko.widgets.screen.BottomNavigationItem
 import dev.icerock.moko.widgets.screen.BottomNavigationScreen
 import dev.icerock.moko.widgets.screen.ScreenFactory
 
-class RootBottomNavigationScreen(screenFactory: ScreenFactory) : BottomNavigationScreen(screenFactory),
-    ProductsNavigationScreen.Parent {
+class RootBottomNavigationScreen(
+    screenFactory: ScreenFactory
+) : BottomNavigationScreen(screenFactory), ProductsNavigationScreen.Parent {
     override val items: List<BottomNavigationItem> = listOf(
         BottomNavigationItem(
             id = 1,

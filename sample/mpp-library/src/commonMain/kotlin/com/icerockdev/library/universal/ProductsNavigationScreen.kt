@@ -9,8 +9,9 @@ import dev.icerock.moko.widgets.screen.ScreenFactory
 import dev.icerock.moko.widgets.screen.getParentScreen
 import kotlin.reflect.KClass
 
-class ProductsNavigationScreen(screenFactory: ScreenFactory) : NavigationScreen<ProductsScreen>(screenFactory),
-    ProductsScreen.Parent, ProductScreen.Parent {
+class ProductsNavigationScreen(
+    screenFactory: ScreenFactory
+) : NavigationScreen<ProductsScreen>(screenFactory), ProductsScreen.Parent, ProductScreen.Parent {
     override val rootScreen: KClass<out ProductsScreen>
         get() = ProductsScreen::class
 

@@ -69,32 +69,32 @@ class UserUnitWidget(
         val avatarUrl: String,
         val onClick: () -> Unit
     )
-}
 
-class UserTableUnitItem(
-    widgetScope: WidgetScope,
-    itemId: Long,
-    data: UserUnitWidget.Data
-) : WidgetsTableUnitItem<UserUnitWidget.Data>(itemId, data) {
-    private val unitWidget = UserUnitWidget(widgetScope)
+    class TableUnitItem(
+        widgetScope: WidgetScope,
+        itemId: Long,
+        data: Data
+    ) : WidgetsTableUnitItem<Data>(itemId, data) {
+        private val unitWidget = UserUnitWidget(widgetScope)
 
-    override val reuseId: String = "UserUnitItem"
+        override val reuseId: String = "UserUnitItem"
 
-    override fun createWidget(data: LiveData<UserUnitWidget.Data>): Widget {
-        return unitWidget.createWidget(data)
+        override fun createWidget(data: LiveData<Data>): Widget {
+            return unitWidget.createWidget(data)
+        }
     }
-}
 
-class UserCollectionUnitItem(
-    widgetScope: WidgetScope,
-    itemId: Long,
-    data: UserUnitWidget.Data
-) : WidgetsCollectionUnitItem<UserUnitWidget.Data>(itemId, data) {
-    private val unitWidget = UserUnitWidget(widgetScope)
+    class CollectionUnitItem(
+        widgetScope: WidgetScope,
+        itemId: Long,
+        data: Data
+    ) : WidgetsCollectionUnitItem<Data>(itemId, data) {
+        private val unitWidget = UserUnitWidget(widgetScope)
 
-    override val reuseId: String = "UserUnitItem"
+        override val reuseId: String = "UserUnitItem"
 
-    override fun createWidget(data: LiveData<UserUnitWidget.Data>): Widget {
-        return unitWidget.createWidget(data)
+        override fun createWidget(data: LiveData<Data>): Widget {
+            return unitWidget.createWidget(data)
+        }
     }
 }

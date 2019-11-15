@@ -5,8 +5,6 @@
 package com.icerockdev.library
 
 import com.icerockdev.library.sample.UsersViewModel
-import com.icerockdev.library.units.UserCollectionUnitItem
-import com.icerockdev.library.units.UserTableUnitItem
 import com.icerockdev.library.units.UserUnitWidget
 import dev.icerock.moko.units.CollectionUnitItem
 import dev.icerock.moko.units.TableUnitItem
@@ -24,7 +22,7 @@ class SharedFactory {
                 name: String,
                 avatarUrl: String,
                 onClick: () -> Unit
-            ): TableUnitItem = UserTableUnitItem(
+            ): TableUnitItem = UserUnitWidget.TableUnitItem(
                 widgetScope = mainWidgetScope,
                 itemId = itemId,
                 data = UserUnitWidget.Data(
@@ -39,7 +37,7 @@ class SharedFactory {
                 name: String,
                 avatarUrl: String,
                 onClick: () -> Unit
-            ): CollectionUnitItem = UserCollectionUnitItem(
+            ): CollectionUnitItem = UserUnitWidget.CollectionUnitItem(
                 widgetScope = mainWidgetScope,
                 itemId = itemId,
                 data = UserUnitWidget.Data(

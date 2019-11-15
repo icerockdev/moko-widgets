@@ -2,6 +2,7 @@
  * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
 
+import com.icerockdev.library.SharedFactory
 import com.icerockdev.library.universal.CartNavigationScreen
 import com.icerockdev.library.universal.CartScreen
 import com.icerockdev.library.universal.ProductScreen
@@ -16,10 +17,12 @@ import kotlin.reflect.KClass
 
 object App : BaseApplication() {
     override fun setup() {
+        val sharedFactory = SharedFactory()
+
         registerScreenFactory(RootBottomNavigationScreen::class) { RootBottomNavigationScreen(this) }
         registerScreenFactory(ProductsNavigationScreen::class) { ProductsNavigationScreen(this) }
         registerScreenFactory(CartNavigationScreen::class) { CartNavigationScreen(this) }
-        registerScreenFactory(WidgetsScreen::class) { WidgetsScreen() }
+        registerScreenFactory(WidgetsScreen::class) { WidgetsScreen(sharedFactory) }
         registerScreenFactory(ProductsScreen::class) { ProductsScreen() }
         registerScreenFactory(CartScreen::class) { CartScreen() }
         registerScreenFactory(ProductScreen::class) { ProductScreen() }
