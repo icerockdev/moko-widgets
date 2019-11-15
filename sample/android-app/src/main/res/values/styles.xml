@@ -8,5 +8,18 @@
         <item name="colorPrimaryDark">#FF660066</item>
         <!-- theme UI controls like checkboxes and text fields -->
         <item name="colorAccent">#FF990099</item>
+
+        <item name="toolbarStyle">@style/AppTheme.Toolbar</item>
+        <item name="bottomNavigationStyle">@style/AppTheme.BottomNavigation</item>
+    </style>
+
+    <style name="AppTheme.Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="titleTextColor">@android:color/white</item>
+        <item name="android:background">?colorPrimary</item>
+    </style>
+
+    <style name="AppTheme.BottomNavigation">
+        <item name="android:background">?colorPrimaryDark</item>
+        <item name="itemTextColor">@android:color/tab_indicator_text</item>
     </style>
 </resources>

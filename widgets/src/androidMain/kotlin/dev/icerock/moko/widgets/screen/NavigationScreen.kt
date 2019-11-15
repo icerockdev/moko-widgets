@@ -27,9 +27,7 @@ actual abstract class NavigationScreen<S> actual constructor(
         val container = FrameLayout(context).apply {
             id = android.R.id.content
         }
-        val toolbar = Toolbar(context).apply {
-            setBackgroundColor(getPrimaryColor(context))
-        }
+        val toolbar = Toolbar(context)
 
         this.toolbar = toolbar
 
@@ -63,14 +61,6 @@ actual abstract class NavigationScreen<S> actual constructor(
         val toolBarHeight = ta.getDimensionPixelSize(0, -1)
         ta.recycle()
         return toolBarHeight
-    }
-
-    private fun getPrimaryColor(context: Context): Int {
-        val attrs = intArrayOf(android.R.attr.colorPrimary)
-        val ta = context.obtainStyledAttributes(attrs)
-        val color = ta.getColor(0, -1)
-        ta.recycle()
-        return color
     }
 
     override fun onViewCreated(view: android.view.View, savedInstanceState: Bundle?) {
