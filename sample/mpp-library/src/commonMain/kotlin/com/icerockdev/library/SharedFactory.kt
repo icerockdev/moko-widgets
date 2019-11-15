@@ -5,13 +5,12 @@
 package com.icerockdev.library
 
 import com.icerockdev.library.sample.UsersViewModel
-import com.icerockdev.library.units.UserUnitItem
-import dev.icerock.moko.mvvm.livedata.LiveData
+import com.icerockdev.library.units.UserCollectionUnitItem
+import com.icerockdev.library.units.UserTableUnitItem
+import com.icerockdev.library.units.UserUnitWidget
 import dev.icerock.moko.units.CollectionUnitItem
 import dev.icerock.moko.units.TableUnitItem
-import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
-import dev.icerock.moko.widgets.units.WidgetsCollectionUnitItem
 
 class SharedFactory {
     val mainWidgetScope by lazy {
@@ -25,10 +24,10 @@ class SharedFactory {
                 name: String,
                 avatarUrl: String,
                 onClick: () -> Unit
-            ): TableUnitItem = UserUnitItem(
+            ): TableUnitItem = UserTableUnitItem(
                 widgetScope = mainWidgetScope,
                 itemId = itemId,
-                data = UserUnitItem.Data(
+                data = UserUnitWidget.Data(
                     name = name,
                     avatarUrl = avatarUrl,
                     onClick = onClick
@@ -40,14 +39,15 @@ class SharedFactory {
                 name: String,
                 avatarUrl: String,
                 onClick: () -> Unit
-            ): CollectionUnitItem = object : WidgetsCollectionUnitItem<Int>(itemId, 1) {
-                override val reuseId: String
-                    get() = "user"
-
-                override fun createWidget(data: LiveData<Int>): Widget {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                }
-            }
+            ): CollectionUnitItem = UserCollectionUnitItem(
+                widgetScope = mainWidgetScope,
+                itemId = itemId,
+                data = UserUnitWidget.Data(
+                    name = name,
+                    avatarUrl = avatarUrl,
+                    onClick = onClick
+                )
+            )
         }
     }
 }

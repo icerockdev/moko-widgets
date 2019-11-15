@@ -12,13 +12,12 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.widgets.core.View
-import kotlin.reflect.KClass
 
-actual abstract class BottomNavigationScreen actual constructor() : Screen<Args.Empty>(),
-    Navigation {
-    private val fragmentNavigation = FragmentNavigation(this)
+actual abstract class BottomNavigationScreen actual constructor(
+    screenFactory: ScreenFactory
+) : Screen<Args.Empty>() {
+    private val fragmentNavigation = FragmentNavigation(this, screenFactory)
 
     override fun createView(context: Context, parent: ViewGroup?): View {
         val container = FrameLayout(context).apply {
@@ -35,7 +34,7 @@ actual abstract class BottomNavigationScreen actual constructor() : Screen<Args.
             item.icon?.also { menuItem.setIcon(it.drawableResId) }
 
             menuItemAction[menuItem] = {
-                routeToScreen(item.screen)
+                fragmentNavigation.routeToScreen(item.screen)
             }
         }
 
@@ -81,11 +80,7 @@ actual abstract class BottomNavigationScreen actual constructor() : Screen<Args.
 
     actual abstract val items: List<BottomNavigationItem>
 
-    override fun <S : Screen<Args.Empty>> routeToScreen(screen: KClass<S>) {
-        fragmentNavigation.routeToScreen(screen)
-    }
-
-    override fun <Arg : Parcelable, S : Screen<Args.Parcel<Arg>>> routeToScreen(screen: KClass<S>, argument: Arg) {
-        fragmentNavigation.routeToScreen(screen, argument)
-    }
+    actual var selectedItemIndex: Int
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+        set(value) {}
 }

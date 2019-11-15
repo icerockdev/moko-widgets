@@ -14,9 +14,10 @@ import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.widgets.core.View
 import kotlin.reflect.KClass
 
-actual abstract class NavigationScreen actual constructor() : Screen<Args.Empty>(),
-    Navigation {
-    private val fragmentNavigation = FragmentNavigation(this)
+actual abstract class NavigationScreen actual constructor(
+    screenFactory: ScreenFactory
+) : Screen<Args.Empty>() {
+    private val fragmentNavigation = FragmentNavigation(this, screenFactory)
 
     override fun createView(context: Context, parent: ViewGroup?): View {
         val container = FrameLayout(context).apply {
@@ -66,11 +67,14 @@ actual abstract class NavigationScreen actual constructor() : Screen<Args.Empty>
 
     actual abstract val rootScreen: KClass<out Screen<Args.Empty>>
 
-    override fun <S : Screen<Args.Empty>> routeToScreen(screen: KClass<S>) {
+    actual fun routeToScreen(screen: KClass<out Screen<Args.Empty>>) {
         fragmentNavigation.routeToScreen(screen)
     }
 
-    override fun <Arg : Parcelable, S : Screen<Args.Parcel<Arg>>> routeToScreen(screen: KClass<S>, argument: Arg) {
-        fragmentNavigation.routeToScreen(screen, argument)
+    actual fun <T : Parcelable> routeToScreen(
+        screen: KClass<out Screen<Args.Parcel<T>>>,
+        args: T
+    ) {
+        fragmentNavigation.routeToScreen(screen, args)
     }
 }

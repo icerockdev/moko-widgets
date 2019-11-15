@@ -12,7 +12,10 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         
-        let screen = App().createRootScreen()
+        let app = App()
+        app.setup()
+        
+        let screen = app.createRootScreen()
         let rootViewController = screen.createViewController()
         
         window = UIWindow(frame: UIScreen.main.bounds)

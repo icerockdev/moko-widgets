@@ -8,12 +8,15 @@ import androidx.fragment.app.Fragment
 import dev.icerock.moko.parcelize.Parcelable
 import kotlin.reflect.KClass
 
-internal class FragmentNavigation(private val fragment: Fragment) :
+internal class FragmentNavigation(
+    private val fragment: Fragment,
+    private val screenFactory: ScreenFactory
+) :
     Navigation {
     override fun <S : Screen<Args.Empty>> routeToScreen(screen: KClass<S>) {
         val fm = fragment.childFragmentManager ?: return
 
-        val instance = screen.java.newInstance()
+        val instance = screenFactory.instantiateScreen(screen)
         fm.beginTransaction()
             .replace(android.R.id.content, instance)
             .addToBackStack(null)
@@ -23,7 +26,7 @@ internal class FragmentNavigation(private val fragment: Fragment) :
     override fun <Arg : Parcelable, S : Screen<Args.Parcel<Arg>>> routeToScreen(screen: KClass<S>, argument: Arg) {
         val fm = fragment.childFragmentManager ?: return
 
-        val instance = screen.java.newInstance()
+        val instance = screenFactory.instantiateScreen(screen)
         instance.setArgument(argument)
 
         fm.beginTransaction()
@@ -35,7 +38,7 @@ internal class FragmentNavigation(private val fragment: Fragment) :
     fun <S : Screen<Args.Empty>> setScreen(screen: KClass<S>) {
         val fm = fragment.childFragmentManager ?: return
 
-        val instance = screen.java.newInstance()
+        val instance = screenFactory.instantiateScreen(screen)
         fm.beginTransaction()
             .replace(android.R.id.content, instance)
             .commit()

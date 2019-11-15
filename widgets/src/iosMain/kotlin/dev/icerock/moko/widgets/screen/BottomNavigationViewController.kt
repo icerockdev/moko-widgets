@@ -4,43 +4,24 @@
 
 package dev.icerock.moko.widgets.screen
 
-import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.widgets.utils.localized
 import platform.UIKit.UITabBarController
 import platform.UIKit.UITabBarItem
 import platform.UIKit.tabBarItem
-import kotlin.reflect.KClass
 
-class BottomNavigationViewController(val screen: BottomNavigationScreen) :
-    UITabBarController(nibName = null, bundle = null) {
+class BottomNavigationViewController(
+    screen: BottomNavigationScreen,
+    private val screenFactory: ScreenFactory
+) : UITabBarController(nibName = null, bundle = null) {
 
     init {
         val items = screen.items
         val viewControllers = items.map {
-            val screen = it.screen.instantiate()
-            screen.createViewController().apply {
+            val childScreen = screenFactory.instantiateScreen(it.screen)
+            childScreen.createViewController().apply {
                 tabBarItem = UITabBarItem(title = it.title.localized(), image = null, selectedImage = null)
             }
         }
         setViewControllers(viewControllers = viewControllers)
-    }
-
-    inner class Nav : Navigation {
-        override fun <S : Screen<Args.Empty>> routeToScreen(screen: KClass<S>) {
-            val position = this@BottomNavigationViewController.screen.items.indexOfFirst {
-                it.screen == screen
-            }
-            if (position == -1) return
-
-            selectedIndex = position.toULong()
-        }
-
-        override fun <Arg : Parcelable, S : Screen<Args.Parcel<Arg>>> routeToScreen(screen: KClass<S>, argument: Arg) {
-            TODO()
-//        val newScreen = screen.instantiate()
-//        newScreen.setArgument(argument)
-//        val screenViewController: UIViewController = newScreen.createViewController()
-//        pushViewController(screenViewController, animated = true)
-        }
     }
 }

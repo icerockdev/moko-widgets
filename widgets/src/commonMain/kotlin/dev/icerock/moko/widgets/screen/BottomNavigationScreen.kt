@@ -8,8 +8,12 @@ import dev.icerock.moko.resources.DrawableResource
 import dev.icerock.moko.resources.desc.StringDesc
 import kotlin.reflect.KClass
 
-expect abstract class BottomNavigationScreen() : Screen<Args.Empty> {
+expect abstract class BottomNavigationScreen(
+    screenFactory: ScreenFactory
+) : Screen<Args.Empty> {
     abstract val items: List<BottomNavigationItem>
+
+    var selectedItemIndex: Int
 }
 
 data class BottomNavigationItem(

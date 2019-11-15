@@ -4,14 +4,10 @@
 
 package com.icerockdev
 
-import com.icerockdev.library.App
-import dev.icerock.moko.widgets.screen.Args
+import App
+import dev.icerock.moko.widgets.screen.BaseApplication
 import dev.icerock.moko.widgets.screen.HostActivity
-import dev.icerock.moko.widgets.screen.Screen
-import kotlin.reflect.KClass
 
 class MainActivity : HostActivity() {
-    override fun getRootScreen(): KClass<out Screen<Args.Empty>> {
-        return App.rootScreen
-    }
+    override val application: BaseApplication get() = App
 }

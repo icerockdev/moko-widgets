@@ -28,7 +28,7 @@ import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.text
 import dev.icerock.moko.widgets.units.WidgetsCollectionUnitItem
 
-class PostUnitItem(
+class PostCollectionUnitItem(
     private val widgetScope: WidgetScope,
     itemId: Long,
     data: PostsViewModelContract.PostItem

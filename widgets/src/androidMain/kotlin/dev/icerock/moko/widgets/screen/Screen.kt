@@ -45,7 +45,7 @@ actual abstract class Screen<Arg : Args> : Fragment() {
         }
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
 
         if (navigationQueue.isNotEmpty()) {

@@ -4,7 +4,7 @@
 
 import android.content.Context
 import android.util.AttributeSet
-import com.icerockdev.library.sample.WidgetsScreen
+import com.icerockdev.library.universal.WidgetsScreen
 import dev.icerock.moko.widgets.core.BasePreviewView
 import dev.icerock.moko.widgets.screen.Screen
 

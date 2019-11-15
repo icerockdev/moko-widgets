@@ -10,25 +10,27 @@ import platform.UIKit.UIViewController
 import platform.UIKit.navigationItem
 import kotlin.reflect.KClass
 
-class NavigationViewController(val screen: NavigationScreen) :
-    UINavigationController(nibName = null, bundle = null) {
+class NavigationViewController(
+    screen: NavigationScreen,
+    private val screenFactory: ScreenFactory
+) : UINavigationController(nibName = null, bundle = null) {
 
     init {
-        val rootScreen = screen.rootScreen.instantiate()
+        val rootScreen = screenFactory.instantiateScreen(screen.rootScreen)
         val rootViewController = rootScreen.createViewController()
         setViewControllers(listOf(rootViewController))
     }
 
     inner class Nav : Navigation {
         override fun <S : Screen<Args.Empty>> routeToScreen(screen: KClass<S>) {
-            val newScreen = screen.instantiate()
+            val newScreen = screenFactory.instantiateScreen(screen)
             val screenViewController: UIViewController = newScreen.createViewController()
             screenViewController.navigationItem.title = newScreen.toString()
             pushViewController(screenViewController, animated = true)
         }
 
         override fun <Arg : Parcelable, S : Screen<Args.Parcel<Arg>>> routeToScreen(screen: KClass<S>, argument: Arg) {
-            val newScreen = screen.instantiate()
+            val newScreen = screenFactory.instantiateScreen(screen)
             newScreen.setArgument(argument)
             val screenViewController: UIViewController = newScreen.createViewController()
             screenViewController.navigationItem.title = newScreen.toString()

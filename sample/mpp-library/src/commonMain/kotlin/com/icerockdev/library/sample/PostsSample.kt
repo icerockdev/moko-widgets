@@ -4,7 +4,7 @@
 
 package com.icerockdev.library.sample
 
-import com.icerockdev.library.units.PostUnitItem
+import com.icerockdev.library.units.PostCollectionUnitItem
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.mvvm.livedata.map
@@ -28,7 +28,7 @@ class PostsScreen(
             id = Id.Collection,
             items = viewModel.posts.map { posts ->
                 posts.map { post ->
-                    PostUnitItem(
+                    PostCollectionUnitItem(
                         widgetScope = this,
                         itemId = post.id,
                         data = post

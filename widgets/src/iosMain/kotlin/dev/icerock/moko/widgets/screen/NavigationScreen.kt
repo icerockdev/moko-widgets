@@ -8,21 +8,26 @@ import dev.icerock.moko.parcelize.Parcelable
 import platform.UIKit.UIViewController
 import kotlin.reflect.KClass
 
-actual abstract class NavigationScreen actual constructor() : Screen<Args.Empty>(), Navigation {
+actual abstract class NavigationScreen actual constructor(
+    private val screenFactory: ScreenFactory
+) : Screen<Args.Empty>() {
 
     actual abstract val rootScreen: KClass<out Screen<Args.Empty>>
 
     override fun createViewController(): UIViewController {
-        return NavigationViewController(this).apply {
+        return NavigationViewController(this, screenFactory).apply {
             this@NavigationScreen.navigation = this.Nav()
         }
     }
 
-    override fun <S : Screen<Args.Empty>> routeToScreen(screen: KClass<S>) {
+    actual fun routeToScreen(screen: KClass<out Screen<Args.Empty>>) {
         navigation?.routeToScreen(screen)
     }
 
-    override fun <Arg : Parcelable, S : Screen<Args.Parcel<Arg>>> routeToScreen(screen: KClass<S>, argument: Arg) {
-        navigation?.routeToScreen(argument = argument, screen = screen)
+    actual fun <T : Parcelable> routeToScreen(
+        screen: KClass<out Screen<Args.Parcel<T>>>,
+        args: T
+    ) {
+        navigation?.routeToScreen(argument = args, screen = screen)
     }
 }

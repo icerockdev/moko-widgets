@@ -8,6 +8,7 @@
     <application
         android:label="moko-widgets test app"
         android:theme="@style/AppTheme"
+        android:name=".MainApplication"
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity android:name=".MainActivity">

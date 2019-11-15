@@ -8,10 +8,13 @@ import dev.icerock.moko.resources.DrawableResource
 import dev.icerock.moko.resources.desc.StringDesc
 import kotlin.reflect.KClass
 
-expect abstract class DrawerNavigationScreen() : Screen<Args.Empty> {
+expect abstract class DrawerNavigationScreen(
+    screenFactory: ScreenFactory
+) : Screen<Args.Empty> {
     abstract val header: Any? // what info in header?
     abstract val items: List<DrawerNavigationItem>
-    abstract val secondaryItems: List<DrawerNavigationItem>
+
+    var selectedItemIndex: Int
 }
 
 data class DrawerNavigationItem(

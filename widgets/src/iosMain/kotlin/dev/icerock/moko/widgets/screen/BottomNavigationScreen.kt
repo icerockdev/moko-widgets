@@ -4,25 +4,20 @@
 
 package dev.icerock.moko.widgets.screen
 
-import dev.icerock.moko.parcelize.Parcelable
 import platform.UIKit.UIViewController
-import kotlin.reflect.KClass
 
-actual abstract class BottomNavigationScreen actual constructor() : Screen<Args.Empty>(), Navigation {
+actual abstract class BottomNavigationScreen actual constructor(
+    private val screenFactory: ScreenFactory
+) : Screen<Args.Empty>() {
     actual abstract val items: List<BottomNavigationItem>
 
     override fun createViewController(): UIViewController {
-        return BottomNavigationViewController(this).apply {
-            this@BottomNavigationScreen.navigation = this.Nav()
+        return BottomNavigationViewController(this, screenFactory).apply {
         }
     }
 
-    override fun <S : Screen<Args.Empty>> routeToScreen(screen: KClass<S>) {
-        navigation?.routeToScreen(screen = screen)
-    }
-
-    override fun <Arg : Parcelable, S : Screen<Args.Parcel<Arg>>> routeToScreen(screen: KClass<S>, argument: Arg) {
-        navigation?.routeToScreen(argument = argument, screen = screen)
-    }
+    actual var selectedItemIndex: Int
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+        set(value) {}
 }
 
