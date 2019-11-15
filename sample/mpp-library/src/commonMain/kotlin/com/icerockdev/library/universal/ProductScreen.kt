@@ -20,6 +20,7 @@ import dev.icerock.moko.widgets.screen.getArgument
 import dev.icerock.moko.widgets.screen.getParentScreen
 import dev.icerock.moko.widgets.screen.getViewModel
 import dev.icerock.moko.widgets.screen.listen
+import dev.icerock.moko.widgets.scroll
 import dev.icerock.moko.widgets.text
 
 class ProductScreen : WidgetScreen<Args.Parcel<ProductScreen.Args>>(),
@@ -38,12 +39,14 @@ class ProductScreen : WidgetScreen<Args.Parcel<ProductScreen.Args>>(),
         viewModel.eventsDispatcher.listen(this, this)
 
         return with(WidgetScope()) {
-            linear(
-                childs = listOf(
-                    text(text = viewModel.title),
-                    button(
-                        text = const("Add to Cart"),
-                        onTap = viewModel::onCartPressed
+            scroll(
+                child = linear(
+                    childs = listOf(
+                        text(text = viewModel.title),
+                        button(
+                            text = const("Add to Cart"),
+                            onTap = viewModel::onCartPressed
+                        )
                     )
                 )
             )
