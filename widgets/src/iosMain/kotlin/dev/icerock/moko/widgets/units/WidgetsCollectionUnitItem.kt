@@ -8,7 +8,8 @@ import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.units.CollectionUnitItem
 import dev.icerock.moko.widgets.core.Widget
-import kotlinx.cinterop.cstr
+import dev.icerock.plural.getAssociatedObject
+import dev.icerock.plural.setAssociatedObject
 import platform.UIKit.UIApplication
 import platform.UIKit.UICollectionView
 import platform.UIKit.UICollectionViewCell
@@ -17,9 +18,7 @@ import platform.UIKit.bottomAnchor
 import platform.UIKit.leftAnchor
 import platform.UIKit.rightAnchor
 import platform.UIKit.topAnchor
-import platform.objc.OBJC_ASSOCIATION_RETAIN
-import platform.objc.objc_getAssociatedObject
-import platform.objc.objc_setAssociatedObject
+import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
 actual abstract class WidgetsCollectionUnitItem<T> actual constructor(
     override val itemId: Long,
@@ -45,7 +44,9 @@ actual abstract class WidgetsCollectionUnitItem<T> actual constructor(
             val viewController = UIApplication.sharedApplication.keyWindow?.rootViewController!!
             val mutableLiveData = MutableLiveData(initialValue = data)
             val widget = createWidget(mutableLiveData)
-            val view = widget.buildView(viewFactoryContext = viewController)
+            val view = widget.buildView(viewFactoryContext = viewController).apply {
+                translatesAutoresizingMaskIntoConstraints = false
+            }
 
             with(cell.contentView) {
                 addSubview(view)
@@ -61,20 +62,10 @@ actual abstract class WidgetsCollectionUnitItem<T> actual constructor(
     }
 }
 
-private const val widgetLiveDataKey = "widgetLiveData"
-
 private fun <T> UICollectionViewCell.getWidgetLiveData(): MutableLiveData<T>? {
-    return objc_getAssociatedObject(
-        `object` = this,
-        key = widgetLiveDataKey.cstr
-    ) as? MutableLiveData<T>
+    return getAssociatedObject(this) as? MutableLiveData<T>
 }
 
 private fun <T> UICollectionViewCell.setWidgetLiveData(liveData: MutableLiveData<T>) {
-    objc_setAssociatedObject(
-        `object` = this,
-        key = widgetLiveDataKey.cstr,
-        value = liveData,
-        policy = OBJC_ASSOCIATION_RETAIN
-    )
+    setAssociatedObject(this, liveData)
 }

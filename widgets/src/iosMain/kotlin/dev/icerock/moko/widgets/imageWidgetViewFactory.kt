@@ -5,9 +5,15 @@
 package dev.icerock.moko.widgets
 
 import dev.icerock.moko.widgets.core.VFC
+import platform.UIKit.UIColor
 import platform.UIKit.UIView
+import platform.UIKit.backgroundColor
+import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
 actual var imageWidgetViewFactory: VFC<ImageWidget> = { _, _ ->
     // TODO add factory implementation
-    UIView()
+    UIView().apply {
+        translatesAutoresizingMaskIntoConstraints = false
+        backgroundColor = UIColor.redColor
+    }
 }

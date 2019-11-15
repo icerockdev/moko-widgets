@@ -2,8 +2,19 @@ language = Objective-C
 ---
 #import <Foundation/NSString.h>
 #import <Foundation/NSBundle.h>
+#import <objc/runtime.h>
 
 NSString* pluralizedString(NSBundle* bundle, NSString* resourceId, int number) {
   NSString* localized = [bundle localizedStringForKey: resourceId value: nil table: nil];
   return [NSString localizedStringWithFormat:localized, number];
+}
+
+static char kAssociatedObjectKey;
+
+id getAssociatedObject(id object) {
+  return objc_getAssociatedObject(object, &kAssociatedObjectKey);
+}
+
+void setAssociatedObject(id object, id value) {
+  return objc_setAssociatedObject(object, &kAssociatedObjectKey, value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }

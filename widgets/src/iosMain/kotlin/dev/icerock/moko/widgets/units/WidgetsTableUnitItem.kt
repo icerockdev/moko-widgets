@@ -8,7 +8,8 @@ import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.units.TableUnitItem
 import dev.icerock.moko.widgets.core.Widget
-import kotlinx.cinterop.cstr
+import dev.icerock.plural.getAssociatedObject
+import dev.icerock.plural.setAssociatedObject
 import platform.UIKit.UIApplication
 import platform.UIKit.UITableView
 import platform.UIKit.UITableViewCell
@@ -17,9 +18,7 @@ import platform.UIKit.bottomAnchor
 import platform.UIKit.leftAnchor
 import platform.UIKit.rightAnchor
 import platform.UIKit.topAnchor
-import platform.objc.OBJC_ASSOCIATION_RETAIN
-import platform.objc.objc_getAssociatedObject
-import platform.objc.objc_setAssociatedObject
+import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
 actual abstract class WidgetsTableUnitItem<T> actual constructor(override val itemId: Long, val data: T) :
     TableUnitItem {
@@ -43,7 +42,9 @@ actual abstract class WidgetsTableUnitItem<T> actual constructor(override val it
             val viewController = UIApplication.sharedApplication.keyWindow?.rootViewController!!
             val mutableLiveData = MutableLiveData(initialValue = data)
             val widget = createWidget(mutableLiveData)
-            val view = widget.buildView(viewFactoryContext = viewController)
+            val view = widget.buildView(viewFactoryContext = viewController).apply {
+                translatesAutoresizingMaskIntoConstraints = false
+            }
 
             with(cell.contentView) {
                 addSubview(view)
@@ -59,20 +60,10 @@ actual abstract class WidgetsTableUnitItem<T> actual constructor(override val it
     }
 }
 
-private const val widgetLiveDataKey = "widgetLiveData"
-
 private fun <T> UITableViewCell.getWidgetLiveData(): MutableLiveData<T>? {
-    return objc_getAssociatedObject(
-        `object` = this,
-        key = widgetLiveDataKey.cstr
-    ) as? MutableLiveData<T>
+    return getAssociatedObject(this) as? MutableLiveData<T>
 }
 
 private fun <T> UITableViewCell.setWidgetLiveData(liveData: MutableLiveData<T>) {
-    objc_setAssociatedObject(
-        `object` = this,
-        key = widgetLiveDataKey.cstr,
-        value = liveData,
-        policy = OBJC_ASSOCIATION_RETAIN
-    )
+    setAssociatedObject(this, liveData)
 }
