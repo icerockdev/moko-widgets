@@ -4,20 +4,42 @@
 
 package dev.icerock.moko.widgets.screen
 
+import dev.icerock.moko.widgets.utils.localized
+import platform.UIKit.UITabBarController
+import platform.UIKit.UITabBarItem
 import platform.UIKit.UIViewController
+import platform.UIKit.tabBarItem
 
 actual abstract class BottomNavigationScreen actual constructor(
     private val screenFactory: ScreenFactory
 ) : Screen<Args.Empty>() {
     actual abstract val items: List<BottomNavigationItem>
 
+    private var tabBarController: UITabBarController? = null
+
     override fun createViewController(): UIViewController {
-        return BottomNavigationViewController(this, screenFactory).apply {
+        val controller = UITabBarController()
+        val items = items
+        val viewControllers = items.map {
+            val childScreen = screenFactory.instantiateScreen(it.screen)
+            childScreen.parent = this
+            childScreen.createViewController().apply {
+                tabBarItem = UITabBarItem(title = it.title.localized(), image = null, selectedImage = null)
+            }
         }
+        controller.setViewControllers(viewControllers = viewControllers)
+
+        tabBarController = controller
+
+        return controller
     }
 
-    actual var selectedItemIndex: Int
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-        set(value) {}
+    actual var selectedItemId: Int
+        get() = tabBarController?.selectedIndex?.let {
+            items[it.toInt()].id
+        } ?: -1
+        set(value) {
+            tabBarController?.setSelectedIndex(items.indexOfFirst { it.id == value }.toULong())
+        }
 }
 

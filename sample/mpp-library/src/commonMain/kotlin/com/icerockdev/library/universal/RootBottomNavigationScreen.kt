@@ -9,7 +9,8 @@ import dev.icerock.moko.widgets.screen.BottomNavigationItem
 import dev.icerock.moko.widgets.screen.BottomNavigationScreen
 import dev.icerock.moko.widgets.screen.ScreenFactory
 
-class RootBottomNavigationScreen(screenFactory: ScreenFactory) : BottomNavigationScreen(screenFactory) {
+class RootBottomNavigationScreen(screenFactory: ScreenFactory) : BottomNavigationScreen(screenFactory),
+    ProductsNavigationScreen.Parent {
     override val items: List<BottomNavigationItem> = listOf(
         BottomNavigationItem(
             id = 1,
@@ -27,4 +28,8 @@ class RootBottomNavigationScreen(screenFactory: ScreenFactory) : BottomNavigatio
             screen = WidgetsScreen::class
         )
     )
+
+    override fun routeToCart() {
+        selectedItemId = 2
+    }
 }

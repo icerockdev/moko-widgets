@@ -4,17 +4,23 @@
 
 package com.icerockdev.library.universal
 
+import dev.icerock.moko.resources.desc.StringDesc
+import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.screen.Args
+import dev.icerock.moko.widgets.screen.NavigationItem
 import dev.icerock.moko.widgets.screen.WidgetScreen
+import dev.icerock.moko.widgets.screen.getParentScreen
 import dev.icerock.moko.widgets.style.view.Alignment
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-class ProductsScreen : WidgetScreen<Args.Empty>() {
+class ProductsScreen : WidgetScreen<Args.Empty>(), NavigationItem {
+    override val navigationTitle: StringDesc get() = "Products".desc()
+
     override fun createContentWidget(): Widget {
         return with(WidgetScope()) {
             container(
@@ -38,11 +44,10 @@ class ProductsScreen : WidgetScreen<Args.Empty>() {
 
     private fun onProductPressed() {
         println("go to product!")
-        dispatchNavigation {
-            routeToScreen(
-                ProductScreen::class,
-                ProductScreen.Args(10)
-            )
-        }
+        getParentScreen<Parent>().routeToProduct(10)
+    }
+
+    interface Parent {
+        fun routeToProduct(productId: Int)
     }
 }

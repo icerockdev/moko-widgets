@@ -9,23 +9,29 @@ import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import androidx.activity.ComponentActivity
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.Toolbar
 import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.widgets.core.View
 import kotlin.reflect.KClass
 
-actual abstract class NavigationScreen actual constructor(
-    screenFactory: ScreenFactory
-) : Screen<Args.Empty>() {
-    private val fragmentNavigation = FragmentNavigation(this, screenFactory)
+actual abstract class NavigationScreen<S> actual constructor(
+    private val screenFactory: ScreenFactory
+) : Screen<Args.Empty>() where S : Screen<Args.Empty>, S : NavigationItem {
+    private val fragmentNavigation = FragmentNavigation(this)
+
+    private var toolbar: Toolbar? = null
 
     override fun createView(context: Context, parent: ViewGroup?): View {
         val container = FrameLayout(context).apply {
             id = android.R.id.content
         }
         val toolbar = Toolbar(context).apply {
-            title = "My Toolbar"
+            setBackgroundColor(getPrimaryColor(context))
         }
+
+        this.toolbar = toolbar
 
         return LinearLayout(context).apply {
             layoutParams = ViewGroup.LayoutParams(
@@ -59,22 +65,61 @@ actual abstract class NavigationScreen actual constructor(
         return toolBarHeight
     }
 
+    private fun getPrimaryColor(context: Context): Int {
+        val attrs = intArrayOf(android.R.attr.colorPrimary)
+        val ta = context.obtainStyledAttributes(attrs)
+        val color = ta.getColor(0, -1)
+        ta.recycle()
+        return color
+    }
+
     override fun onViewCreated(view: android.view.View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fragmentNavigation.setScreen(rootScreen)
+        if (savedInstanceState == null) {
+            val instance = screenFactory.instantiateScreen(rootScreen)
+            toolbar?.title = instance.navigationTitle.toString(requireContext())
+            fragmentNavigation.setScreen(instance)
+        }
     }
 
-    actual abstract val rootScreen: KClass<out Screen<Args.Empty>>
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
 
-    actual fun routeToScreen(screen: KClass<out Screen<Args.Empty>>) {
-        fragmentNavigation.routeToScreen(screen)
+        if (context is ComponentActivity) {
+            context.onBackPressedDispatcher.addCallback(
+                this,
+                object : OnBackPressedCallback(true) {
+                    override fun handleOnBackPressed() {
+                        fragmentManager!!.popBackStackImmediate()
+                    }
+                }
+            )
+        }
     }
 
-    actual fun <T : Parcelable> routeToScreen(
-        screen: KClass<out Screen<Args.Parcel<T>>>,
-        args: T
-    ) {
-        fragmentNavigation.routeToScreen(screen, args)
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        toolbar = null
+    }
+
+    actual abstract val rootScreen: KClass<out S>
+
+    actual fun <S> routeToScreen(
+        screen: KClass<out S>
+    ) where S : Screen<Args.Empty>, S : NavigationItem {
+        val instance = screenFactory.instantiateScreen(screen)
+        fragmentNavigation.routeToScreen(instance)
+        toolbar?.title = instance.navigationTitle.toString(requireContext())
+    }
+
+    actual fun <A : Parcelable, S> routeToScreen(
+        screen: KClass<out S>,
+        args: A
+    ) where S : Screen<Args.Parcel<A>>, S : NavigationItem {
+        val instance = screenFactory.instantiateScreen(screen)
+        fragmentNavigation.routeToScreen(instance, args)
+        toolbar?.title = instance.navigationTitle.toString(requireContext())
     }
 }

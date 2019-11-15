@@ -36,14 +36,14 @@ abstract class HostActivity : AppCompatActivity() {
         }
     }
 
-    override fun onBackPressed() {
-        val rootScreen = supportFragmentManager.findFragmentById(android.R.id.content)
-        if (rootScreen is Screen<*>) {
-            if (rootScreen.onBackPressed()) return
-        }
-
-        super.onBackPressed()
-    }
+//    override fun onBackPressed() {
+//        val rootScreen = supportFragmentManager.findFragmentById(android.R.id.content)
+//        if (rootScreen is Screen<*>) {
+//            if (rootScreen.onBackPressed()) return
+//        }
+//
+//        super.onBackPressed()
+//    }
 
     private fun getRootScreen(): KClass<out Screen<Args.Empty>> = application.getRootScreen()
 

@@ -19,8 +19,6 @@ import dev.icerock.moko.widgets.core.View
 import java.util.concurrent.Executor
 
 actual abstract class Screen<Arg : Args> : Fragment() {
-    private val navigationQueue: MutableList<Navigation.() -> Unit> = mutableListOf()
-
     actual inline fun <reified VM : ViewModel, Key : Any> getViewModel(
         key: Key,
         crossinline viewModelFactory: () -> VM
@@ -36,36 +34,10 @@ actual abstract class Screen<Arg : Args> : Fragment() {
         return EventsDispatcher(mainExecutor)
     }
 
-    actual fun dispatchNavigation(actions: Navigation.() -> Unit) {
-        val navigation = getNavigation()
-        if (navigation != null) {
-            navigation.actions()
-        } else {
-            navigationQueue.add(actions)
+    actual val parentScreen: Screen<*>?
+        get() {
+            return parentFragment as? Screen<*>
         }
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        if (navigationQueue.isNotEmpty()) {
-            val navigation = getNavigation()
-            if (navigation != null) {
-                navigationQueue.forEach { action ->
-                    navigation.action()
-                }
-                navigationQueue.clear()
-            }
-        }
-    }
-
-    private fun getNavigation(): Navigation? {
-        return if (this is Navigation) {
-            this
-        } else {
-            (parentFragment as? Screen<*>)?.getNavigation()
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -76,14 +48,4 @@ actual abstract class Screen<Arg : Args> : Fragment() {
     }
 
     abstract fun createView(context: Context, parent: ViewGroup?): View
-
-    fun onBackPressed(): Boolean {
-        val rootScreen = childFragmentManager.findFragmentById(android.R.id.content)
-        if (rootScreen is Screen<*>) {
-            if (rootScreen.onBackPressed()) return true
-        }
-
-        if (fragmentManager!!.popBackStackImmediate()) return true
-        return false
-    }
 }

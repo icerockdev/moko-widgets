@@ -11,7 +11,7 @@ import platform.UIKit.UIViewController
 actual abstract class Screen<Arg : Args> {
     val viewModelStore = mutableMapOf<Any, ViewModel>()
     var arg: Arg? = null
-    var navigation: Navigation? = null
+    var parent: Screen<*>? = null
 
     actual inline fun <reified VM : ViewModel, Key : Any> getViewModel(
         key: Key,
@@ -29,9 +29,7 @@ actual abstract class Screen<Arg : Args> {
         return EventsDispatcher()
     }
 
-    actual fun dispatchNavigation(actions: Navigation.() -> Unit) {
-        navigation?.actions()
-    }
-
     abstract fun createViewController(): UIViewController
+
+    actual val parentScreen: Screen<*>? get() = parent
 }

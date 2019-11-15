@@ -15,9 +15,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import dev.icerock.moko.widgets.core.View
 
 actual abstract class BottomNavigationScreen actual constructor(
-    screenFactory: ScreenFactory
+    private val screenFactory: ScreenFactory
 ) : Screen<Args.Empty>() {
-    private val fragmentNavigation = FragmentNavigation(this, screenFactory)
+    private val fragmentNavigation = FragmentNavigation(this)
+    private var bottomNavigationView: BottomNavigationView? = null
 
     override fun createView(context: Context, parent: ViewGroup?): View {
         val container = FrameLayout(context).apply {
@@ -34,7 +35,8 @@ actual abstract class BottomNavigationScreen actual constructor(
             item.icon?.also { menuItem.setIcon(it.drawableResId) }
 
             menuItemAction[menuItem] = {
-                fragmentNavigation.routeToScreen(item.screen)
+                val instance = screenFactory.instantiateScreen(item.screen)
+                fragmentNavigation.routeToScreen(instance)
             }
         }
 
@@ -42,6 +44,8 @@ actual abstract class BottomNavigationScreen actual constructor(
             menuItemAction[menuItem]?.invoke()
             true
         }
+
+        bottomNavigationView = bottomNavigation
 
         return LinearLayout(context).apply {
             layoutParams = ViewGroup.LayoutParams(
@@ -73,14 +77,23 @@ actual abstract class BottomNavigationScreen actual constructor(
 
         if (savedInstanceState == null) {
             items.firstOrNull()?.let {
-                fragmentNavigation.setScreen(it.screen)
+                val instance = screenFactory.instantiateScreen(it.screen)
+                fragmentNavigation.setScreen(instance)
             }
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        bottomNavigationView = null
+    }
+
     actual abstract val items: List<BottomNavigationItem>
 
-    actual var selectedItemIndex: Int
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-        set(value) {}
+    actual var selectedItemId: Int
+        get() = bottomNavigationView?.selectedItemId ?: -1
+        set(value) {
+            bottomNavigationView?.selectedItemId = value
+        }
 }

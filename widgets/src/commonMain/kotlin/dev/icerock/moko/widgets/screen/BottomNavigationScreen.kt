@@ -13,7 +13,7 @@ expect abstract class BottomNavigationScreen(
 ) : Screen<Args.Empty> {
     abstract val items: List<BottomNavigationItem>
 
-    var selectedItemIndex: Int
+    var selectedItemId: Int
 }
 
 data class BottomNavigationItem(

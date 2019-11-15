@@ -10,7 +10,7 @@ import dev.icerock.moko.widgets.screen.Screen
 import dev.icerock.moko.widgets.screen.ScreenFactory
 import kotlin.reflect.KClass
 
-class CartNavigationScreen(screenFactory: ScreenFactory) : NavigationScreen(screenFactory) {
-    override val rootScreen: KClass<out Screen<Args.Empty>>
+class CartNavigationScreen(screenFactory: ScreenFactory) : NavigationScreen<CartScreen>(screenFactory) {
+    override val rootScreen: KClass<out CartScreen>
         get() = CartScreen::class
 }

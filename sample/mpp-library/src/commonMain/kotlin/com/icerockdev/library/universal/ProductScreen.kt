@@ -14,14 +14,19 @@ import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.screen.Args
+import dev.icerock.moko.widgets.screen.NavigationItem
 import dev.icerock.moko.widgets.screen.WidgetScreen
 import dev.icerock.moko.widgets.screen.getArgument
+import dev.icerock.moko.widgets.screen.getParentScreen
 import dev.icerock.moko.widgets.screen.getViewModel
 import dev.icerock.moko.widgets.screen.listen
 import dev.icerock.moko.widgets.text
 
 class ProductScreen : WidgetScreen<Args.Parcel<ProductScreen.Args>>(),
-    ProductViewModel.EventsListener {
+    ProductViewModel.EventsListener, NavigationItem {
+    override val navigationTitle: StringDesc
+        get() = getArgument().productId.let { "Product $it".desc() }
+
     override fun createContentWidget(): Widget {
         val arg = getArgument()
         val viewModel = getViewModel {
@@ -46,13 +51,16 @@ class ProductScreen : WidgetScreen<Args.Parcel<ProductScreen.Args>>(),
     }
 
     override fun routeToCart() {
-        dispatchNavigation { routeToScreen(CartScreen::class) }
+        getParentScreen<Parent>().routeToCart()
     }
 
     @Parcelize
     data class Args(val productId: Int) : Parcelable
-}
 
+    interface Parent {
+        fun routeToCart()
+    }
+}
 
 class ProductViewModel(
     val productId: Int,
