@@ -20,6 +20,7 @@ import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.Margined
 import dev.icerock.moko.widgets.style.view.Padded
 import dev.icerock.moko.widgets.style.view.PaddingValues
+import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.Sized
 import dev.icerock.moko.widgets.style.view.TextAlignment
 import dev.icerock.moko.widgets.style.view.TextStyle
@@ -40,7 +41,10 @@ class TextWidget(
     }
 
     data class Style(
-        override val size: WidgetSize = WidgetSize.Const(),
+        override val size: WidgetSize = WidgetSize.Const(
+            width = SizeSpec.WRAP_CONTENT,
+            height = SizeSpec.WRAP_CONTENT
+        ),
         override val background: Background? = null,
         override val padding: PaddingValues? = null,
         override val margins: MarginValues? = null,
