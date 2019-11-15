@@ -11,6 +11,7 @@ import platform.UIKit.addSubview
 import platform.UIKit.backgroundColor
 import platform.UIKit.bottomAnchor
 import platform.UIKit.leadingAnchor
+import platform.UIKit.safeAreaLayoutGuide
 import platform.UIKit.topAnchor
 import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
@@ -30,10 +31,12 @@ class WidgetViewController : UIViewController(nibName = null, bundle = null) {
 
             addSubview(widgetView)
 
+            val guide = safeAreaLayoutGuide
+
             widgetView.leadingAnchor.constraintEqualToAnchor(leadingAnchor).active = true
             widgetView.trailingAnchor.constraintEqualToAnchor(trailingAnchor).active = true
-            widgetView.topAnchor.constraintEqualToAnchor(topAnchor).active = true
-            widgetView.bottomAnchor.constraintEqualToAnchor(bottomAnchor).active = true
+            widgetView.topAnchor.constraintEqualToAnchor(guide.topAnchor).active = true
+            widgetView.bottomAnchor.constraintEqualToAnchor(guide.bottomAnchor).active = true
         }
     }
 }

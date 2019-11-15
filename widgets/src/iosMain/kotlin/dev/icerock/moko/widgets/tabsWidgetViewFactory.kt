@@ -86,16 +86,14 @@ actual var tabsWidgetViewFactory: VFC<TabsWidget> = { viewController, widget ->
         addSubview(segmentedControl)
         addSubview(container)
 
-        val guide = safeAreaLayoutGuide
-
         segmentedControl.leadingAnchor.constraintEqualToAnchor(leadingAnchor).active = true
         segmentedControl.trailingAnchor.constraintEqualToAnchor(trailingAnchor).active = true
-        segmentedControl.topAnchor.constraintEqualToAnchor(guide.topAnchor).active = true
+        segmentedControl.topAnchor.constraintEqualToAnchor(topAnchor).active = true
 
         container.topAnchor.constraintEqualToAnchor(segmentedControl.bottomAnchor).active = true
 
         container.leadingAnchor.constraintEqualToAnchor(leadingAnchor).active = true
         container.trailingAnchor.constraintEqualToAnchor(trailingAnchor).active = true
-        container.bottomAnchor.constraintEqualToAnchor(guide.bottomAnchor).active = true
+        container.bottomAnchor.constraintEqualToAnchor(bottomAnchor).active = true
     }
 }
