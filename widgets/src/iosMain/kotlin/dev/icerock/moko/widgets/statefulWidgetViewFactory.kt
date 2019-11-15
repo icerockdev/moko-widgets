@@ -7,6 +7,7 @@ package dev.icerock.moko.widgets
 import dev.icerock.moko.mvvm.State
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.utils.applySize
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGRectZero
 import platform.UIKit.UIView
@@ -56,5 +57,5 @@ actual var statefulWidgetViewFactory: VFC<StatefulWidget<*, *>> = { viewControll
         widget.stateLiveData.addObserver { updateState(it) }
     }
 
-    container
+    container.applySize(style.size)
 }

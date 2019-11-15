@@ -5,6 +5,7 @@
 package dev.icerock.moko.widgets
 
 import dev.icerock.moko.widgets.core.VFC
+import dev.icerock.moko.widgets.utils.applySize
 import platform.UIKit.UIActivityIndicatorView
 import platform.UIKit.UIActivityIndicatorViewStyleWhiteLarge
 import platform.UIKit.UIColor
@@ -19,5 +20,5 @@ actual var progressBarWidgetViewFactory: VFC<ProgressBarWidget> = { viewControll
     activityIndicator.translatesAutoresizingMaskIntoConstraints = false
     activityIndicator.startAnimating()
 
-    activityIndicator
+    activityIndicator.applySize(style.size)
 }

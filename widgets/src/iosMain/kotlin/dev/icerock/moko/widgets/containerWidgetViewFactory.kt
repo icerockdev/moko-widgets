@@ -6,15 +6,22 @@ package dev.icerock.moko.widgets
 
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.style.view.Alignment
+import dev.icerock.moko.widgets.style.view.SizeSpec
+import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.utils.applySize
+import platform.UIKit.NSLayoutDimension
 import platform.UIKit.UIView
 import platform.UIKit.addSubview
 import platform.UIKit.bottomAnchor
 import platform.UIKit.centerXAnchor
 import platform.UIKit.centerYAnchor
+import platform.UIKit.heightAnchor
 import platform.UIKit.leftAnchor
 import platform.UIKit.rightAnchor
+import platform.UIKit.superview
 import platform.UIKit.topAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
+import platform.UIKit.widthAnchor
 
 actual var containerWidgetViewFactory: VFC<ContainerWidget> = { viewController, widget ->
     // TODO add styles support
@@ -49,5 +56,5 @@ actual var containerWidgetViewFactory: VFC<ContainerWidget> = { viewController, 
         }
     }
 
-    root
+    root.applySize(style.size)
 }

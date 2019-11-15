@@ -6,6 +6,7 @@ package dev.icerock.moko.widgets
 
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.bind
+import dev.icerock.moko.widgets.utils.applySize
 import dev.icerock.moko.widgets.utils.localized
 import dev.icerock.moko.widgets.utils.setEventHandler
 import platform.UIKit.UIButton
@@ -36,5 +37,5 @@ actual var buttonWidgetViewFactory: VFC<ButtonWidget> = { viewController, widget
         widget.onTap()
     }
 
-    button
+    button.applySize(style.size)
 }

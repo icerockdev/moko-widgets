@@ -6,6 +6,7 @@ package dev.icerock.moko.widgets
 
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.bind
+import dev.icerock.moko.widgets.utils.applySize
 import dev.icerock.moko.widgets.utils.localized
 import dev.icerock.moko.widgets.utils.setEventHandler
 import kotlinx.cinterop.readValue
@@ -95,5 +96,5 @@ actual var tabsWidgetViewFactory: VFC<TabsWidget> = { viewController, widget ->
         container.leadingAnchor.constraintEqualToAnchor(leadingAnchor).active = true
         container.trailingAnchor.constraintEqualToAnchor(trailingAnchor).active = true
         container.bottomAnchor.constraintEqualToAnchor(bottomAnchor).active = true
-    }
+    }.applySize(style.size)
 }

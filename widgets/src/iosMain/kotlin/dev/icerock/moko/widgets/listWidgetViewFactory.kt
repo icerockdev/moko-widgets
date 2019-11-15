@@ -7,6 +7,7 @@ package dev.icerock.moko.widgets
 import dev.icerock.moko.units.UnitTableViewDataSource
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.bind
+import dev.icerock.moko.widgets.utils.applySize
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGRectZero
 import platform.UIKit.UITableView
@@ -33,5 +34,5 @@ actual var listWidgetViewFactory: VFC<ListWidget> = { viewController, widget ->
 
     widget.items.bind { unitDataSource.unitItems = it }
 
-    tableView
+    tableView.applySize(style.size)
 }

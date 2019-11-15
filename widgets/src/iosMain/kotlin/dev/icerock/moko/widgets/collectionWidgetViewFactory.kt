@@ -8,6 +8,7 @@ import dev.icerock.moko.units.CollectionUnitItem
 import dev.icerock.moko.units.UnitCollectionViewDataSource
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.bind
+import dev.icerock.moko.widgets.utils.applySize
 import kotlinx.cinterop.CValue
 import kotlinx.cinterop.readValue
 import kotlinx.cinterop.useContents
@@ -19,7 +20,6 @@ import platform.UIKit.UICollectionView
 import platform.UIKit.UICollectionViewCell
 import platform.UIKit.UICollectionViewDelegateFlowLayoutProtocol
 import platform.UIKit.UICollectionViewFlowLayout
-import platform.UIKit.UICollectionViewFlowLayoutAutomaticSize
 import platform.UIKit.UICollectionViewLayout
 import platform.UIKit.UIColor
 import platform.UIKit.UIEdgeInsetsZero
@@ -58,7 +58,7 @@ actual var collectionWidgetViewFactory: VFC<CollectionWidget> = { _, widget ->
 
     widget.items.bind { unitDataSource.unitItems = it }
 
-    collectionView
+    collectionView.applySize(style.size)
 }
 
 private class SpanCollectionViewLayout(
@@ -77,20 +77,26 @@ private class SpanCollectionViewLayout(
         val width = collectionViewSize.width / spanCount
         val position = sizeForItemAtIndexPath.row.toInt()
 
+        println("width: $width")
+
         val unit = dataSource!!.unitItems!![position]
         // TODO create correct cell from unit
         val stub = UICollectionViewCell()//getStub(collectionView, unit, sizeForItemAtIndexPath)
-        unit.bind(stub)
-        stub.setNeedsLayout()
-        stub.layoutIfNeeded()
 
-        println("width: $width")
+        val size = with(stub.contentView) {
+            translatesAutoresizingMaskIntoConstraints = false
+            unit.bind(stub)
 
-        val size = stub.systemLayoutSizeFittingSize(
-            CGSizeMake(width, 0.0),
-            UILayoutPriorityRequired,
-            UILayoutPriorityDefaultLow
-        )
+            setNeedsLayout()
+            layoutIfNeeded()
+
+            systemLayoutSizeFittingSize(
+                CGSizeMake(width, 0.0),
+                UILayoutPriorityRequired,
+                UILayoutPriorityDefaultLow
+            )
+        }
+
         val (rw, rh) = size.useContents { width to height }
 
         println("sized: $rw $rh")

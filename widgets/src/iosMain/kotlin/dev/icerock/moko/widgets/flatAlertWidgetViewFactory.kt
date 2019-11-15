@@ -6,6 +6,7 @@ package dev.icerock.moko.widgets
 
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.bind
+import dev.icerock.moko.widgets.utils.applySize
 import dev.icerock.moko.widgets.utils.localized
 import dev.icerock.moko.widgets.utils.setEventHandler
 import kotlinx.cinterop.readValue
@@ -93,5 +94,5 @@ actual var flatAlertWidgetViewFactory: VFC<FlatAlertWidget> = { viewController, 
         }
     }
 
-    container
+    container.applySize(style.size)
 }

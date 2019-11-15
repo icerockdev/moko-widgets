@@ -1,6 +1,7 @@
 package dev.icerock.moko.widgets
 
 import dev.icerock.moko.widgets.core.VFC
+import dev.icerock.moko.widgets.utils.applySize
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGRectZero
 import platform.UIKit.UIScrollView
@@ -30,5 +31,5 @@ actual var scrollWidgetViewFactory: VFC<ScrollWidget> = { viewController, widget
         bottomAnchor.constraintEqualToAnchor(childView.bottomAnchor).active = true
     }
 
-    scrollView
+    scrollView.applySize(style.size)
 }
