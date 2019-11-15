@@ -10,6 +10,7 @@ import dev.icerock.moko.parcelize.Parcelize
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.button
+import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.linear
@@ -20,7 +21,9 @@ import dev.icerock.moko.widgets.screen.getArgument
 import dev.icerock.moko.widgets.screen.getParentScreen
 import dev.icerock.moko.widgets.screen.getViewModel
 import dev.icerock.moko.widgets.screen.listen
-import dev.icerock.moko.widgets.scroll
+import dev.icerock.moko.widgets.style.view.Alignment
+import dev.icerock.moko.widgets.style.view.SizeSpec
+import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.text
 
 class ProductScreen : WidgetScreen<Args.Parcel<ProductScreen.Args>>(),
@@ -39,15 +42,25 @@ class ProductScreen : WidgetScreen<Args.Parcel<ProductScreen.Args>>(),
         viewModel.eventsDispatcher.listen(this, this)
 
         return with(WidgetScope()) {
-            scroll(
-                child = linear(
-                    childs = listOf(
-                        text(text = viewModel.title),
-                        button(
-                            text = const("Add to Cart"),
-                            onTap = viewModel::onCartPressed
+            container(
+                childs = mapOf(
+                    linear(
+                        styled = {
+                            it.copy(
+                                size = WidgetSize.Const(
+                                    width = SizeSpec.WRAP_CONTENT,
+                                    height = SizeSpec.WRAP_CONTENT
+                                )
+                            )
+                        },
+                        childs = listOf(
+                            text(text = viewModel.title),
+                            button(
+                                text = const("Add to Cart"),
+                                onTap = viewModel::onCartPressed
+                            )
                         )
-                    )
+                    ) to Alignment.CENTER
                 )
             )
         }
