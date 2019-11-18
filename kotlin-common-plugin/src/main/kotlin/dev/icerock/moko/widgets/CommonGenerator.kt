@@ -11,8 +11,13 @@ abstract class CommonGenerator<KtFile, KtFileStub> {
         val packageName: String,
         val className: String,
         val imports: List<String>,
-        val arguments: Map<String, String>
-    )
+        val arguments: Map<String, ArgInfo>
+    ) {
+        data class ArgInfo(
+            val type: String,
+            val defaultValue: String?
+        )
+    }
 
     abstract fun getStub(file: KtFile): KtFileStub?
     abstract fun getGeneratorInput(ktFileStub: KtFileStub): List<GeneratorInput>
@@ -48,7 +53,9 @@ abstract class CommonGenerator<KtFile, KtFileStub> {
     }
 
     private fun generateFileContent(input: GeneratorInput): String {
-        val importNames = input.imports.plus("dev.icerock.moko.widgets.core.WidgetScope").distinct()
+        val importNames = input.imports
+            .plus("dev.icerock.moko.widgets.core.WidgetScope")
+            .distinct()
 
         val imports = importNames.joinToString("\n") { "import $it" }
         val widgetName = input.className
@@ -62,24 +69,24 @@ abstract class CommonGenerator<KtFile, KtFileStub> {
 
         fun isIdType(string: String) = string == "Id?" || string == "Id"
 
-        val params = customArgs.map {
-            val type = if (isIdType(it.value)) {
-                "$widgetName.${it.value}"
+        val params = customArgs.map { (name, info) ->
+            val type = if (isIdType(info.type)) {
+                "$widgetName.${info.type}"
             } else {
-                it.value
+                info.type
             }
-            val def = if (type.endsWith("?")) {
-                " = null"
-            } else {
-                ""
+            val def = when {
+                info.defaultValue != null -> " = ${info.defaultValue}"
+                type.endsWith("?") -> " = null"
+                else -> ""
             }
-            "    ${it.key}: $type$def"
+            "    $name: $type$def"
         }.joinToString(",\n")
         val paramsSet = customArgs.map {
             "    ${it.key} = ${it.key}"
         }.joinToString(",\n")
         val shortNameUpper = shortName.capitalize()
-        val haveIdArg = customArgs.any { isIdType(it.value) }
+        val haveIdArg = customArgs.any { isIdType(it.value.type) }
 
         val coreContent = """package ${input.packageName}
 

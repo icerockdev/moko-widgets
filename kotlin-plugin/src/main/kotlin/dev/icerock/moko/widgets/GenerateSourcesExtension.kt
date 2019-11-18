@@ -64,6 +64,7 @@ class GenerateSourcesExtension(private val collector: MessageCollector) : Collec
                     .filterIsInstance<KotlinParameterStub>()
                     .associate { parameterStub ->
                         val parameterName = parameterStub.name
+                        val value = parameterStub.psi.defaultValue?.text
 
                         val type = parameterStub.childrenStubs
                             .mapNotNull { it as? KotlinPlaceHolderStub<KtTypeReference> }
@@ -72,7 +73,10 @@ class GenerateSourcesExtension(private val collector: MessageCollector) : Collec
                                 parameterType
                             }.first()
 
-                        parameterName!! to type
+                        parameterName!! to GeneratorInput.ArgInfo(
+                            type = type,
+                            defaultValue = value
+                        )
                     }
 
                 GeneratorInput(
