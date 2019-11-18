@@ -8,7 +8,9 @@ import dev.icerock.moko.units.CollectionUnitItem
 import dev.icerock.moko.units.UnitCollectionViewDataSource
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.bind
+import dev.icerock.moko.widgets.utils.applyBackground
 import dev.icerock.moko.widgets.utils.applySize
+import dev.icerock.moko.widgets.utils.toEdgeInsets
 import kotlinx.cinterop.CValue
 import kotlinx.cinterop.readValue
 import kotlinx.cinterop.useContents
@@ -47,6 +49,12 @@ actual var collectionWidgetViewFactory: VFC<CollectionWidget> = { _, widget ->
     ).apply {
         backgroundColor = UIColor.clearColor
         delegate = layoutAndDelegate
+
+        applyBackground(style.background)
+
+        style.padding?.toEdgeInsets()?.also {
+            contentInset = it
+        }
     }
     val unitDataSource = UnitCollectionViewDataSource(collectionView)
     layoutAndDelegate.dataSource = unitDataSource
@@ -58,7 +66,7 @@ actual var collectionWidgetViewFactory: VFC<CollectionWidget> = { _, widget ->
 
     widget.items.bind { unitDataSource.unitItems = it }
 
-    collectionView.applySize(style.size)
+    collectionView
 }
 
 private class SpanCollectionViewLayout(

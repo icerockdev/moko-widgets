@@ -10,6 +10,8 @@ import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.style.background.Orientation
+import dev.icerock.moko.widgets.style.view.SizeSpec
+import dev.icerock.moko.widgets.style.view.WidgetSize
 
 fun WidgetScope.switchLabeled(
     switchId: SwitchWidget.Id,
@@ -21,7 +23,13 @@ fun WidgetScope.switchLabeled(
     return linear(
         id = linearId,
         styled = {
-            it.copy(orientation = Orientation.HORIZONTAL)
+            it.copy(
+                size = WidgetSize.Const(
+                    width = SizeSpec.AS_PARENT,
+                    height = SizeSpec.WRAP_CONTENT
+                ),
+                orientation = Orientation.HORIZONTAL
+            )
         },
         children = listOf(
             switch(

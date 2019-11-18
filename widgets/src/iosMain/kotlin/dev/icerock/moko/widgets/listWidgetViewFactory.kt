@@ -7,7 +7,8 @@ package dev.icerock.moko.widgets
 import dev.icerock.moko.units.UnitTableViewDataSource
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.bind
-import dev.icerock.moko.widgets.utils.applySize
+import dev.icerock.moko.widgets.utils.applyBackground
+import dev.icerock.moko.widgets.utils.toEdgeInsets
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGRectZero
 import platform.UIKit.UITableView
@@ -30,9 +31,15 @@ actual var listWidgetViewFactory: VFC<ListWidget> = { viewController, widget ->
         dataSource = unitDataSource
         rowHeight = UITableViewAutomaticDimension
         estimatedRowHeight = UITableViewAutomaticDimension
+
+        applyBackground(style.background)
+
+        style.padding?.toEdgeInsets()?.also {
+            contentInset = it
+        }
     }
 
     widget.items.bind { unitDataSource.unitItems = it }
 
-    tableView.applySize(style.size)
+    tableView
 }

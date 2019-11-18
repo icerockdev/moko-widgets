@@ -3,6 +3,7 @@ language = Objective-C
 #import <Foundation/NSString.h>
 #import <Foundation/NSBundle.h>
 #import <objc/runtime.h>
+#import <UIKit/UIColor.h>
 
 NSString* pluralizedString(NSBundle* bundle, NSString* resourceId, int number) {
   NSString* localized = [bundle localizedStringForKey: resourceId value: nil table: nil];
@@ -17,4 +18,12 @@ id getAssociatedObject(id object) {
 
 void setAssociatedObject(id object, id value) {
   return objc_setAssociatedObject(object, &kAssociatedObjectKey, value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+NSArray* cgColors(NSArray<UIColor*>* uiColors) {
+  NSMutableArray* result = [NSMutableArray arrayWithCapacity: uiColors.count];
+  for(int i = 0;i < uiColors.count;i++) {
+    [result addObject: uiColors[i].CGColor];
+  }
+  return result;
 }

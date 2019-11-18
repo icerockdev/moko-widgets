@@ -6,6 +6,7 @@ package dev.icerock.moko.widgets
 
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.bind
+import dev.icerock.moko.widgets.utils.applyBackground
 import dev.icerock.moko.widgets.utils.applySize
 import dev.icerock.moko.widgets.utils.localized
 import dev.icerock.moko.widgets.utils.setEventHandler
@@ -31,6 +32,7 @@ actual var flatAlertWidgetViewFactory: VFC<FlatAlertWidget> = { viewController, 
 
     val container = UIView(frame = CGRectZero.readValue()).apply {
         translatesAutoresizingMaskIntoConstraints = false
+        applyBackground(style.background)
     }
 
     val titleLabel = widget.title?.let { title ->
@@ -67,6 +69,8 @@ actual var flatAlertWidgetViewFactory: VFC<FlatAlertWidget> = { viewController, 
     with(container) {
         addSubview(messageLabel)
 
+        // TODO paddings apply
+
         messageLabel.leadingAnchor.constraintEqualToAnchor(leadingAnchor).active = true
         messageLabel.trailingAnchor.constraintEqualToAnchor(trailingAnchor).active = true
 
@@ -94,5 +98,5 @@ actual var flatAlertWidgetViewFactory: VFC<FlatAlertWidget> = { viewController, 
         }
     }
 
-    container.applySize(style.size)
+    container
 }

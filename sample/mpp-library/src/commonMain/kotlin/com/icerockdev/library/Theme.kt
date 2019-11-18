@@ -15,6 +15,7 @@ import dev.icerock.moko.widgets.SingleChoiceWidget
 import dev.icerock.moko.widgets.TextWidget
 import dev.icerock.moko.widgets.buttonStyle
 import dev.icerock.moko.widgets.core.WidgetScope
+import dev.icerock.moko.widgets.core.platformSpecific
 import dev.icerock.moko.widgets.inputStyle
 import dev.icerock.moko.widgets.linearStyle
 import dev.icerock.moko.widgets.scrollStyle
@@ -104,7 +105,9 @@ object Theme {
             )
             val normalBackground = Background(
                 fill = fill,
-                shape = Shape.Rectangle(cornerRadius = 16f)
+                shape = Shape.Rectangle(
+                    cornerRadius = platformSpecific(android = 16f, ios = 25f)
+                )
             )
             val pressedBackground = normalBackground.copy(
                 fill = fill.copy(

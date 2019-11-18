@@ -6,7 +6,10 @@ package dev.icerock.moko.widgets.utils
 
 import kotlinx.cinterop.ObjCAction
 import kotlinx.cinterop.cstr
+import platform.Foundation.NSDefaultRunLoopMode
+import platform.Foundation.NSRunLoop
 import platform.Foundation.NSSelectorFromString
+import platform.QuartzCore.CADisplayLink
 import platform.UIKit.UIControl
 import platform.UIKit.UIControlEvents
 import platform.darwin.NSObject
@@ -30,10 +33,27 @@ fun UIControl.setEventHandler(controlEvent: UIControlEvents, action: () -> Unit)
     )
 }
 
+fun NSObject.displayLink(action: () -> Unit): CADisplayLink {
+    val target = LambdaTarget(action)
+
+    return CADisplayLink.displayLinkWithTarget(
+        target = target,
+        selector = NSSelectorFromString("displayLink:")
+    ).apply {
+        frameInterval = 1
+        addToRunLoop(NSRunLoop.currentRunLoop, NSDefaultRunLoopMode)
+    }
+}
+
 class LambdaTarget(val lambda: () -> Unit) : NSObject() {
 
     @ObjCAction
     fun action() {
+        lambda()
+    }
+
+    @ObjCAction
+    fun displayLink(link: CADisplayLink) {
         lambda()
     }
 }

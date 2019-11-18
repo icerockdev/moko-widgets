@@ -6,6 +6,7 @@ package dev.icerock.moko.widgets
 
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.bind
+import dev.icerock.moko.widgets.utils.applyBackground
 import dev.icerock.moko.widgets.utils.applySize
 import dev.icerock.moko.widgets.utils.setEventHandler
 import kotlinx.cinterop.readValue
@@ -18,8 +19,10 @@ actual var switchWidgetViewFactory: VFC<SwitchWidget> = { viewController, widget
     // TODO add styles support
     val style = widget.style
 
-    val switch = UISwitch(frame = CGRectZero.readValue())
-    switch.translatesAutoresizingMaskIntoConstraints = false
+    val switch = UISwitch(frame = CGRectZero.readValue()).apply {
+        translatesAutoresizingMaskIntoConstraints = false
+        applyBackground(style.background)
+    }
 
     widget.state.bind { switch.on = it }
 
@@ -32,5 +35,5 @@ actual var switchWidgetViewFactory: VFC<SwitchWidget> = { viewController, widget
         }
     }
 
-    switch.applySize(style.size)
+    switch
 }

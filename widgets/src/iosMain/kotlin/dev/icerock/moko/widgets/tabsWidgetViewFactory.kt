@@ -6,12 +6,20 @@ package dev.icerock.moko.widgets
 
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.bind
-import dev.icerock.moko.widgets.utils.applySize
+import dev.icerock.moko.widgets.utils.Edges
+import dev.icerock.moko.widgets.utils.applyBackground
+import dev.icerock.moko.widgets.utils.fillChildView
+import dev.icerock.moko.widgets.utils.layoutWidget
 import dev.icerock.moko.widgets.utils.localized
 import dev.icerock.moko.widgets.utils.setEventHandler
 import kotlinx.cinterop.readValue
+import platform.CoreGraphics.CGFloat
 import platform.CoreGraphics.CGRectZero
 import platform.UIKit.UIControlEventValueChanged
+import platform.UIKit.UILayoutConstraintAxisVertical
+import platform.UIKit.UILayoutPriorityDefaultHigh
+import platform.UIKit.UILayoutPriorityDefaultLow
+import platform.UIKit.UILayoutPriorityRequired
 import platform.UIKit.UISegmentedControl
 import platform.UIKit.UISegmentedControlStyle
 import platform.UIKit.UIView
@@ -19,7 +27,7 @@ import platform.UIKit.addSubview
 import platform.UIKit.bottomAnchor
 import platform.UIKit.hidden
 import platform.UIKit.leadingAnchor
-import platform.UIKit.safeAreaLayoutGuide
+import platform.UIKit.setContentHuggingPriority
 import platform.UIKit.subviews
 import platform.UIKit.topAnchor
 import platform.UIKit.trailingAnchor
@@ -29,12 +37,16 @@ actual var tabsWidgetViewFactory: VFC<TabsWidget> = { viewController, widget ->
     // TODO add styles support
     val style = widget.style
 
-    val segmentedControl = UISegmentedControl(frame = CGRectZero.readValue())
-    segmentedControl.translatesAutoresizingMaskIntoConstraints = false
-    segmentedControl.segmentedControlStyle = UISegmentedControlStyle.UISegmentedControlStylePlain
+    val segmentedControl = UISegmentedControl(frame = CGRectZero.readValue()).apply {
+        translatesAutoresizingMaskIntoConstraints = false
+        segmentedControlStyle = UISegmentedControlStyle.UISegmentedControlStylePlain
+        setContentHuggingPriority(UILayoutPriorityDefaultLow, forAxis = UILayoutConstraintAxisVertical)
+    }
 
-    val container = UIView(frame = CGRectZero.readValue())
-    container.translatesAutoresizingMaskIntoConstraints = false
+    val container = UIView(frame = CGRectZero.readValue()).apply {
+        translatesAutoresizingMaskIntoConstraints = false
+        setContentHuggingPriority(UILayoutPriorityRequired, forAxis = UILayoutConstraintAxisVertical)
+    }
 
     widget.tabs.forEachIndexed { index, tabWidget ->
         val title = tabWidget.title
@@ -59,10 +71,14 @@ actual var tabsWidgetViewFactory: VFC<TabsWidget> = { viewController, widget ->
         with(container) {
             addSubview(view)
 
-            view.leadingAnchor.constraintEqualToAnchor(leadingAnchor).active = true
-            view.trailingAnchor.constraintEqualToAnchor(trailingAnchor).active = true
-            view.bottomAnchor.constraintEqualToAnchor(bottomAnchor).active = true
-            view.topAnchor.constraintEqualToAnchor(topAnchor).active = true
+            val edges: Edges<CGFloat> = layoutWidget(
+                rootWidget = widget,
+                rootView = container,
+                childWidget = tabWidget.body,
+                childView = view
+            )
+
+            fillChildView(view, edges)
         }
     }
 
@@ -83,6 +99,7 @@ actual var tabsWidgetViewFactory: VFC<TabsWidget> = { viewController, widget ->
 
     UIView(frame = CGRectZero.readValue()).apply {
         translatesAutoresizingMaskIntoConstraints = false
+        applyBackground(style.background)
 
         addSubview(segmentedControl)
         addSubview(container)
@@ -96,5 +113,5 @@ actual var tabsWidgetViewFactory: VFC<TabsWidget> = { viewController, widget ->
         container.leadingAnchor.constraintEqualToAnchor(leadingAnchor).active = true
         container.trailingAnchor.constraintEqualToAnchor(trailingAnchor).active = true
         container.bottomAnchor.constraintEqualToAnchor(bottomAnchor).active = true
-    }.applySize(style.size)
+    }
 }

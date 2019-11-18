@@ -28,6 +28,8 @@ import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.scroll
 import dev.icerock.moko.widgets.singleChoice
 import dev.icerock.moko.widgets.style.input.InputType
+import dev.icerock.moko.widgets.style.view.SizeSpec
+import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.switchLabeled
 import dev.icerock.moko.widgets.text
 
@@ -39,6 +41,14 @@ class SocialProfileScreen(
         return with(widgetScope) {
             scroll(
                 child = linear(
+                    styled = {
+                        it.copy(
+                            size = WidgetSize.Const(
+                                width = SizeSpec.AS_PARENT,
+                                height = SizeSpec.WRAP_CONTENT
+                            )
+                        )
+                    },
                     children = listOf(
                         input(
                             id = Id.NameInput,

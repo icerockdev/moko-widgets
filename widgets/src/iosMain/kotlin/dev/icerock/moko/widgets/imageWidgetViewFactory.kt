@@ -18,5 +18,5 @@ actual var imageWidgetViewFactory: VFC<ImageWidget> = { _, widget ->
     UIView().apply {
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = UIColor.redColor
-    }.applySize(style.size)
+    }
 }

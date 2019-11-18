@@ -7,24 +7,26 @@ package dev.icerock.moko.widgets
 import dev.icerock.moko.mvvm.State
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.Widget
-import dev.icerock.moko.widgets.utils.applySize
+import dev.icerock.moko.widgets.utils.Edges
+import dev.icerock.moko.widgets.utils.applyBackground
+import dev.icerock.moko.widgets.utils.fillChildView
+import dev.icerock.moko.widgets.utils.layoutWidget
 import kotlinx.cinterop.readValue
+import platform.CoreGraphics.CGFloat
 import platform.CoreGraphics.CGRectZero
 import platform.UIKit.UIView
 import platform.UIKit.addSubview
-import platform.UIKit.bottomAnchor
 import platform.UIKit.hidden
-import platform.UIKit.leftAnchor
-import platform.UIKit.topAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
-import platform.UIKit.widthAnchor
 
 actual var statefulWidgetViewFactory: VFC<StatefulWidget<*, *>> = { viewController, widget ->
     // TODO add styles support
     val style = widget.style
 
-    val container = UIView(frame = CGRectZero.readValue())
-    container.translatesAutoresizingMaskIntoConstraints = false
+    val container = UIView(frame = CGRectZero.readValue()).apply {
+        translatesAutoresizingMaskIntoConstraints = false
+        applyBackground(style.background)
+    }
 
     listOf<Widget>(
         widget.dataWidget,
@@ -38,10 +40,14 @@ actual var statefulWidgetViewFactory: VFC<StatefulWidget<*, *>> = { viewControll
         with(container) {
             addSubview(childView)
 
-            childView.topAnchor.constraintEqualToAnchor(topAnchor).active = true
-            childView.leftAnchor.constraintEqualToAnchor(leftAnchor).active = true
-            childView.widthAnchor.constraintEqualToAnchor(widthAnchor).active = true
-            childView.bottomAnchor.constraintEqualToAnchor(bottomAnchor).active = true
+            val edges: Edges<CGFloat> = layoutWidget(
+                rootWidget = widget,
+                rootView = container,
+                childWidget = childWidget,
+                childView = childView
+            )
+
+            fillChildView(childView, edges)
         }
 
         fun updateState(state: State<*, *>) {
@@ -57,5 +63,5 @@ actual var statefulWidgetViewFactory: VFC<StatefulWidget<*, *>> = { viewControll
         widget.stateLiveData.addObserver { updateState(it) }
     }
 
-    container.applySize(style.size)
+    container
 }
