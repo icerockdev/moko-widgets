@@ -34,7 +34,7 @@ open class StateScreen(
     fun createWidget(): Widget {
         return with(widgetScope) {
             linear(
-                childs = listOf(
+                children = listOf(
                     button(
                         text = "change state".desc().asLiveData(),
                         onTap = viewModel::onChangeStatePressed
@@ -43,7 +43,7 @@ open class StateScreen(
                         state = viewModel.state,
                         empty = {
                             container(
-                                childs = mapOf(
+                                children = mapOf(
                                     text(
                                         styled = {
                                             it.copy(
@@ -60,7 +60,7 @@ open class StateScreen(
                         },
                         loading = {
                             container(
-                                childs = mapOf(
+                                children = mapOf(
                                     progressBar() to Alignment.CENTER
                                 )
                             )
@@ -98,7 +98,7 @@ open class StateScreen(
                     )
                 )
             },
-            childs = mapOf(
+            children = mapOf(
                 flatAlert(message = message) to Alignment.CENTER
             )
         )

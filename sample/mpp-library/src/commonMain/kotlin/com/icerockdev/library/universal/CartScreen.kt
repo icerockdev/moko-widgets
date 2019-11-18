@@ -32,7 +32,7 @@ class CartScreen : WidgetScreen<Args.Empty>(), NavigationItem {
                         )
                     )
                 },
-                childs = mapOf(
+                children = mapOf(
                     text(text = const("cart")) to Alignment.CENTER
                 )
             )

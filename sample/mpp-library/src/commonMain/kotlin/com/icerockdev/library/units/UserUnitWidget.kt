@@ -31,7 +31,7 @@ class UserUnitWidget(
                         padding = dev.icerock.moko.widgets.style.view.PaddingValues(padding = 8f)
                     )
                 },
-                childs = listOf(
+                children = listOf(
                     image(
                         styled = {
                             it.copy(
@@ -54,7 +54,7 @@ class UserUnitWidget(
                                 padding = dev.icerock.moko.widgets.style.view.PaddingValues(start = 8f)
                             )
                         },
-                        childs = listOf(
+                        children = listOf(
                             text(text = const("Name:")),
                             text(text = data.map { it.name.desc() })
                         )

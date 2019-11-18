@@ -27,7 +27,7 @@ class McommerceProfileScreen(
         return with(widgetScope) {
             scroll(
                 child = linear(
-                    childs = listOf(
+                    children = listOf(
                         input(
                             id = Id.NameInput,
                             label = const("Ваше имя"),

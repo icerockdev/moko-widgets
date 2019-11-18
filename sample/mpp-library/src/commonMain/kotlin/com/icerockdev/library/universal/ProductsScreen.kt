@@ -32,7 +32,7 @@ class ProductsScreen : WidgetScreen<Args.Empty>(), NavigationItem {
                         )
                     )
                 },
-                childs = mapOf(
+                children = mapOf(
                     button(
                         text = const("go to product"),
                         onTap = ::onProductPressed

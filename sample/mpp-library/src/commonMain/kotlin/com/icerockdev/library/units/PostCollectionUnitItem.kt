@@ -55,7 +55,7 @@ class PostCollectionUnitItem(
                     margins = MarginValues(4f)
                 )
             },
-            childs = mapOf(
+            children = mapOf(
                 image(
                     styled = {
                         it.copy(scaleType = ImageWidget.ScaleType.FILL)
@@ -88,7 +88,7 @@ class PostCollectionUnitItem(
                     padding = PaddingValues(bottom = 8f)
                 )
             },
-            childs = mapOf(
+            children = mapOf(
                 text(
                     styled = {
                         it.copy(
@@ -149,7 +149,7 @@ class PostCollectionUnitItem(
                     padding = PaddingValues(top = 16f)
                 )
             },
-            childs = mapOf(
+            children = mapOf(
                 linear(
                     styled = {
                         it.copy(
@@ -160,7 +160,7 @@ class PostCollectionUnitItem(
                             padding = PaddingValues(8f)
                         )
                     },
-                    childs = regularItems
+                    children = regularItems
                 ) to Alignment.CENTER
             )
         )

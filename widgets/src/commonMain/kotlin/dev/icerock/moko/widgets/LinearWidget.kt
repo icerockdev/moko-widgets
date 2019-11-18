@@ -30,7 +30,7 @@ class LinearWidget(
     val factory: VFC<LinearWidget>,
     override val style: Style,
     override val id: Id?,
-    val childs: List<Widget>
+    val children: List<Widget>
 ) : Widget(), Styled<LinearWidget.Style>, OptionalId<LinearWidget.Id> {
 
     override fun buildView(viewFactoryContext: ViewFactoryContext): View {

@@ -19,7 +19,7 @@ actual var linearWidgetViewFactory: VFC<LinearWidget> = { context, widget ->
         orientation = style.orientation.toLinearLayoutOrientation()
     }
 
-    widget.childs.forEach { child ->
+    widget.children.forEach { child ->
         val view = child.buildView(
             ViewFactoryContext(
                 context = ctx,

@@ -43,7 +43,7 @@ class ProductScreen : WidgetScreen<Args.Parcel<ProductScreen.Args>>(),
 
         return with(WidgetScope()) {
             container(
-                childs = mapOf(
+                children = mapOf(
                     linear(
                         styled = {
                             it.copy(
@@ -53,7 +53,7 @@ class ProductScreen : WidgetScreen<Args.Parcel<ProductScreen.Args>>(),
                                 )
                             )
                         },
-                        childs = listOf(
+                        children = listOf(
                             text(text = viewModel.title),
                             button(
                                 text = const("Add to Cart"),

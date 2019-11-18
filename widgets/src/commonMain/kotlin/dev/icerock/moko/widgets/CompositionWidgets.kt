@@ -23,7 +23,7 @@ fun WidgetScope.switchLabeled(
         styled = {
             it.copy(orientation = Orientation.HORIZONTAL)
         },
-        childs = listOf(
+        children = listOf(
             switch(
                 id = switchId,
                 state = switchState

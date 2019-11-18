@@ -27,15 +27,15 @@ actual var linearWidgetViewFactory: VFC<LinearWidget> = { viewController, widget
     container.translatesAutoresizingMaskIntoConstraints = false
 
     var lastChildView: UIView? = null
-    widget.childs.forEach { widget ->
-        val childView = widget.buildView(viewController)
+    widget.children.forEach { childWidget ->
+        val childView = childWidget.buildView(viewController)
         childView.translatesAutoresizingMaskIntoConstraints = false
 
         with(container) {
             container.addSubview(childView)
 
             val lastCV = lastChildView
-            when(style.orientation) {
+            when (style.orientation) {
                 Orientation.VERTICAL -> {
                     if (lastCV != null) {
                         childView.topAnchor.constraintEqualToAnchor(lastCV.bottomAnchor).active = true
@@ -61,7 +61,7 @@ actual var linearWidgetViewFactory: VFC<LinearWidget> = { viewController, widget
     }
 
     lastChildView?.run {
-        when(style.orientation) {
+        when (style.orientation) {
             Orientation.VERTICAL -> container.bottomAnchor.constraintEqualToAnchor(bottomAnchor).active = true
             Orientation.HORIZONTAL -> container.rightAnchor.constraintEqualToAnchor(rightAnchor).active = true
         }

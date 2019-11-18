@@ -31,7 +31,7 @@ class ContainerWidget(
     override val style: Style,
     override val id: Id?,
     @Suppress("RemoveRedundantQualifierName")
-    val childs: Map<Widget, Alignment>
+    val children: Map<Widget, Alignment>
 ) : Widget(), Styled<ContainerWidget.Style>, OptionalId<ContainerWidget.Id> {
 
     override fun buildView(viewFactoryContext: ViewFactoryContext): View {

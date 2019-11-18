@@ -30,7 +30,7 @@ actual var containerWidgetViewFactory: VFC<ContainerWidget> = { viewController, 
     val root = UIView()
     root.translatesAutoresizingMaskIntoConstraints = false
 
-    widget.childs.forEach { (childWidget, childAlignment) ->
+    widget.children.forEach { (childWidget, childAlignment) ->
         val childView = childWidget.buildView(viewController)
         childView.translatesAutoresizingMaskIntoConstraints = false
 

@@ -39,7 +39,7 @@ class SocialProfileScreen(
         return with(widgetScope) {
             scroll(
                 child = linear(
-                    childs = listOf(
+                    children = listOf(
                         input(
                             id = Id.NameInput,
                             label = const("Имя*"),
