@@ -7,10 +7,16 @@ package com.icerockdev.library.units
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.map
 import dev.icerock.moko.resources.desc.desc
+import dev.icerock.moko.widgets.ImageWidget
+import dev.icerock.moko.widgets.LinearWidget
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.image
 import dev.icerock.moko.widgets.linear
+import dev.icerock.moko.widgets.style.background.Orientation
+import dev.icerock.moko.widgets.style.view.PaddingValues
+import dev.icerock.moko.widgets.style.view.SizeSpec
+import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.text
 import dev.icerock.moko.widgets.units.WidgetsCollectionUnitItem
 import dev.icerock.moko.widgets.units.WidgetsTableUnitItem
@@ -21,40 +27,34 @@ class UserUnitWidget(
     fun createWidget(data: LiveData<Data>): Widget {
         return with(widgetScope) {
             linear(
-                styled = {
-                    it.copy(
-                        size = dev.icerock.moko.widgets.style.view.WidgetSize.Const(
-                            width = dev.icerock.moko.widgets.style.view.SizeSpec.AS_PARENT,
-                            height = dev.icerock.moko.widgets.style.view.SizeSpec.WRAP_CONTENT
-                        ),
-                        orientation = dev.icerock.moko.widgets.style.background.Orientation.HORIZONTAL,
-                        padding = dev.icerock.moko.widgets.style.view.PaddingValues(padding = 8f)
-                    )
-                },
-                childs = listOf(
+                layoutParams = LinearWidget.LayoutParams(
+                    size = WidgetSize.Const(
+                        width = SizeSpec.AS_PARENT,
+                        height = SizeSpec.WRAP_CONTENT
+                    ),
+                    padding = PaddingValues(padding = 8f)
+                ),
+                orientation = Orientation.HORIZONTAL,
+                children = listOf(
                     image(
-                        styled = {
-                            it.copy(
-                                size = dev.icerock.moko.widgets.style.view.WidgetSize.Const(
-                                    width = 48,
-                                    height = 48
-                                )
+                        layoutParams = ImageWidget.LayoutParams(
+                            size = WidgetSize.Const(
+                                width = 48,
+                                height = 48
                             )
-                        },
+                        ),
                         image = data.map { dev.icerock.moko.widgets.core.Image.network(it.avatarUrl) }
                     ),
                     linear(
-                        styled = {
-                            it.copy(
-                                size = dev.icerock.moko.widgets.style.view.WidgetSize.Const(
-                                    width = dev.icerock.moko.widgets.style.view.SizeSpec.AS_PARENT,
-                                    height = dev.icerock.moko.widgets.style.view.SizeSpec.WRAP_CONTENT
-                                ),
-                                orientation = dev.icerock.moko.widgets.style.background.Orientation.VERTICAL,
-                                padding = dev.icerock.moko.widgets.style.view.PaddingValues(start = 8f)
-                            )
-                        },
-                        childs = listOf(
+                        layoutParams = LinearWidget.LayoutParams(
+                            size = WidgetSize.Const(
+                                width = SizeSpec.AS_PARENT,
+                                height = SizeSpec.WRAP_CONTENT
+                            ),
+                            padding = PaddingValues(start = 8f)
+                        ),
+                        orientation = Orientation.VERTICAL,
+                        children = listOf(
                             text(text = const("Name:")),
                             text(text = data.map { it.name.desc() })
                         )

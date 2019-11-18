@@ -20,6 +20,7 @@ import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.input
 import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.scroll
+import dev.icerock.moko.widgets.style.background.Orientation
 import dev.icerock.moko.widgets.style.input.InputType
 import dev.icerock.moko.widgets.text
 
@@ -30,8 +31,10 @@ class CryptoProfileScreen(
     fun createWidget(): Widget {
         return with(widgetScope) {
             scroll(
+                orientation = Orientation.VERTICAL,
                 child = linear(
-                    childs = listOf(
+                    orientation = Orientation.VERTICAL,
+                    children = listOf(
                         input(
                             id = Id.NameInput,
                             label = const("Name"),

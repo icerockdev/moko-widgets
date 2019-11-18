@@ -39,5 +39,5 @@ actual var switchWidgetViewFactory: VFC<SwitchWidget> = { viewFactoryContext, wi
             thumbDrawable.setTintList(thumbStates)
             trackDrawable.setTintList(trackStates)
         }
-    }.withSize(style.size).apply { applyStyle(style) }
+    }.withSize(widget.layoutParams.size).apply { applyStyle(style) }
 }

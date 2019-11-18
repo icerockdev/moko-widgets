@@ -20,7 +20,6 @@ import dev.icerock.moko.widgets.style.view.Margined
 import dev.icerock.moko.widgets.style.view.Padded
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.SizeSpec
-import dev.icerock.moko.widgets.style.view.Sized
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
 expect var scrollWidgetViewFactory: VFC<ScrollWidget>
@@ -30,6 +29,8 @@ class ScrollWidget(
     val factory: VFC<ScrollWidget>,
     override val style: Style,
     override val id: Id?,
+    override val layoutParams: LayoutParams,
+    val orientation: Orientation = Orientation.VERTICAL,
     val child: Widget
 ) : Widget(), Styled<ScrollWidget.Style>, OptionalId<ScrollWidget.Id> {
 
@@ -37,16 +38,18 @@ class ScrollWidget(
         return factory(viewFactoryContext, this)
     }
 
-    data class Style(
+    data class LayoutParams(
         override val size: WidgetSize = WidgetSize.Const(
             width = SizeSpec.AS_PARENT,
             height = SizeSpec.AS_PARENT
         ),
-        override val background: Background? = null,
         override val margins: MarginValues? = null,
-        override val padding: PaddingValues? = null,
-        val orientation: Orientation = Orientation.VERTICAL
-    ) : Widget.Style, Padded, Margined, Sized, Backgrounded
+        override val padding: PaddingValues? = null
+    ) : Widget.LayoutParams, Margined, Padded
+
+    data class Style(
+        override val background: Background? = null
+    ) : Widget.Style, Backgrounded
 
     interface Id : WidgetScope.Id
 }

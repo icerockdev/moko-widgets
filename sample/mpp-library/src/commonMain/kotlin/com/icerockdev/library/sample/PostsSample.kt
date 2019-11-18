@@ -35,11 +35,9 @@ class PostsScreen(
                     )
                 }
             },
-            styled = {
-                it.copy(
-                    padding = PaddingValues(4f)
-                )
-            }
+            layoutParams = CollectionWidget.LayoutParams(
+                padding = PaddingValues(4f)
+            )
         )
     }
 

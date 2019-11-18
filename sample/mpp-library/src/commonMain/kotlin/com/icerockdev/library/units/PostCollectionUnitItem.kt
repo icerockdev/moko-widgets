@@ -8,7 +8,10 @@ import com.icerockdev.library.sample.PostsViewModelContract
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.map
+import dev.icerock.moko.widgets.ContainerWidget
 import dev.icerock.moko.widgets.ImageWidget
+import dev.icerock.moko.widgets.LinearWidget
+import dev.icerock.moko.widgets.TextWidget
 import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Image
 import dev.icerock.moko.widgets.core.Widget
@@ -18,6 +21,7 @@ import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Direction
 import dev.icerock.moko.widgets.style.background.Fill
+import dev.icerock.moko.widgets.style.background.Orientation
 import dev.icerock.moko.widgets.style.view.Alignment
 import dev.icerock.moko.widgets.style.view.Colors
 import dev.icerock.moko.widgets.style.view.MarginValues
@@ -43,19 +47,21 @@ class PostCollectionUnitItem(
 
     private fun WidgetScope.createBody(data: LiveData<PostsViewModelContract.PostItem>): Widget {
         return container(
+            layoutParams = ContainerWidget.LayoutParams(
+                size = WidgetSize.AspectByWidth(
+                    width = SizeSpec.AS_PARENT,
+                    aspectRatio = 0.73f
+                ),
+                margins = MarginValues(4f)
+            ),
             styled = {
                 it.copy(
-                    size = WidgetSize.AspectByWidth(
-                        width = SizeSpec.AS_PARENT,
-                        aspectRatio = 0.73f
-                    ),
                     background = Background(
                         fill = Fill.Solid(Color(0x66, 0x66, 0x66, 0xFF))
-                    ),
-                    margins = MarginValues(4f)
+                    )
                 )
             },
-            childs = mapOf(
+            children = mapOf(
                 image(
                     styled = {
                         it.copy(scaleType = ImageWidget.ScaleType.FILL)
@@ -70,12 +76,15 @@ class PostCollectionUnitItem(
 
     private fun WidgetScope.createHeader(data: LiveData<PostsViewModelContract.PostItem>): Widget {
         return container(
+            layoutParams = ContainerWidget.LayoutParams(
+                size = WidgetSize.Const(
+                    width = SizeSpec.AS_PARENT,
+                    height = SizeSpec.WRAP_CONTENT
+                ),
+                padding = PaddingValues(bottom = 8f)
+            ),
             styled = {
                 it.copy(
-                    size = WidgetSize.Const(
-                        width = SizeSpec.AS_PARENT,
-                        height = SizeSpec.WRAP_CONTENT
-                    ),
                     background = Background(
                         fill = Fill.Gradient(
                             colors = listOf(
@@ -84,15 +93,17 @@ class PostCollectionUnitItem(
                             ),
                             direction = Direction.TOP_BOTTOM
                         )
-                    ),
-                    padding = PaddingValues(bottom = 8f)
+                    )
                 )
             },
-            childs = mapOf(
+            children = mapOf(
                 text(
+                    layoutParams = TextWidget.LayoutParams(
+                        padding = PaddingValues(8f)
+                    ),
                     styled = {
                         it.copy(
-                            padding = PaddingValues(8f),
+
                             textStyle = TextStyle(
                                 size = 12,
                                 color = Colors.white
@@ -131,12 +142,15 @@ class PostCollectionUnitItem(
             )
         )
         return container(
+            layoutParams = ContainerWidget.LayoutParams(
+                size = WidgetSize.Const(
+                    width = SizeSpec.AS_PARENT,
+                    height = SizeSpec.WRAP_CONTENT
+                ),
+                padding = PaddingValues(top = 16f)
+            ),
             styled = {
                 it.copy(
-                    size = WidgetSize.Const(
-                        width = SizeSpec.AS_PARENT,
-                        height = SizeSpec.WRAP_CONTENT
-                    ),
                     background = Background(
                         fill = Fill.Gradient(
                             colors = listOf(
@@ -145,22 +159,20 @@ class PostCollectionUnitItem(
                             ),
                             direction = Direction.BOTTOM_TOP
                         )
-                    ),
-                    padding = PaddingValues(top = 16f)
+                    )
                 )
             },
-            childs = mapOf(
+            children = mapOf(
                 linear(
-                    styled = {
-                        it.copy(
-                            size = WidgetSize.Const(
-                                width = SizeSpec.AS_PARENT,
-                                height = SizeSpec.WRAP_CONTENT
-                            ),
-                            padding = PaddingValues(8f)
-                        )
-                    },
-                    childs = regularItems
+                    layoutParams = LinearWidget.LayoutParams(
+                        size = WidgetSize.Const(
+                            width = SizeSpec.AS_PARENT,
+                            height = SizeSpec.WRAP_CONTENT
+                        ),
+                        padding = PaddingValues(8f)
+                    ),
+                    orientation = Orientation.VERTICAL,
+                    children = regularItems
                 ) to Alignment.CENTER
             )
         )

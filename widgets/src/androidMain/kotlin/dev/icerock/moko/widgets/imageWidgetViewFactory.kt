@@ -34,5 +34,5 @@ actual var imageWidgetViewFactory: VFC<ImageWidget> = { viewFactoryContext, widg
             .into(imageView)
     }
 
-    imageView.withSize(style.size).apply { applyStyle(style) }
+    imageView.withSize(widget.layoutParams.size).apply { applyStyle(style) }
 }

@@ -62,7 +62,7 @@ abstract class CommonGenerator<KtFile, KtFileStub> {
         val shortName = widgetName.replace("Widget", "").decapitalize()
         val customArgs = input.arguments.filter {
             when (it.key) {
-                "factory", "style" -> false
+                "factory", "style", "layoutParams" -> false
                 else -> true
             }
         }
@@ -113,10 +113,12 @@ var WidgetScope.Builder.${shortName}Style: $widgetName.Style
 fun WidgetScope.$shortName(
     factory: VFC<$widgetName>,
     style: $widgetName.Style,
+    layoutParams: $widgetName.LayoutParams = $widgetName.LayoutParams(),
 $params
 ) = $widgetName(
     factory = factory,
     style = style,
+    layoutParams = layoutParams,
 $paramsSet
 )
 
@@ -137,19 +139,23 @@ fun WidgetScope.Builder.set${shortNameUpper}Style(style: $widgetName.Style, vara
 }
 
 fun WidgetScope.$shortName(
+    layoutParams: $widgetName.LayoutParams = $widgetName.LayoutParams(),
 $params
 ) = $widgetName(
     factory = id?.let { this.get${shortNameUpper}Factory(it) } ?: this.${shortName}Factory,
     style = id?.let { this.get${shortNameUpper}Style(it) } ?: this.${shortName}Style,
+    layoutParams = layoutParams,
 $paramsSet
 )
 
 fun WidgetScope.$shortName(
     styled: ($widgetName.Style) -> $widgetName.Style,
+    layoutParams: $widgetName.LayoutParams = $widgetName.LayoutParams(),
 $params
 ) = $widgetName(
     factory = id?.let { this.get${shortNameUpper}Factory(it) } ?: this.${shortName}Factory,
     style = styled(id?.let { this.get${shortNameUpper}Style(it) } ?: this.${shortName}Style),
+    layoutParams = layoutParams,
 $paramsSet
 )"""
 
@@ -158,10 +164,12 @@ $paramsSet
 fun WidgetScope.$shortName(
     factory: VFC<$widgetName> = this.${shortName}Factory,
     style: $widgetName.Style = this.${shortName}Style,
+    layoutParams: $widgetName.LayoutParams = $widgetName.LayoutParams(),
 $params
 ) = $widgetName(
     factory = factory,
     style = style,
+    layoutParams = layoutParams,
 $paramsSet
 )
 """

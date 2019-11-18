@@ -19,9 +19,7 @@ import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.Margined
-import dev.icerock.moko.widgets.style.view.Padded
-import dev.icerock.moko.widgets.style.view.PaddingValues
-import dev.icerock.moko.widgets.style.view.Sized
+import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
@@ -32,6 +30,7 @@ class SingleChoiceWidget(
     val factory: VFC<SingleChoiceWidget>,
     override val style: Style,
     override val id: Id,
+    override val layoutParams: LayoutParams,
     val field: FormField<Int?, StringDesc>,
     val label: LiveData<StringDesc>,
     val cancelLabel: LiveData<StringDesc>,
@@ -44,22 +43,29 @@ class SingleChoiceWidget(
 
     /**
      * @property size desired size of widget
+     * @property margins @see com.icerockdev.mpp.widget.style.view.Margined
+     */
+    data class LayoutParams(
+        override val size: WidgetSize = WidgetSize.Const(
+            width = SizeSpec.AS_PARENT,
+            height = SizeSpec.AS_PARENT
+        ),
+        override val margins: MarginValues? = null
+    ) : Widget.LayoutParams, Margined
+
+    /**
      * @property textStyle style of user input text
      * @property labelTextStyle floating label text style
      * @property underLineColor color of the underline
-     * @property margins @see com.icerockdev.mpp.widget.style.view.Margined
      * @property dropDownBackground widget's dropdown view background, might be null if not required
      */
     data class Style(
-        override val size: WidgetSize = WidgetSize.Const(),
-        override val margins: MarginValues? = null,
-        override val padding: PaddingValues? = null,
         val textStyle: TextStyle = TextStyle(),
         val labelTextStyle: TextStyle = TextStyle(),
         val dropDownTextColor: Color? = null,
         val underlineColor: Color? = null,
         val dropDownBackground: Background? = null
-    ) : Widget.Style, Margined, Sized, Padded
+    ) : Widget.Style
 
     interface Id : WidgetScope.Id
 }

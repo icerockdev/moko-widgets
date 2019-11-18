@@ -9,6 +9,7 @@ import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.parcelize.Parcelize
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
+import dev.icerock.moko.widgets.LinearWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Widget
@@ -21,6 +22,7 @@ import dev.icerock.moko.widgets.screen.getArgument
 import dev.icerock.moko.widgets.screen.getParentScreen
 import dev.icerock.moko.widgets.screen.getViewModel
 import dev.icerock.moko.widgets.screen.listen
+import dev.icerock.moko.widgets.style.background.Orientation
 import dev.icerock.moko.widgets.style.view.Alignment
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
@@ -43,17 +45,16 @@ class ProductScreen : WidgetScreen<Args.Parcel<ProductScreen.Args>>(),
 
         return with(WidgetScope()) {
             container(
-                childs = mapOf(
+                children = mapOf(
                     linear(
-                        styled = {
-                            it.copy(
-                                size = WidgetSize.Const(
-                                    width = SizeSpec.WRAP_CONTENT,
-                                    height = SizeSpec.WRAP_CONTENT
-                                )
+                        orientation = Orientation.VERTICAL,
+                        layoutParams = LinearWidget.LayoutParams(
+                            size = WidgetSize.Const(
+                                width = SizeSpec.WRAP_CONTENT,
+                                height = SizeSpec.WRAP_CONTENT
                             )
-                        },
-                        childs = listOf(
+                        ),
+                        children = listOf(
                             text(text = viewModel.title),
                             button(
                                 text = const("Add to Cart"),

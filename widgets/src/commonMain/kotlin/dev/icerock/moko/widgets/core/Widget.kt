@@ -4,8 +4,16 @@
 
 package dev.icerock.moko.widgets.core
 
+import dev.icerock.moko.widgets.style.view.WidgetSize
+
 abstract class Widget {
     abstract fun buildView(viewFactoryContext: ViewFactoryContext): View
 
+    abstract val layoutParams: LayoutParams
+
     interface Style
+
+    interface LayoutParams {
+        val size: WidgetSize
+    }
 }

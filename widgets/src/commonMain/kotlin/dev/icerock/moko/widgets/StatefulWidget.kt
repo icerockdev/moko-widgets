@@ -17,8 +17,11 @@ import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.view.Backgrounded
+import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.Margined
+import dev.icerock.moko.widgets.style.view.Padded
+import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.SizeSpec
-import dev.icerock.moko.widgets.style.view.Sized
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
 expect var statefulWidgetViewFactory: VFC<StatefulWidget<*, *>>
@@ -27,6 +30,7 @@ class StatefulWidget<T, E> private constructor(
     val factory: VFC<StatefulWidget<T, E>>,
     override val style: Style,
     override val id: Id?,
+    override val layoutParams: LayoutParams,
     val stateLiveData: LiveData<State<T, E>>,
     val emptyWidget: Widget,
     val loadingWidget: Widget,
@@ -42,6 +46,7 @@ class StatefulWidget<T, E> private constructor(
         factory: VFC<StatefulWidget<T, E>>,
         id: Id?,
         style: Style,
+        layoutParams: LayoutParams,
         stateLiveData: LiveData<State<T, E>>,
         emptyWidget: () -> Widget,
         loadingWidget: () -> Widget,
@@ -51,6 +56,7 @@ class StatefulWidget<T, E> private constructor(
         factory = factory,
         id = id,
         style = style,
+        layoutParams = layoutParams,
         stateLiveData = stateLiveData,
         emptyWidget = emptyWidget(),
         loadingWidget = loadingWidget(),
@@ -58,13 +64,18 @@ class StatefulWidget<T, E> private constructor(
         errorWidget = errorWidget(stateLiveData.error())
     )
 
-    data class Style(
+    data class LayoutParams(
         override val size: WidgetSize = WidgetSize.Const(
             width = SizeSpec.AS_PARENT,
             height = SizeSpec.AS_PARENT
         ),
+        override val margins: MarginValues? = null,
+        override val padding: PaddingValues? = null
+    ) : Widget.LayoutParams, Margined, Padded
+
+    data class Style(
         override val background: Background? = null
-    ) : Widget.Style, Sized, Backgrounded
+    ) : Widget.Style, Backgrounded
 
     internal object FactoryKey : WidgetScope.Key<VFC<StatefulWidget<*, *>>>
     internal object StyleKey : WidgetScope.Key<Style>
@@ -88,6 +99,7 @@ fun <T, E> WidgetScope.stateful(
     factory: VFC<StatefulWidget<T, E>> = this.statefulFactory,
     style: StatefulWidget.Style = this.statefulStyle,
     id: StatefulWidget.Id? = null,
+    layoutParams: StatefulWidget.LayoutParams = StatefulWidget.LayoutParams(),
     state: LiveData<State<T, E>>,
     empty: () -> Widget,
     loading: () -> Widget,
@@ -98,6 +110,7 @@ fun <T, E> WidgetScope.stateful(
         factory = factory,
         style = style,
         id = id,
+        layoutParams = layoutParams,
         stateLiveData = state,
         emptyWidget = empty,
         loadingWidget = loading,

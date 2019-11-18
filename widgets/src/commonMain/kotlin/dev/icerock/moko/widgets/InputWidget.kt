@@ -23,7 +23,7 @@ import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.Margined
 import dev.icerock.moko.widgets.style.view.Padded
 import dev.icerock.moko.widgets.style.view.PaddingValues
-import dev.icerock.moko.widgets.style.view.Sized
+import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
@@ -34,6 +34,7 @@ class InputWidget(
     val factory: VFC<InputWidget>,
     override val style: Style,
     override val id: Id,
+    override val layoutParams: LayoutParams,
     val label: LiveData<StringDesc>,
     val field: FormField<String, StringDesc>,
     val enabled: LiveData<Boolean>?,
@@ -47,24 +48,32 @@ class InputWidget(
 
     /**
      * @property size desired size of widget
+     * @property padding @see com.icerockdev.mpp.widget.style.view.Padded
+     * @property margins @see com.icerockdev.mpp.widget.style.view.Margined
+     */
+    data class LayoutParams(
+        override val size: WidgetSize = WidgetSize.Const(
+            width = SizeSpec.WRAP_CONTENT,
+            height = SizeSpec.WRAP_CONTENT
+        ),
+        override val margins: MarginValues? = null,
+        override val padding: PaddingValues? = null
+    ) : Widget.LayoutParams, Margined, Padded
+
+    /**
      * @property textStyle style of user input text
      * @property labelTextStyle floating label text style
      * @property errorTextStyle error message text style
      * @property underLineColor color of the underline
-     * @property padding @see com.icerockdev.mpp.widget.style.view.Padded
-     * @property margins @see com.icerockdev.mpp.widget.style.view.Margined
      * @property background widget's background, might be null if not required
      */
     data class Style(
-        override val size: WidgetSize = WidgetSize.Const(),
         override val background: Background? = null,
-        override val padding: PaddingValues? = null,
-        override val margins: MarginValues? = null,
         val textStyle: TextStyle = TextStyle(),
         val labelTextStyle: TextStyle = TextStyle(),
         val errorTextStyle: TextStyle = TextStyle(),
         val underLineColor: Color? = null
-    ) : Widget.Style, Padded, Margined, Sized, Backgrounded
+    ) : Widget.Style, Backgrounded
 
     interface Id : WidgetScope.Id
 }

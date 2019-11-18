@@ -27,7 +27,7 @@ actual var linearWidgetViewFactory: VFC<LinearWidget> = { viewController, widget
     container.translatesAutoresizingMaskIntoConstraints = false
 
     var lastChildView: UIView? = null
-    widget.childs.forEach { widget ->
+    widget.children.forEach { widget ->
         val childView = widget.buildView(viewController)
         childView.translatesAutoresizingMaskIntoConstraints = false
 

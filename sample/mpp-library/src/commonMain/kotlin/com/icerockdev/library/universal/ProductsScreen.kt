@@ -15,8 +15,6 @@ import dev.icerock.moko.widgets.screen.NavigationItem
 import dev.icerock.moko.widgets.screen.WidgetScreen
 import dev.icerock.moko.widgets.screen.getParentScreen
 import dev.icerock.moko.widgets.style.view.Alignment
-import dev.icerock.moko.widgets.style.view.SizeSpec
-import dev.icerock.moko.widgets.style.view.WidgetSize
 
 class ProductsScreen : WidgetScreen<Args.Empty>(), NavigationItem {
     override val navigationTitle: StringDesc get() = "Products".desc()
@@ -24,15 +22,7 @@ class ProductsScreen : WidgetScreen<Args.Empty>(), NavigationItem {
     override fun createContentWidget(): Widget {
         return with(WidgetScope()) {
             container(
-                styled = {
-                    it.copy(
-                        size = WidgetSize.Const(
-                            SizeSpec.AS_PARENT,
-                            SizeSpec.AS_PARENT
-                        )
-                    )
-                },
-                childs = mapOf(
+                children = mapOf(
                     button(
                         text = const("go to product"),
                         onTap = ::onProductPressed

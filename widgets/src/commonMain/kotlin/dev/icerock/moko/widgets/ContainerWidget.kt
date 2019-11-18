@@ -20,7 +20,6 @@ import dev.icerock.moko.widgets.style.view.Margined
 import dev.icerock.moko.widgets.style.view.Padded
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.SizeSpec
-import dev.icerock.moko.widgets.style.view.Sized
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
 expect var containerWidgetViewFactory: VFC<ContainerWidget>
@@ -30,23 +29,26 @@ class ContainerWidget(
     val factory: VFC<ContainerWidget>,
     override val style: Style,
     override val id: Id?,
-    @Suppress("RemoveRedundantQualifierName")
-    val childs: Map<Widget, Alignment>
+    override val layoutParams: LayoutParams,
+    val children: Map<Widget, Alignment>
 ) : Widget(), Styled<ContainerWidget.Style>, OptionalId<ContainerWidget.Id> {
 
     override fun buildView(viewFactoryContext: ViewFactoryContext): View {
         return factory(viewFactoryContext, this)
     }
 
-    data class Style(
+    data class LayoutParams(
         override val size: WidgetSize = WidgetSize.Const(
             width = SizeSpec.AS_PARENT,
             height = SizeSpec.AS_PARENT
         ),
-        override val padding: PaddingValues? = null,
         override val margins: MarginValues? = null,
+        override val padding: PaddingValues? = null
+    ) : Widget.LayoutParams, Margined, Padded
+
+    data class Style(
         override val background: Background? = null
-    ) : Widget.Style, Sized, Padded, Margined, Backgrounded
+    ) : Widget.Style, Backgrounded
 
     interface Id : WidgetScope.Id
 }

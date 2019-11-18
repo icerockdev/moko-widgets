@@ -17,7 +17,7 @@ actual var scrollWidgetViewFactory: VFC<ScrollWidget> = { viewFactoryContext, wi
     val lifecycleOwner = viewFactoryContext.lifecycleOwner
     val style = widget.style
 
-    val scrollView = if (style.orientation == Orientation.VERTICAL) ScrollView(context)
+    val scrollView = if (widget.orientation == Orientation.VERTICAL) ScrollView(context)
     else HorizontalScrollView(context)
 
     with(scrollView) {
@@ -32,5 +32,5 @@ actual var scrollWidgetViewFactory: VFC<ScrollWidget> = { viewFactoryContext, wi
         addView(body)
     }
 
-    scrollView.withSize(style.size).apply { applyStyle(style) }
+    scrollView.withSize(widget.layoutParams.size).apply { applyStyle(style) }
 }

@@ -21,10 +21,10 @@ import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.dp
 
 actual var inputWidgetViewFactory: VFC<InputWidget> = { viewFactoryContext: ViewFactoryContext,
-                                                        inputWidget: InputWidget ->
+                                                        widget: InputWidget ->
     val context = viewFactoryContext.androidContext
     val lifecycleOwner = viewFactoryContext.lifecycleOwner
-    val style = inputWidget.style
+    val style = widget.style
 
     val textInputLayout = TextInputLayout(context).apply {
         style.labelTextStyle.color?.also {
@@ -50,14 +50,14 @@ actual var inputWidgetViewFactory: VFC<InputWidget> = { viewFactoryContext: View
         }
 
         applyTextStyle(style.textStyle)
-        inputWidget.inputType?.also { applyInputType(it) }
+        widget.inputType?.also { applyInputType(it) }
 
         style.underLineColor?.also {
             backgroundTintList = ColorStateList.valueOf(it.argb.toInt())
         }
 
         setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) inputWidget.field.validate()
+            if (!hasFocus) widget.field.validate()
         }
         addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -71,26 +71,26 @@ actual var inputWidgetViewFactory: VFC<InputWidget> = { viewFactoryContext: View
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s == null) return
 
-                inputWidget.field.data.value = s.toString()
+                widget.field.data.value = s.toString()
             }
         })
     }
 
     textInputLayout.addView(editText)
 
-    inputWidget.field.data.bind(lifecycleOwner) { data ->
+    widget.field.data.bind(lifecycleOwner) { data ->
         if (editText.text?.toString() == data) return@bind
 
         editText.setText(data)
     }
-    inputWidget.field.error.bind(lifecycleOwner) { error ->
+    widget.field.error.bind(lifecycleOwner) { error ->
         textInputLayout.error = error?.toString(context)
         textInputLayout.isErrorEnabled = error != null
     }
 
-    inputWidget.label.bind(lifecycleOwner) { textInputLayout.hint = it?.toString(context) }
-    inputWidget.enabled?.bind(lifecycleOwner) { editText.isEnabled = it == true }
-    inputWidget.maxLines?.bind(lifecycleOwner) { maxLines ->
+    widget.label.bind(lifecycleOwner) { textInputLayout.hint = it?.toString(context) }
+    widget.enabled?.bind(lifecycleOwner) { editText.isEnabled = it == true }
+    widget.maxLines?.bind(lifecycleOwner) { maxLines ->
         when (maxLines) {
             null -> editText.setSingleLine(false)
             1 -> editText.setSingleLine(true)
@@ -101,7 +101,7 @@ actual var inputWidgetViewFactory: VFC<InputWidget> = { viewFactoryContext: View
         }
     }
 
-    textInputLayout.withSize(style.size).apply { applyStyle(style) }
+    textInputLayout.withSize(widget.layoutParams.size).apply { applyStyle(style) }
 
 ////    binding.setupListeners(widget.field)
 //    binding.hint.applyStyle(style.labelTextStyle)

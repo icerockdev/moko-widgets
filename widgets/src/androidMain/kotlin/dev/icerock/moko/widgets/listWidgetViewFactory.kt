@@ -62,5 +62,5 @@ actual var listWidgetViewFactory: VFC<ListWidget> = { viewFactoryContext: ViewFa
         }
     }
 
-    resultView.withSize(style.size).apply { applyStyle(style) }
+    resultView.withSize(widget.layoutParams.size).apply { applyStyle(style) }
 }

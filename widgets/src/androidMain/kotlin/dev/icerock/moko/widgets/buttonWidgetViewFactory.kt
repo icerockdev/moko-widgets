@@ -38,5 +38,5 @@ actual var buttonWidgetViewFactory: VFC<ButtonWidget> = { context: ViewFactoryCo
         button.text = text?.toString(ctx)
     })
 
-    button.withSize(style.size).apply { applyStyle(style) }
+    button.withSize(widget.layoutParams.size).apply { applyStyle(style) }
 }

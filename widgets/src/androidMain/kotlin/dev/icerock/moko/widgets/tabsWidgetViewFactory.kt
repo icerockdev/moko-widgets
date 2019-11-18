@@ -111,5 +111,5 @@ actual var tabsWidgetViewFactory: VFC<TabsWidget> = { context: ViewFactoryContex
         tabHost.addTab(tabSpec)
     }
 
-    tabHost.withSize(style.size).apply { applyStyle(style) }
+    tabHost.withSize(widget.layoutParams.size).apply { applyStyle(style) }
 }

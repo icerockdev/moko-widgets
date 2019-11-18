@@ -15,10 +15,10 @@ import dev.icerock.moko.widgets.style.withSize
 import dev.icerock.moko.widgets.utils.bind
 
 actual var textWidgetViewFactory: VFC<TextWidget> = { viewFactoryContext: ViewFactoryContext,
-                                                      textWidget: TextWidget ->
+                                                      widget: TextWidget ->
     val context = viewFactoryContext.androidContext
     val lifecycleOwner = viewFactoryContext.lifecycleOwner
-    val style = textWidget.style
+    val style = widget.style
 
     val textView = TextView(context).apply {
         style.textStyle?.also { applyTextStyle(it) }
@@ -32,7 +32,7 @@ actual var textWidgetViewFactory: VFC<TextWidget> = { viewFactoryContext: ViewFa
         }
     }
 
-    textWidget.text.bind(lifecycleOwner) { textView.text = it?.toString(context) }
+    widget.text.bind(lifecycleOwner) { textView.text = it?.toString(context) }
 
-    textView.withSize(style.size).apply { applyStyle(style) }
+    textView.withSize(widget.layoutParams.size).apply { applyStyle(style) }
 }

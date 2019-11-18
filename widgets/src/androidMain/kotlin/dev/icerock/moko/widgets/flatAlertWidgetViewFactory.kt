@@ -137,5 +137,5 @@ actual var flatAlertWidgetViewFactory: VFC<FlatAlertWidget> = { context: ViewFac
         })
     }
 
-    rowsContainer.withSize(style.size).apply { applyStyle(style) }
+    rowsContainer.withSize(widget.layoutParams.size).apply { applyStyle(style) }
 }

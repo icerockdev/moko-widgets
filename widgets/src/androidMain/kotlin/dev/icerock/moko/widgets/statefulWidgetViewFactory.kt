@@ -48,5 +48,5 @@ actual var statefulWidgetViewFactory: VFC<StatefulWidget<*, *>> = { context: Vie
         currentView.visibility = View.VISIBLE
     })
 
-    root.withSize(style.size).apply { applyStyle(style) }
+    root.withSize(widget.layoutParams.size).apply { applyStyle(style) }
 }

@@ -16,10 +16,10 @@ actual var linearWidgetViewFactory: VFC<LinearWidget> = { context, widget ->
     val style = widget.style
 
     val container = MarginedLinearLayout(ctx).apply {
-        orientation = style.orientation.toLinearLayoutOrientation()
+        orientation = widget.orientation.toLinearLayoutOrientation()
     }
 
-    widget.childs.forEach { child ->
+    widget.children.forEach { child ->
         val view = child.buildView(
             ViewFactoryContext(
                 context = ctx,
@@ -30,5 +30,5 @@ actual var linearWidgetViewFactory: VFC<LinearWidget> = { context, widget ->
         container.addView(view)
     }
 
-    container.withSize(style.size).apply { applyStyle(style) }
+    container.withSize(widget.layoutParams.size).apply { applyStyle(style) }
 }

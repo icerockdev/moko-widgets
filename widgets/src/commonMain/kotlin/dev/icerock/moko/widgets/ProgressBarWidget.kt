@@ -15,10 +15,7 @@ import dev.icerock.moko.widgets.core.WidgetDef
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.Margined
-import dev.icerock.moko.widgets.style.view.Padded
-import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.SizeSpec
-import dev.icerock.moko.widgets.style.view.Sized
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
 expect var progressBarWidgetViewFactory: VFC<ProgressBarWidget>
@@ -27,22 +24,25 @@ expect var progressBarWidgetViewFactory: VFC<ProgressBarWidget>
 class ProgressBarWidget(
     val factory: VFC<ProgressBarWidget>,
     override val style: Style,
-    override val id: Id?
+    override val id: Id?,
+    override val layoutParams: LayoutParams
 ) : Widget(), Styled<ProgressBarWidget.Style>, OptionalId<ProgressBarWidget.Id> {
 
     override fun buildView(viewFactoryContext: ViewFactoryContext): View {
         return factory(viewFactoryContext, this)
     }
 
-    data class Style(
+    data class LayoutParams(
         override val size: WidgetSize = WidgetSize.Const(
             width = SizeSpec.WRAP_CONTENT,
             height = SizeSpec.WRAP_CONTENT
         ),
-        override val padding: PaddingValues? = null,
-        override val margins: MarginValues? = null,
+        override val margins: MarginValues? = null
+    ) : Widget.LayoutParams, Margined
+
+    data class Style(
         val color: Color? = null
-    ) : Widget.Style, Padded, Margined, Sized
+    ) : Widget.Style
 
     interface Id : WidgetScope.Id
 }

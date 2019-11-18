@@ -63,5 +63,5 @@ actual var collectionWidgetViewFactory: VFC<CollectionWidget> = { viewFactoryCon
         }
     }
 
-    resultView.withSize(style.size).apply { applyStyle(style) }
+    resultView.withSize(widget.layoutParams.size).apply { applyStyle(style) }
 }

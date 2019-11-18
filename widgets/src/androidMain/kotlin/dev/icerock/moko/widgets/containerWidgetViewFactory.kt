@@ -21,7 +21,7 @@ actual var containerWidgetViewFactory: VFC<ContainerWidget> = { viewFactoryConte
 
     val root = MarginedFrameLayout(context)
 
-    widget.childs.forEach { (childWidget, childAlignment) ->
+    widget.children.forEach { (childWidget, childAlignment) ->
         val childView = childWidget.buildView(
             ViewFactoryContext(
                 context = context,
@@ -48,5 +48,5 @@ actual var containerWidgetViewFactory: VFC<ContainerWidget> = { viewFactoryConte
         root.addView(childView)
     }
 
-    root.withSize(style.size).apply { applyStyle(style) }
+    root.withSize(widget.layoutParams.size).apply { applyStyle(style) }
 }

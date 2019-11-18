@@ -13,5 +13,5 @@ actual var progressBarWidgetViewFactory: VFC<ProgressBarWidget> = { viewFactoryC
     val context = viewFactoryContext.androidContext
     val style = widget.style
 
-    ProgressBar(context).withSize(style.size).apply { applyStyle(style) }
+    ProgressBar(context).withSize(widget.layoutParams.size).apply { applyStyle(style) }
 }

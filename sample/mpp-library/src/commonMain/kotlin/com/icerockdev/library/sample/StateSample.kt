@@ -11,7 +11,9 @@ import dev.icerock.moko.mvvm.livedata.map
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
+import dev.icerock.moko.widgets.ContainerWidget
 import dev.icerock.moko.widgets.TabsWidget
+import dev.icerock.moko.widgets.TextWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Widget
@@ -21,6 +23,7 @@ import dev.icerock.moko.widgets.flatAlert
 import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.progressBar
 import dev.icerock.moko.widgets.stateful
+import dev.icerock.moko.widgets.style.background.Orientation
 import dev.icerock.moko.widgets.style.view.Alignment
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
@@ -34,7 +37,8 @@ open class StateScreen(
     fun createWidget(): Widget {
         return with(widgetScope) {
             linear(
-                childs = listOf(
+                orientation = Orientation.VERTICAL,
+                children = listOf(
                     button(
                         text = "change state".desc().asLiveData(),
                         onTap = viewModel::onChangeStatePressed
@@ -43,16 +47,14 @@ open class StateScreen(
                         state = viewModel.state,
                         empty = {
                             container(
-                                childs = mapOf(
+                                children = mapOf(
                                     text(
-                                        styled = {
-                                            it.copy(
-                                                size = WidgetSize.Const(
-                                                    width = SizeSpec.WRAP_CONTENT,
-                                                    height = SizeSpec.WRAP_CONTENT
-                                                )
+                                        layoutParams = TextWidget.LayoutParams(
+                                            size = WidgetSize.Const(
+                                                width = SizeSpec.WRAP_CONTENT,
+                                                height = SizeSpec.WRAP_CONTENT
                                             )
-                                        },
+                                        ),
                                         text = const("empty")
                                     ) to Alignment.CENTER
                                 )
@@ -60,7 +62,7 @@ open class StateScreen(
                         },
                         loading = {
                             container(
-                                childs = mapOf(
+                                children = mapOf(
                                     progressBar() to Alignment.CENTER
                                 )
                             )
@@ -90,15 +92,13 @@ open class StateScreen(
 
     private fun WidgetScope.flatAlertWrapped(message: LiveData<StringDesc?>): Widget {
         return container(
-            styled = {
-                it.copy(
-                    size = WidgetSize.Const(
-                        width = SizeSpec.AS_PARENT,
-                        height = SizeSpec.AS_PARENT
-                    )
+            layoutParams = ContainerWidget.LayoutParams(
+                size = WidgetSize.Const(
+                    width = SizeSpec.AS_PARENT,
+                    height = SizeSpec.AS_PARENT
                 )
-            },
-            childs = mapOf(
+            ),
+            children = mapOf(
                 flatAlert(message = message) to Alignment.CENTER
             )
         )

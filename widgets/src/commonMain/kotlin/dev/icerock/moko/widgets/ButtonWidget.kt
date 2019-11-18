@@ -20,7 +20,6 @@ import dev.icerock.moko.widgets.style.view.Margined
 import dev.icerock.moko.widgets.style.view.Padded
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.SizeSpec
-import dev.icerock.moko.widgets.style.view.Sized
 import dev.icerock.moko.widgets.style.view.StateBackgrounded
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
@@ -32,6 +31,7 @@ class ButtonWidget(
     val factory: VFC<ButtonWidget>,
     override val style: Style,
     override val id: Id?,
+    override val layoutParams: LayoutParams,
     val text: LiveData<StringDesc>,
     val enabled: LiveData<Boolean>?,
     val onTap: () -> Unit
@@ -41,17 +41,20 @@ class ButtonWidget(
         return factory(viewFactoryContext, this)
     }
 
-    data class Style(
+    data class LayoutParams(
         override val size: WidgetSize = WidgetSize.Const(
             width = SizeSpec.WRAP_CONTENT,
             height = SizeSpec.WRAP_CONTENT
         ),
-        override val background: StateBackground? = null,
         override val margins: MarginValues? = null,
-        override val padding: PaddingValues? = null,
+        override val padding: PaddingValues? = null
+    ) : Widget.LayoutParams, Margined, Padded
+
+    data class Style(
+        override val background: StateBackground? = null,
         val textStyle: TextStyle = TextStyle(),
         val isAllCaps: Boolean? = null
-    ) : Widget.Style, Margined, Sized, StateBackgrounded, Padded
+    ) : Widget.Style, StateBackgrounded
 
     interface Id : WidgetScope.Id
 }

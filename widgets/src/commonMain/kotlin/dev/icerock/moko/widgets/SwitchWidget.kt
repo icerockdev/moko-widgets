@@ -18,10 +18,7 @@ import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.view.Backgrounded
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.Margined
-import dev.icerock.moko.widgets.style.view.Padded
-import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.SizeSpec
-import dev.icerock.moko.widgets.style.view.Sized
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
 expect var switchWidgetViewFactory: VFC<SwitchWidget>
@@ -31,6 +28,7 @@ class SwitchWidget(
     val factory: VFC<SwitchWidget>,
     override val style: Style,
     override val id: Id,
+    override val layoutParams: LayoutParams,
     val state: MutableLiveData<Boolean>
 ) : Widget(), Styled<SwitchWidget.Style>, RequireId<SwitchWidget.Id> {
 
@@ -40,21 +38,24 @@ class SwitchWidget(
 
     /**
      * @property size @see dev.icerock.moko.widgets.style.view.Sized
-     * @property padding @see dev.icerock.moko.widgets.style.view.Padded
      * @property margins @see dev.icerock.moko.widgets.style.view.Margined
-     * @property background @see dev.icerock.moko.widgets.style.view.Backgrounded
-     * @property switchColor switch background, might be null if default
      */
-    data class Style(
+    data class LayoutParams(
         override val size: WidgetSize = WidgetSize.Const(
             width = SizeSpec.WRAP_CONTENT,
             height = SizeSpec.WRAP_CONTENT
         ),
-        override val padding: PaddingValues? = null,
-        override val margins: MarginValues? = null,
+        override val margins: MarginValues? = null
+    ) : Widget.LayoutParams, Margined
+
+    /**
+     * @property background @see dev.icerock.moko.widgets.style.view.Backgrounded
+     * @property switchColor switch background, might be null if default
+     */
+    data class Style(
         override val background: Background? = null,
         val switchColor: ColorStyle? = null
-    ) : Widget.Style, Sized, Padded, Margined, Backgrounded
+    ) : Widget.Style, Backgrounded
 
     interface Id : WidgetScope.Id
 }

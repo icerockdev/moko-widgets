@@ -26,17 +26,12 @@ import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Border
 import dev.icerock.moko.widgets.style.background.Direction
 import dev.icerock.moko.widgets.style.background.Fill
-import dev.icerock.moko.widgets.style.background.Orientation
 import dev.icerock.moko.widgets.style.background.Shape
 import dev.icerock.moko.widgets.style.background.StateBackground
 import dev.icerock.moko.widgets.style.view.Colors
 import dev.icerock.moko.widgets.style.view.FontStyle
-import dev.icerock.moko.widgets.style.view.MarginValues
-import dev.icerock.moko.widgets.style.view.PaddingValues
-import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.TextAlignment
 import dev.icerock.moko.widgets.style.view.TextStyle
-import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.style.view.rgba
 import dev.icerock.moko.widgets.textStyle
 
@@ -57,10 +52,6 @@ object Theme {
     )
 
     val inputStyle: InputWidget.Style = InputWidget.Style(
-        size = WidgetSize.Const(
-            width = SizeSpec.AS_PARENT,
-            height = SizeSpec.WRAP_CONTENT
-        ),
         textStyle = TextStyle(
             size = 15,
             color = Color.grayText,
@@ -73,27 +64,16 @@ object Theme {
         ),
         errorTextStyle = errorTextStyle,
         underLineColor = Color.grayUnderline,
-        padding = PaddingValues(
-            padding = 0f
-        ),
-        margins = MarginValues(
-            bottom = 8f
-        ),
         background = null
     )
 
     val buttonStyle: ButtonWidget.Style = ButtonWidget.Style(
-        size = WidgetSize.Const(
-            width = SizeSpec.AS_PARENT,
-            height = 50
-        ),
         textStyle = TextStyle(
             size = 17,
             color = Color.white,
             fontStyle = FontStyle.MEDIUM // Roboto-medium weight 500
         ),
         isAllCaps = false,
-        margins = MarginValues(),
         background = {
             val fill = Fill.Gradient(
                 colors = listOf(
@@ -138,28 +118,14 @@ object Theme {
     )
 
     val headerStyle: TextWidget.Style = TextWidget.Style(
-        textStyle = headerTextStyle,
-        padding = PaddingValues(),
-        margins = MarginValues(
-            bottom = 8f
-        )
+        textStyle = headerTextStyle
     )
 
     val profileContainerStyle: LinearWidget.Style = LinearWidget.Style(
-        background = null,
-        orientation = Orientation.VERTICAL,
-        size = WidgetSize.Const(
-            width = SizeSpec.AS_PARENT,
-            height = SizeSpec.WRAP_CONTENT
-        ),
-        padding = PaddingValues(16f)
+        background = null
     )
 
     val singleChoiceStyle: SingleChoiceWidget.Style = SingleChoiceWidget.Style(
-        size = WidgetSize.Const(
-            width = SizeSpec.AS_PARENT,
-            height = SizeSpec.WRAP_CONTENT
-        ),
         textStyle = TextStyle(
             size = 15,
             color = Color.grayText,
@@ -169,9 +135,6 @@ object Theme {
             size = 12,
             color = Color.gray2Text,
             fontStyle = FontStyle.MEDIUM // Roboto-regular weight 400
-        ),
-        margins = MarginValues(
-            bottom = 8f
         ),
         dropDownTextColor = null,
         underlineColor = Color.grayUnderline,
@@ -187,8 +150,6 @@ object Theme {
 
         setLinearStyle(
             linearStyle.copy(
-                padding = PaddingValues(),
-                margins = MarginValues(bottom = 8f)
             ), SocialProfileScreen.Id.AgreementContainer
         )
     }
@@ -256,10 +217,6 @@ object Theme {
             )
         )
         buttonStyle = Theme.buttonStyle.copy(
-            size = WidgetSize.Const(
-                width = SizeSpec.AS_PARENT,
-                height = 48
-            ),
             background = {
                 val normalBackground = Background(
                     fill = Fill.Solid(color = Color(0x13, 0x75, 0xF8, 0xFF)),

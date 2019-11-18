@@ -26,11 +26,11 @@ import dev.icerock.moko.widgets.utils.dp
 import dev.icerock.moko.widgets.view.MarginedFrameLayout
 
 actual var singleChoiceWidgetViewFactory: VFC<SingleChoiceWidget> = { viewFactoryContext: ViewFactoryContext,
-                                                                      singleChoiceWidget: SingleChoiceWidget ->
+                                                                      widget: SingleChoiceWidget ->
     val context = viewFactoryContext.androidContext
     val lifecycleOwner = viewFactoryContext.lifecycleOwner
     val dm = context.resources.displayMetrics
-    val style = singleChoiceWidget.style
+    val style = widget.style
 
     val container = MarginedFrameLayout(context)
 
@@ -82,13 +82,13 @@ actual var singleChoiceWidgetViewFactory: VFC<SingleChoiceWidget> = { viewFactor
 
     spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
         override fun onNothingSelected(parent: AdapterView<*>?) {
-            singleChoiceWidget.field.data.value = null
-            singleChoiceWidget.field.validate()
+            widget.field.data.value = null
+            widget.field.validate()
         }
 
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-            singleChoiceWidget.field.data.value = position
-            singleChoiceWidget.field.validate()
+            widget.field.data.value = position
+            widget.field.validate()
         }
     }
 
@@ -96,7 +96,7 @@ actual var singleChoiceWidgetViewFactory: VFC<SingleChoiceWidget> = { viewFactor
         spinner.setPopupBackgroundDrawable(it.buildBackground(context))
     }
 
-    singleChoiceWidget.field.data.mergeWith(singleChoiceWidget.values) { index, values ->
+    widget.field.data.mergeWith(widget.values) { index, values ->
         if (index == null) null
         else values[index]
     }.bind(lifecycleOwner) { stringDesc ->
@@ -106,17 +106,17 @@ actual var singleChoiceWidgetViewFactory: VFC<SingleChoiceWidget> = { viewFactor
 
         editText.setText(string)
     }
-    singleChoiceWidget.field.error.bind(lifecycleOwner) { error ->
+    widget.field.error.bind(lifecycleOwner) { error ->
         textInputLayout.error = error?.toString(context)
         textInputLayout.isErrorEnabled = error != null
     }
 
-    singleChoiceWidget.label.bind(lifecycleOwner) { textInputLayout.hint = it?.toString(context) }
+    widget.label.bind(lifecycleOwner) { textInputLayout.hint = it?.toString(context) }
 
-    singleChoiceWidget.values.bind(lifecycleOwner) { values ->
+    widget.values.bind(lifecycleOwner) { values ->
         val items = values?.map { it.toString(context) }.orEmpty()
         spinner.adapter = ArrayAdapter(context, R.layout.item_spinner, items)
     }
 
-    container.withSize(style.size).apply { applyStyle(style) }
+    container.withSize(widget.layoutParams.size).apply { applyStyle(style) }
 }

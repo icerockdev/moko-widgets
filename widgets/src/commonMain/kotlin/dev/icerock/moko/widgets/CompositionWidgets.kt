@@ -20,10 +20,8 @@ fun WidgetScope.switchLabeled(
 ): Widget {
     return linear(
         id = linearId,
-        styled = {
-            it.copy(orientation = Orientation.HORIZONTAL)
-        },
-        childs = listOf(
+        orientation = Orientation.HORIZONTAL,
+        children = listOf(
             switch(
                 id = switchId,
                 state = switchState

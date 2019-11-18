@@ -36,11 +36,9 @@ class UsersScreen(
                         body = list(
                             id = Id.List,
                             items = viewModel.tableItems,
-                            styled = {
-                                it.copy(
-                                    padding = PaddingValues(8f)
-                                )
-                            },
+                            layoutParams = ListWidget.LayoutParams(
+                                padding = PaddingValues(8f)
+                            ),
                             onRefresh = viewModel::refresh,
                             onReachEnd = viewModel::loadNextPage
                         )
@@ -50,11 +48,9 @@ class UsersScreen(
                         body = collection(
                             id = Id.Collection,
                             items = viewModel.collectionItems,
-                            styled = {
-                                it.copy(
-                                    padding = PaddingValues(8f)
-                                )
-                            },
+                            layoutParams = CollectionWidget.LayoutParams(
+                                padding = PaddingValues(8f)
+                            ),
                             onRefresh = viewModel::refresh,
                             onReachEnd = viewModel::loadNextPage
                         )
