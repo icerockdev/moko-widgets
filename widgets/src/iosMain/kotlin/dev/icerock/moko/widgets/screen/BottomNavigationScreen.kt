@@ -4,7 +4,6 @@
 
 package dev.icerock.moko.widgets.screen
 
-import dev.icerock.moko.widgets.utils.localized
 import platform.UIKit.UITabBarController
 import platform.UIKit.UITabBarItem
 import platform.UIKit.UIViewController

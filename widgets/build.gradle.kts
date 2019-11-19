@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-
 /*
  * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
@@ -37,11 +35,6 @@ dependencies {
     mppLibrary(Deps.Libs.MultiPlatform.mokoMedia)
     mppLibrary(Deps.Libs.MultiPlatform.mokoGraphics)
     mppLibrary(Deps.Libs.MultiPlatform.mokoParcelize)
-    mppLibrary(
-        MultiPlatformLibrary(
-            common = "dev.icerock.moko:core:0.1.0"
-        )
-    )
 
     androidLibrary(Deps.Libs.Android.appCompat)
     androidLibrary(Deps.Libs.Android.recyclerView)
@@ -63,7 +56,7 @@ publishing {
 }
 
 kotlin {
-    targets.filterIsInstance<KotlinNativeTarget>().forEach { target ->
+    targets.filterIsInstance<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>().forEach { target ->
         target.compilations.getByName("main") {
             val pluralsFormat by cinterops.creating {
                 defFile(project.file("src/iosMain/def/stringFormat.def"))

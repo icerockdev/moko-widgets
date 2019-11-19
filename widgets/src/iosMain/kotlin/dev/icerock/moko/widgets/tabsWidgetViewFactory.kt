@@ -10,14 +10,12 @@ import dev.icerock.moko.widgets.utils.Edges
 import dev.icerock.moko.widgets.utils.applyBackground
 import dev.icerock.moko.widgets.utils.fillChildView
 import dev.icerock.moko.widgets.utils.layoutWidget
-import dev.icerock.moko.widgets.utils.localized
 import dev.icerock.moko.widgets.utils.setEventHandler
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGFloat
 import platform.CoreGraphics.CGRectZero
 import platform.UIKit.UIControlEventValueChanged
 import platform.UIKit.UILayoutConstraintAxisVertical
-import platform.UIKit.UILayoutPriorityDefaultHigh
 import platform.UIKit.UILayoutPriorityDefaultLow
 import platform.UIKit.UILayoutPriorityRequired
 import platform.UIKit.UISegmentedControl

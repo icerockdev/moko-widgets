@@ -7,8 +7,6 @@ package dev.icerock.moko.widgets
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.bind
 import dev.icerock.moko.widgets.utils.applyBackground
-import dev.icerock.moko.widgets.utils.applySize
-import dev.icerock.moko.widgets.utils.localized
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGRectZero
 import platform.UIKit.UILabel

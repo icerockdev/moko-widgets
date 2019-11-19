@@ -5,7 +5,6 @@
 package dev.icerock.moko.widgets.screen
 
 import dev.icerock.moko.parcelize.Parcelable
-import dev.icerock.moko.widgets.utils.localized
 import platform.UIKit.UINavigationController
 import platform.UIKit.UIViewController
 import platform.UIKit.navigationItem

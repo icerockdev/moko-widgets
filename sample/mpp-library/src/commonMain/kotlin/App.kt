@@ -13,8 +13,10 @@ import com.icerockdev.library.universal.WidgetsScreen
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.BaseApplication
 import dev.icerock.moko.widgets.screen.Screen
+import kotlin.native.concurrent.ThreadLocal
 import kotlin.reflect.KClass
 
+@ThreadLocal
 object App : BaseApplication() {
     override fun setup() {
         val sharedFactory = SharedFactory()

@@ -6,10 +6,10 @@ object Versions {
     object Android {
         const val compileSdk = 28
         const val targetSdk = 28
-        const val minSdk = 21
+        const val minSdk = 16
     }
 
-    const val kotlin = "1.3.50"
+    const val kotlin = "1.3.60"
     private const val mokoWidgets = "0.1.0-dev-2"
 
     object Plugins {
@@ -28,16 +28,16 @@ object Versions {
         }
 
         object MultiPlatform {
-            const val coroutines = "1.3.0"
+            const val coroutines = "1.3.2-1.3.60-eap-76"
 
             const val mokoWidgets = Versions.mokoWidgets
-            const val mokoResources = "0.4.0"
-            const val mokoMvvm = "0.4.0-dev-1"
-            const val mokoFields = "0.1.0"
+            const val mokoResources = "0.5.0"
+            const val mokoMvvm = "0.4.0-dev-2"
+            const val mokoFields = "0.2.0-dev-1"
             const val mokoUnits = "0.2.0-dev-2"
-            const val mokoMedia = "0.1.0"
-            const val mokoGraphics = "0.1.0"
-            const val mokoParcelize = "0.1.0"
+            const val mokoMedia = "0.2.0-dev-1"
+            const val mokoGraphics = "0.2.0"
+            const val mokoParcelize = "0.2.0"
         }
     }
 }
