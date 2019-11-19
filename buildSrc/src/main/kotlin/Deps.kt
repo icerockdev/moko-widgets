@@ -86,5 +86,11 @@ object Deps {
                 ios = "org.jetbrains.kotlinx:kotlinx-coroutines-core-native:${Versions.Libs.MultiPlatform.coroutines}"
             )
         }
+
+        object Jvm {
+            val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
+            val kotlinGradlePluginApi = "org.jetbrains.kotlin:kotlin-gradle-plugin-api:${Versions.kotlin}"
+            val autoService = "com.google.auto.service:auto-service:1.0-rc6"
+        }
     }
 }

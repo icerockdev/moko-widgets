@@ -12,11 +12,11 @@ plugins {
 dependencies {
     implementation(Deps.Libs.MultiPlatform.kotlinStdLib.android!!)
 
-    compileOnly("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.50")
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin-api:1.3.50")
+    compileOnly(Deps.Libs.Jvm.kotlinGradlePlugin)
+    implementation(Deps.Libs.Jvm.kotlinGradlePluginApi)
 
-    compileOnly("com.google.auto.service:auto-service:1.0-rc6")
-    kapt("com.google.auto.service:auto-service:1.0-rc6")
+    compileOnly(Deps.Libs.Jvm.autoService)
+    kapt(Deps.Libs.Jvm.autoService)
 }
 
 buildConfigKotlin {

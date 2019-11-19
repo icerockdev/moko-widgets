@@ -18,8 +18,8 @@ dependencies {
 
     compileOnly("org.jetbrains.kotlin:kotlin-compiler-embeddable")
 
-    compileOnly("com.google.auto.service:auto-service:1.0-rc6")
-    kapt("com.google.auto.service:auto-service:1.0-rc6")
+    compileOnly(Deps.Libs.Jvm.autoService)
+    kapt(Deps.Libs.Jvm.autoService)
 }
 
 val shadowJar: ShadowJar by tasks
