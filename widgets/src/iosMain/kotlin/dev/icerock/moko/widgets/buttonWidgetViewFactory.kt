@@ -4,9 +4,11 @@
 
 package dev.icerock.moko.widgets
 
+import dev.icerock.moko.graphics.toUIColor
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.bind
 import dev.icerock.moko.widgets.utils.applyBackground
+import dev.icerock.moko.widgets.utils.applyTextStyle
 import dev.icerock.moko.widgets.utils.setEventHandler
 import platform.UIKit.UIButton
 import platform.UIKit.UIButtonTypeRoundedRect
@@ -27,6 +29,12 @@ actual var buttonWidgetViewFactory: VFC<ButtonWidget> = { viewController, widget
         setContentHuggingPriority(UILayoutPriorityRequired, forAxis = UILayoutConstraintAxisHorizontal)
         setContentHuggingPriority(UILayoutPriorityRequired, forAxis = UILayoutConstraintAxisVertical)
         applyBackground(style.background)
+        
+        titleLabel?.applyTextStyle(style.textStyle)
+
+        style.textStyle.color?.also {
+            setTintColor(it.toUIColor())
+        }
     }
 
     widget.text.bind {

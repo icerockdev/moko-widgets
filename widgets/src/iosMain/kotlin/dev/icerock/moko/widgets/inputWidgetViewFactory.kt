@@ -7,15 +7,11 @@ package dev.icerock.moko.widgets
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.bind
 import dev.icerock.moko.widgets.utils.applyBackground
+import dev.icerock.moko.widgets.utils.applyTextStyle
 import dev.icerock.moko.widgets.utils.setEventHandler
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGRectZero
-import platform.UIKit.UIAccessibilityIdentificationProtocol
-import platform.UIKit.UIControlEventEditingChanged
-import platform.UIKit.UITextBorderStyle
-import platform.UIKit.UITextField
-import platform.UIKit.translatesAutoresizingMaskIntoConstraints
-import platform.darwin.NSObject
+import platform.UIKit.*
 
 actual var inputWidgetViewFactory: VFC<InputWidget> = { viewController, widget ->
     // TODO add styles support
@@ -26,6 +22,7 @@ actual var inputWidgetViewFactory: VFC<InputWidget> = { viewController, widget -
         borderStyle = UITextBorderStyle.UITextBorderStyleRoundedRect
         accessibilityIdentifier = widget.identifier()
         applyBackground(style.background)
+        applyTextStyle(style.textStyle)
     }
 
     widget.field.data.bind { textField.text = it }

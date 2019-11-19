@@ -7,6 +7,7 @@ package dev.icerock.moko.widgets
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.bind
 import dev.icerock.moko.widgets.utils.applyBackground
+import dev.icerock.moko.widgets.utils.applyTextStyle
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGRectZero
 import platform.UIKit.UILabel
@@ -26,6 +27,8 @@ actual var textWidgetViewFactory: VFC<TextWidget> = { viewController, widget ->
 
         setContentCompressionResistancePriority(UILayoutPriorityDefaultHigh, UILayoutConstraintAxisVertical)
         setContentCompressionResistancePriority(UILayoutPriorityDefaultHigh, UILayoutConstraintAxisHorizontal)
+
+        style.textStyle?.also { applyTextStyle(it) }
     }
 
     widget.text.bind {

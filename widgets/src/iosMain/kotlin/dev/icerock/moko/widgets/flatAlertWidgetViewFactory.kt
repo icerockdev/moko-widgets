@@ -10,19 +10,7 @@ import dev.icerock.moko.widgets.utils.applyBackground
 import dev.icerock.moko.widgets.utils.setEventHandler
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGRectZero
-import platform.UIKit.NSTextAlignmentCenter
-import platform.UIKit.UIButton
-import platform.UIKit.UIButtonTypeRoundedRect
-import platform.UIKit.UIControlEventTouchUpInside
-import platform.UIKit.UIControlStateNormal
-import platform.UIKit.UILabel
-import platform.UIKit.UIView
-import platform.UIKit.addSubview
-import platform.UIKit.bottomAnchor
-import platform.UIKit.leadingAnchor
-import platform.UIKit.topAnchor
-import platform.UIKit.trailingAnchor
-import platform.UIKit.translatesAutoresizingMaskIntoConstraints
+import platform.UIKit.*
 
 actual var flatAlertWidgetViewFactory: VFC<FlatAlertWidget> = { viewController, widget ->
     // TODO add styles support

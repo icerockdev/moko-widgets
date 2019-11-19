@@ -53,35 +53,35 @@ class WidgetsScreen(
                             widgetScope = this,
                             viewModel = SocialProfileViewModel()
                         ).createWidget()
+                    ),
+                    TabsWidget.Tab(
+                        title = const("P#3"),
+                        body = McommerceProfileScreen(
+                            widgetScope = Theme.mcommerceWidgetScope,
+                            viewModel = McommerceProfileViewModel()
+                        ).createWidget()
+                    ),
+                    TabsWidget.Tab(
+                        title = const("D"),
+                        body = StateScreen(
+                            widgetScope = this,
+                            viewModel = StateViewModel()
+                        ).createWidget()
+                    ),
+                    TabsWidget.Tab(
+                        title = const("P"),
+                        body = PostsScreen(
+                            widgetScope = this,
+                            viewModel = PostsViewModel()
+                        ).createWidget()
+                    ),
+                    TabsWidget.Tab(
+                        title = const("U"),
+                        body = UsersScreen(
+                            widgetScope = this,
+                            viewModel = UsersViewModel(sharedFactory.usersUnitsFactory)
+                        ).createWidget()
                     )
-//                    TabsWidget.Tab(
-//                        title = const("P#3"),
-//                        body = McommerceProfileScreen(
-//                            widgetScope = Theme.mcommerceWidgetScope,
-//                            viewModel = McommerceProfileViewModel()
-//                        ).createWidget()
-//                    ),
-//                    TabsWidget.Tab(
-//                        title = const("D"),
-//                        body = StateScreen(
-//                            widgetScope = this,
-//                            viewModel = StateViewModel()
-//                        ).createWidget()
-//                    ),
-//                    TabsWidget.Tab(
-//                        title = const("P"),
-//                        body = PostsScreen(
-//                            widgetScope = this,
-//                            viewModel = PostsViewModel()
-//                        ).createWidget()
-//                    ),
-//                    TabsWidget.Tab(
-//                        title = const("U"),
-//                        body = UsersScreen(
-//                            widgetScope = this,
-//                            viewModel = UsersViewModel(sharedFactory.usersUnitsFactory)
-//                        ).createWidget()
-//                    )
                 )
             )
         }
