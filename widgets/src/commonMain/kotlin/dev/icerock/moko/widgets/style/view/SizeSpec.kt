@@ -9,10 +9,10 @@ package dev.icerock.moko.widgets.style.view
  *
  * @AS_PARENT - dimension is expected to be same as parent's with respect for margins and parent's paddings
  * @WRAP_CONTENT - dimension is expected to be wrapping child views with respect for paddings
- *
+ * @AUTO - no self-dimension (parent container should resolve it)
  */
 object SizeSpec {
     const val AS_PARENT: Int = -1
     const val WRAP_CONTENT: Int = -2
-    const val DYNAMIC: Int = -3
+    const val AUTO: Int = -3
 }
