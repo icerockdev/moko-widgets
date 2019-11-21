@@ -5,13 +5,13 @@
 package dev.icerock.moko.widgets.core
 
 import dev.icerock.moko.media.Bitmap
-import dev.icerock.moko.resources.DrawableResource
+import dev.icerock.moko.resources.ImageResource
 
 
 actual abstract class Image {
 
     actual companion object {
-        actual fun resource(drawableResource: DrawableResource): Image {
+        actual fun resource(imageResource: ImageResource): Image {
             return DummyImage()
         }
 
@@ -25,4 +25,4 @@ actual abstract class Image {
     }
 }
 
-class DummyImage(): Image()
+class DummyImage() : Image()

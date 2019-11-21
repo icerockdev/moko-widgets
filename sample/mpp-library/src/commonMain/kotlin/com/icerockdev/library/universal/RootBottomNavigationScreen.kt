@@ -4,6 +4,7 @@
 
 package com.icerockdev.library.universal
 
+import com.icerockdev.library.MR
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.screen.BottomNavigationItem
 import dev.icerock.moko.widgets.screen.BottomNavigationScreen
@@ -16,17 +17,20 @@ class RootBottomNavigationScreen(
         BottomNavigationItem(
             id = 1,
             title = "Products".desc(),
-            screen = ProductsNavigationScreen::class
+            screen = ProductsNavigationScreen::class,
+            icon = MR.images.home_black_18
         ),
         BottomNavigationItem(
             id = 2,
             title = "Cart".desc(),
-            screen = CartNavigationScreen::class
+            screen = CartNavigationScreen::class,
+            icon = MR.images.cart_black_18
         ),
         BottomNavigationItem(
             id = 3,
             title = "Widgets".desc(),
-            screen = WidgetsScreen::class
+            screen = WidgetsScreen::class,
+            icon = MR.images.stars_black_18
         )
     )
 

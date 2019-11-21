@@ -7,7 +7,7 @@ plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("dev.icerock.mobile.multiplatform")
     id("kotlin-android-extensions")
-//    id("dev.icerock.mobile.multiplatform-units")
+    id("dev.icerock.mobile.multiplatform-resources")
     id("kotlin-kapt")
 }
 
@@ -44,9 +44,7 @@ dependencies {
 
     mppModule(MultiPlatformModule(":widgets"))
 }
-//
-//multiplatformUnits {
-//    classesPackage = "com.icerockdev.library"
-//    dataBindingPackage = "com.icerockdev.library"
-//    layoutsSourceSet = "androidMain"
-//}
+
+multiplatformResources {
+    multiplatformResourcesPackage = "com.icerockdev.library"
+}

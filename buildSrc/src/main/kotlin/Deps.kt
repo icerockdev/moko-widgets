@@ -4,7 +4,9 @@
 
 object Deps {
     object Plugins {
-        val mokoWidgets = "dev.icerock.moko.widgets:gradle-plugin:${Versions.Plugins.mokoWidgets}"
+        const val mokoWidgets = "dev.icerock.moko.widgets:gradle-plugin:${Versions.Plugins.mokoWidgets}"
+        const val mokoResources =
+            "dev.icerock.moko:resources-generator:${Versions.Plugins.mokoResources}"
     }
 
     object Libs {
@@ -93,4 +95,9 @@ object Deps {
             val autoService = "com.google.auto.service:auto-service:1.0-rc6"
         }
     }
+
+    val plugins: Map<String, String> = mapOf(
+        "dev.icerock.mobile.multiplatform-widgets-generator" to Plugins.mokoWidgets,
+        "dev.icerock.mobile.multiplatform-resources" to Plugins.mokoResources
+    )
 }

@@ -15,9 +15,9 @@ pluginManagement {
         maven { url = uri("https://dl.bintray.com/icerockdev/plugins") }
     }
     resolutionStrategy.eachPlugin {
-        when (requested.id.id) {
-            "dev.icerock.mobile.multiplatform-widgets-generator" -> useModule(Deps.Plugins.mokoWidgets)
-        }
+        val module = Deps.plugins[requested.id.id] ?: return@eachPlugin
+
+        useModule(module)
     }
 }
 

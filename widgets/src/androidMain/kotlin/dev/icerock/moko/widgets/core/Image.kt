@@ -9,15 +9,15 @@ import android.net.Uri
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.RequestManager
 import dev.icerock.moko.media.Bitmap
-import dev.icerock.moko.resources.DrawableResource
+import dev.icerock.moko.resources.ImageResource
 
 actual abstract class Image {
 
     abstract fun loadIn(requestManager: RequestManager): RequestBuilder<Drawable>
 
     actual companion object {
-        actual fun resource(drawableResource: DrawableResource): Image {
-            return ResourceImage(drawableResource)
+        actual fun resource(imageResource: ImageResource): Image {
+            return ResourceImage(imageResource)
         }
 
         actual fun network(url: String): Image {
@@ -30,9 +30,9 @@ actual abstract class Image {
     }
 }
 
-class ResourceImage(val drawableResource: DrawableResource) : Image() {
+class ResourceImage(val imageResource: ImageResource) : Image() {
     override fun loadIn(requestManager: RequestManager): RequestBuilder<Drawable> {
-        return requestManager.load(drawableResource.drawableResId)
+        return requestManager.load(imageResource.drawableResId)
     }
 }
 

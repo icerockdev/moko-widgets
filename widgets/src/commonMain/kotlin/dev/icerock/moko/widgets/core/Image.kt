@@ -5,12 +5,12 @@
 package dev.icerock.moko.widgets.core
 
 import dev.icerock.moko.media.Bitmap
-import dev.icerock.moko.resources.DrawableResource
+import dev.icerock.moko.resources.ImageResource
 
 expect abstract class Image {
 
     companion object {
-        fun resource(drawableResource: DrawableResource): Image
+        fun resource(imageResource: ImageResource): Image
         fun network(url: String): Image
         fun bitmap(bitmap: Bitmap): Image
     }

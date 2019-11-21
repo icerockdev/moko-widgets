@@ -4,6 +4,7 @@
 
 package dev.icerock.moko.widgets.screen
 
+import platform.UIKit.UIImage
 import platform.UIKit.UITabBarController
 import platform.UIKit.UITabBarItem
 import platform.UIKit.UIViewController
@@ -19,11 +20,15 @@ actual abstract class BottomNavigationScreen actual constructor(
     override fun createViewController(): UIViewController {
         val controller = UITabBarController()
         val items = items
-        val viewControllers = items.map {
-            val childScreen = screenFactory.instantiateScreen(it.screen)
+        val viewControllers = items.map { item ->
+            val childScreen = screenFactory.instantiateScreen(item.screen)
             childScreen.parent = this
             childScreen.createViewController().apply {
-                tabBarItem = UITabBarItem(title = it.title.localized(), image = null, selectedImage = null)
+                tabBarItem = UITabBarItem(
+                    title = item.title.localized(),
+                    image = item.icon?.toUIImage(),
+                    tag = 0
+                )
             }
         }
         controller.setViewControllers(viewControllers = viewControllers)

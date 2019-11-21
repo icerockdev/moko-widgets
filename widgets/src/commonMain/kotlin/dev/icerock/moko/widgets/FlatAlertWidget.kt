@@ -5,7 +5,7 @@
 package dev.icerock.moko.widgets
 
 import dev.icerock.moko.mvvm.livedata.LiveData
-import dev.icerock.moko.resources.DrawableResource
+import dev.icerock.moko.resources.ImageResource
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.core.OptionalId
 import dev.icerock.moko.widgets.core.Styled
@@ -30,7 +30,7 @@ class FlatAlertWidget(
     override val id: Id?,
     val title: LiveData<StringDesc?>?,
     val message: LiveData<StringDesc?>,
-    val drawable: LiveData<DrawableResource?>?,
+    val drawable: LiveData<ImageResource?>?,
     val buttonText: LiveData<StringDesc?>?,
     val onTap: (() -> Unit)?
 ) : Widget(), Styled<FlatAlertWidget.Style>, OptionalId<FlatAlertWidget.Id> {

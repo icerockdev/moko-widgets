@@ -11,9 +11,11 @@ object Versions {
 
     const val kotlin = "1.3.60"
     private const val mokoWidgets = "0.1.0-dev-2"
+    private const val mokoResources = "0.6.0-dev-1"
 
     object Plugins {
         const val mokoWidgets = Versions.mokoWidgets
+        const val mokoResources = Versions.mokoResources
     }
 
     object Libs {
@@ -31,7 +33,7 @@ object Versions {
             const val coroutines = "1.3.2-1.3.60-eap-76"
 
             const val mokoWidgets = Versions.mokoWidgets
-            const val mokoResources = "0.5.0"
+            const val mokoResources = Versions.mokoResources
             const val mokoMvvm = "0.4.0-dev-2"
             const val mokoFields = "0.2.0-dev-1"
             const val mokoUnits = "0.2.0-dev-2"
