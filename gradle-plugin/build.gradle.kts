@@ -19,6 +19,11 @@ dependencies {
     kapt(Deps.Libs.Jvm.autoService)
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_6
+    targetCompatibility = JavaVersion.VERSION_1_6
+}
+
 buildConfigKotlin {
     sourceSet("main") {
         buildConfig(name = "compilerPluginVersion", value = Versions.Plugins.mokoWidgets)

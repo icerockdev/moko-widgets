@@ -10,6 +10,11 @@ plugins {
     id("com.github.johnrengelman.shadow") version "5.1.0"
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_6
+    targetCompatibility = JavaVersion.VERSION_1_6
+}
+
 dependencies {
     implementation(Deps.Libs.MultiPlatform.kotlinStdLib.android!!)
 
