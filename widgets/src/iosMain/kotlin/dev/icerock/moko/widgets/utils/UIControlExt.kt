@@ -72,6 +72,8 @@ class UIStyledButton: UIButton(frame = CGRectZero.readValue()) {
     
     fun applyStateBackground(background: StateBackground?) {
         if (background == null) return
+        adjustsImageWhenDisabled = false
+        adjustsImageWhenHighlighted = false
         normalBg = background.normal.caLayer().also {
             layer.addSublayer(it)
         }
@@ -89,21 +91,27 @@ class UIStyledButton: UIButton(frame = CGRectZero.readValue()) {
             disabledBg?.frame = CGRectMake(0.0, 0.0, width, height)
             pressedBg?.frame = CGRectMake(0.0, 0.0, width, height)
         }
-        normalBg?.hidden = false
-        disabledBg?.hidden = true
-        pressedBg?.hidden = true
+        updateLayers()
     }
 
     private fun updateLayers() {
+
         if (!isEnabled()) {
-            disabledBg?.hidden = false
-            normalBg?.hidden = true
-            pressedBg?.hidden = true
+            disabledBg?.opacity = 1.0f
+            normalBg?.opacity = 0f
+            pressedBg?.opacity = 0f
             return
         }
-        disabledBg?.hidden = true
-        normalBg?.hidden = isHighlighted()
-        pressedBg?.hidden = !isHighlighted()
+
+        if (isHighlighted()) {
+            pressedBg?.opacity = 1.0f
+            normalBg?.opacity = 0f
+        } else {
+            normalBg?.opacity = 1.0f
+            pressedBg?.opacity = 0f
+        }
+        disabledBg?.opacity = 0f
+
     }
 
     override fun setEnabled(enabled: Boolean) {
