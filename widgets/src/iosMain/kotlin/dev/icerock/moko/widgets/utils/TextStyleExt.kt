@@ -7,6 +7,7 @@ package dev.icerock.moko.widgets.utils
 import dev.icerock.moko.graphics.toUIColor
 import dev.icerock.moko.widgets.style.view.FontStyle
 import dev.icerock.moko.widgets.style.view.TextStyle
+import platform.QuartzCore.CATextLayer
 import platform.UIKit.UIFont
 import platform.UIKit.UILabel
 import platform.UIKit.UITextField
@@ -38,4 +39,18 @@ fun UITextField.applyTextStyle(textStyle: TextStyle) {
         }
     }
     textStyle.color?.also { textColor = it.toUIColor() }
+}
+
+fun CATextLayer.applyTextStyle(textStyle: TextStyle) {
+    textStyle.size?.let {
+        fontSize = it.toDouble()
+    }
+
+    textStyle.color?.let {
+        foregroundColor = it.toUIColor().CGColor
+    }
+
+    textStyle.fontStyle?.let {
+        // TODO implement font styles support
+    }
 }

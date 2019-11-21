@@ -21,8 +21,6 @@ import dev.icerock.moko.widgets.style.input.InputType
 import dev.icerock.moko.widgets.style.view.Backgrounded
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.Margined
-import dev.icerock.moko.widgets.style.view.Padded
-import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.Sized
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
@@ -51,20 +49,20 @@ class InputWidget(
      * @property labelTextStyle floating label text style
      * @property errorTextStyle error message text style
      * @property underLineColor color of the underline
-     * @property padding @see com.icerockdev.mpp.widget.style.view.Padded
+     * @property underLineFocusedColor color of the underline in focused state
      * @property margins @see com.icerockdev.mpp.widget.style.view.Margined
      * @property background widget's background, might be null if not required
      */
     data class Style(
         override val size: WidgetSize = WidgetSize.Const(),
         override val background: Background? = null,
-        override val padding: PaddingValues? = null,
         override val margins: MarginValues? = null,
         val textStyle: TextStyle = TextStyle(),
         val labelTextStyle: TextStyle = TextStyle(),
         val errorTextStyle: TextStyle = TextStyle(),
-        val underLineColor: Color? = null
-    ) : Widget.Style, Padded, Margined, Sized, Backgrounded
+        val underLineColor: Color? = null,
+        val underLineFocusedColor: Color? = null
+    ) : Widget.Style, Margined, Sized, Backgrounded
 
     interface Id : WidgetScope.Id
 }

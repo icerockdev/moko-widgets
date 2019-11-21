@@ -48,7 +48,8 @@ object Theme {
         val grayText = Color(0x26, 0x26, 0x28, 0xFF)
         val gray2Text = Color(0x4A, 0x4A, 0x4A, 0xFF)
         val lightGrayText = rgba(38, 38, 40, 0.4)
-        val grayUnderline = Color(0xDD, 0xDD, 0xDD, 0xFF)
+        val focusedGrayUnderline = Color(0xDD, 0xDD, 0xDD, 0xFF)
+        val grayUnderline = Color(0xAA, 0xAA, 0xAA, 0xFF)
     }
 
     val errorTextStyle: TextStyle = TextStyle(
@@ -74,9 +75,7 @@ object Theme {
         ),
         errorTextStyle = errorTextStyle,
         underLineColor = Color.grayUnderline,
-        padding = PaddingValues(
-            padding = 0f
-        ),
+        underLineFocusedColor = Color.focusedGrayUnderline,
         margins = MarginValues(
             bottom = 8f
         ),
@@ -249,8 +248,9 @@ object Theme {
                 color = Color(0xA6, 0xA6, 0xA6, 0xFF), // #a6a6a6ff
                 fontStyle = FontStyle.MEDIUM // Gotham Pro
             ),
-            underLineColor = Colors.white
-        )
+            underLineColor = Colors.white.copy(alpha = 0xAA),
+            underLineFocusedColor = Colors.white
+            )
         textStyle = Theme.headerStyle.copy(
             textStyle = TextStyle(
                 size = 14,

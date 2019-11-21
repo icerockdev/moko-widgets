@@ -9,6 +9,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.core.view.MarginLayoutParamsCompat
+import androidx.core.view.ViewCompat
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import dev.icerock.moko.widgets.core.VFC
@@ -45,16 +47,45 @@ actual var inputWidgetViewFactory: VFC<InputWidget> = { viewFactoryContext: View
         ).apply {
             // EditText's default background have paddings 4dp, while we not change background to own we just change margins
             // https://stackoverflow.com/questions/31735291/removing-the-left-padding-on-an-android-edittext/44497551
-            marginStart = (-4).dp(context)
-            marginEnd = (-4).dp(context)
+            val dp4 = (-4).dp(context)
+            MarginLayoutParamsCompat.setMarginStart(this, dp4)
+            MarginLayoutParamsCompat.setMarginEnd(this, dp4)
         }
 
         applyTextStyle(style.textStyle)
         inputWidget.inputType?.also { applyInputType(it) }
 
-        style.underLineColor?.also {
-            backgroundTintList = ColorStateList.valueOf(it.argb.toInt())
+        val focusedColor = style.underLineFocusedColor?.argb?.toInt()
+        val defaultColor = style.underLineColor?.argb?.toInt()
+
+        if (focusedColor != null && defaultColor != null) {
+            ViewCompat.setBackgroundTintList(
+                this, ColorStateList(
+                    arrayOf(
+                        intArrayOf(android.R.attr.state_focused),
+                        intArrayOf(-android.R.attr.state_focused)
+                    ),
+                    intArrayOf(
+                        focusedColor,
+                        defaultColor
+                    )
+                )
+            )
+        } else if (defaultColor != null) {
+            ViewCompat.setBackgroundTintList(this, ColorStateList.valueOf(defaultColor))
+        } else if (focusedColor != null) {
+            ViewCompat.setBackgroundTintList(
+                this, ColorStateList(
+                    arrayOf(
+                        intArrayOf(android.R.attr.state_focused)
+                    ),
+                    intArrayOf(
+                        focusedColor
+                    )
+                )
+            )
         }
+
 
         setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) inputWidget.field.validate()
