@@ -4,6 +4,7 @@
 
 package dev.icerock.moko.widgets
 
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -42,25 +43,15 @@ actual var tabsWidgetViewFactory: VFC<TabsWidget> = { context: ViewFactoryContex
 
     tabHost.addView(container)
 
-    val tabsScroll = HorizontalScrollView(ctx).apply {
-        layoutParams = LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        isVerticalScrollBarEnabled = false
-        isHorizontalScrollBarEnabled = false
-    }
-
     val tabWidget = TabWidget(ctx).apply {
         layoutParams = FrameLayout.LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
         id = android.R.id.tabs
     }
 
-    tabsScroll.addView(tabWidget)
-    container.addView(tabsScroll)
+    container.addView(tabWidget)
 
     val content = MarginedFrameLayout(ctx).apply {
         layoutParams = LinearLayout.LayoutParams(
@@ -89,7 +80,11 @@ actual var tabsWidgetViewFactory: VFC<TabsWidget> = { context: ViewFactoryContex
             ).apply {
                 text = stringDesc.toString(ctx)
             }
-            tabContainer.addView(text)
+            tabContainer.addView(text, FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                Gravity.CENTER
+            ))
             return tabContainer
         }
 
