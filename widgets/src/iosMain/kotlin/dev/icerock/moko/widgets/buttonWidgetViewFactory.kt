@@ -10,6 +10,7 @@ import dev.icerock.moko.widgets.core.bind
 import dev.icerock.moko.widgets.utils.applyBackground
 import dev.icerock.moko.widgets.utils.applyTextStyle
 import dev.icerock.moko.widgets.utils.setEventHandler
+import dev.icerock.moko.widgets.utils.UIStyledButton
 import platform.UIKit.UIButton
 import platform.UIKit.UIButtonTypeRoundedRect
 import platform.UIKit.UIControlEventTouchUpInside
@@ -24,11 +25,12 @@ actual var buttonWidgetViewFactory: VFC<ButtonWidget> = { viewController, widget
     // TODO add styles support
     val style = widget.style
 
-    val button = UIButton.buttonWithType(buttonType = UIButtonTypeRoundedRect).apply {
+
+    val button = UIStyledButton().apply {
         translatesAutoresizingMaskIntoConstraints = false
         setContentHuggingPriority(UILayoutPriorityRequired, forAxis = UILayoutConstraintAxisHorizontal)
         setContentHuggingPriority(UILayoutPriorityRequired, forAxis = UILayoutConstraintAxisVertical)
-        applyBackground(style.background)
+        applyStateBackground(style.background)
         
         titleLabel?.applyTextStyle(style.textStyle)
 
@@ -36,6 +38,7 @@ actual var buttonWidgetViewFactory: VFC<ButtonWidget> = { viewController, widget
             setTintColor(it.toUIColor())
         }
     }
+
 
     widget.text.bind {
         button.setTitle(title = it.localized(), forState = UIControlStateNormal)

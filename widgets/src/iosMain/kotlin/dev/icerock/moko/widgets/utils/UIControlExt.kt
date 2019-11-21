@@ -4,14 +4,21 @@
 
 package dev.icerock.moko.widgets.utils
 
-import kotlinx.cinterop.ObjCAction
-import kotlinx.cinterop.cstr
+import dev.icerock.moko.widgets.core.View
+import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.style.background.StateBackground
+import kotlinx.cinterop.*
+import platform.CoreGraphics.CGRect
+import platform.CoreGraphics.CGRectMake
+import platform.CoreGraphics.CGRectZero
+import platform.Foundation.NSCoder
 import platform.Foundation.NSDefaultRunLoopMode
 import platform.Foundation.NSRunLoop
 import platform.Foundation.NSSelectorFromString
 import platform.QuartzCore.CADisplayLink
-import platform.UIKit.UIControl
-import platform.UIKit.UIControlEvents
+import platform.QuartzCore.CALayer
+import platform.UIKit.*
 import platform.darwin.NSObject
 import platform.objc.OBJC_ASSOCIATION_RETAIN
 import platform.objc.objc_setAssociatedObject
@@ -55,5 +62,57 @@ class LambdaTarget(val lambda: () -> Unit) : NSObject() {
     @ObjCAction
     fun displayLink(link: CADisplayLink) {
         lambda()
+    }
+}
+
+class UIStyledButton: UIButton(frame = CGRectZero.readValue()) {
+    private var normalBg: CALayer? = null
+    private var disabledBg: CALayer? = null
+    private var pressedBg: CALayer? = null
+    
+    fun applyStateBackground(background: StateBackground?) {
+        if (background == null) return
+        normalBg = background.normal.caLayer().also {
+            layer.addSublayer(it)
+        }
+        disabledBg = background.disabled.caLayer().also {
+            layer.addSublayer(it)
+        }
+        pressedBg = background.pressed.caLayer().also {
+            layer.addSublayer(it)
+        }
+
+        // FIXME memoryleak.
+        layer.displayLink {
+            val (width, height) = layer.bounds.useContents { size.width to size.height }
+            normalBg?.frame = CGRectMake(0.0, 0.0, width, height)
+            disabledBg?.frame = CGRectMake(0.0, 0.0, width, height)
+            pressedBg?.frame = CGRectMake(0.0, 0.0, width, height)
+        }
+        normalBg?.hidden = false
+        disabledBg?.hidden = true
+        pressedBg?.hidden = true
+    }
+
+    private fun updateLayers() {
+        if (!isEnabled()) {
+            disabledBg?.hidden = false
+            normalBg?.hidden = true
+            pressedBg?.hidden = true
+            return
+        }
+        disabledBg?.hidden = true
+        normalBg?.hidden = isHighlighted()
+        pressedBg?.hidden = !isHighlighted()
+    }
+
+    override fun setEnabled(enabled: Boolean) {
+        super.setEnabled(enabled)
+        updateLayers()
+    }
+
+    override fun setHighlighted(highlighted: Boolean) {
+        super.setHighlighted(highlighted)
+        updateLayers()
     }
 }
