@@ -93,9 +93,6 @@ fun UIView.applySize(size: WidgetSize, parent: UIView, edges: Edges<CGFloat>) {
             SizeSpec.WRAP_CONTENT -> {
                 // nothing (intristic size by default)
             }
-            SizeSpec.AUTO -> {
-                myAnchor.constraintGreaterThanOrEqualToConstant(edgeSum).active = true
-            }
             else -> myAnchor.constraintEqualToConstant(constSize.toDouble() + edgeSum).active = true
         }
     }

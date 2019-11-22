@@ -148,10 +148,10 @@ private fun corretChildSize(size: WidgetSize, orientation: Orientation): WidgetS
     when (size) {
         is WidgetSize.Const -> {
             if (size.width == SizeSpec.AS_PARENT && orientation == Orientation.HORIZONTAL) {
-                result = WidgetSize.Const(SizeSpec.AUTO, size.height)
+                result = WidgetSize.Const(SizeSpec.WRAP_CONTENT, size.height)
             }
             if (size.height == SizeSpec.AS_PARENT && orientation == Orientation.VERTICAL) {
-                result = WidgetSize.Const(size.width, SizeSpec.AUTO)
+                result = WidgetSize.Const(size.width, SizeSpec.WRAP_CONTENT)
             }
         }
     }
