@@ -112,7 +112,7 @@ actual var linearWidgetViewFactory: VFC<LinearWidget> = { viewController, widget
                     )
                 }
             }
-            childSize?.apply { corretChildSize(this, style.orientation) }?.also {
+            childSize?.let { corretChildSize(it, style.orientation) }?.also {
                 childView.applySize(
                     size = it,
                     parent = this,
