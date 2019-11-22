@@ -3,6 +3,11 @@ language = Objective-C
 #import <objc/runtime.h>
 #import <UIKit/UIColor.h>
 #import <Foundation/NSArray.h>
+#import <Foundation/NSURLSession.h>
+#import <Foundation/NSURL.h>
+#import <Foundation/NSData.h>
+#import <Foundation/NSURLResponse.h>
+#import <Foundation/NSError.h>
 
 static char kAssociatedObjectKey;
 
@@ -20,4 +25,13 @@ NSArray* cgColors(NSArray<UIColor*>* uiColors) {
     [result addObject: uiColors[i].CGColor];
   }
   return result;
+}
+
+NSURLSessionDataTask* dataTask(NSURLSession* session, NSURL* url, void (^completionHandler)(NSData *data, NSURLResponse *response, NSError *error)) {
+  return [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+      dispatch_sync(dispatch_get_main_queue(), ^{
+        completionHandler(data, response, error);
+      });
+    }
+  ];
 }

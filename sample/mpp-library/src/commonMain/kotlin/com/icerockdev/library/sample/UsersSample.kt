@@ -83,21 +83,21 @@ class UsersViewModel(
     private val unitsFactory: UnitsFactory
 ) : ViewModel(), UsersViewModelContract {
     private val _loadNextPage = MutableLiveData(false)
-    private val _items: MutableLiveData<List<String>> = MutableLiveData(
+    private val _items: MutableLiveData<List<Pair<String, String>>> = MutableLiveData(
         initialValue = listOf(
-            "Aleksey Mikhailov",
-            "Alexandr Pogrebnyak",
-            "Andrey Breslav",
-            "Nikolay Igotti"
+            "Aleksey Mikhailov" to "https://avatars0.githubusercontent.com/u/5010169",
+            "Alexandr Pogrebnyak" to "https://avatars1.githubusercontent.com/u/10958304",
+            "Andrey Breslav" to "https://avatars1.githubusercontent.com/u/888318",
+            "Nikolay Igotti" to "https://avatars3.githubusercontent.com/u/2600522"
         )
     )
     override val tableItems: LiveData<List<TableUnitItem>> = _items.map { items ->
-        items.map { name ->
+        items.map { (name, avatarUrl) ->
             val id = name.hashCode().toLong()
             unitsFactory.createUserTableUnit(
                 itemId = id,
                 name = name,
-                avatarUrl = "https://avatars0.githubusercontent.com/u/5010169"
+                avatarUrl = avatarUrl
             ) {
                 println("clicked $name user")
             }
@@ -110,12 +110,12 @@ class UsersViewModel(
         }
     }
     override val collectionItems: LiveData<List<CollectionUnitItem>> = _items.map { items ->
-        items.map { name ->
+        items.map { (name, avatarUrl) ->
             val id = name.hashCode().toLong()
             unitsFactory.createUserCollectionUnit(
                 itemId = id,
                 name = name,
-                avatarUrl = "https://avatars0.githubusercontent.com/u/5010169"
+                avatarUrl = avatarUrl
             ) {
                 println("clicked $name user")
             }
@@ -158,7 +158,7 @@ class UsersViewModel(
             _loadNextPage.value = false
 
             val currentItems = _items.value
-            _items.value = currentItems.plus(currentItems.map { "$it+" })
+            _items.value = currentItems.plus(currentItems.map { it.copy(first = it.first + "+") })
         }
     }
 

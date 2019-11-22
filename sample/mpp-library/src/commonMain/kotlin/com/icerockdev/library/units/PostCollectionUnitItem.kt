@@ -58,7 +58,13 @@ class PostCollectionUnitItem(
             children = mapOf(
                 image(
                     styled = {
-                        it.copy(scaleType = ImageWidget.ScaleType.FILL)
+                        it.copy(
+                            size = WidgetSize.Const(
+                                width = SizeSpec.AS_PARENT,
+                                height = SizeSpec.AS_PARENT
+                            ),
+                            scaleType = ImageWidget.ScaleType.FILL
+                        )
                     },
                     image = data.map { Image.network(it.imageUrl) }
                 ) to Alignment.CENTER,

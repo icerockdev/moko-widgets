@@ -7,6 +7,7 @@ package com.icerockdev.library.units
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.map
 import dev.icerock.moko.resources.desc.desc
+import dev.icerock.moko.widgets.ImageWidget
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.image
@@ -38,7 +39,8 @@ class UserUnitWidget(
                                 size = dev.icerock.moko.widgets.style.view.WidgetSize.Const(
                                     width = 48,
                                     height = 48
-                                )
+                                ),
+                                scaleType = ImageWidget.ScaleType.FILL
                             )
                         },
                         image = data.map { dev.icerock.moko.widgets.core.Image.network(it.avatarUrl) }

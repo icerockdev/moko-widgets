@@ -72,7 +72,7 @@ class PostsViewModel : ViewModel(), PostsViewModelContract {
             PostItem(
                 id = id,
                 nickname = "@alex009".desc(),
-                imageUrl = "https://images.unsplash.com/photo-1531804055935-76f44d7c3621",
+                imageUrl = "https://html5box.com/html5lightbox/images/mountain.jpg",
                 viewsCount = "24.5K".desc(),
                 title = title.desc(),
                 tags = null,
