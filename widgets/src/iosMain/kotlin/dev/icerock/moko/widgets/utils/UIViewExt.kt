@@ -26,18 +26,7 @@ import platform.CoreGraphics.CGFloat
 import platform.CoreGraphics.CGPointMake
 import platform.CoreGraphics.CGRectMake
 import platform.QuartzCore.CAGradientLayer
-import platform.UIKit.NSLayoutDimension
-import platform.UIKit.UIControl
-import platform.UIKit.UIEdgeInsets
-import platform.UIKit.UIEdgeInsetsMake
-import platform.UIKit.UIView
-import platform.UIKit.backgroundColor
-import platform.UIKit.bottomAnchor
-import platform.UIKit.heightAnchor
-import platform.UIKit.leadingAnchor
-import platform.UIKit.topAnchor
-import platform.UIKit.trailingAnchor
-import platform.UIKit.widthAnchor
+import platform.UIKit.*
 
 fun Widget.getSize(): WidgetSize? {
     return ((this as? Styled<*>)?.style as? Sized)?.size
@@ -104,7 +93,7 @@ fun UIView.applySize(size: WidgetSize, parent: UIView, edges: Edges<CGFloat>) {
             SizeSpec.WRAP_CONTENT -> {
                 // nothing (intristic size by default)
             }
-            else -> myAnchor.constraintEqualToConstant(constSize.toDouble()).active = true
+            else -> myAnchor.constraintEqualToConstant(constSize.toDouble() + edgeSum).active = true
         }
     }
 
