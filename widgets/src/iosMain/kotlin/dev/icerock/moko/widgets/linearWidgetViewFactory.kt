@@ -17,13 +17,19 @@ import dev.icerock.moko.widgets.utils.getSize
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGFloat
 import platform.CoreGraphics.CGRectZero
+import platform.UIKit.NSLayoutConstraint
 import platform.UIKit.UIView
 import platform.UIKit.addSubview
 import platform.UIKit.bottomAnchor
+import platform.UIKit.constraints
+import platform.UIKit.heightAnchor
 import platform.UIKit.leadingAnchor
+import platform.UIKit.removeConstraint
+import platform.UIKit.superview
 import platform.UIKit.topAnchor
 import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
+import platform.UIKit.widthAnchor
 
 actual var linearWidgetViewFactory: VFC<LinearWidget> = { viewController, widget ->
     // TODO add styles support
@@ -125,16 +131,55 @@ actual var linearWidgetViewFactory: VFC<LinearWidget> = { viewController, widget
         lastMargins = childMargins
     }
 
-    lastChildView?.run {
-        when (style.orientation) {
-            Orientation.VERTICAL -> container.bottomAnchor.constraintEqualToAnchor(
-                anchor = bottomAnchor,
-                constant = pm(lastMargins?.bottom, contentPadding?.bottom)
-            ).active = true
-            Orientation.HORIZONTAL -> trailingAnchor.constraintEqualToAnchor(
-                anchor = container.trailingAnchor,
-                constant = pm(lastMargins?.end, contentPadding?.end)
-            ).active = true
+    if (style.size is WidgetSize.Const) {
+        lastChildView?.run {
+            val lastWidgetSize = widget.children.last().getSize()!!
+
+            when (style.orientation) {
+                Orientation.VERTICAL -> {
+                    if (style.size.height == SizeSpec.WRAP_CONTENT) {
+                        container.bottomAnchor.constraintEqualToAnchor(
+                            anchor = bottomAnchor,
+                            constant = pm(lastMargins?.bottom, contentPadding?.bottom)
+                        ).active = true
+                    } else if (lastWidgetSize is WidgetSize.Const && lastWidgetSize.height == SizeSpec.AS_PARENT) {
+                        println("as parent")
+                        this.constraints.filterIsInstance<NSLayoutConstraint>()
+                            .filter {
+                                println("const: $it")
+                                (it.firstItem == this && it.firstAnchor == this.heightAnchor)
+                                        || (it.secondItem == this && it.secondAnchor == this.heightAnchor)
+                            }.forEach {
+                                println("remove: $it")
+                                this.removeConstraint(it)
+                            }
+
+                        container.bottomAnchor.constraintEqualToAnchor(
+                            anchor = bottomAnchor,
+                            constant = pm(lastMargins?.bottom, contentPadding?.bottom)
+                        ).active = true
+                    }
+                }
+                Orientation.HORIZONTAL -> {
+                    if (style.size.width == SizeSpec.WRAP_CONTENT) {
+                        trailingAnchor.constraintEqualToAnchor(
+                            anchor = container.trailingAnchor,
+                            constant = pm(lastMargins?.end, contentPadding?.end)
+                        ).active = true
+                    } else if (lastWidgetSize is WidgetSize.Const && lastWidgetSize.width == SizeSpec.AS_PARENT) {
+                        this.constraints.filterIsInstance<NSLayoutConstraint>()
+                            .filter {
+                                (it.firstItem == this && it.firstAnchor == this.widthAnchor)
+                                        || (it.secondItem == this && it.secondAnchor == this.widthAnchor)
+                            }.forEach { this.removeConstraint(it) }
+
+                        trailingAnchor.constraintEqualToAnchor(
+                            anchor = container.trailingAnchor,
+                            constant = pm(lastMargins?.end, contentPadding?.end)
+                        ).active = true
+                    }
+                }
+            }
         }
     }
 
@@ -143,7 +188,7 @@ actual var linearWidgetViewFactory: VFC<LinearWidget> = { viewController, widget
 
 private fun corretChildSize(size: WidgetSize, orientation: Orientation): WidgetSize {
     //TODO: Support aspects correcting?
-    
+
     var result = size
     when (size) {
         is WidgetSize.Const -> {
