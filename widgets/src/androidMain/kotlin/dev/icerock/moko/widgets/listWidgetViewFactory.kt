@@ -5,6 +5,7 @@
 package dev.icerock.moko.widgets
 
 import android.view.View
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -32,6 +33,11 @@ actual var listWidgetViewFactory: VFC<ListWidget> = { viewFactoryContext: ViewFa
 
         layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, style.reversed)
         adapter = unitsAdapter
+
+        if (style.dividerEnabled == true) {
+            val dividerDecoration = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+            addItemDecoration(dividerDecoration)
+        }
     }
 
     val resultView: View = if (haveSwipeRefreshListener) {

@@ -44,7 +44,8 @@ class ListWidget(
         override val background: Background? = null,
         override val padding: PaddingValues? = null,
         override val margins: MarginValues? = null,
-        val reversed: Boolean = false
+        val reversed: Boolean = false,
+        val dividerEnabled: Boolean? = null
     ) : Widget.Style, Padded, Margined, Sized, Backgrounded
 
     interface Id : WidgetScope.Id

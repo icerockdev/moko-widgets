@@ -76,6 +76,10 @@ actual var listWidgetViewFactory: VFC<ListWidget> = { viewController, widget ->
             }
         }
 
+        if (style.dividerEnabled == false) {
+            separatorStyle = UITableViewCellSeparatorStyle.UITableViewCellSeparatorStyleNone
+        }
+
         // TODO reversed apply
     }
 
