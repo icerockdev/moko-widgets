@@ -4,6 +4,7 @@
 
 package dev.icerock.moko.widgets
 
+import android.graphics.PorterDuff
 import android.widget.ProgressBar
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.style.applyStyle
@@ -13,5 +14,12 @@ actual var progressBarWidgetViewFactory: VFC<ProgressBarWidget> = { viewFactoryC
     val context = viewFactoryContext.androidContext
     val style = widget.style
 
-    ProgressBar(context).withSize(style.size).apply { applyStyle(style) }
+    ProgressBar(context).apply {
+        style.color?.let {
+            indeterminateDrawable.setColorFilter(it.argb.toInt(), PorterDuff.Mode.MULTIPLY)
+        }
+
+    }.withSize(style.size).apply {
+        applyStyle(style)
+    }
 }
