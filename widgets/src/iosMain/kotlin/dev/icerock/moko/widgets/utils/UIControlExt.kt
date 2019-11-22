@@ -84,14 +84,15 @@ class UIStyledButton: UIButton(frame = CGRectZero.readValue()) {
             layer.addSublayer(it)
         }
 
-        // FIXME memoryleak.
-        layer.displayLink {
-            val (width, height) = layer.bounds.useContents { size.width to size.height }
-            normalBg?.frame = CGRectMake(0.0, 0.0, width, height)
-            disabledBg?.frame = CGRectMake(0.0, 0.0, width, height)
-            pressedBg?.frame = CGRectMake(0.0, 0.0, width, height)
-        }
         updateLayers()
+    }
+
+    override fun layoutSublayersOfLayer(layer: CALayer) {
+        super.layoutSublayersOfLayer(layer)
+        val (width, height) = layer.bounds.useContents { size.width to size.height }
+        normalBg?.frame = CGRectMake(0.0, 0.0, width, height)
+        disabledBg?.frame = CGRectMake(0.0, 0.0, width, height)
+        pressedBg?.frame = CGRectMake(0.0, 0.0, width, height)
     }
 
     private fun updateLayers() {
