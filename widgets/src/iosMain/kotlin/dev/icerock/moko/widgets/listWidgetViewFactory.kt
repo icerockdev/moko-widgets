@@ -8,17 +8,22 @@ import dev.icerock.moko.units.TableUnitItem
 import dev.icerock.moko.units.UnitTableViewDataSource
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.bind
+import dev.icerock.moko.widgets.utils.Edges
 import dev.icerock.moko.widgets.utils.applyBackground
 import dev.icerock.moko.widgets.utils.setEventHandler
 import dev.icerock.moko.widgets.utils.toEdgeInsets
 import kotlinx.cinterop.readValue
+import kotlinx.cinterop.useContents
 import platform.CoreGraphics.CGRectZero
 import platform.UIKit.UIControlEventValueChanged
+import platform.UIKit.UIEdgeInsetsMake
 import platform.UIKit.UIRefreshControl
 import platform.UIKit.UITableView
 import platform.UIKit.UITableViewAutomaticDimension
 import platform.UIKit.UITableViewCell
+import platform.UIKit.UITableViewCellSeparatorStyle
 import platform.UIKit.UITableViewStyle
+import platform.UIKit.layoutMargins
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
 actual var listWidgetViewFactory: VFC<ListWidget> = { viewController, widget ->
@@ -38,8 +43,29 @@ actual var listWidgetViewFactory: VFC<ListWidget> = { viewController, widget ->
 
         applyBackground(style.background)
 
-        style.padding?.toEdgeInsets()?.also {
-            contentInset = it
+        style.padding?.toEdgeInsets()?.also { insetsValue ->
+            val insets = insetsValue.useContents {
+                Edges(
+                    top = this.top,
+                    leading = this.left,
+                    trailing = this.right,
+                    bottom = this.bottom
+                )
+            }
+            contentInset = UIEdgeInsetsMake(
+                top = insets.top,
+                bottom = insets.bottom,
+                left = 0.0,
+                right = 0.0
+            )
+            val margins = UIEdgeInsetsMake(
+                top = 0.0,
+                bottom = 0.0,
+                left = insets.leading,
+                right = insets.trailing
+            )
+            layoutMargins = margins
+            separatorInset = margins
         }
 
         widget.onRefresh?.let { onRefresh ->
@@ -74,7 +100,7 @@ private fun List<TableUnitItem>.observedEnd(onReachEnd: () -> Unit): List<TableU
     return this.dropLast(1).plus(lastWrapped)
 }
 
-class TableUnitItemWrapper(
+private class TableUnitItemWrapper(
     private val item: TableUnitItem,
     private val onBind: () -> Unit
 ) : TableUnitItem by item {

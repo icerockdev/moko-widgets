@@ -13,7 +13,19 @@ import dev.icerock.moko.widgets.utils.getMargins
 import dev.icerock.moko.widgets.utils.getSize
 import dev.icerock.plural.getAssociatedObject
 import dev.icerock.plural.setAssociatedObject
-import platform.UIKit.*
+import kotlinx.cinterop.useContents
+import platform.UIKit.UIApplication
+import platform.UIKit.UICollectionView
+import platform.UIKit.UICollectionViewCell
+import platform.UIKit.UIView
+import platform.UIKit.addSubview
+import platform.UIKit.bottomAnchor
+import platform.UIKit.layoutMargins
+import platform.UIKit.layoutMarginsGuide
+import platform.UIKit.leadingAnchor
+import platform.UIKit.topAnchor
+import platform.UIKit.trailingAnchor
+import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
 actual abstract class WidgetsCollectionUnitItem<T> actual constructor(
     override val itemId: Long,
@@ -58,26 +70,36 @@ internal fun <T> UIView.setupWidgetContent(data: T, factory: (liveData: LiveData
 
         addSubview(view)
 
+        val (margin_left, margin_right) = layoutMargins.useContents { left to right }
         val childSize = widget.getSize()
         val childMargins = widget.getMargins()
         val edges = dev.icerock.moko.widgets.utils.Edges(
             top = childMargins?.top?.toDouble() ?: 0.0,
-            leading = childMargins?.start?.toDouble() ?: 0.0,
+            leading = childMargins?.start?.toDouble() ?: 0.0 + margin_left,
             bottom = childMargins?.bottom?.toDouble() ?: 0.0,
-            trailing = childMargins?.end?.toDouble() ?: 0.0
+            trailing = childMargins?.end?.toDouble() ?: 0.0 + margin_right
         )
 
         if (childSize != null) {
             view.applySize(childSize, this, edges)
         }
 
-        view.topAnchor.constraintEqualToAnchor(topAnchor, constant = edges.top).active = true
-        view.leadingAnchor.constraintEqualToAnchor(leadingAnchor, constant = edges.leading).active =
-            true
-        view.trailingAnchor.constraintEqualToAnchor(trailingAnchor, constant = edges.trailing)
-            .active = true
-        view.bottomAnchor.constraintEqualToAnchor(bottomAnchor, constant = edges.bottom).active =
-            true
+        view.topAnchor.constraintEqualToAnchor(
+            anchor = topAnchor,
+            constant = edges.top
+        ).active = true
+        view.leadingAnchor.constraintEqualToAnchor(
+            anchor = layoutMarginsGuide.leadingAnchor,
+            constant = edges.leading
+        ).active = true
+        view.trailingAnchor.constraintEqualToAnchor(
+            anchor = layoutMarginsGuide.trailingAnchor,
+            constant = edges.trailing
+        ).active = true
+        view.bottomAnchor.constraintEqualToAnchor(
+            anchor = bottomAnchor,
+            constant = edges.bottom
+        ).active = true
 
         this.setWidgetLiveData(mutableLiveData)
     }

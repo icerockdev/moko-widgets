@@ -8,13 +8,14 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import dev.icerock.moko.units.TableUnitItem
 import dev.icerock.moko.units.adapter.UnitsRecyclerViewAdapter
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.applyStyle
+import dev.icerock.moko.widgets.style.ext.applyPadding
 import dev.icerock.moko.widgets.style.withSize
 import dev.icerock.moko.widgets.utils.bind
-import dev.icerock.moko.widgets.view.UnitItemDecorator
 
 actual var listWidgetViewFactory: VFC<ListWidget> = { viewFactoryContext: ViewFactoryContext,
                                                       widget: ListWidget ->
@@ -53,14 +54,37 @@ actual var listWidgetViewFactory: VFC<ListWidget> = { viewFactoryContext: ViewFa
 
     widget.items.bind(lifecycleOwner) { units ->
         val list = units.orEmpty()
-        unitsAdapter.units = when {
-            widget.onReachEnd == null -> list
-            list.isEmpty() -> list
-            else -> list.subList(0, list.lastIndex) + UnitItemDecorator(list.last()) {
-                widget.onReachEnd.invoke()
-            }
+        unitsAdapter.units = when (widget.onReachEnd) {
+            null -> list
+            else -> list.observedEnd(widget.onReachEnd)
         }
     }
 
-    resultView.withSize(style.size).apply { applyStyle(style) }
+    resultView.withSize(style.size).apply {
+        applyStyle(style)
+        if (resultView != recyclerView) {
+            style.padding?.let { recyclerView.applyPadding(it) }
+            resultView.setPadding(0, 0, 0, 0)
+        }
+    }
+}
+
+private fun List<TableUnitItem>.observedEnd(onReachEnd: () -> Unit): List<TableUnitItem> {
+    if (this.isEmpty()) return this
+
+    val lastWrapped = TableUnitItemWrapper(
+        item = this.last(),
+        onBind = onReachEnd
+    )
+    return this.dropLast(1).plus(lastWrapped)
+}
+
+private class TableUnitItemWrapper(
+    private val item: TableUnitItem,
+    private val onBind: () -> Unit
+) : TableUnitItem by item {
+    override fun bindViewHolder(viewHolder: RecyclerView.ViewHolder) {
+        item.bindViewHolder(viewHolder)
+        onBind()
+    }
 }
