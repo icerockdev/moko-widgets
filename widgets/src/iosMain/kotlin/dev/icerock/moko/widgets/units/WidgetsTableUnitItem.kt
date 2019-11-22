@@ -7,8 +7,11 @@ package dev.icerock.moko.widgets.units
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.units.TableUnitItem
 import dev.icerock.moko.widgets.core.Widget
+import platform.UIKit.UIActivityIndicatorView
 import platform.UIKit.UITableView
 import platform.UIKit.UITableViewCell
+import platform.UIKit.UIView
+import platform.UIKit.subviews
 
 actual abstract class WidgetsTableUnitItem<T> actual constructor(
     override val itemId: Long,
@@ -28,5 +31,16 @@ actual abstract class WidgetsTableUnitItem<T> actual constructor(
 
     override fun bind(cell: UITableViewCell) {
         cell.contentView.setupWidgetContent(data, ::createWidget)
+        findAnimated(cell.contentView).forEach { it.startAnimating() }
+    }
+
+    // temporary hack :(
+    private fun findAnimated(view: UIView): List<UIActivityIndicatorView> {
+        val subIndicators = view.subviews.flatMap { findAnimated(it as UIView) }
+        return if (view is UIActivityIndicatorView) {
+            subIndicators + view
+        } else {
+            subIndicators
+        }
     }
 }
