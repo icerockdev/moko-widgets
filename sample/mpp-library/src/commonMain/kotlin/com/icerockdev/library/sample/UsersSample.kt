@@ -7,6 +7,7 @@ package com.icerockdev.library.sample
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.mvvm.livedata.map
+import dev.icerock.moko.mvvm.livedata.mergeWith
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.units.CollectionUnitItem
 import dev.icerock.moko.units.TableUnitItem
@@ -81,6 +82,7 @@ interface UsersViewModelContract {
 class UsersViewModel(
     private val unitsFactory: UnitsFactory
 ) : ViewModel(), UsersViewModelContract {
+    private val _loadNextPage = MutableLiveData(false)
     private val _items: MutableLiveData<List<String>> = MutableLiveData(
         initialValue = listOf(
             "Aleksey Mikhailov",
@@ -100,6 +102,12 @@ class UsersViewModel(
                 println("clicked $name user")
             }
         }
+    }.mergeWith(_loadNextPage) { items, loadPage ->
+        if (loadPage) {
+            items.plus(unitsFactory.createLoadingTableUnit(-1))
+        } else {
+            items
+        }
     }
     override val collectionItems: LiveData<List<CollectionUnitItem>> = _items.map { items ->
         items.map { name ->
@@ -111,6 +119,12 @@ class UsersViewModel(
             ) {
                 println("clicked $name user")
             }
+        }
+    }.mergeWith(_loadNextPage) { items, loadPage ->
+        if (loadPage) {
+            items.plus(unitsFactory.createLoadingCollectionUnit(-1))
+        } else {
+            items
         }
     }
 
@@ -137,8 +151,14 @@ class UsersViewModel(
         if (refreshJob?.isActive == true || nextPageJob?.isActive == true) return
 
         nextPageJob = viewModelScope.launch {
+            _loadNextPage.value = true
+
+            delay(1000)
+
+            _loadNextPage.value = false
+
             val currentItems = _items.value
-            _items.value = currentItems.plus(currentItems)
+            _items.value = currentItems.plus(currentItems.map { "$it+" })
         }
     }
 
@@ -155,6 +175,14 @@ class UsersViewModel(
             name: String,
             avatarUrl: String,
             onClick: () -> Unit
+        ): CollectionUnitItem
+
+        fun createLoadingTableUnit(
+            itemId: Long
+        ): TableUnitItem
+
+        fun createLoadingCollectionUnit(
+            itemId: Long
         ): CollectionUnitItem
     }
 }

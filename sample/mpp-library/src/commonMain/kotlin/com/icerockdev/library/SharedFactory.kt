@@ -5,6 +5,7 @@
 package com.icerockdev.library
 
 import com.icerockdev.library.sample.UsersViewModel
+import com.icerockdev.library.units.LoadingUnitWidget
 import com.icerockdev.library.units.UserUnitWidget
 import dev.icerock.moko.units.CollectionUnitItem
 import dev.icerock.moko.units.TableUnitItem
@@ -45,6 +46,20 @@ class SharedFactory {
                     avatarUrl = avatarUrl,
                     onClick = onClick
                 )
+            )
+
+            override fun createLoadingTableUnit(
+                itemId: Long
+            ): TableUnitItem = LoadingUnitWidget.TableUnitItem(
+                widgetScope = mainWidgetScope,
+                itemId = itemId
+            )
+
+            override fun createLoadingCollectionUnit(
+                itemId: Long
+            ): CollectionUnitItem = LoadingUnitWidget.CollectionUnitItem(
+                widgetScope = mainWidgetScope,
+                itemId = itemId
             )
         }
     }
