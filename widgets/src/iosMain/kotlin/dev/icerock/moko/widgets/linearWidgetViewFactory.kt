@@ -7,6 +7,8 @@ package dev.icerock.moko.widgets
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.style.background.Orientation
 import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.SizeSpec
+import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.Edges
 import dev.icerock.moko.widgets.utils.applyBackground
 import dev.icerock.moko.widgets.utils.applySize
@@ -110,7 +112,7 @@ actual var linearWidgetViewFactory: VFC<LinearWidget> = { viewController, widget
                     )
                 }
             }
-            childSize?.also {
+            childSize?.let { corretChildSize(it, style.orientation) }?.also {
                 childView.applySize(
                     size = it,
                     parent = this,
@@ -137,4 +139,21 @@ actual var linearWidgetViewFactory: VFC<LinearWidget> = { viewController, widget
     }
 
     container
+}
+
+private fun corretChildSize(size: WidgetSize, orientation: Orientation): WidgetSize {
+    //TODO: Support aspects correcting?
+    
+    var result = size
+    when (size) {
+        is WidgetSize.Const -> {
+            if (size.width == SizeSpec.AS_PARENT && orientation == Orientation.HORIZONTAL) {
+                result = WidgetSize.Const(SizeSpec.WRAP_CONTENT, size.height)
+            }
+            if (size.height == SizeSpec.AS_PARENT && orientation == Orientation.VERTICAL) {
+                result = WidgetSize.Const(size.width, SizeSpec.WRAP_CONTENT)
+            }
+        }
+    }
+    return result
 }
