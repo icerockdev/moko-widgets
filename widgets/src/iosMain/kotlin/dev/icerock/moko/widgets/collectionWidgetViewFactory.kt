@@ -8,6 +8,7 @@ import dev.icerock.moko.units.CollectionUnitItem
 import dev.icerock.moko.units.UnitCollectionViewDataSource
 import dev.icerock.moko.widgets.core.VFC
 import dev.icerock.moko.widgets.core.bind
+import dev.icerock.moko.widgets.utils.Edges
 import dev.icerock.moko.widgets.utils.applyBackground
 import dev.icerock.moko.widgets.utils.applySize
 import dev.icerock.moko.widgets.utils.toEdgeInsets
@@ -24,18 +25,19 @@ import platform.UIKit.UICollectionViewDelegateFlowLayoutProtocol
 import platform.UIKit.UICollectionViewFlowLayout
 import platform.UIKit.UICollectionViewLayout
 import platform.UIKit.UIColor
+import platform.UIKit.UIEdgeInsetsMake
 import platform.UIKit.UIEdgeInsetsZero
 import platform.UIKit.UILayoutPriorityDefaultLow
 import platform.UIKit.UILayoutPriorityRequired
 import platform.UIKit.backgroundColor
 import platform.UIKit.layoutIfNeeded
+import platform.UIKit.layoutMargins
 import platform.UIKit.row
 import platform.UIKit.setNeedsLayout
 import platform.UIKit.systemLayoutSizeFittingSize
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
 actual var collectionWidgetViewFactory: VFC<CollectionWidget> = { _, widget ->
-    // TODO add styles support
     val style = widget.style
 
     val layoutAndDelegate = SpanCollectionViewLayout(style.spanCount).apply {
@@ -52,9 +54,32 @@ actual var collectionWidgetViewFactory: VFC<CollectionWidget> = { _, widget ->
 
         applyBackground(style.background)
 
-        style.padding?.toEdgeInsets()?.also {
-            contentInset = it
+        style.padding?.toEdgeInsets()?.also { insetsValue ->
+            val insets = insetsValue.useContents {
+                Edges(
+                    top = this.top,
+                    leading = this.left,
+                    trailing = this.right,
+                    bottom = this.bottom
+                )
+            }
+            contentInset = UIEdgeInsetsMake(
+                top = insets.top,
+                bottom = insets.bottom,
+                left = insets.leading,
+                right = insets.trailing
+            )
+//            val margins = UIEdgeInsetsMake(
+//                top = 0.0,
+//                bottom = 0.0,
+//                left = insets.leading,
+//                right = insets.trailing
+//            )
+//            layoutMargins = margins
         }
+
+        // TODO add reversed support
+        // TODO add orientation support
     }
     val unitDataSource = UnitCollectionViewDataSource(collectionView)
     layoutAndDelegate.dataSource = unitDataSource
@@ -80,12 +105,14 @@ private class SpanCollectionViewLayout(
         layout: UICollectionViewLayout,
         sizeForItemAtIndexPath: NSIndexPath
     ): CValue<CGSize> {
-        println("size: $sizeForItemAtIndexPath")
+//        println("size: $sizeForItemAtIndexPath")
         val collectionViewSize = collectionView.bounds.useContents { size }
-        val width = collectionViewSize.width / spanCount
+        val width = (collectionViewSize.width - collectionView.contentInset.useContents {
+            this.left + this.right
+        }) / spanCount
         val position = sizeForItemAtIndexPath.row.toInt()
 
-        println("width: $width")
+//        println("width: $width")
 
         val unit = dataSource!!.unitItems!![position]
         // TODO create correct cell from unit
@@ -107,7 +134,7 @@ private class SpanCollectionViewLayout(
 
         val (rw, rh) = size.useContents { width to height }
 
-        println("sized: $rw $rh")
+//        println("sized: $rw $rh")
 
         return CGSizeMake(rw, rh)
     }
