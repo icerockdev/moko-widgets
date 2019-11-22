@@ -11,8 +11,10 @@ import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import androidx.core.view.ViewCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dev.icerock.moko.widgets.core.View
+import dev.icerock.moko.widgets.utils.dp
 
 actual abstract class BottomNavigationScreen actual constructor(
     private val screenFactory: ScreenFactory
@@ -24,7 +26,9 @@ actual abstract class BottomNavigationScreen actual constructor(
         val container = FrameLayout(context).apply {
             id = android.R.id.content
         }
-        val bottomNavigation = BottomNavigationView(context)
+        val bottomNavigation = BottomNavigationView(context).apply {
+            ViewCompat.setElevation(this, 4.dp(context).toFloat())
+        }
 
         val menuItemAction = mutableMapOf<MenuItem, () -> Unit>()
 

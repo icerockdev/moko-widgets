@@ -5,6 +5,7 @@
 package dev.icerock.moko.widgets.screen
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -63,6 +64,14 @@ actual abstract class NavigationScreen<S> actual constructor(
         return toolBarHeight
     }
 
+    private fun getToolBarUpIndicator(context: Context): Drawable {
+        val attrs = intArrayOf(android.R.attr.homeAsUpIndicator)
+        val ta = context.obtainStyledAttributes(attrs)
+        val indicator = ta.getDrawable(0)
+        ta.recycle()
+        return indicator!!
+    }
+
     override fun onViewCreated(view: android.view.View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -102,6 +111,7 @@ actual abstract class NavigationScreen<S> actual constructor(
         val instance = screenFactory.instantiateScreen(screen)
         fragmentNavigation.routeToScreen(instance)
         toolbar?.title = instance.navigationTitle.toString(requireContext())
+        toolbar?.navigationIcon = getToolBarUpIndicator(requireContext())
     }
 
     actual fun <A : Parcelable, S> routeToScreen(
@@ -111,5 +121,6 @@ actual abstract class NavigationScreen<S> actual constructor(
         val instance = screenFactory.instantiateScreen(screen)
         fragmentNavigation.routeToScreen(instance, args)
         toolbar?.title = instance.navigationTitle.toString(requireContext())
+        toolbar?.navigationIcon = getToolBarUpIndicator(requireContext())
     }
 }

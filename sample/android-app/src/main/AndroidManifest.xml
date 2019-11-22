@@ -7,7 +7,7 @@
 
     <application
         android:label="moko-widgets test app"
-        android:theme="@style/AppTheme"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:name=".MainApplication"
         tools:ignore="GoogleAppIndexingWarning">
 
