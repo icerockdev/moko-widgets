@@ -19,7 +19,11 @@ actual var containerWidgetViewFactory: VFC<ContainerWidget> = { viewFactoryConte
     val lifecycleOwner = viewFactoryContext.lifecycleOwner
     val style = widget.style
 
-    val root = MarginedFrameLayout(context)
+    val root = MarginedFrameLayout(context).apply {
+//        if (widget.onTap != null) {
+//            setOnClickListener { widget.onTap.invoke() }
+//        }
+    }
 
     widget.children.forEach { (childWidget, childAlignment) ->
         val childView = childWidget.buildView(

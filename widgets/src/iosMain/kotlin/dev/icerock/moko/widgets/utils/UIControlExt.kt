@@ -12,6 +12,7 @@ import platform.Foundation.NSSelectorFromString
 import platform.QuartzCore.CADisplayLink
 import platform.UIKit.UIControl
 import platform.UIKit.UIControlEvents
+import platform.UIKit.UIGestureRecognizer
 import platform.darwin.NSObject
 import platform.objc.OBJC_ASSOCIATION_RETAIN
 import platform.objc.objc_setAssociatedObject
@@ -28,6 +29,22 @@ fun UIControl.setEventHandler(controlEvent: UIControlEvents, action: () -> Unit)
     objc_setAssociatedObject(
         `object` = this,
         key = "event$controlEvent".cstr,
+        value = target,
+        policy = OBJC_ASSOCIATION_RETAIN
+    )
+}
+
+fun UIGestureRecognizer.setHandler(action: () -> Unit) {
+    val target = LambdaTarget(action)
+
+    addTarget(
+        target = target,
+        action = NSSelectorFromString("action")
+    )
+
+    objc_setAssociatedObject(
+        `object` = this,
+        key = "gestureAction".cstr,
         value = target,
         policy = OBJC_ASSOCIATION_RETAIN
     )

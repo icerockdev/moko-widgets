@@ -11,11 +11,14 @@ import dev.icerock.moko.widgets.style.view.Alignment
 import dev.icerock.moko.widgets.utils.Edges
 import dev.icerock.moko.widgets.utils.applyBackground
 import dev.icerock.moko.widgets.utils.layoutWidget
+import dev.icerock.moko.widgets.utils.setHandler
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGFloat
 import platform.CoreGraphics.CGRectZero
 import platform.UIKit.UIAccessibilityIdentificationProtocol
+import platform.UIKit.UITapGestureRecognizer
 import platform.UIKit.UIView
+import platform.UIKit.addGestureRecognizer
 import platform.UIKit.addSubview
 import platform.UIKit.bottomAnchor
 import platform.UIKit.centerXAnchor
@@ -34,6 +37,13 @@ actual var containerWidgetViewFactory: VFC<ContainerWidget> = { viewController, 
         applyBackground(style.background)
 
         accessibilityIdentifier = widget.identifier()
+
+//        if (widget.onTap != null) {
+//            val tapGestureRecognizer = UITapGestureRecognizer()
+//            tapGestureRecognizer.setHandler { widget.onTap.invoke() }
+//
+//            addGestureRecognizer(tapGestureRecognizer)
+//        }
     }
 
     widget.children.forEach { (childWidget, childAlignment) ->
