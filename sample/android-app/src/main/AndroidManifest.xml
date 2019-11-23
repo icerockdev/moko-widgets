@@ -6,9 +6,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:label="moko-widgets test app"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:name=".MainApplication"
+        android:label="moko-widgets test app"
+        android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity android:name=".MainActivity">

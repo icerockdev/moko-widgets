@@ -5,7 +5,6 @@
 package dev.icerock.moko.widgets.screen
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -13,8 +12,13 @@ import android.widget.LinearLayout
 import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.ViewCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.widgets.core.View
+import dev.icerock.moko.widgets.utils.ThemeAttrs
+import dev.icerock.moko.widgets.utils.dp
 import kotlin.reflect.KClass
 
 actual abstract class NavigationScreen<S> actual constructor(
@@ -24,11 +28,41 @@ actual abstract class NavigationScreen<S> actual constructor(
 
     private var toolbar: Toolbar? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        childFragmentManager.addOnBackStackChangedListener {
+            toolbar?.navigationIcon = if (childFragmentManager.backStackEntryCount > 0) {
+                ThemeAttrs.getToolBarUpIndicator(requireContext())
+            } else {
+                null
+            }
+        }
+        childFragmentManager.registerFragmentLifecycleCallbacks(
+            object : FragmentManager.FragmentLifecycleCallbacks() {
+                override fun onFragmentStarted(fm: FragmentManager, f: Fragment) {
+                    super.onFragmentStarted(fm, f)
+
+                    if (f is NavigationItem) {
+                        toolbar?.title = f.navigationTitle.toString(requireContext())
+                    }
+                }
+            },
+            false
+        )
+    }
+
     override fun createView(context: Context, parent: ViewGroup?): View {
         val container = FrameLayout(context).apply {
             id = android.R.id.content
         }
-        val toolbar = Toolbar(context)
+        val toolbar = Toolbar(context).apply {
+            setBackgroundColor(ThemeAttrs.getPrimaryColor(context))
+            ViewCompat.setElevation(this, 4.dp(context).toFloat())
+            setNavigationOnClickListener {
+                childFragmentManager.popBackStack()
+            }
+        }
 
         this.toolbar = toolbar
 
@@ -38,12 +72,13 @@ actual abstract class NavigationScreen<S> actual constructor(
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
             orientation = LinearLayout.VERTICAL
+            setBackgroundColor(ThemeAttrs.getContentBackgroundColor(context))
 
             addView(
                 toolbar,
                 LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
-                    getToolBarHeight(context)
+                    ThemeAttrs.getToolBarHeight(context)
                 )
             )
             addView(
@@ -56,21 +91,6 @@ actual abstract class NavigationScreen<S> actual constructor(
         }
     }
 
-    private fun getToolBarHeight(context: Context): Int {
-        val attrs = intArrayOf(android.R.attr.actionBarSize)
-        val ta = context.obtainStyledAttributes(attrs)
-        val toolBarHeight = ta.getDimensionPixelSize(0, -1)
-        ta.recycle()
-        return toolBarHeight
-    }
-
-    private fun getToolBarUpIndicator(context: Context): Drawable {
-        val attrs = intArrayOf(android.R.attr.homeAsUpIndicator)
-        val ta = context.obtainStyledAttributes(attrs)
-        val indicator = ta.getDrawable(0)
-        ta.recycle()
-        return indicator!!
-    }
 
     override fun onViewCreated(view: android.view.View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -110,8 +130,6 @@ actual abstract class NavigationScreen<S> actual constructor(
     ) where S : Screen<Args.Empty>, S : NavigationItem {
         val instance = screenFactory.instantiateScreen(screen)
         fragmentNavigation.routeToScreen(instance)
-        toolbar?.title = instance.navigationTitle.toString(requireContext())
-        toolbar?.navigationIcon = getToolBarUpIndicator(requireContext())
     }
 
     actual fun <A : Parcelable, S> routeToScreen(
@@ -120,7 +138,5 @@ actual abstract class NavigationScreen<S> actual constructor(
     ) where S : Screen<Args.Parcel<A>>, S : NavigationItem {
         val instance = screenFactory.instantiateScreen(screen)
         fragmentNavigation.routeToScreen(instance, args)
-        toolbar?.title = instance.navigationTitle.toString(requireContext())
-        toolbar?.navigationIcon = getToolBarUpIndicator(requireContext())
     }
 }

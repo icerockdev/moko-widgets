@@ -4,7 +4,8 @@
 
 package dev.icerock.moko.widgets.screen
 
-import platform.UIKit.UIImage
+import dev.icerock.moko.graphics.Color
+import dev.icerock.moko.graphics.toUIColor
 import platform.UIKit.UITabBarController
 import platform.UIKit.UITabBarItem
 import platform.UIKit.UIViewController
@@ -32,6 +33,7 @@ actual abstract class BottomNavigationScreen actual constructor(
             }
         }
         controller.setViewControllers(viewControllers = viewControllers)
+        controller.tabBar.barTintColor = bottomNavigationColor?.toUIColor()
 
         tabBarController = controller
 
@@ -44,6 +46,13 @@ actual abstract class BottomNavigationScreen actual constructor(
         } ?: -1
         set(value) {
             tabBarController?.setSelectedIndex(items.indexOfFirst { it.id == value }.toULong())
+        }
+    actual var bottomNavigationColor: Color? = null
+        set(value) {
+            field = value
+            tabBarController?.also {
+                it.tabBar.barTintColor = value?.toUIColor()
+            }
         }
 }
 

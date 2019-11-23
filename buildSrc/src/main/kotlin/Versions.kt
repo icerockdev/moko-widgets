@@ -21,7 +21,8 @@ object Versions {
     object Libs {
         object Android {
             const val appCompat = "1.1.0"
-            const val material = "1.0.0"
+            const val swipeRefreshLayout = "1.0.0"
+            const val material = "1.1.0-beta02"
             const val constraintLayout = "1.1.3"
             const val lifecycle = "2.0.0"
             const val recyclerView = "1.0.0"

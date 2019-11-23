@@ -13,7 +13,9 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.core.view.ViewCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.widgets.core.View
+import dev.icerock.moko.widgets.utils.ThemeAttrs
 import dev.icerock.moko.widgets.utils.dp
 
 actual abstract class BottomNavigationScreen actual constructor(
@@ -27,7 +29,13 @@ actual abstract class BottomNavigationScreen actual constructor(
             id = android.R.id.content
         }
         val bottomNavigation = BottomNavigationView(context).apply {
-            ViewCompat.setElevation(this, 4.dp(context).toFloat())
+            ViewCompat.setElevation(this, 8.dp(context).toFloat())
+            val color = bottomNavigationColor
+            if (color != null) {
+                setBackgroundColor(color.argb.toInt())
+            } else {
+                setBackgroundResource(android.R.color.white)
+            }
         }
 
         val menuItemAction = mutableMapOf<MenuItem, () -> Unit>()
@@ -56,7 +64,9 @@ actual abstract class BottomNavigationScreen actual constructor(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
+            clipChildren = false
             orientation = LinearLayout.VERTICAL
+            setBackgroundColor(ThemeAttrs.getContentBackgroundColor(context))
 
             addView(
                 container,
@@ -99,5 +109,17 @@ actual abstract class BottomNavigationScreen actual constructor(
         get() = bottomNavigationView?.selectedItemId ?: -1
         set(value) {
             bottomNavigationView?.selectedItemId = value
+        }
+
+    actual var bottomNavigationColor: Color? = null
+        set(value) {
+            field = value
+            bottomNavigationView?.also { navView ->
+                if (value == null) {
+                    navView.setBackgroundResource(android.R.color.white)
+                } else {
+                    navView.setBackgroundColor(value.argb.toInt())
+                }
+            }
         }
 }

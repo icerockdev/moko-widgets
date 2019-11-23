@@ -17,6 +17,9 @@ object Deps {
             val appCompat = AndroidLibrary(
                 name = "androidx.appcompat:appcompat:${Versions.Libs.Android.appCompat}"
             )
+            val swipeRefreshLayout = AndroidLibrary(
+                name = "androidx.swiperefreshlayout:swiperefreshlayout:${Versions.Libs.Android.swipeRefreshLayout}"
+            )
             val material = AndroidLibrary(
                 name = "com.google.android.material:material:${Versions.Libs.Android.material}"
             )

@@ -5,6 +5,7 @@
 package com.icerockdev.library.universal
 
 import com.icerockdev.library.MR
+import com.icerockdev.library.Theme
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.screen.BottomNavigationItem
 import dev.icerock.moko.widgets.screen.BottomNavigationScreen
@@ -33,6 +34,10 @@ class RootBottomNavigationScreen(
             icon = MR.images.stars_black_18
         )
     )
+
+    init {
+        bottomNavigationColor = Theme.Color.redError
+    }
 
     override fun routeToCart() {
         selectedItemId = 2

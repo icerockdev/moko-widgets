@@ -4,6 +4,7 @@
 
 package dev.icerock.moko.widgets.screen
 
+import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.resources.ImageResource
 import dev.icerock.moko.resources.desc.StringDesc
 import kotlin.reflect.KClass
@@ -14,6 +15,7 @@ expect abstract class BottomNavigationScreen(
     abstract val items: List<BottomNavigationItem>
 
     var selectedItemId: Int
+    var bottomNavigationColor: Color?
 }
 
 data class BottomNavigationItem(

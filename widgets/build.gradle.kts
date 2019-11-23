@@ -39,6 +39,7 @@ dependencies {
     androidLibrary(Deps.Libs.Android.appCompat)
     androidLibrary(Deps.Libs.Android.recyclerView)
     androidLibrary(Deps.Libs.Android.material)
+    androidLibrary(Deps.Libs.Android.swipeRefreshLayout)
     androidLibrary(Deps.Libs.Android.constraintLayout)
     androidLibrary(Deps.Libs.Android.inputMask)
     androidLibrary(Deps.Libs.Android.glide)
