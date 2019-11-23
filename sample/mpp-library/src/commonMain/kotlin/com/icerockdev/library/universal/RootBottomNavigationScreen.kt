@@ -35,10 +35,6 @@ class RootBottomNavigationScreen(
         )
     )
 
-    init {
-        bottomNavigationColor = Theme.Color.redError
-    }
-
     override fun routeToCart() {
         selectedItemId = 2
     }

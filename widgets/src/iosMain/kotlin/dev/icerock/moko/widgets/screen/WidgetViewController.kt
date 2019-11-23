@@ -12,6 +12,7 @@ import platform.UIKit.backgroundColor
 import platform.UIKit.bottomAnchor
 import platform.UIKit.leadingAnchor
 import platform.UIKit.safeAreaLayoutGuide
+import platform.UIKit.systemBackgroundColor
 import platform.UIKit.topAnchor
 import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
@@ -27,7 +28,7 @@ class WidgetViewController : UIViewController(nibName = null, bundle = null) {
         widgetView.translatesAutoresizingMaskIntoConstraints = false
 
         with(view) {
-            backgroundColor = UIColor.whiteColor()
+            backgroundColor = UIColor.systemBackgroundColor
 
             addSubview(widgetView)
 
