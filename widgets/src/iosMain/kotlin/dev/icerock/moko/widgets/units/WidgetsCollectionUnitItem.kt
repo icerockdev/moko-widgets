@@ -94,10 +94,10 @@ internal fun <T> UIView.setupWidgetContent(data: T, factory: (liveData: LiveData
         ).active = true
         view.trailingAnchor.constraintEqualToAnchor(
             anchor = layoutMarginsGuide.trailingAnchor,
-            constant = edges.trailing
+            constant = -edges.trailing
         ).active = true
-        view.bottomAnchor.constraintEqualToAnchor(
-            anchor = bottomAnchor,
+        bottomAnchor.constraintEqualToAnchor(
+            anchor = view.bottomAnchor,
             constant = edges.bottom
         ).active = true
 

@@ -77,9 +77,9 @@ actual var linearWidgetViewFactory: VFC<LinearWidget> = { viewController, widget
                         anchor = leadingAnchor,
                         constant = pm(contentPadding?.start, childMargins?.start)
                     ).active = true
-                    trailingAnchor.constraintEqualToAnchor(
-                        anchor = childView.trailingAnchor,
-                        constant = pm(contentPadding?.end, childMargins?.end)
+                    childView.trailingAnchor.constraintEqualToAnchor(
+                        anchor = trailingAnchor,
+                        constant = -pm(contentPadding?.end, childMargins?.end)
                     ).active = true
 
                     Edges(
@@ -105,9 +105,9 @@ actual var linearWidgetViewFactory: VFC<LinearWidget> = { viewController, widget
                         anchor = topAnchor,
                         constant = pm(childMargins?.top, contentPadding?.top)
                     ).active = true
-                    childView.bottomAnchor.constraintEqualToAnchor(
+                    childView.bottomAnchor.constraintLessThanOrEqualToAnchor(
                         anchor = bottomAnchor,
-                        constant = pm(childMargins?.bottom, contentPadding?.bottom)
+                        constant = -pm(childMargins?.bottom, contentPadding?.bottom)
                     ).active = true
 
                     Edges(
