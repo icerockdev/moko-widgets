@@ -28,6 +28,8 @@ actual var textWidgetViewFactory: VFC<TextWidget> = { viewController, widget ->
         setContentCompressionResistancePriority(UILayoutPriorityDefaultHigh, UILayoutConstraintAxisVertical)
         setContentCompressionResistancePriority(UILayoutPriorityDefaultHigh, UILayoutConstraintAxisHorizontal)
 
+        numberOfLines = 0
+
         style.textStyle?.also { applyTextStyle(it) }
     }
 
