@@ -40,6 +40,7 @@ actual var listWidgetViewFactory: VFC<ListWidget> = { viewController, widget ->
         dataSource = unitDataSource
         rowHeight = UITableViewAutomaticDimension
         estimatedRowHeight = UITableViewAutomaticDimension
+        allowsSelection = false
 
         applyBackground(style.background)
 
