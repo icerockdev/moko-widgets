@@ -20,6 +20,7 @@ import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 class WidgetViewController : UIViewController(nibName = null, bundle = null) {
 
     lateinit var widget: Widget
+    lateinit var screen: Screen<*>
 
     override fun viewDidLoad() {
         super.viewDidLoad()
