@@ -25,8 +25,8 @@ class LoadingUnitWidget(
                 styled = {
                     it.copy(
                         size = WidgetSize.Const(
-                            width = SizeSpec.AS_PARENT,
-                            height = 48
+                            width = SizeSpec.AsParent,
+                            height = SizeSpec.Exact(48f)
                         )
                     )
                 },
@@ -34,7 +34,10 @@ class LoadingUnitWidget(
                     progressBar(
                         styled = {
                             it.copy(
-                                size = WidgetSize.Const(width = 24, height = 24),
+                                size = WidgetSize.Const(
+                                    width = SizeSpec.Exact(24f),
+                                    height = SizeSpec.Exact(24f)
+                                ),
                                 color = Colors.black
                             )
                         }

@@ -8,10 +8,15 @@ import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.map
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.ImageWidget
+import dev.icerock.moko.widgets.core.Image
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetScope
 import dev.icerock.moko.widgets.image
 import dev.icerock.moko.widgets.linear
+import dev.icerock.moko.widgets.style.background.Orientation
+import dev.icerock.moko.widgets.style.view.PaddingValues
+import dev.icerock.moko.widgets.style.view.SizeSpec
+import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.text
 import dev.icerock.moko.widgets.units.WidgetsCollectionUnitItem
 import dev.icerock.moko.widgets.units.WidgetsTableUnitItem
@@ -24,36 +29,36 @@ class UserUnitWidget(
             linear(
                 styled = {
                     it.copy(
-                        size = dev.icerock.moko.widgets.style.view.WidgetSize.Const(
-                            width = dev.icerock.moko.widgets.style.view.SizeSpec.AS_PARENT,
-                            height = dev.icerock.moko.widgets.style.view.SizeSpec.WRAP_CONTENT
+                        size = WidgetSize.Const(
+                            width = SizeSpec.AsParent,
+                            height = SizeSpec.WrapContent
                         ),
-                        orientation = dev.icerock.moko.widgets.style.background.Orientation.HORIZONTAL,
-                        padding = dev.icerock.moko.widgets.style.view.PaddingValues(padding = 8f)
+                        orientation = Orientation.HORIZONTAL,
+                        padding = PaddingValues(padding = 8f)
                     )
                 },
                 children = listOf(
                     image(
                         styled = {
                             it.copy(
-                                size = dev.icerock.moko.widgets.style.view.WidgetSize.Const(
-                                    width = 48,
-                                    height = 48
+                                size = WidgetSize.Const(
+                                    width = SizeSpec.Exact(48f),
+                                    height = SizeSpec.Exact(48f)
                                 ),
                                 scaleType = ImageWidget.ScaleType.FILL
                             )
                         },
-                        image = data.map { dev.icerock.moko.widgets.core.Image.network(it.avatarUrl) }
+                        image = data.map { Image.network(it.avatarUrl) }
                     ),
                     linear(
                         styled = {
                             it.copy(
-                                size = dev.icerock.moko.widgets.style.view.WidgetSize.Const(
-                                    width = dev.icerock.moko.widgets.style.view.SizeSpec.AS_PARENT,
-                                    height = dev.icerock.moko.widgets.style.view.SizeSpec.WRAP_CONTENT
+                                size = WidgetSize.Const(
+                                    width = SizeSpec.AsParent,
+                                    height = SizeSpec.WrapContent
                                 ),
-                                orientation = dev.icerock.moko.widgets.style.background.Orientation.VERTICAL,
-                                padding = dev.icerock.moko.widgets.style.view.PaddingValues(start = 8f)
+                                orientation = Orientation.VERTICAL,
+                                padding = PaddingValues(start = 8f)
                             )
                         },
                         children = listOf(

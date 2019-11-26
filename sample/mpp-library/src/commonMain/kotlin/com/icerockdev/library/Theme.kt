@@ -60,8 +60,8 @@ object Theme {
 
     val inputStyle: InputWidget.Style = InputWidget.Style(
         size = WidgetSize.Const(
-            width = SizeSpec.AS_PARENT,
-            height = SizeSpec.WRAP_CONTENT
+            width = SizeSpec.AsParent,
+            height = SizeSpec.WrapContent
         ),
         textStyle = TextStyle(
             size = 15,
@@ -84,8 +84,8 @@ object Theme {
 
     val buttonStyle: ButtonWidget.Style = ButtonWidget.Style(
         size = WidgetSize.Const(
-            width = SizeSpec.AS_PARENT,
-            height = 50
+            width = SizeSpec.AsParent,
+            height = SizeSpec.Exact(50.0f)
         ),
         textStyle = TextStyle(
             size = 17,
@@ -151,16 +151,16 @@ object Theme {
         background = null,
         orientation = Orientation.VERTICAL,
         size = WidgetSize.Const(
-            width = SizeSpec.AS_PARENT,
-            height = SizeSpec.WRAP_CONTENT
+            width = SizeSpec.AsParent,
+            height = SizeSpec.WrapContent
         ),
         padding = PaddingValues(16f)
     )
 
     val singleChoiceStyle: SingleChoiceWidget.Style = SingleChoiceWidget.Style(
         size = WidgetSize.Const(
-            width = SizeSpec.AS_PARENT,
-            height = SizeSpec.WRAP_CONTENT
+            width = SizeSpec.AsParent,
+            height = SizeSpec.WrapContent
         ),
         textStyle = TextStyle(
             size = 15,
@@ -260,8 +260,8 @@ object Theme {
         )
         buttonStyle = Theme.buttonStyle.copy(
             size = WidgetSize.Const(
-                width = SizeSpec.AS_PARENT,
-                height = 48
+                width = SizeSpec.AsParent,
+                height = SizeSpec.Exact(48.0f)
             ),
             background = {
                 val normalBackground = Background(

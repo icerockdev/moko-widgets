@@ -94,17 +94,19 @@ fun UIView.applySize(size: WidgetSize, parent: UIView, edges: Edges<CGFloat>) {
     fun applyToDimension(
         myAnchor: NSLayoutDimension,
         parentAnchor: NSLayoutDimension,
-        constSize: Int,
+        constSize: SizeSpec,
         edgeSum: CGFloat
     ) {
         when (constSize) {
-            SizeSpec.AS_PARENT -> {
+            SizeSpec.AsParent -> {
                 myAnchor.constraintEqualToAnchor(parentAnchor, constant = -edgeSum).active = true
             }
-            SizeSpec.WRAP_CONTENT -> {
+            SizeSpec.WrapContent -> {
                 // nothing (intristic size by default)
             }
-            else -> myAnchor.constraintEqualToConstant(constSize.toDouble()).active = true
+            is SizeSpec.Exact -> {
+                myAnchor.constraintEqualToConstant(constSize.points.toDouble()).active = true
+            }
         }
     }
 

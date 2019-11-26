@@ -12,17 +12,17 @@ package dev.icerock.moko.widgets.style.view
  */
 sealed class WidgetSize {
     data class Const(
-        val width: Int = SizeSpec.AS_PARENT,
-        val height: Int = SizeSpec.WRAP_CONTENT
+        val width: SizeSpec = SizeSpec.AsParent,
+        val height: SizeSpec = SizeSpec.WrapContent
     ) : WidgetSize()
 
     data class AspectByWidth(
-        val width: Int = SizeSpec.AS_PARENT,
+        val width: SizeSpec = SizeSpec.AsParent,
         val aspectRatio: Float = 1.0f
     ) : WidgetSize()
 
     data class AspectByHeight(
-        val height: Int = SizeSpec.AS_PARENT,
+        val height: SizeSpec = SizeSpec.AsParent,
         val aspectRatio: Float = 1.0f
     ) : WidgetSize()
 }

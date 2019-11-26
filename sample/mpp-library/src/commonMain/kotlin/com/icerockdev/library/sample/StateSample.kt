@@ -48,8 +48,8 @@ open class StateScreen(
                                         styled = {
                                             it.copy(
                                                 size = WidgetSize.Const(
-                                                    width = SizeSpec.WRAP_CONTENT,
-                                                    height = SizeSpec.WRAP_CONTENT
+                                                    width = SizeSpec.WrapContent,
+                                                    height = SizeSpec.WrapContent
                                                 )
                                             )
                                         },
@@ -93,8 +93,8 @@ open class StateScreen(
             styled = {
                 it.copy(
                     size = WidgetSize.Const(
-                        width = SizeSpec.AS_PARENT,
-                        height = SizeSpec.AS_PARENT
+                        width = SizeSpec.AsParent,
+                        height = SizeSpec.AsParent
                     )
                 )
             },

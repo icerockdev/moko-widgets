@@ -48,8 +48,8 @@ class ProductScreen : WidgetScreen<Args.Parcel<ProductScreen.Args>>(),
                         styled = {
                             it.copy(
                                 size = WidgetSize.Const(
-                                    width = SizeSpec.WRAP_CONTENT,
-                                    height = SizeSpec.WRAP_CONTENT
+                                    width = SizeSpec.WrapContent,
+                                    height = SizeSpec.WrapContent
                                 )
                             )
                         },

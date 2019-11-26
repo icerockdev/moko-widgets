@@ -36,8 +36,8 @@ class ImageWidget(
 
     data class Style(
         override val size: WidgetSize = WidgetSize.Const(
-            width = SizeSpec.WRAP_CONTENT,
-            height = SizeSpec.WRAP_CONTENT
+            width = SizeSpec.WrapContent,
+            height = SizeSpec.WrapContent
         ),
         override val margins: MarginValues? = null,
         val scaleType: ScaleType? = null

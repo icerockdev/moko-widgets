@@ -25,7 +25,6 @@ import platform.UIKit.constraints
 import platform.UIKit.heightAnchor
 import platform.UIKit.leadingAnchor
 import platform.UIKit.removeConstraint
-import platform.UIKit.superview
 import platform.UIKit.topAnchor
 import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
@@ -137,12 +136,12 @@ actual var linearWidgetViewFactory: VFC<LinearWidget> = { viewController, widget
 
             when (style.orientation) {
                 Orientation.VERTICAL -> {
-                    if (style.size.height == SizeSpec.WRAP_CONTENT) {
+                    if (style.size.height == SizeSpec.WrapContent) {
                         container.bottomAnchor.constraintEqualToAnchor(
                             anchor = bottomAnchor,
                             constant = pm(lastMargins?.bottom, contentPadding?.bottom)
                         ).active = true
-                    } else if (lastWidgetSize is WidgetSize.Const && lastWidgetSize.height == SizeSpec.AS_PARENT) {
+                    } else if (lastWidgetSize is WidgetSize.Const && lastWidgetSize.height == SizeSpec.AsParent) {
                         println("as parent")
                         this.constraints.filterIsInstance<NSLayoutConstraint>()
                             .filter {
@@ -161,12 +160,12 @@ actual var linearWidgetViewFactory: VFC<LinearWidget> = { viewController, widget
                     }
                 }
                 Orientation.HORIZONTAL -> {
-                    if (style.size.width == SizeSpec.WRAP_CONTENT) {
+                    if (style.size.width == SizeSpec.WrapContent) {
                         trailingAnchor.constraintEqualToAnchor(
                             anchor = container.trailingAnchor,
                             constant = pm(lastMargins?.end, contentPadding?.end)
                         ).active = true
-                    } else if (lastWidgetSize is WidgetSize.Const && lastWidgetSize.width == SizeSpec.AS_PARENT) {
+                    } else if (lastWidgetSize is WidgetSize.Const && lastWidgetSize.width == SizeSpec.AsParent) {
                         this.constraints.filterIsInstance<NSLayoutConstraint>()
                             .filter {
                                 (it.firstItem == this && it.firstAnchor == this.widthAnchor)
@@ -192,11 +191,11 @@ private fun corretChildSize(size: WidgetSize, orientation: Orientation): WidgetS
     var result = size
     when (size) {
         is WidgetSize.Const -> {
-            if (size.width == SizeSpec.AS_PARENT && orientation == Orientation.HORIZONTAL) {
-                result = WidgetSize.Const(SizeSpec.WRAP_CONTENT, size.height)
+            if (size.width == SizeSpec.AsParent && orientation == Orientation.HORIZONTAL) {
+                result = WidgetSize.Const(SizeSpec.WrapContent, size.height)
             }
-            if (size.height == SizeSpec.AS_PARENT && orientation == Orientation.VERTICAL) {
-                result = WidgetSize.Const(size.width, SizeSpec.WRAP_CONTENT)
+            if (size.height == SizeSpec.AsParent && orientation == Orientation.VERTICAL) {
+                result = WidgetSize.Const(size.width, SizeSpec.WrapContent)
             }
         }
     }

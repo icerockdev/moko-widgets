@@ -47,8 +47,8 @@ class SwitchWidget(
      */
     data class Style(
         override val size: WidgetSize = WidgetSize.Const(
-            width = SizeSpec.WRAP_CONTENT,
-            height = SizeSpec.WRAP_CONTENT
+            width = SizeSpec.WrapContent,
+            height = SizeSpec.WrapContent
         ),
         override val padding: PaddingValues? = null,
         override val margins: MarginValues? = null,

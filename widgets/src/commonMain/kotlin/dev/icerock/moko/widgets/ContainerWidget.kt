@@ -40,8 +40,8 @@ class ContainerWidget(
 
     data class Style(
         override val size: WidgetSize = WidgetSize.Const(
-            width = SizeSpec.AS_PARENT,
-            height = SizeSpec.AS_PARENT
+            width = SizeSpec.AsParent,
+            height = SizeSpec.AsParent
         ),
         override val padding: PaddingValues? = null,
         override val margins: MarginValues? = null,

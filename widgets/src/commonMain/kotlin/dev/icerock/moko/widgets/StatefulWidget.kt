@@ -60,8 +60,8 @@ class StatefulWidget<T, E> private constructor(
 
     data class Style(
         override val size: WidgetSize = WidgetSize.Const(
-            width = SizeSpec.AS_PARENT,
-            height = SizeSpec.AS_PARENT
+            width = SizeSpec.AsParent,
+            height = SizeSpec.AsParent
         ),
         override val background: Background? = null
     ) : Widget.Style, Sized, Backgrounded

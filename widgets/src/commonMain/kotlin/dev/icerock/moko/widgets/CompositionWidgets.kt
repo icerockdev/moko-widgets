@@ -25,8 +25,8 @@ fun WidgetScope.switchLabeled(
         styled = {
             it.copy(
                 size = WidgetSize.Const(
-                    width = SizeSpec.AS_PARENT,
-                    height = SizeSpec.WRAP_CONTENT
+                    width = SizeSpec.AsParent,
+                    height = SizeSpec.WrapContent
                 ),
                 orientation = Orientation.HORIZONTAL
             )

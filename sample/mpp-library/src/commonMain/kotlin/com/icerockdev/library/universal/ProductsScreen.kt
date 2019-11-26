@@ -27,8 +27,8 @@ class ProductsScreen : WidgetScreen<Args.Empty>(), NavigationItem {
                 styled = {
                     it.copy(
                         size = WidgetSize.Const(
-                            SizeSpec.AS_PARENT,
-                            SizeSpec.AS_PARENT
+                            SizeSpec.AsParent,
+                            SizeSpec.AsParent
                         )
                     )
                 },

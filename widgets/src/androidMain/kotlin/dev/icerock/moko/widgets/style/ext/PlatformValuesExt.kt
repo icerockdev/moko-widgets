@@ -8,10 +8,10 @@ import android.util.DisplayMetrics
 import android.view.ViewGroup
 import dev.icerock.moko.widgets.style.view.SizeSpec
 
-fun Int.toPlatformSize(dm: DisplayMetrics): Int {
+fun SizeSpec.toPlatformSize(dm: DisplayMetrics): Int {
     return when (this) {
-        SizeSpec.WRAP_CONTENT -> ViewGroup.LayoutParams.WRAP_CONTENT
-        SizeSpec.AS_PARENT -> ViewGroup.LayoutParams.MATCH_PARENT
-        else -> (this * dm.density).toInt()
+        SizeSpec.WrapContent -> ViewGroup.LayoutParams.WRAP_CONTENT
+        SizeSpec.AsParent -> ViewGroup.LayoutParams.MATCH_PARENT
+        is SizeSpec.Exact -> (this.points * dm.density).toInt()
     }
 }

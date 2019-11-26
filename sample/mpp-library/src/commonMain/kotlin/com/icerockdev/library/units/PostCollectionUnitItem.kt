@@ -46,7 +46,7 @@ class PostCollectionUnitItem(
             styled = {
                 it.copy(
                     size = WidgetSize.AspectByWidth(
-                        width = SizeSpec.AS_PARENT,
+                        width = SizeSpec.AsParent,
                         aspectRatio = 0.73f
                     ),
                     background = Background(
@@ -60,8 +60,8 @@ class PostCollectionUnitItem(
                     styled = {
                         it.copy(
                             size = WidgetSize.Const(
-                                width = SizeSpec.AS_PARENT,
-                                height = SizeSpec.AS_PARENT
+                                width = SizeSpec.AsParent,
+                                height = SizeSpec.AsParent
                             ),
                             scaleType = ImageWidget.ScaleType.FILL
                         )
@@ -79,8 +79,8 @@ class PostCollectionUnitItem(
             styled = {
                 it.copy(
                     size = WidgetSize.Const(
-                        width = SizeSpec.AS_PARENT,
-                        height = SizeSpec.WRAP_CONTENT
+                        width = SizeSpec.AsParent,
+                        height = SizeSpec.WrapContent
                     ),
                     background = Background(
                         fill = Fill.Gradient(
@@ -140,8 +140,8 @@ class PostCollectionUnitItem(
             styled = {
                 it.copy(
                     size = WidgetSize.Const(
-                        width = SizeSpec.AS_PARENT,
-                        height = SizeSpec.WRAP_CONTENT
+                        width = SizeSpec.AsParent,
+                        height = SizeSpec.WrapContent
                     ),
                     background = Background(
                         fill = Fill.Gradient(
@@ -160,8 +160,8 @@ class PostCollectionUnitItem(
                     styled = {
                         it.copy(
                             size = WidgetSize.Const(
-                                width = SizeSpec.AS_PARENT,
-                                height = SizeSpec.WRAP_CONTENT
+                                width = SizeSpec.AsParent,
+                                height = SizeSpec.WrapContent
                             ),
                             padding = PaddingValues(8f)
                         )
