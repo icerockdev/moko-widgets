@@ -29,6 +29,8 @@ actual class DefaultScrollWidgetViewFactory actual constructor(
 
         val scrollView = ScrollView(context).apply {
             applyStyle(style)
+
+            id = widget.id::javaClass.name.hashCode()
         }
 
         val childBundle = widget.child.buildView(

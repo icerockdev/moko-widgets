@@ -49,6 +49,8 @@ actual class DefaultInputWidgetViewFactory actual constructor(
         }
 
         val editText = TextInputEditText(context).apply {
+            id = widget.id::javaClass.name.hashCode()
+
             layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT

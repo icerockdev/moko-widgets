@@ -45,6 +45,8 @@ actual class DefaultListWidgetViewFactory actual constructor(
                     DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
                 addItemDecoration(dividerDecoration)
             }
+
+            id = widget.id::javaClass.name.hashCode()
         }
 
         val resultView: View = if (haveSwipeRefreshListener) {

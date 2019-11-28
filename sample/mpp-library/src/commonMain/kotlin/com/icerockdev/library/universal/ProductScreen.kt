@@ -45,23 +45,17 @@ class ProductScreen(
 
         return with(theme) {
             container(
-                size = WidgetSize.Const(
-                    width = SizeSpec.AsParent,
-                    height = SizeSpec.AsParent
-                ),
+                size = WidgetSize.AsParent,
                 children = mapOf(
                     linear(
-                        size = WidgetSize.Const(
-                            width = SizeSpec.WrapContent,
-                            height = SizeSpec.WrapContent
-                        ),
+                        size = WidgetSize.WrapContent,
                         children = listOf<Widget<out WidgetSize>>(
                             text(
-                                size = WidgetSize.Const(SizeSpec.WrapContent, SizeSpec.WrapContent),
+                                size = WidgetSize.WrapContent,
                                 text = viewModel.title
                             ),
                             button(
-                                size = WidgetSize.Const(SizeSpec.WrapContent, SizeSpec.WrapContent),
+                                size = WidgetSize.WrapContent,
                                 text = const("Add to Cart"),
                                 onTap = viewModel::onCartPressed
                             )

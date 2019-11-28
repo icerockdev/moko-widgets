@@ -14,6 +14,7 @@ abstract class BaseApplication : ScreenFactory {
     }
 
     override fun <A : Args, T : Screen<A>> instantiateScreen(screenClass: KClass<T>): T {
+        // FIXME Caused by: java.lang.IllegalStateException: screen class com.bumptech.glide.manager.SupportRequestManagerFragment (Kotlin reflection is not available) not registered
         val factory = screenFactoryMap[screenClass] ?: throw IllegalStateException("screen $screenClass not registered")
         return factory.invoke() as T
     }

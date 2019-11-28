@@ -40,6 +40,8 @@ actual class DefaultCollectionWidgetViewFactory actual constructor(
                 style.orientation.toStaggeredGridLayoutManager()
             )
             adapter = unitsAdapter
+
+            id = widget.id::javaClass.name.hashCode()
         }
 
         val resultView: View = if (haveSwipeRefreshListener) {

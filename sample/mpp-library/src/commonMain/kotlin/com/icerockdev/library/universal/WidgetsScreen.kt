@@ -34,7 +34,7 @@ class WidgetsScreen(
     override fun createContentWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         return with(theme) {
             tabs(
-                size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.AsParent),
+                size = WidgetSize.AsParent,
                 tabs = listOf(
                     TabsWidget.Tab(
                         title = const("P#2"),

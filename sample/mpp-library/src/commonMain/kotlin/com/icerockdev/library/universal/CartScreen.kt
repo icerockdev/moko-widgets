@@ -26,10 +26,10 @@ class CartScreen(
     override fun createContentWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         return with(theme) {
             container(
-                size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.AsParent),
+                size = WidgetSize.AsParent,
                 children = mapOf(
                     text(
-                        size = WidgetSize.Const(SizeSpec.WrapContent, SizeSpec.WrapContent),
+                        size = WidgetSize.WrapContent,
                         text = const("cart")
                     ) to Alignment.CENTER
                 )
