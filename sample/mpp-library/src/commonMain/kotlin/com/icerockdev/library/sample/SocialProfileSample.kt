@@ -17,6 +17,7 @@ import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.TextWidget
 import dev.icerock.moko.widgets.button
+import dev.icerock.moko.widgets.clickable
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.linear
@@ -52,10 +53,15 @@ class SocialProfileScreen(
 //                            field = viewModel.aboutField,
 //                            maxLines = const(null)
 //                        ),
-                        text(
-                            size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
-                            id = Id.InfoHeaderText,
-                            text = const("ЛИЧНАЯ ИНФОРМАЦИЯ")
+                        clickable(
+                            child = text(
+                                size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
+                                id = Id.InfoHeaderText,
+                                text = const("ЛИЧНАЯ ИНФОРМАЦИЯ")
+                            ),
+                            onClick = {
+                                println("pressed!")
+                            }
                         ),
 //                        input(
 //                            id = Id.EmailInput,

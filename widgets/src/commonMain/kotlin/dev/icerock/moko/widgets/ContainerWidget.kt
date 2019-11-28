@@ -17,7 +17,7 @@ import dev.icerock.moko.widgets.style.view.WidgetSize
 @WidgetDef
 class ContainerWidget<WS : WidgetSize>(
     private val factory: ViewFactory<ContainerWidget<out WidgetSize>>,
-    private val size: WS,
+    override val size: WS,
     override val id: Id?,
     val children: Map<out Widget<out WidgetSize>, Alignment>
 ) : Widget<WS>(), OptionalId<ContainerWidget.Id> {

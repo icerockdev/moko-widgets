@@ -11,16 +11,17 @@ import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
-import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
 @WidgetDef
-class ScrollWidget<WS : WidgetSize>(
-    private val factory: ViewFactory<ScrollWidget<out WidgetSize>>,
-    override val size: WS,
+class ClickableWidget<WS : WidgetSize>(
+    private val factory: ViewFactory<ClickableWidget<out WidgetSize>>,
     override val id: Id?,
-    val child: Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.WrapContent>> // TODO allow other sizes?
-) : Widget<WS>(), OptionalId<ScrollWidget.Id> {
+    val child: Widget<WS>,
+    val onClick: () -> Unit
+) : Widget<WS>(), OptionalId<ClickableWidget.Id> {
+
+    override val size: WS = child.size
 
     override fun buildView(viewFactoryContext: ViewFactoryContext): ViewBundle<WS> {
         return factory.build(this, size, viewFactoryContext)
@@ -28,3 +29,4 @@ class ScrollWidget<WS : WidgetSize>(
 
     interface Id : Theme.Id
 }
+

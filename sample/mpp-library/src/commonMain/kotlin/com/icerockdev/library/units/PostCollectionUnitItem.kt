@@ -7,19 +7,29 @@ package com.icerockdev.library.units
 import com.icerockdev.library.sample.PostsViewModelContract
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.mvvm.livedata.LiveData
+import dev.icerock.moko.mvvm.livedata.map
+import dev.icerock.moko.widgets.clickable
 import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.factory.DefaultContainerWidgetViewFactory
 import dev.icerock.moko.widgets.factory.DefaultContainerWidgetViewFactoryBase
+import dev.icerock.moko.widgets.factory.DefaultLinearWidgetViewFactory
+import dev.icerock.moko.widgets.factory.DefaultLinearWidgetViewFactoryBase
+import dev.icerock.moko.widgets.factory.DefaultTextWidgetViewFactory
+import dev.icerock.moko.widgets.factory.DefaultTextWidgetViewFactoryBase
+import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Direction
 import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.view.Alignment
+import dev.icerock.moko.widgets.style.view.Colors
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.SizeSpec
+import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.text
 import dev.icerock.moko.widgets.units.UnitItemRoot
 import dev.icerock.moko.widgets.units.WidgetsCollectionUnitItem
 
@@ -38,20 +48,21 @@ class PostCollectionUnitItem(
     }
 
     private fun Theme.createBody(data: LiveData<PostsViewModelContract.PostItem>) =
-        container(
-            factory = DefaultContainerWidgetViewFactory(
-                DefaultContainerWidgetViewFactoryBase.Style(
-                    background = Background(
-                        fill = Fill.Solid(Color(0x66, 0x66, 0x66, 0xFF))
-                    ),
-                    margins = MarginValues(4f)
-                )
-            ),
-            size = WidgetSize.AspectByWidth(
-                width = SizeSpec.AsParent,
-                aspectRatio = 0.73f
-            ),
-            children = mapOf(
+        clickable(
+            child = container(
+                factory = DefaultContainerWidgetViewFactory(
+                    DefaultContainerWidgetViewFactoryBase.Style(
+                        background = Background(
+                            fill = Fill.Solid(Color(0x66, 0x66, 0x66, 0xFF))
+                        ),
+                        margins = MarginValues(4f)
+                    )
+                ),
+                size = WidgetSize.AspectByWidth(
+                    width = SizeSpec.AsParent,
+                    aspectRatio = 0.73f
+                ),
+                children = mapOf(
 //                image(
 //                    styled = {
 //                        it.copy(
@@ -64,9 +75,13 @@ class PostCollectionUnitItem(
 //                    },
 //                    image = data.map { Image.network(it.imageUrl) }
 //                ) to Alignment.CENTER,
-                createHeader(data) to Alignment.TOP,
-                createFooter(data) to Alignment.BOTTOM
-            )
+                    createHeader(data) to Alignment.TOP,
+                    createFooter(data) to Alignment.BOTTOM
+                )
+            ),
+            onClick = {
+                println("item $data pressed!")
+            }
         )
 
     private fun Theme.createHeader(data: LiveData<PostsViewModelContract.PostItem>) =
@@ -85,23 +100,21 @@ class PostCollectionUnitItem(
                     padding = PaddingValues(bottom = 8f)
                 )
             ),
-            size = WidgetSize.Const(
-                width = SizeSpec.AsParent,
-                height = SizeSpec.WrapContent
-            ),
+            size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
             children = mapOf(
-//                text(
-//                    styled = {
-//                        it.copy(
-//                            padding = PaddingValues(8f),
-//                            textStyle = TextStyle(
-//                                size = 12,
-//                                color = Colors.white
-//                            )
-//                        )
-//                    },
-//                    text = data.map { it.nickname }
-//                ) to Alignment.CENTER
+                text(
+                    size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
+                    factory = DefaultTextWidgetViewFactory(
+                        DefaultTextWidgetViewFactoryBase.Style(
+                            padding = PaddingValues(8f),
+                            textStyle = TextStyle(
+                                size = 12,
+                                color = Colors.white
+                            )
+                        )
+                    ),
+                    text = data.map { it.nickname }
+                ) to Alignment.CENTER
             )
         )
 
@@ -109,34 +122,34 @@ class PostCollectionUnitItem(
         data: LiveData<PostsViewModelContract.PostItem>
     ): Widget<out WidgetSize> {
         val regularItems = listOf<Widget<out WidgetSize>>(
-//            text(
-//                styled = {
-//                    it.copy(
-//                        textStyle = TextStyle(
-//                            size = 12,
-//                            color = Colors.white
-//                        )
-//                    )
-//                },
-//                text = data.map { it.viewsCount }
-//            ),
-//            text(
-//                styled = {
-//                    it.copy(
-//                        textStyle = TextStyle(
-//                            size = 11,
-//                            color = Colors.white
-//                        )
-//                    )
-//                },
-//                text = data.map { it.title }
-//            )
-        )
-        return container(
-            size = WidgetSize.Const(
-                width = SizeSpec.AsParent,
-                height = SizeSpec.WrapContent
+            text(
+                size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
+                factory = DefaultTextWidgetViewFactory(
+                    DefaultTextWidgetViewFactoryBase.Style(
+                        textStyle = TextStyle(
+                            size = 12,
+                            color = Colors.white
+                        )
+                    )
+                ),
+                text = data.map { it.viewsCount }
             ),
+            text(
+                size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
+                factory = DefaultTextWidgetViewFactory(
+                    DefaultTextWidgetViewFactoryBase.Style(
+                        textStyle = TextStyle(
+                            size = 11,
+                            color = Colors.white
+                        )
+                    )
+                ),
+                text = data.map { it.title }
+            )
+        )
+
+        return container(
+            size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
             factory = DefaultContainerWidgetViewFactory(
                 DefaultContainerWidgetViewFactoryBase.Style(
                     background = Background(
@@ -152,18 +165,15 @@ class PostCollectionUnitItem(
                 )
             ),
             children = mapOf(
-//                linear(
-//                    styled = {
-//                        it.copy(
-//                            size = WidgetSize.Const(
-//                                width = SizeSpec.AsParent,
-//                                height = SizeSpec.WrapContent
-//                            ),
-//                            padding = PaddingValues(8f)
-//                        )
-//                    },
-//                    children = regularItems
-//                ) to Alignment.CENTER
+                linear(
+                    size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
+                    factory = DefaultLinearWidgetViewFactory(
+                        DefaultLinearWidgetViewFactoryBase.Style(
+                            padding = PaddingValues(8f)
+                        )
+                    ),
+                    children = regularItems
+                ) to Alignment.CENTER
             )
         )
     }

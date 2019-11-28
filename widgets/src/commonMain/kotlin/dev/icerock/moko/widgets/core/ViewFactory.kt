@@ -6,8 +6,10 @@ package dev.icerock.moko.widgets.core
 
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-abstract class Widget<WS : WidgetSize> {
-    abstract val size: WS
-
-    abstract fun buildView(viewFactoryContext: ViewFactoryContext): ViewBundle<WS>
+interface ViewFactory<W : Widget<out WidgetSize>> {
+    fun <WS : WidgetSize> build(
+        widget: W,
+        size: WS,
+        viewFactoryContext: ViewFactoryContext
+    ): ViewBundle<WS>
 }

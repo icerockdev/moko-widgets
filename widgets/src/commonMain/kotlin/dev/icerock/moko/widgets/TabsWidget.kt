@@ -19,7 +19,7 @@ import dev.icerock.moko.widgets.style.view.WidgetSize
 @WidgetDef
 class TabsWidget<WS : WidgetSize>(
     private val factory: ViewFactory<TabsWidget<out WidgetSize>>,
-    private val size: WS,
+    override val size: WS,
     override val id: Id?,
     @Suppress("RemoveRedundantQualifierName")
     val tabs: List<TabsWidget.Tab> // for correct codegen

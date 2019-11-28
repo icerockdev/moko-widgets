@@ -18,7 +18,7 @@ import dev.icerock.moko.widgets.style.view.WidgetSize
 @WidgetDef
 class ButtonWidget<WS : WidgetSize>(
     private val factory: ViewFactory<ButtonWidget<out WidgetSize>>,
-    private val size: WS,
+    override val size: WS,
     override val id: Id?,
     val text: LiveData<StringDesc>,
     val enabled: LiveData<Boolean>?,

@@ -9,10 +9,11 @@ import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.resources.desc.StringDesc
+import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
-import dev.icerock.moko.widgets.style.view.Alignment
+import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
@@ -22,17 +23,14 @@ open class StateScreen(
 ) {
     fun createWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         return with(theme) {
-            container(
+            linear(
                 size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.AsParent),
-                children = emptyMap()
-            )
-
-//            linear(
-//                children = listOf(
-//                    button(
-//                        text = "change state".desc().asLiveData(),
-//                        onTap = viewModel::onChangeStatePressed
-//                    ),
+                children = listOf(
+                    button(
+                        size = WidgetSize.Const(SizeSpec.WrapContent, SizeSpec.WrapContent),
+                        text = const("change state"),
+                        onTap = viewModel::onChangeStatePressed
+                    )//,
 //                    stateful(
 //                        state = viewModel.state,
 //                        empty = {
@@ -77,8 +75,8 @@ open class StateScreen(
 //                            flatAlertWrapped(message = error.map { it?.desc() })
 //                        }
 //                    )
-//                )
-//            )
+                )
+            )
         }
     }
 

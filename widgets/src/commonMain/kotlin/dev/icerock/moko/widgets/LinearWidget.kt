@@ -16,7 +16,7 @@ import dev.icerock.moko.widgets.style.view.WidgetSize
 @WidgetDef
 class LinearWidget<WS : WidgetSize>(
     private val factory: ViewFactory<LinearWidget<out WidgetSize>>,
-    private val size: WS,
+    override val size: WS,
     override val id: Id?,
     val children: List<Widget<out WidgetSize>> // TODO set limit of size by orientation
 ) : Widget<WS>(), OptionalId<LinearWidget.Id> {
