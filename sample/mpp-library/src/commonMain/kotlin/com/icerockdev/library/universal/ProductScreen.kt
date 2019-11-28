@@ -13,6 +13,7 @@ import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.NavigationItem
 import dev.icerock.moko.widgets.screen.WidgetScreen
@@ -23,6 +24,7 @@ import dev.icerock.moko.widgets.screen.listen
 import dev.icerock.moko.widgets.style.view.Alignment
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.text
 
 class ProductScreen(
     private val theme: Theme
@@ -48,23 +50,23 @@ class ProductScreen(
                     height = SizeSpec.AsParent
                 ),
                 children = mapOf(
-//                    linear(
-//                        styled = {
-//                            it.copy(
-//                                size = WidgetSize.Const(
-//                                    width = SizeSpec.WrapContent,
-//                                    height = SizeSpec.WrapContent
-//                                )
-//                            )
-//                        },
-//                        children = listOf(
-//                            text(text = viewModel.title),
-//                            button(
-//                                text = const("Add to Cart"),
-//                                onTap = viewModel::onCartPressed
-//                            )
-//                        )
-//                    ) to Alignment.CENTER
+                    linear(
+                        size = WidgetSize.Const(
+                            width = SizeSpec.WrapContent,
+                            height = SizeSpec.WrapContent
+                        ),
+                        children = listOf<Widget<out WidgetSize>>(
+                            text(
+                                size = WidgetSize.Const(SizeSpec.WrapContent, SizeSpec.WrapContent),
+                                text = viewModel.title
+                            ),
+                            button(
+                                size = WidgetSize.Const(SizeSpec.WrapContent, SizeSpec.WrapContent),
+                                text = const("Add to Cart"),
+                                onTap = viewModel::onCartPressed
+                            )
+                        )
+                    ) to Alignment.CENTER
                 )
             )
         }
