@@ -10,9 +10,11 @@ import dev.icerock.moko.fields.validate
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.ButtonWidget
-import dev.icerock.moko.widgets.container
+import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.linear
+import dev.icerock.moko.widgets.scroll
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
@@ -22,14 +24,11 @@ class McommerceProfileScreen(
 ) {
     fun createWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         return with(theme) {
-            container(
+            scroll(
                 size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.AsParent),
-                children = emptyMap()
-            )
-//
-//            scroll(
-//                child = linear(
-//                    children = listOf(
+                child = linear(
+                    size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
+                    children = listOf(
 //                        input(
 //                            id = Id.NameInput,
 //                            label = const("Ваше имя"),
@@ -47,14 +46,15 @@ class McommerceProfileScreen(
 //                            field = viewModel.phoneField,
 //                            inputType = InputType.PHONE
 //                        ),
-//                        button(
-//                            id = Id.SubmitButton,
-//                            text = const("Подтвердить"),
-//                            onTap = viewModel::onSavePressed
-//                        )
-//                    )
-//                )
-//            )
+                        button(
+                            size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
+                            id = Id.SubmitButton,
+                            text = const("Подтвердить"),
+                            onTap = viewModel::onSavePressed
+                        )
+                    )
+                )
+            )
         }
     }
 

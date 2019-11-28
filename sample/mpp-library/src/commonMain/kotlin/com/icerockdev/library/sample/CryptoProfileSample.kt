@@ -12,11 +12,15 @@ import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.ButtonWidget
-import dev.icerock.moko.widgets.container
+import dev.icerock.moko.widgets.TextWidget
+import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.linear
+import dev.icerock.moko.widgets.scroll
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.text
 
 class CryptoProfileScreen(
     private val theme: Theme,
@@ -24,13 +28,11 @@ class CryptoProfileScreen(
 ) {
     fun createWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         return with(theme) {
-            container(
+            scroll(
                 size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.AsParent),
-                children = emptyMap()
-            )
-//            scroll(
-//                child = linear(
-//                    children = listOf(
+                child = linear(
+                    size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
+                    children = listOf<Widget<out WidgetSize>>(
 //                        input(
 //                            id = Id.NameInput,
 //                            label = const("Name"),
@@ -60,23 +62,26 @@ class CryptoProfileScreen(
 //                            field = viewModel.repeatPasswordField,
 //                            inputType = InputType.PASSWORD
 //                        ),
-//                        button(
-//                            id = Id.JoinButton,
-//                            text = const("Join"),
-//                            onTap = viewModel::onSavePressed
-//                        ),
-//                        text(
-//                            id = Id.DelimiterText,
-//                            text = const("or")
-//                        ),
-//                        button(
-//                            id = Id.TryDemoButton,
-//                            text = const("Try Demo"),
-//                            onTap = viewModel::onSavePressed
-//                        )
-//                    )
-//                )
-//            )
+                        button(
+                            size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
+                            id = Id.JoinButton,
+                            text = const("Join"),
+                            onTap = viewModel::onSavePressed
+                        ),
+                        text(
+                            size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
+                            id = Id.DelimiterText,
+                            text = const("or")
+                        ),
+                        button(
+                            size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
+                            id = Id.TryDemoButton,
+                            text = const("Try Demo"),
+                            onTap = viewModel::onSavePressed
+                        )
+                    )
+                )
+            )
         }
     }
 
@@ -86,9 +91,9 @@ class CryptoProfileScreen(
 //        object EmailInput : InputWidget.Id
 //        object PasswordInput : InputWidget.Id
 //        object RepeatPasswordInput : InputWidget.Id
-//        object DelimiterText : TextWidget.Id
-        object JoinButton : ButtonWidget.Id
 
+        object DelimiterText : TextWidget.Id
+        object JoinButton : ButtonWidget.Id
         object TryDemoButton : ButtonWidget.Id
     }
 }

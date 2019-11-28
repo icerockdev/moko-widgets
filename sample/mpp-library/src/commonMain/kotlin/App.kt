@@ -3,6 +3,7 @@
  */
 
 import com.icerockdev.library.SharedFactory
+import com.icerockdev.library.sample.CryptoProfileScreen
 import com.icerockdev.library.universal.CartNavigationScreen
 import com.icerockdev.library.universal.CartScreen
 import com.icerockdev.library.universal.ProductScreen
@@ -11,9 +12,13 @@ import com.icerockdev.library.universal.ProductsScreen
 import com.icerockdev.library.universal.RootBottomNavigationScreen
 import com.icerockdev.library.universal.WidgetsScreen
 import dev.icerock.moko.widgets.core.Theme
+import dev.icerock.moko.widgets.factory.DefaultTextWidgetViewFactory
+import dev.icerock.moko.widgets.factory.DefaultTextWidgetViewFactoryBase
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.BaseApplication
 import dev.icerock.moko.widgets.screen.Screen
+import dev.icerock.moko.widgets.setTextFactory
+import dev.icerock.moko.widgets.style.view.TextAlignment
 import kotlin.native.concurrent.ThreadLocal
 import kotlin.reflect.KClass
 
@@ -21,7 +26,15 @@ import kotlin.reflect.KClass
 object App : BaseApplication() {
     override fun setup() {
         val sharedFactory = SharedFactory()
-        val theme = Theme()
+        val theme = Theme {
+            setTextFactory(
+                DefaultTextWidgetViewFactory(
+                    DefaultTextWidgetViewFactoryBase.Style(
+                        textAlignment = TextAlignment.CENTER
+                    )
+                ), CryptoProfileScreen.Id.DelimiterText
+            )
+        }
 
         registerScreenFactory(RootBottomNavigationScreen::class) { RootBottomNavigationScreen(this) }
         registerScreenFactory(ProductsNavigationScreen::class) { ProductsNavigationScreen(this) }

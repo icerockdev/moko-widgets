@@ -15,11 +15,15 @@ import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.ButtonWidget
-import dev.icerock.moko.widgets.container
+import dev.icerock.moko.widgets.TextWidget
+import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.linear
+import dev.icerock.moko.widgets.scroll
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.text
 
 class SocialProfileScreen(
     private val theme: Theme,
@@ -27,21 +31,11 @@ class SocialProfileScreen(
 ) {
     fun createWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         return with(theme) {
-            container(
+            scroll(
                 size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.AsParent),
-                children = emptyMap()
-            )
-//            scroll(
-//                child = linear(
-//                    styled = {
-//                        it.copy(
-//                            size = WidgetSize.Const(
-//                                width = SizeSpec.AsParent,
-//                                height = SizeSpec.WrapContent
-//                            )
-//                        )
-//                    },
-//                    children = listOf(
+                child = linear(
+                    size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
+                    children = listOf<Widget<out WidgetSize>>(
 //                        input(
 //                            id = Id.NameInput,
 //                            label = const("Имя*"),
@@ -58,10 +52,11 @@ class SocialProfileScreen(
 //                            field = viewModel.aboutField,
 //                            maxLines = const(null)
 //                        ),
-//                        text(
-//                            id = Id.InfoHeaderText,
-//                            text = const("ЛИЧНАЯ ИНФОРМАЦИЯ")
-//                        ),
+                        text(
+                            size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
+                            id = Id.InfoHeaderText,
+                            text = const("ЛИЧНАЯ ИНФОРМАЦИЯ")
+                        ),
 //                        input(
 //                            id = Id.EmailInput,
 //                            label = const("Email"),
@@ -94,14 +89,15 @@ class SocialProfileScreen(
 //                            linearId = Id.AgreementContainer,
 //                            textId = Id.AgreementText
 //                        ),
-//                        button(
-//                            id = Id.SubmitButton,
-//                            text = const("Сохранить"),
-//                            onTap = viewModel::onSavePressed
-//                        )
-//                    )
-//                )
-//            )
+                        button(
+                            size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
+                            id = Id.SubmitButton,
+                            text = const("Сохранить"),
+                            onTap = viewModel::onSavePressed
+                        )
+                    )
+                )
+            )
         }
     }
 
@@ -112,12 +108,13 @@ class SocialProfileScreen(
 //        object NameInput : InputWidget.Id
 //        object NickNameInput : InputWidget.Id
 //        object AboutInput : InputWidget.Id
-//        object InfoHeaderText : TextWidget.Id
 //        object BirthdayInput : InputWidget.Id
 //        object PhoneInput : InputWidget.Id
 //        object EmailInput : InputWidget.Id
-        object SubmitButton : ButtonWidget.Id
 //        object GenderChoice : SingleChoiceWidget.Id
+
+        object InfoHeaderText : TextWidget.Id
+        object SubmitButton : ButtonWidget.Id
     }
 }
 

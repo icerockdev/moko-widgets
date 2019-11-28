@@ -11,11 +11,13 @@ import dev.icerock.moko.mvvm.livedata.mergeWith
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.units.CollectionUnitItem
 import dev.icerock.moko.units.TableUnitItem
+import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.tabs
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -26,16 +28,16 @@ class UsersScreen(
 ) {
     fun createWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         return with(theme) {
-            container(
+            tabs(
                 size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.AsParent),
-                children = emptyMap()
-            )
-
-//            tabs(
-//                tabs = listOf(
-//                    TabsWidget.Tab(
-//                        title = const("list"),
-//                        body = list(
+                tabs = listOf(
+                    TabsWidget.Tab(
+                        title = const("list"),
+                        body = container(
+                            size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.AsParent),
+                            children = emptyMap()
+                        )
+//                        list(
 //                            id = Id.List,
 //                            items = viewModel.tableItems,
 //                            styled = {
@@ -46,10 +48,14 @@ class UsersScreen(
 //                            onRefresh = viewModel::refresh,
 //                            onReachEnd = viewModel::loadNextPage
 //                        )
-//                    ),
-//                    TabsWidget.Tab(
-//                        title = const("collection"),
-//                        body = collection(
+                    ),
+                    TabsWidget.Tab(
+                        title = const("collection"),
+                        body = container(
+                            size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.AsParent),
+                            children = emptyMap()
+                        )
+//                        collection(
 //                            id = Id.Collection,
 //                            items = viewModel.collectionItems,
 //                            styled = {
@@ -60,9 +66,9 @@ class UsersScreen(
 //                            onRefresh = viewModel::refresh,
 //                            onReachEnd = viewModel::loadNextPage
 //                        )
-//                    )
-//                )
-//            )
+                    )
+                )
+            )
         }
     }
 
