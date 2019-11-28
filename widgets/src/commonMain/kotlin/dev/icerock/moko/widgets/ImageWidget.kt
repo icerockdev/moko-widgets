@@ -7,46 +7,25 @@ package dev.icerock.moko.widgets
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.widgets.core.Image
 import dev.icerock.moko.widgets.core.OptionalId
-import dev.icerock.moko.widgets.core.Styled
-import dev.icerock.moko.widgets.core.VFC
-import dev.icerock.moko.widgets.core.View
+import dev.icerock.moko.widgets.core.Theme
+import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
-import dev.icerock.moko.widgets.core.WidgetScope
-import dev.icerock.moko.widgets.style.view.MarginValues
-import dev.icerock.moko.widgets.style.view.Margined
-import dev.icerock.moko.widgets.style.view.SizeSpec
-import dev.icerock.moko.widgets.style.view.Sized
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-expect var imageWidgetViewFactory: VFC<ImageWidget>
-
 @WidgetDef
-class ImageWidget(
-    val factory: VFC<ImageWidget>,
-    override val style: Style,
+class ImageWidget<WS : WidgetSize>(
+    private val factory: ViewFactory<ImageWidget<out WidgetSize>>,
+    override val size: WS,
     override val id: Id?,
     val image: LiveData<Image>
-) : Widget(), Styled<ImageWidget.Style>, OptionalId<ImageWidget.Id> {
+) : Widget<WS>(), OptionalId<ImageWidget.Id> {
 
-    override fun buildView(viewFactoryContext: ViewFactoryContext): View {
-        return factory(viewFactoryContext, this)
+    override fun buildView(viewFactoryContext: ViewFactoryContext): ViewBundle<WS> {
+        return factory.build(this, size, viewFactoryContext)
     }
 
-    data class Style(
-        override val size: WidgetSize = WidgetSize.Const(
-            width = SizeSpec.WrapContent,
-            height = SizeSpec.WrapContent
-        ),
-        override val margins: MarginValues? = null,
-        val scaleType: ScaleType? = null
-    ) : Widget.Style, Sized, Margined
-
-    enum class ScaleType {
-        FILL,
-        FIT
-    }
-
-    interface Id : WidgetScope.Id
+    interface Id : Theme.Id
 }

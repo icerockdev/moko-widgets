@@ -10,14 +10,18 @@ import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.map
 import dev.icerock.moko.widgets.clickable
 import dev.icerock.moko.widgets.container
+import dev.icerock.moko.widgets.core.Image
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.factory.DefaultContainerWidgetViewFactory
 import dev.icerock.moko.widgets.factory.DefaultContainerWidgetViewFactoryBase
+import dev.icerock.moko.widgets.factory.DefaultImageWidgetViewFactory
+import dev.icerock.moko.widgets.factory.DefaultImageWidgetViewFactoryBase
 import dev.icerock.moko.widgets.factory.DefaultLinearWidgetViewFactory
 import dev.icerock.moko.widgets.factory.DefaultLinearWidgetViewFactoryBase
 import dev.icerock.moko.widgets.factory.DefaultTextWidgetViewFactory
 import dev.icerock.moko.widgets.factory.DefaultTextWidgetViewFactoryBase
+import dev.icerock.moko.widgets.image
 import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Direction
@@ -63,18 +67,18 @@ class PostCollectionUnitItem(
                     aspectRatio = 0.73f
                 ),
                 children = mapOf(
-//                image(
-//                    styled = {
-//                        it.copy(
-//                            size = WidgetSize.Const(
-//                                width = SizeSpec.AsParent,
-//                                height = SizeSpec.AsParent
-//                            ),
-//                            scaleType = ImageWidget.ScaleType.FILL
-//                        )
-//                    },
-//                    image = data.map { Image.network(it.imageUrl) }
-//                ) to Alignment.CENTER,
+                    image(
+                        size = WidgetSize.Const(
+                            width = SizeSpec.AsParent,
+                            height = SizeSpec.AsParent
+                        ),
+                        factory = DefaultImageWidgetViewFactory(
+                            DefaultImageWidgetViewFactoryBase.Style(
+                                scaleType = DefaultImageWidgetViewFactoryBase.ScaleType.FILL
+                            )
+                        ),
+                        image = data.map { Image.network(it.imageUrl) }
+                    ) to Alignment.CENTER,
                     createHeader(data) to Alignment.TOP,
                     createFooter(data) to Alignment.BOTTOM
                 )

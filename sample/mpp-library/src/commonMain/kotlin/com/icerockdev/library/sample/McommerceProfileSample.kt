@@ -11,6 +11,7 @@ import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.InputWidget
+import dev.icerock.moko.widgets.ScrollWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
@@ -28,6 +29,7 @@ class McommerceProfileScreen(
     fun createWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         return with(theme) {
             scroll(
+                id = Id.RootScroll,
                 size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.AsParent),
                 child = linear(
                     size = WidgetSize.WidthAsParentHeightWrapContent,
@@ -65,6 +67,7 @@ class McommerceProfileScreen(
     }
 
     object Id {
+        object RootScroll : ScrollWidget.Id
         object NameInput : InputWidget.Id
         object BirthdayInput : InputWidget.Id
         object PhoneInput : InputWidget.Id

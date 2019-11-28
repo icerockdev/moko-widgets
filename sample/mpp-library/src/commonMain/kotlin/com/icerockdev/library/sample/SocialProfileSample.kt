@@ -17,6 +17,7 @@ import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.LinearWidget
+import dev.icerock.moko.widgets.ScrollWidget
 import dev.icerock.moko.widgets.TextWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.core.Theme
@@ -36,6 +37,7 @@ class SocialProfileScreen(
     fun createWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         return with(theme) {
             scroll(
+                id = Id.RootScroll,
                 size = WidgetSize.WidthAsParentHeightAsParent,
                 child = linear(
                     size = WidgetSize.WidthAsParentHeightWrapContent,
@@ -115,6 +117,7 @@ class SocialProfileScreen(
         //        object GenderChoice : SingleChoiceWidget.Id
 //        object AgreementSwitch : SwitchWidget.Id
 
+        object RootScroll : ScrollWidget.Id
         object AgreementText : TextWidget.Id
         object AgreementContainer : LinearWidget.Id
         object NickNameInput : InputWidget.Id

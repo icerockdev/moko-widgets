@@ -4,7 +4,7 @@
 
 package dev.icerock.moko.widgets
 
-import dev.icerock.moko.widgets.core.OptionalId
+import dev.icerock.moko.widgets.core.RequireId
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
@@ -18,9 +18,9 @@ import dev.icerock.moko.widgets.style.view.WidgetSize
 class ScrollWidget<WS : WidgetSize>(
     private val factory: ViewFactory<ScrollWidget<out WidgetSize>>,
     override val size: WS,
-    override val id: Id?,
+    override val id: Id,
     val child: Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.WrapContent>> // TODO allow other sizes?
-) : Widget<WS>(), OptionalId<ScrollWidget.Id> {
+) : Widget<WS>(), RequireId<ScrollWidget.Id> {
 
     override fun buildView(viewFactoryContext: ViewFactoryContext): ViewBundle<WS> {
         return factory.build(this, size, viewFactoryContext)
