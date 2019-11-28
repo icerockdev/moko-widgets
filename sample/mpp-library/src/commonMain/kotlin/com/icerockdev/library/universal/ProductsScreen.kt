@@ -43,7 +43,7 @@ class ProductsScreen(
                 size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.AsParent),
                 children = mapOf(
                     button(
-                        size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.AsParent),
+                        size = WidgetSize.Const(SizeSpec.WrapContent, SizeSpec.WrapContent),
                         text = const("go to product"),
                         onTap = ::onProductPressed
                     ) to Alignment.CENTER
