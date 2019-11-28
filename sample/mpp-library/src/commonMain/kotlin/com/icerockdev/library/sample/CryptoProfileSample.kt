@@ -12,12 +12,15 @@ import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.ButtonWidget
+import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.TextWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.input
 import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.scroll
+import dev.icerock.moko.widgets.style.input.InputType
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.text
@@ -33,48 +36,53 @@ class CryptoProfileScreen(
                 child = linear(
                     size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
                     children = listOf<Widget<out WidgetSize>>(
-//                        input(
-//                            id = Id.NameInput,
-//                            label = const("Name"),
-//                            field = viewModel.nameField
-//                        ),
-//                        input(
-//                            id = Id.PhoneInput,
-//                            label = const("Phone number"),
-//                            field = viewModel.phoneField,
-//                            inputType = InputType.PHONE
-//                        ),
-//                        input(
-//                            id = Id.EmailInput,
-//                            label = const("Email"),
-//                            field = viewModel.emailField,
-//                            inputType = InputType.EMAIL
-//                        ),
-//                        input(
-//                            id = Id.PasswordInput,
-//                            label = const("Password"),
-//                            field = viewModel.passwordField,
-//                            inputType = InputType.PASSWORD
-//                        ),
-//                        input(
-//                            id = Id.RepeatPasswordInput,
-//                            label = const("Repeat password"),
-//                            field = viewModel.repeatPasswordField,
-//                            inputType = InputType.PASSWORD
-//                        ),
+                        input(
+                            size = WidgetSize.WidthAsParentHeightWrapContent,
+                            id = Id.NameInput,
+                            label = const("Name"),
+                            field = viewModel.nameField
+                        ),
+                        input(
+                            size = WidgetSize.WidthAsParentHeightWrapContent,
+                            id = Id.PhoneInput,
+                            label = const("Phone number"),
+                            field = viewModel.phoneField,
+                            inputType = InputType.PHONE
+                        ),
+                        input(
+                            size = WidgetSize.WidthAsParentHeightWrapContent,
+                            id = Id.EmailInput,
+                            label = const("Email"),
+                            field = viewModel.emailField,
+                            inputType = InputType.EMAIL
+                        ),
+                        input(
+                            size = WidgetSize.WidthAsParentHeightWrapContent,
+                            id = Id.PasswordInput,
+                            label = const("Password"),
+                            field = viewModel.passwordField,
+                            inputType = InputType.PASSWORD
+                        ),
+                        input(
+                            size = WidgetSize.WidthAsParentHeightWrapContent,
+                            id = Id.RepeatPasswordInput,
+                            label = const("Repeat password"),
+                            field = viewModel.repeatPasswordField,
+                            inputType = InputType.PASSWORD
+                        ),
                         button(
-                            size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
+                            size = WidgetSize.WidthAsParentHeightWrapContent,
                             id = Id.JoinButton,
                             text = const("Join"),
                             onTap = viewModel::onSavePressed
                         ),
                         text(
-                            size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
+                            size = WidgetSize.WidthAsParentHeightWrapContent,
                             id = Id.DelimiterText,
                             text = const("or")
                         ),
                         button(
-                            size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
+                            size = WidgetSize.WidthAsParentHeightWrapContent,
                             id = Id.TryDemoButton,
                             text = const("Try Demo"),
                             onTap = viewModel::onSavePressed
@@ -86,12 +94,11 @@ class CryptoProfileScreen(
     }
 
     object Id {
-        //        object NameInput : InputWidget.Id
-//        object PhoneInput : InputWidget.Id
-//        object EmailInput : InputWidget.Id
-//        object PasswordInput : InputWidget.Id
-//        object RepeatPasswordInput : InputWidget.Id
-
+        object NameInput : InputWidget.Id
+        object PhoneInput : InputWidget.Id
+        object EmailInput : InputWidget.Id
+        object PasswordInput : InputWidget.Id
+        object RepeatPasswordInput : InputWidget.Id
         object DelimiterText : TextWidget.Id
         object JoinButton : ButtonWidget.Id
         object TryDemoButton : ButtonWidget.Id

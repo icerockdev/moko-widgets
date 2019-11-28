@@ -15,13 +15,16 @@ import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.ButtonWidget
+import dev.icerock.moko.widgets.InputWidget
+import dev.icerock.moko.widgets.LinearWidget
 import dev.icerock.moko.widgets.TextWidget
 import dev.icerock.moko.widgets.button
-import dev.icerock.moko.widgets.clickable
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.input
 import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.scroll
+import dev.icerock.moko.widgets.style.input.InputType
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.text
@@ -33,54 +36,55 @@ class SocialProfileScreen(
     fun createWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         return with(theme) {
             scroll(
-                size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.AsParent),
+                size = WidgetSize.WidthAsParentHeightAsParent,
                 child = linear(
-                    size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
+                    size = WidgetSize.WidthAsParentHeightWrapContent,
                     children = listOf<Widget<out WidgetSize>>(
-//                        input(
-//                            id = Id.NameInput,
-//                            label = const("Имя*"),
-//                            field = viewModel.nameField
-//                        ),
-//                        input(
-//                            id = Id.NickNameInput,
-//                            label = const("Никнейм*"),
-//                            field = viewModel.nicknameField
-//                        ),
-//                        input(
-//                            id = Id.AboutInput,
-//                            label = const("О себе"),
-//                            field = viewModel.aboutField,
-//                            maxLines = const(null)
-//                        ),
-                        clickable(
-                            child = text(
-                                size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
-                                id = Id.InfoHeaderText,
-                                text = const("ЛИЧНАЯ ИНФОРМАЦИЯ")
-                            ),
-                            onClick = {
-                                println("pressed!")
-                            }
+                        input(
+                            size = WidgetSize.WidthAsParentHeightWrapContent,
+                            id = Id.NameInput,
+                            label = const("Имя*"),
+                            field = viewModel.nameField
                         ),
-//                        input(
-//                            id = Id.EmailInput,
-//                            label = const("Email"),
-//                            field = viewModel.emailField,
-//                            inputType = InputType.EMAIL
-//                        ),
-//                        input(
-//                            id = Id.PhoneInput,
-//                            label = const("Телефон"),
-//                            field = viewModel.phoneField,
-//                            inputType = InputType.PHONE
-//                        ),
-//                        input(
-//                            id = Id.BirthdayInput,
-//                            label = const("Дата рождения"),
-//                            field = viewModel.birthdayField,
-//                            inputType = InputType.DATE
-//                        ),
+                        input(
+                            size = WidgetSize.WidthAsParentHeightWrapContent,
+                            id = Id.NickNameInput,
+                            label = const("Никнейм*"),
+                            field = viewModel.nicknameField
+                        ),
+                        input(
+                            size = WidgetSize.WidthAsParentHeightWrapContent,
+                            id = Id.AboutInput,
+                            label = const("О себе"),
+                            field = viewModel.aboutField,
+                            maxLines = MutableLiveData<Int?>(null)
+                        ),
+                        text(
+                            size = WidgetSize.WidthAsParentHeightWrapContent,
+                            id = Id.InfoHeaderText,
+                            text = const("ЛИЧНАЯ ИНФОРМАЦИЯ")
+                        ),
+                        input(
+                            size = WidgetSize.WidthAsParentHeightWrapContent,
+                            id = Id.EmailInput,
+                            label = const("Email"),
+                            field = viewModel.emailField,
+                            inputType = InputType.EMAIL
+                        ),
+                        input(
+                            size = WidgetSize.WidthAsParentHeightWrapContent,
+                            id = Id.PhoneInput,
+                            label = const("Телефон"),
+                            field = viewModel.phoneField,
+                            inputType = InputType.PHONE
+                        ),
+                        input(
+                            size = WidgetSize.WidthAsParentHeightWrapContent,
+                            id = Id.BirthdayInput,
+                            label = const("Дата рождения"),
+                            field = viewModel.birthdayField,
+                            inputType = InputType.DATE
+                        ),
 //                        singleChoice(
 //                            id = Id.GenderChoice,
 //                            label = const("Пол"),
@@ -108,17 +112,17 @@ class SocialProfileScreen(
     }
 
     object Id {
-        //        object AgreementText : TextWidget.Id
-//        object AgreementContainer : LinearWidget.Id
+        //        object GenderChoice : SingleChoiceWidget.Id
 //        object AgreementSwitch : SwitchWidget.Id
-//        object NameInput : InputWidget.Id
-//        object NickNameInput : InputWidget.Id
-//        object AboutInput : InputWidget.Id
-//        object BirthdayInput : InputWidget.Id
-//        object PhoneInput : InputWidget.Id
-//        object EmailInput : InputWidget.Id
-//        object GenderChoice : SingleChoiceWidget.Id
 
+        object AgreementText : TextWidget.Id
+        object AgreementContainer : LinearWidget.Id
+        object NickNameInput : InputWidget.Id
+        object AboutInput : InputWidget.Id
+        object BirthdayInput : InputWidget.Id
+        object PhoneInput : InputWidget.Id
+        object EmailInput : InputWidget.Id
+        object NameInput : InputWidget.Id
         object InfoHeaderText : TextWidget.Id
         object SubmitButton : ButtonWidget.Id
     }

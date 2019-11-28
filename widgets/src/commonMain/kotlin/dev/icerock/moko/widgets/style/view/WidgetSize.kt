@@ -25,4 +25,9 @@ sealed class WidgetSize {
         val height: H,
         val aspectRatio: Float = 1.0f
     ) : WidgetSize()
+
+    companion object {
+        val WidthAsParentHeightWrapContent = Const(SizeSpec.AsParent, SizeSpec.WrapContent)
+        val WidthAsParentHeightAsParent = Const(SizeSpec.AsParent, SizeSpec.AsParent)
+    }
 }

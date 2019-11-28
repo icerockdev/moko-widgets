@@ -10,11 +10,14 @@ import dev.icerock.moko.fields.validate
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.ButtonWidget
+import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.input
 import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.scroll
+import dev.icerock.moko.widgets.style.input.InputType
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
@@ -27,27 +30,30 @@ class McommerceProfileScreen(
             scroll(
                 size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.AsParent),
                 child = linear(
-                    size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
-                    children = listOf(
-//                        input(
-//                            id = Id.NameInput,
-//                            label = const("Ваше имя"),
-//                            field = viewModel.nameField
-//                        ),
-//                        input(
-//                            id = Id.BirthdayInput,
-//                            label = const("Дата рождения"),
-//                            field = viewModel.birthdayField,
-//                            inputType = InputType.DATE
-//                        ),
-//                        input(
-//                            id = Id.PhoneInput,
-//                            label = const("Телефон"),
-//                            field = viewModel.phoneField,
-//                            inputType = InputType.PHONE
-//                        ),
+                    size = WidgetSize.WidthAsParentHeightWrapContent,
+                    children = listOf<Widget<out WidgetSize>>(
+                        input(
+                            size = WidgetSize.WidthAsParentHeightWrapContent,
+                            id = Id.NameInput,
+                            label = const("Ваше имя"),
+                            field = viewModel.nameField
+                        ),
+                        input(
+                            size = WidgetSize.WidthAsParentHeightWrapContent,
+                            id = Id.BirthdayInput,
+                            label = const("Дата рождения"),
+                            field = viewModel.birthdayField,
+                            inputType = InputType.DATE
+                        ),
+                        input(
+                            size = WidgetSize.WidthAsParentHeightWrapContent,
+                            id = Id.PhoneInput,
+                            label = const("Телефон"),
+                            field = viewModel.phoneField,
+                            inputType = InputType.PHONE
+                        ),
                         button(
-                            size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
+                            size = WidgetSize.WidthAsParentHeightWrapContent,
                             id = Id.SubmitButton,
                             text = const("Подтвердить"),
                             onTap = viewModel::onSavePressed
@@ -59,9 +65,9 @@ class McommerceProfileScreen(
     }
 
     object Id {
-        //        object NameInput : InputWidget.Id
-//        object BirthdayInput : InputWidget.Id
-//        object PhoneInput : InputWidget.Id
+        object NameInput : InputWidget.Id
+        object BirthdayInput : InputWidget.Id
+        object PhoneInput : InputWidget.Id
         object SubmitButton : ButtonWidget.Id
     }
 }
