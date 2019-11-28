@@ -15,6 +15,7 @@ import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.units.UnitItem
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.style.ext.applyMargin
 import dev.icerock.moko.widgets.style.ext.toPlatformSize
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
@@ -62,6 +63,8 @@ actual abstract class WidgetsTableUnitItem<T> actual constructor(
         val dm = context.resources.displayMetrics
         val (lp, view) = (viewBundle.size to viewBundle.view)
             .toRecyclerViewLayoutParams(dm)
+
+        viewBundle.margins?.let { lp.applyMargin(dm, it) }
 
         return view.apply {
             layoutParams = lp

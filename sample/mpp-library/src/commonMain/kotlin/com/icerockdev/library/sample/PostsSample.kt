@@ -4,15 +4,21 @@
 
 package com.icerockdev.library.sample
 
+import com.icerockdev.library.units.PostCollectionUnitItem
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.mvvm.livedata.map
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
-import dev.icerock.moko.widgets.container
+import dev.icerock.moko.units.CollectionUnitItem
+import dev.icerock.moko.widgets.CollectionWidget
+import dev.icerock.moko.widgets.collection
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.factory.DefaultCollectionWidgetViewFactory
+import dev.icerock.moko.widgets.factory.DefaultCollectionWidgetViewFactoryBase
+import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
@@ -22,32 +28,29 @@ class PostsScreen(
 ) {
     fun createWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         return with(theme) {
-            container(
-                size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.AsParent),
-                children = emptyMap()
+            collection(
+                size = WidgetSize.WidthAsParentHeightAsParent,
+                id = Id.Collection,
+                items = viewModel.posts.map { posts ->
+                    posts.map { post ->
+                        PostCollectionUnitItem(
+                            theme = this,
+                            itemId = post.id,
+                            data = post
+                        ) as CollectionUnitItem
+                    }
+                },
+                factory = DefaultCollectionWidgetViewFactory(
+                    DefaultCollectionWidgetViewFactoryBase.Style(
+                        padding = PaddingValues(4f)
+                    )
+                )
             )
-//            collection(
-//                id = Id.Collection,
-//                items = viewModel.posts.map { posts ->
-//                    posts.map { post ->
-//                        PostCollectionUnitItem(
-//                            theme = this,
-//                            itemId = post.id,
-//                            data = post
-//                        )
-//                    }
-//                },
-//                styled = {
-//                    it.copy(
-//                        padding = PaddingValues(4f)
-//                    )
-//                }
-//            )
         }
     }
 
     object Id {
-//        object Collection : CollectionWidget.Id
+        object Collection : CollectionWidget.Id
     }
 }
 
