@@ -7,46 +7,32 @@ package dev.icerock.moko.widgets
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.core.OptionalId
-import dev.icerock.moko.widgets.core.Styled
-import dev.icerock.moko.widgets.core.VFC
-import dev.icerock.moko.widgets.core.View
+import dev.icerock.moko.widgets.core.Theme
+import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
-import dev.icerock.moko.widgets.core.WidgetScope
-import dev.icerock.moko.widgets.style.background.Background
-import dev.icerock.moko.widgets.style.view.Backgrounded
 import dev.icerock.moko.widgets.style.view.SizeSpec
-import dev.icerock.moko.widgets.style.view.Sized
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-expect var tabsWidgetViewFactory: VFC<TabsWidget>
-
 @WidgetDef
-class TabsWidget(
-    val factory: VFC<TabsWidget>,
-    override val style: Style,
+class TabsWidget<WS : WidgetSize>(
+    private val factory: ViewFactory<TabsWidget<out WidgetSize>>,
+    private val size: WS,
     override val id: Id?,
     @Suppress("RemoveRedundantQualifierName")
     val tabs: List<TabsWidget.Tab> // for correct codegen
-) : Widget(), Styled<TabsWidget.Style>, OptionalId<TabsWidget.Id> {
+) : Widget<WS>(), OptionalId<TabsWidget.Id> {
 
-    override fun buildView(viewFactoryContext: ViewFactoryContext): View {
-        return factory(viewFactoryContext, this)
+    override fun buildView(viewFactoryContext: ViewFactoryContext): ViewBundle<WS> {
+        return factory.build(this, size, viewFactoryContext)
     }
 
     class Tab(
         val title: LiveData<StringDesc>,
-        val body: Widget
+        val body: Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>
     )
 
-    data class Style(
-        override val size: WidgetSize = WidgetSize.Const(
-            width = SizeSpec.AsParent,
-            height = SizeSpec.AsParent
-        ),
-        override val background: Background? = null
-    ) : Widget.Style, Backgrounded, Sized
-
-    interface Id : WidgetScope.Id
+    interface Id : Theme.Id
 }
