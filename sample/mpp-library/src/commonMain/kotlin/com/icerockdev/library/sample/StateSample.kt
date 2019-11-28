@@ -7,15 +7,24 @@ package com.icerockdev.library.sample
 import dev.icerock.moko.mvvm.State
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
+import dev.icerock.moko.mvvm.livedata.map
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.resources.desc.StringDesc
+import dev.icerock.moko.resources.desc.desc
+import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.linear
+import dev.icerock.moko.widgets.progressBar
+import dev.icerock.moko.widgets.stateful
+import dev.icerock.moko.widgets.style.view.Alignment
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.tabs
+import dev.icerock.moko.widgets.text
+import dev.icerock.moko.widgets.utils.asLiveData
 
 open class StateScreen(
     private val theme: Theme,
@@ -24,73 +33,66 @@ open class StateScreen(
     fun createWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         return with(theme) {
             linear(
-                size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.AsParent),
-                children = listOf(
+                size = WidgetSize.AsParent,
+                children = listOf<Widget<out WidgetSize>>(
                     button(
-                        size = WidgetSize.Const(SizeSpec.WrapContent, SizeSpec.WrapContent),
+                        size = WidgetSize.WrapContent,
                         text = const("change state"),
                         onTap = viewModel::onChangeStatePressed
-                    )//,
-//                    stateful(
-//                        state = viewModel.state,
-//                        empty = {
-//                            container(
-//                                children = mapOf(
-//                                    text(
-//                                        styled = {
-//                                            it.copy(
-//                                                size = WidgetSize.Const(
-//                                                    width = SizeSpec.WrapContent,
-//                                                    height = SizeSpec.WrapContent
-//                                                )
-//                                            )
-//                                        },
-//                                        text = const("empty")
-//                                    ) to Alignment.CENTER
-//                                )
-//                            )
-//                        },
-//                        loading = {
-//                            container(
-//                                children = mapOf(
-//                                    progressBar() to Alignment.CENTER
-//                                )
-//                            )
-//                        },
-//                        data = { data ->
-//                            tabs(
-//                                tabs = listOf(
-//                                    TabsWidget.Tab(
-//                                        title = const("first page"),
-//                                        body = flatAlertWrapped(message = data.map { it?.desc() })
-//                                    ),
-//                                    TabsWidget.Tab(
-//                                        title = const("second page"),
-//                                        body = flatAlertWrapped(message = "SECOND".desc().asLiveData())
-//                                    )
-//                                )
-//                            )
-//                        },
-//                        error = { error ->
-//                            flatAlertWrapped(message = error.map { it?.desc() })
-//                        }
-//                    )
+                    ),
+                    stateful(
+                        size = WidgetSize.AsParent,
+                        state = viewModel.state,
+                        empty = {
+                            container(
+                                size = WidgetSize.AsParent,
+                                children = mapOf(
+                                    text(
+                                        size = WidgetSize.WrapContent,
+                                        text = const("empty")
+                                    ) to Alignment.CENTER
+                                )
+                            )
+                        },
+                        loading = {
+                            container(
+                                size = WidgetSize.AsParent,
+                                children = mapOf(
+                                    progressBar(WidgetSize.WrapContent) to Alignment.CENTER
+                                )
+                            )
+                        },
+                        data = { data ->
+                            tabs(
+                                size = WidgetSize.AsParent,
+                                tabs = listOf(
+                                    TabsWidget.Tab(
+                                        title = const("first page"),
+                                        body = flatAlertWrapped(message = data.map { it?.desc() })
+                                    ),
+                                    TabsWidget.Tab(
+                                        title = const("second page"),
+                                        body = flatAlertWrapped(message = "SECOND".desc().asLiveData())
+                                    )
+                                )
+                            )
+                        },
+                        error = { error ->
+                            flatAlertWrapped(message = error.map { it?.desc() })
+                        }
+                    )
                 )
             )
         }
     }
 
-    private fun Theme.flatAlertWrapped(message: LiveData<StringDesc?>): Widget<out WidgetSize> {
-        return container(
-            size = WidgetSize.Const(
-                width = SizeSpec.AsParent,
-                height = SizeSpec.AsParent
-            ),
+    private fun Theme.flatAlertWrapped(message: LiveData<StringDesc?>) =
+        container(
+            size = WidgetSize.AsParent,
             children = mapOf(
 //                flatAlert(message = message) to Alignment.CENTER
             )
         )
-    }
 }
 
 interface StateViewModelContract {

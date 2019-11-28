@@ -29,7 +29,7 @@ class PostsScreen(
     fun createWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         return with(theme) {
             collection(
-                size = WidgetSize.WidthAsParentHeightAsParent,
+                size = WidgetSize.AsParent,
                 id = Id.Collection,
                 items = viewModel.posts.map { posts ->
                     posts.map { post ->

@@ -30,7 +30,7 @@ class McommerceProfileScreen(
         return with(theme) {
             scroll(
                 id = Id.RootScroll,
-                size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.AsParent),
+                size = WidgetSize.AsParent,
                 child = linear(
                     size = WidgetSize.WidthAsParentHeightWrapContent,
                     children = listOf<Widget<out WidgetSize>>(

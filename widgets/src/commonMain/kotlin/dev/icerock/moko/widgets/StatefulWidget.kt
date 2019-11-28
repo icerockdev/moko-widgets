@@ -9,99 +9,100 @@ import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.data
 import dev.icerock.moko.mvvm.livedata.error
 import dev.icerock.moko.widgets.core.OptionalId
-import dev.icerock.moko.widgets.core.Styled
-import dev.icerock.moko.widgets.core.VFC
-import dev.icerock.moko.widgets.core.View
+import dev.icerock.moko.widgets.core.Theme
+import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
-import dev.icerock.moko.widgets.core.WidgetScope
-import dev.icerock.moko.widgets.style.background.Background
-import dev.icerock.moko.widgets.style.view.Backgrounded
+import dev.icerock.moko.widgets.factory.DefaultStatefulWidgetViewFactory
 import dev.icerock.moko.widgets.style.view.SizeSpec
-import dev.icerock.moko.widgets.style.view.Sized
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-expect var statefulWidgetViewFactory: VFC<StatefulWidget<*, *>>
-
-class StatefulWidget<T, E> private constructor(
-    val factory: VFC<StatefulWidget<T, E>>,
-    override val style: Style,
+class StatefulWidget<WS : WidgetSize, T, E> constructor(
+    private val factory: ViewFactory<StatefulWidget<out WidgetSize, *, *>>,
+    override val size: WS,
     override val id: Id?,
-    val stateLiveData: LiveData<State<T, E>>,
-    val emptyWidget: Widget,
-    val loadingWidget: Widget,
-    val dataWidget: Widget,
-    val errorWidget: Widget
-) : Widget(), Styled<StatefulWidget.Style>, OptionalId<StatefulWidget.Id> {
+    val state: LiveData<State<T, E>>,
+    empty: () -> Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>,
+    loading: () -> Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>,
+    data: (LiveData<T?>) -> Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>,
+    error: (LiveData<E?>) -> Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>
+) : Widget<WS>(), OptionalId<StatefulWidget.Id> {
 
-    override fun buildView(viewFactoryContext: ViewFactoryContext): View {
-        return factory(viewFactoryContext, this)
+    val emptyWidget: Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> = empty()
+    val loadingWidget: Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> = loading()
+    val dataWidget: Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> =
+        data(state.data())
+    val errorWidget: Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> =
+        error(state.error())
+
+    override fun buildView(viewFactoryContext: ViewFactoryContext): ViewBundle<WS> {
+        return factory.build(this, size, viewFactoryContext)
     }
 
-    constructor(
-        factory: VFC<StatefulWidget<T, E>>,
-        id: Id?,
-        style: Style,
-        stateLiveData: LiveData<State<T, E>>,
-        emptyWidget: () -> Widget,
-        loadingWidget: () -> Widget,
-        dataWidget: (LiveData<T?>) -> Widget,
-        errorWidget: (LiveData<E?>) -> Widget
-    ) : this(
-        factory = factory,
-        id = id,
-        style = style,
-        stateLiveData = stateLiveData,
-        emptyWidget = emptyWidget(),
-        loadingWidget = loadingWidget(),
-        dataWidget = dataWidget(stateLiveData.data()),
-        errorWidget = errorWidget(stateLiveData.error())
-    )
-
-    data class Style(
-        override val size: WidgetSize = WidgetSize.Const(
-            width = SizeSpec.AsParent,
-            height = SizeSpec.AsParent
-        ),
-        override val background: Background? = null
-    ) : Widget.Style, Sized, Backgrounded
-
-    internal object FactoryKey : WidgetScope.Key<VFC<StatefulWidget<*, *>>>
-    internal object StyleKey : WidgetScope.Key<Style>
-
-    interface Id : WidgetScope.Id
+    interface Id : Theme.Id
 }
 
-val WidgetScope.statefulFactory: VFC<StatefulWidget<*, *>>
-        by WidgetScope.readProperty(StatefulWidget.FactoryKey, ::statefulWidgetViewFactory)
+// manual writed boilerplate (plugin can't generate it because Widget use generic)
+private object StatefulWidgetFactoryKey :
+    Theme.Key<ViewFactory<StatefulWidget<out WidgetSize, *, *>>>
 
-var WidgetScope.Builder.statefulFactory: VFC<StatefulWidget<*, *>>
-        by WidgetScope.readWriteProperty(StatefulWidget.FactoryKey, WidgetScope::statefulFactory)
+val Theme.statefulFactory: ViewFactory<StatefulWidget<out WidgetSize, *, *>>
+        by Theme.readProperty(StatefulWidgetFactoryKey) { DefaultStatefulWidgetViewFactory() }
 
-val WidgetScope.statefulStyle: StatefulWidget.Style
-        by WidgetScope.readProperty(StatefulWidget.StyleKey) { StatefulWidget.Style() }
+var Theme.Builder.statefulFactory: ViewFactory<StatefulWidget<out WidgetSize, *, *>>
+        by Theme.readWriteProperty(StatefulWidgetFactoryKey, Theme::statefulFactory)
 
-var WidgetScope.Builder.statefulStyle: StatefulWidget.Style
-        by WidgetScope.readWriteProperty(StatefulWidget.StyleKey, WidgetScope::statefulStyle)
-
-fun <T, E> WidgetScope.stateful(
-    factory: VFC<StatefulWidget<T, E>> = this.statefulFactory,
-    style: StatefulWidget.Style = this.statefulStyle,
+fun <WS : WidgetSize, T, E> Theme.stateful(
+    factory: ViewFactory<StatefulWidget<out WidgetSize, *, *>> = this.statefulFactory,
     id: StatefulWidget.Id? = null,
+    size: WS,
     state: LiveData<State<T, E>>,
-    empty: () -> Widget,
-    loading: () -> Widget,
-    data: (LiveData<T?>) -> Widget,
-    error: (LiveData<E?>) -> Widget
-): StatefulWidget<T, E> {
+    empty: () -> Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>,
+    loading: () -> Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>,
+    data: (LiveData<T?>) -> Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>,
+    error: (LiveData<E?>) -> Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>
+): StatefulWidget<WS, T, E> {
     return StatefulWidget(
         factory = factory,
-        style = style,
+        size = size,
         id = id,
-        stateLiveData = state,
-        emptyWidget = empty,
-        loadingWidget = loading,
-        dataWidget = data,
-        errorWidget = error
+        state = state,
+        empty = empty,
+        loading = loading,
+        data = data,
+        error = error
+    )
+}
+
+fun Theme.getStatefulFactory(id: StatefulWidget.Id): ViewFactory<StatefulWidget<out WidgetSize, *, *>> {
+    return getIdProperty(id, StatefulWidgetFactoryKey, ::statefulFactory)
+}
+
+fun Theme.Builder.setStatefulFactory(
+    factory: ViewFactory<StatefulWidget<out WidgetSize, *, *>>,
+    vararg ids: CollectionWidget.Id
+) {
+    ids.forEach { setIdProperty(it, StatefulWidgetFactoryKey, factory) }
+}
+
+fun <WS : WidgetSize, T, E> Theme.stateful(
+    id: StatefulWidget.Id? = null,
+    size: WS,
+    state: LiveData<State<T, E>>,
+    empty: () -> Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>,
+    loading: () -> Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>,
+    data: (LiveData<T?>) -> Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>,
+    error: (LiveData<E?>) -> Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>
+): StatefulWidget<WS, T, E> {
+    return StatefulWidget(
+        factory = id?.let { this.getStatefulFactory(it) } ?: this.statefulFactory,
+        size = size,
+        id = id,
+        state = state,
+        empty = empty,
+        loading = loading,
+        data = data,
+        error = error
     )
 }

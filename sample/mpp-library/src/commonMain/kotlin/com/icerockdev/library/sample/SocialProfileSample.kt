@@ -38,7 +38,7 @@ class SocialProfileScreen(
         return with(theme) {
             scroll(
                 id = Id.RootScroll,
-                size = WidgetSize.WidthAsParentHeightAsParent,
+                size = WidgetSize.AsParent,
                 child = linear(
                     size = WidgetSize.WidthAsParentHeightWrapContent,
                     children = listOf<Widget<out WidgetSize>>(
@@ -102,7 +102,7 @@ class SocialProfileScreen(
 //                            textId = Id.AgreementText
 //                        ),
                         button(
-                            size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
+                            size = WidgetSize.WidthAsParentHeightWrapContent,
                             id = Id.SubmitButton,
                             text = const("Сохранить"),
                             onTap = viewModel::onSavePressed

@@ -32,12 +32,12 @@ class UsersScreen(
     fun createWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         return with(theme) {
             tabs(
-                size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.AsParent),
+                size = WidgetSize.AsParent,
                 tabs = listOf(
                     TabsWidget.Tab(
                         title = const("list"),
                         body = list(
-                            size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.AsParent),
+                            size = WidgetSize.AsParent,
                             id = Id.List,
                             items = viewModel.tableItems,
                             onRefresh = viewModel::refresh,
@@ -47,7 +47,7 @@ class UsersScreen(
                     TabsWidget.Tab(
                         title = const("collection"),
                         body = collection(
-                            size = WidgetSize.WidthAsParentHeightAsParent,
+                            size = WidgetSize.AsParent,
                             id = Id.Collection,
                             items = viewModel.collectionItems,
                             onRefresh = viewModel::refresh,

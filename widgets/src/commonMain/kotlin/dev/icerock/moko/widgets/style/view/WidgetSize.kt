@@ -28,6 +28,7 @@ sealed class WidgetSize {
 
     companion object {
         val WidthAsParentHeightWrapContent = Const(SizeSpec.AsParent, SizeSpec.WrapContent)
-        val WidthAsParentHeightAsParent = Const(SizeSpec.AsParent, SizeSpec.AsParent)
+        val AsParent = Const(SizeSpec.AsParent, SizeSpec.AsParent)
+        val WrapContent = Const(SizeSpec.WrapContent, SizeSpec.WrapContent)
     }
 }
