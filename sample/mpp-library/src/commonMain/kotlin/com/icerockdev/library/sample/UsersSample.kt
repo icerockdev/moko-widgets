@@ -11,10 +11,12 @@ import dev.icerock.moko.mvvm.livedata.mergeWith
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.units.CollectionUnitItem
 import dev.icerock.moko.units.TableUnitItem
+import dev.icerock.moko.widgets.ListWidget
 import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.list
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.tabs
@@ -33,21 +35,13 @@ class UsersScreen(
                 tabs = listOf(
                     TabsWidget.Tab(
                         title = const("list"),
-                        body = container(
+                        body = list(
                             size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.AsParent),
-                            children = emptyMap()
+                            id = Id.List,
+                            items = viewModel.tableItems,
+                            onRefresh = viewModel::refresh,
+                            onReachEnd = viewModel::loadNextPage
                         )
-//                        list(
-//                            id = Id.List,
-//                            items = viewModel.tableItems,
-//                            styled = {
-//                                it.copy(
-//                                    padding = PaddingValues(8f)
-//                                )
-//                            },
-//                            onRefresh = viewModel::refresh,
-//                            onReachEnd = viewModel::loadNextPage
-//                        )
                     ),
                     TabsWidget.Tab(
                         title = const("collection"),
@@ -73,7 +67,7 @@ class UsersScreen(
     }
 
     object Id {
-//        object List : ListWidget.Id
+        object List : ListWidget.Id
 //        object Collection : CollectionWidget.Id
     }
 }

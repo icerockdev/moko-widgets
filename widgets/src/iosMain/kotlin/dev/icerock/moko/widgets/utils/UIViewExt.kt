@@ -4,7 +4,6 @@
 
 package dev.icerock.moko.widgets.utils
 
-import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.SizeSpec
@@ -23,10 +22,8 @@ import platform.UIKit.trailingAnchor
 import platform.UIKit.widthAnchor
 
 fun layoutWidget(
-    rootWidget: Widget<out WidgetSize>,
     rootView: UIView,
     rootPadding: PaddingValues?,
-    childWidget: Widget<out WidgetSize>,
     childView: UIView,
     childSize: WidgetSize,
     childMargins: MarginValues?
@@ -49,7 +46,7 @@ fun UIView.fillChildView(childView: UIView, edges: Edges<CGFloat>) {
     ).active = true
     childView.trailingAnchor.constraintEqualToAnchor(
         anchor = trailingAnchor,
-        constant = edges.trailing
+        constant = -edges.trailing
     ).active = true
     childView.bottomAnchor.constraintEqualToAnchor(
         anchor = bottomAnchor,

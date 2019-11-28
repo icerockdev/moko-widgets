@@ -50,10 +50,8 @@ actual class DefaultContainerWidgetViewFactory actual constructor(
             root.addSubview(childView)
 
             val edges: Edges<CGFloat> = layoutWidget(
-                rootWidget = widget,
                 rootView = root,
                 rootPadding = style.padding,
-                childWidget = childWidget,
                 childView = childView,
                 childSize = childViewBundle.size,
                 childMargins = childViewBundle.margins

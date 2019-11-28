@@ -47,13 +47,21 @@ actual abstract class WidgetsTableUnitItem<T> actual constructor(
         lifecycleOwner: LifecycleOwner,
         parent: ViewGroup
     ): View {
-        return widget.buildView(
+        val viewBundle = widget.buildView(
             ViewFactoryContext(
                 context = context,
                 lifecycleOwner = lifecycleOwner,
                 parent = parent
             )
-        ).view // TODO apply margins?
+        )
+
+        return viewBundle.view.apply {
+            // TODO apply margins?
+            // TODO apply size Exact!
+//            layoutParams = RecyclerView.LayoutParams(
+//                viewBundle.size
+//            )
+        }
     }
 
     private class ViewHolder<T>(

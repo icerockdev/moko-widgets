@@ -89,10 +89,8 @@ actual class DefaultTabsWidgetViewFactory actual constructor(
                 addSubview(view)
 
                 val edges: Edges<CGFloat> = layoutWidget(
-                    rootWidget = widget,
                     rootView = container,
                     rootPadding = null,
-                    childWidget = tabWidget.body,
                     childView = view,
                     childSize = viewBundle.size,
                     childMargins = viewBundle.margins

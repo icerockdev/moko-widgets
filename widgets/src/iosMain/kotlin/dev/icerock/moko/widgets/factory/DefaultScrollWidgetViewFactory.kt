@@ -51,10 +51,8 @@ actual class DefaultScrollWidgetViewFactory actual constructor(
             addSubview(childView)
 
             val edges: Edges<CGFloat> = layoutWidget(
-                rootWidget = widget,
                 rootView = this,
                 rootPadding = style.padding,
-                childWidget = widget.child,
                 childView = childView,
                 childSize = childBundle.size,
                 childMargins = childBundle.margins

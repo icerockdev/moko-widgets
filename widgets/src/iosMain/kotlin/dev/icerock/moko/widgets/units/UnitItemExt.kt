@@ -41,10 +41,10 @@ internal fun <T> UIView.setupWidgetContent(
         val viewController = UIApplication.sharedApplication.keyWindow?.rootViewController!!
         val mutableLiveData = MutableLiveData(initialValue = data)
         val widget = factory(mutableLiveData).widget
-        val viewBundle = widget.buildView(viewFactoryContext = viewController).apply {
+        val viewBundle = widget.buildView(viewFactoryContext = viewController)
+        val view = viewBundle.view.apply {
             translatesAutoresizingMaskIntoConstraints = false
         }
-        val view = viewBundle.view
 
         addSubview(view)
 
