@@ -13,7 +13,7 @@ import android.widget.LinearLayout
 internal class MarginedLinearLayout(context: Context) : LinearLayout(context) {
     override fun generateLayoutParams(lp: ViewGroup.LayoutParams): LayoutParams {
         return when (lp) {
-            is LayoutParams -> LayoutParams(lp)
+            is LayoutParams -> lp
             is MarginLayoutParams -> LayoutParams(lp)
             else -> LayoutParams(lp)
         }

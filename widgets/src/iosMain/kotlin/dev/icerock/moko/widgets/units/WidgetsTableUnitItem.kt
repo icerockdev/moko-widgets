@@ -6,7 +6,6 @@ package dev.icerock.moko.widgets.units
 
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.units.TableUnitItem
-import dev.icerock.moko.widgets.core.Widget
 import platform.UIKit.UIActivityIndicatorView
 import platform.UIKit.UITableView
 import platform.UIKit.UITableViewCell
@@ -18,7 +17,7 @@ actual abstract class WidgetsTableUnitItem<T> actual constructor(
     val data: T
 ) : TableUnitItem {
     actual abstract val reuseId: String
-    actual abstract fun createWidget(data: LiveData<T>): Widget
+    actual abstract fun createWidget(data: LiveData<T>): UnitItemRoot
 
     override val reusableIdentifier: String get() = reuseId
 

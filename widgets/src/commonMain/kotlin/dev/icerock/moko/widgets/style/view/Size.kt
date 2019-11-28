@@ -11,18 +11,18 @@ package dev.icerock.moko.widgets.style.view
  * @property height widget's desirable height, could be either one of SizeSpecs or an exact value in dp
  */
 sealed class WidgetSize {
-    data class Const(
-        val width: SizeSpec = SizeSpec.AsParent,
-        val height: SizeSpec = SizeSpec.WrapContent
+    data class Const<W : SizeSpec, H : SizeSpec>(
+        val width: W,
+        val height: H
     ) : WidgetSize()
 
-    data class AspectByWidth(
-        val width: SizeSpec = SizeSpec.AsParent,
+    data class AspectByWidth<W : SizeSpec>(
+        val width: W,
         val aspectRatio: Float = 1.0f
     ) : WidgetSize()
 
-    data class AspectByHeight(
-        val height: SizeSpec = SizeSpec.AsParent,
+    data class AspectByHeight<H : SizeSpec>(
+        val height: H,
         val aspectRatio: Float = 1.0f
     ) : WidgetSize()
 }

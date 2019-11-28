@@ -14,19 +14,23 @@ import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.units.UnitItem
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.style.view.WidgetSize
 
 actual abstract class WidgetsTableUnitItem<T> actual constructor(
     override val itemId: Long,
     val data: T
 ) : UnitItem {
     actual abstract val reuseId: String
-    actual abstract fun createWidget(data: LiveData<T>): Widget
+    actual abstract fun createWidget(data: LiveData<T>): UnitItemRoot
 
     override val viewType: Int by lazy { reuseId.hashCode() }
 
-    override fun createViewHolder(parent: ViewGroup, lifecycleOwner: LifecycleOwner): RecyclerView.ViewHolder {
+    override fun createViewHolder(
+        parent: ViewGroup,
+        lifecycleOwner: LifecycleOwner
+    ): RecyclerView.ViewHolder {
         val mutableData: MutableLiveData<T> = MutableLiveData(initialValue = data)
-        val widget: Widget = createWidget(mutableData)
+        val widget: Widget<out WidgetSize> = createWidget(mutableData).widget
         val context: Context = parent.context
         val view: View = createView(widget, context, lifecycleOwner, parent)
         return ViewHolder(mutableData, view)
@@ -38,7 +42,7 @@ actual abstract class WidgetsTableUnitItem<T> actual constructor(
     }
 
     private fun createView(
-        widget: Widget,
+        widget: Widget<out WidgetSize>,
         context: Context,
         lifecycleOwner: LifecycleOwner,
         parent: ViewGroup
@@ -49,7 +53,7 @@ actual abstract class WidgetsTableUnitItem<T> actual constructor(
                 lifecycleOwner = lifecycleOwner,
                 parent = parent
             )
-        )
+        ).view // TODO apply margins?
     }
 
     private class ViewHolder<T>(

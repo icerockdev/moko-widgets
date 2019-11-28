@@ -13,7 +13,7 @@ import android.widget.FrameLayout
 internal open class MarginedFrameLayout(context: Context) : FrameLayout(context) {
     override fun generateLayoutParams(lp: ViewGroup.LayoutParams): LayoutParams {
         return when (lp) {
-            is LayoutParams -> LayoutParams(lp)
+            is LayoutParams -> lp
             is MarginLayoutParams -> LayoutParams(lp)
             else -> LayoutParams(lp)
         }

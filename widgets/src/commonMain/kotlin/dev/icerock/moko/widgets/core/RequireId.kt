@@ -1,5 +1,5 @@
 package dev.icerock.moko.widgets.core
 
-interface RequireId<T : WidgetScope.Id> : OptionalId<T> {
+interface RequireId<T : Theme.Id> : OptionalId<T> {
     override val id: T
 }

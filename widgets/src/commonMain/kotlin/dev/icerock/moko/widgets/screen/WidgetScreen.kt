@@ -5,7 +5,9 @@
 package dev.icerock.moko.widgets.screen
 
 import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.style.view.SizeSpec
+import dev.icerock.moko.widgets.style.view.WidgetSize
 
 expect abstract class WidgetScreen<Arg : Args>() : Screen<Arg> {
-    abstract fun createContentWidget(): Widget
+    abstract fun createContentWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>
 }

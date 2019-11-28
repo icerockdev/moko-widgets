@@ -5,6 +5,8 @@
 package dev.icerock.moko.widgets.screen
 
 import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.style.view.SizeSpec
+import dev.icerock.moko.widgets.style.view.WidgetSize
 import platform.UIKit.UIColor
 import platform.UIKit.UIViewController
 import platform.UIKit.addSubview
@@ -19,13 +21,14 @@ import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
 class WidgetViewController : UIViewController(nibName = null, bundle = null) {
 
-    lateinit var widget: Widget
+    lateinit var widget: Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>
     lateinit var screen: Screen<*>
 
     override fun viewDidLoad() {
         super.viewDidLoad()
 
-        val widgetView = widget.buildView(this)
+        val viewBundle = widget.buildView(this)
+        val widgetView = viewBundle.view
         widgetView.translatesAutoresizingMaskIntoConstraints = false
 
         with(view) {

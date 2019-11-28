@@ -6,7 +6,6 @@ package dev.icerock.moko.widgets.style
 
 import android.view.View
 import android.view.ViewGroup
-import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.style.background.buildBackground
 import dev.icerock.moko.widgets.style.ext.applyMargin
 import dev.icerock.moko.widgets.style.ext.applyPadding
@@ -14,11 +13,12 @@ import dev.icerock.moko.widgets.style.ext.toPlatformSize
 import dev.icerock.moko.widgets.style.view.Backgrounded
 import dev.icerock.moko.widgets.style.view.Margined
 import dev.icerock.moko.widgets.style.view.Padded
+import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.StateBackgrounded
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.view.AspectRatioFrameLayout
 
-fun View.applyStyle(style: Widget.Style) {
+fun View.applyStyle(style: Any) {
     if (style is Margined) {
         style.margins?.also {
             (layoutParams as? ViewGroup.MarginLayoutParams)?.applyMargin(context, it)
@@ -42,14 +42,14 @@ fun View.withSize(size: WidgetSize): View {
     val dm = context.resources.displayMetrics
 
     val aspectRatioFrameLayout = when (size) {
-        is WidgetSize.Const -> {
+        is WidgetSize.Const<out SizeSpec, out SizeSpec> -> {
             layoutParams = ViewGroup.MarginLayoutParams(
                 size.width.toPlatformSize(dm),
                 size.height.toPlatformSize(dm)
             )
             return this
         }
-        is WidgetSize.AspectByWidth -> {
+        is WidgetSize.AspectByWidth<out SizeSpec> -> {
             AspectRatioFrameLayout(
                 context = context,
                 aspectRatio = size.aspectRatio,
@@ -61,7 +61,7 @@ fun View.withSize(size: WidgetSize): View {
                 )
             }
         }
-        is WidgetSize.AspectByHeight -> {
+        is WidgetSize.AspectByHeight<out SizeSpec> -> {
             AspectRatioFrameLayout(
                 context = context,
                 aspectRatio = size.aspectRatio,

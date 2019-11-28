@@ -6,7 +6,6 @@ package dev.icerock.moko.widgets.units
 
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.units.TableUnitItem
-import dev.icerock.moko.widgets.core.Widget
 
 expect abstract class WidgetsTableUnitItem<T>(
     itemId: Long,
@@ -14,6 +13,6 @@ expect abstract class WidgetsTableUnitItem<T>(
 ) : TableUnitItem {
     abstract val reuseId: String
 
-    abstract fun createWidget(data: LiveData<T>): Widget
+    abstract fun createWidget(data: LiveData<T>): UnitItemRoot
 }
 

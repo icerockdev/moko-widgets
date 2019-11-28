@@ -7,29 +7,22 @@ package dev.icerock.moko.widgets.core
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
+import dev.icerock.moko.widgets.utils.asLiveData
 import kotlin.properties.ReadOnlyProperty
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-class WidgetScope(
-    private val properties: MutableMap<Key<*>, Any>,
-    private val idProperties: MutableMap<Pair<Id, Key<*>>, Any>
+class Theme(
+    private val properties: MutableMap<Any, Any>
 ) {
-
     constructor() : this(
-        properties = mutableMapOf(),
-        idProperties = mutableMapOf()
+        properties = mutableMapOf()
     )
 
-    constructor(parent: WidgetScope? = null, builder: Builder.() -> Unit) : this(
-        properties = parent?.properties?.deepMutableCopy() ?: mutableMapOf(),
-        idProperties = parent?.idProperties?.deepMutableCopy() ?: mutableMapOf()
+    constructor(parent: Theme? = null, builder: Builder.() -> Unit) : this(
+        properties = parent?.properties?.deepMutableCopy() ?: mutableMapOf()
     ) {
-        Builder(scope = this).builder()
-    }
-
-    fun childScope(builder: Builder.() -> Unit): WidgetScope {
-        return WidgetScope(parent = this, builder = builder)
+        Builder(theme = this).builder()
     }
 
     fun const(value: String): LiveData<StringDesc> {
@@ -44,21 +37,24 @@ class WidgetScope(
 
     interface Id
 
-    class Builder(val scope: WidgetScope) {
+    class Builder(val theme: Theme) {
         internal fun <T : Any> setIdProperty(id: Id, key: Key<T>, value: T) {
-            scope.idProperties[id to key] = value
+            theme.properties[id to key] = value
         }
     }
 
     internal fun <T : Any> getIdProperty(id: Id, key: Key<T>, fallback: () -> T): T {
         @Suppress("UNCHECKED_CAST")
-        return idProperties[id to key] as? T ?: fallback()
+        return properties[id to key] as? T ?: fallback()
     }
 
     companion object {
-        internal inline fun <reified T : Any> readProperty(key: Key<T>, crossinline fallback: () -> T) =
-            object : ReadOnlyProperty<WidgetScope, T> {
-                override fun getValue(thisRef: WidgetScope, property: KProperty<*>): T {
+        internal inline fun <reified T : Any> readProperty(
+            key: Key<T>,
+            crossinline fallback: () -> T
+        ) =
+            object : ReadOnlyProperty<Theme, T> {
+                override fun getValue(thisRef: Theme, property: KProperty<*>): T {
                     val factory = thisRef.properties[key] as? T
                     return (factory ?: fallback())
                 }
@@ -66,14 +62,14 @@ class WidgetScope(
 
         internal inline fun <reified T : Any> readWriteProperty(
             key: Key<T>,
-            crossinline readProperty: WidgetScope.() -> T
+            crossinline readProperty: Theme.() -> T
         ) = object : ReadWriteProperty<Builder, T> {
             override fun setValue(thisRef: Builder, property: KProperty<*>, value: T) {
-                thisRef.scope.properties[key] = value
+                thisRef.theme.properties[key] = value
             }
 
             override fun getValue(thisRef: Builder, property: KProperty<*>): T {
-                return thisRef.scope.readProperty()
+                return thisRef.theme.readProperty()
             }
         }
     }
