@@ -11,12 +11,12 @@ abstract class Widget<WS : WidgetSize> {
     abstract fun buildView(viewFactoryContext: ViewFactoryContext): ViewBundle<WS>
 }
 
-abstract class FactoryWidget<W : FactoryWidget<W, WidgetSize>, WS : WidgetSize> : Widget<WS>() {
-    abstract val factory: ViewFactory<W>
+abstract class FactoryWidget<WS : WidgetSize> : Widget<WS>() {
+    abstract val factory: ViewFactory<Widget<out WidgetSize>>
     abstract val size: WS
 
     override fun buildView(viewFactoryContext: ViewFactoryContext): ViewBundle<WS> {
-        return factory.build(this as W, size, viewFactoryContext)
+        return factory.build(this, size, viewFactoryContext)
     }
 }
 
@@ -24,7 +24,7 @@ interface ViewFactory<W : Widget<out WidgetSize>> {
     fun <WS : WidgetSize> build(
         widget: W,
         size: WS,
-        context: ViewFactoryContext
+        viewFactoryContext: ViewFactoryContext
     ): ViewBundle<WS>
 }
 

@@ -6,8 +6,9 @@ package dev.icerock.moko.widgets.utils
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import dev.icerock.moko.mvvm.livedata.LiveData
 
-fun <T> dev.icerock.moko.mvvm.livedata.LiveData<T>.bind(lifecycleOwner: LifecycleOwner, observer: (T?) -> Unit) {
+fun <T> LiveData<T>.bind(lifecycleOwner: LifecycleOwner, observer: (T?) -> Unit) {
     observer(value)
 
     this.ld().observe(lifecycleOwner, Observer { value ->
@@ -15,7 +16,7 @@ fun <T> dev.icerock.moko.mvvm.livedata.LiveData<T>.bind(lifecycleOwner: Lifecycl
     })
 }
 
-fun <T> dev.icerock.moko.mvvm.livedata.LiveData<T>.bindNotNull(lifecycleOwner: LifecycleOwner, observer: (T) -> Unit) {
+fun <T> LiveData<T>.bindNotNull(lifecycleOwner: LifecycleOwner, observer: (T) -> Unit) {
     bind(lifecycleOwner) { value ->
         if (value == null) return@bind
 

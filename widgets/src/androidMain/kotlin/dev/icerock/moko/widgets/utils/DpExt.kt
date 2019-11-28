@@ -5,6 +5,10 @@
 package dev.icerock.moko.widgets.utils
 
 import android.content.Context
+import android.util.DisplayMetrics
 
-fun Int.dp(context: Context): Int = (context.resources.displayMetrics.density * this).toInt()
-fun Float.dp(context: Context): Int = (context.resources.displayMetrics.density * this).toInt()
+fun Int.dp(context: Context): Int = dp(dm = context.resources.displayMetrics)
+fun Float.dp(context: Context): Int = dp(dm = context.resources.displayMetrics)
+
+fun Int.dp(dm: DisplayMetrics): Int = (dm.density * this).toInt()
+fun Float.dp(dm: DisplayMetrics): Int = (dm.density * this).toInt()

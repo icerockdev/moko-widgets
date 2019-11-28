@@ -1,3 +1,7 @@
+/*
+ * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
+ */
+
 package dev.icerock.moko.widgets.factory
 
 import dev.icerock.moko.widgets.ButtonWidget
@@ -11,12 +15,13 @@ import dev.icerock.moko.widgets.style.view.StateBackgrounded
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-expect class DefaultButtonWidgetViewFactory(style: Style) :
-    DefaultButtonWidgetViewFactoryBase
+expect class DefaultButtonWidgetViewFactory(
+    style: Style = Style()
+) : DefaultButtonWidgetViewFactoryBase
 
 abstract class DefaultButtonWidgetViewFactoryBase(
     val style: Style
-) : ViewFactory<ButtonWidget<WidgetSize>> {
+) : ViewFactory<ButtonWidget<out WidgetSize>> {
 
     data class Style(
         override val background: StateBackground? = null,

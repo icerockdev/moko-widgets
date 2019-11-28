@@ -18,11 +18,11 @@ actual class DefaultButtonWidgetViewFactory actual constructor(
 ) : DefaultButtonWidgetViewFactoryBase(style) {
 
     override fun <WS : WidgetSize> build(
-        widget: ButtonWidget<WidgetSize>,
+        widget: ButtonWidget<out WidgetSize>,
         size: WS,
-        context: ViewFactoryContext
+        viewFactoryContext: ViewFactoryContext
     ): ViewBundle<WS> {
-        val ctx = context.androidContext
+        val ctx = viewFactoryContext.androidContext
 
         val button = Button(ctx).apply {
             applyTextStyle(style.textStyle)
@@ -31,7 +31,7 @@ actual class DefaultButtonWidgetViewFactory actual constructor(
             style.isAllCaps?.also { isAllCaps = it }
         }
 
-        widget.enabled?.bind(context.lifecycleOwner) { enabled ->
+        widget.enabled?.bind(viewFactoryContext.lifecycleOwner) { enabled ->
             button.isEnabled = enabled == true
         }
 
@@ -39,7 +39,7 @@ actual class DefaultButtonWidgetViewFactory actual constructor(
             widget.onTap()
         }
 
-        widget.text.bind(context.lifecycleOwner) { text ->
+        widget.text.bind(viewFactoryContext.lifecycleOwner) { text ->
             button.text = text?.toString(ctx)
         }
 

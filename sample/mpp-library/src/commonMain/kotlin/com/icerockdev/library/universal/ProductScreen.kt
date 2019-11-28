@@ -11,9 +11,8 @@ import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.container
+import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
-import dev.icerock.moko.widgets.core.WidgetScope
-import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.NavigationItem
 import dev.icerock.moko.widgets.screen.WidgetScreen
@@ -24,14 +23,15 @@ import dev.icerock.moko.widgets.screen.listen
 import dev.icerock.moko.widgets.style.view.Alignment
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
-import dev.icerock.moko.widgets.text
 
-class ProductScreen : WidgetScreen<Args.Parcel<ProductScreen.Args>>(),
+class ProductScreen(
+    private val theme: Theme
+) : WidgetScreen<Args.Parcel<ProductScreen.Args>>(),
     ProductViewModel.EventsListener, NavigationItem {
     override val navigationTitle: StringDesc
         get() = getArgument().productId.let { "Product $it".desc() }
 
-    override fun createContentWidget(): Widget {
+    override fun createContentWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         val arg = getArgument()
         val viewModel = getViewModel {
             ProductViewModel(
@@ -41,26 +41,30 @@ class ProductScreen : WidgetScreen<Args.Parcel<ProductScreen.Args>>(),
         }
         viewModel.eventsDispatcher.listen(this, this)
 
-        return with(WidgetScope()) {
+        return with(theme) {
             container(
+                size = WidgetSize.Const(
+                    width = SizeSpec.AsParent,
+                    height = SizeSpec.AsParent
+                ),
                 children = mapOf(
-                    linear(
-                        styled = {
-                            it.copy(
-                                size = WidgetSize.Const(
-                                    width = SizeSpec.WrapContent,
-                                    height = SizeSpec.WrapContent
-                                )
-                            )
-                        },
-                        children = listOf(
-                            text(text = viewModel.title),
-                            button(
-                                text = const("Add to Cart"),
-                                onTap = viewModel::onCartPressed
-                            )
-                        )
-                    ) to Alignment.CENTER
+//                    linear(
+//                        styled = {
+//                            it.copy(
+//                                size = WidgetSize.Const(
+//                                    width = SizeSpec.WrapContent,
+//                                    height = SizeSpec.WrapContent
+//                                )
+//                            )
+//                        },
+//                        children = listOf(
+//                            text(text = viewModel.title),
+//                            button(
+//                                text = const("Add to Cart"),
+//                                onTap = viewModel::onCartPressed
+//                            )
+//                        )
+//                    ) to Alignment.CENTER
                 )
             )
         }

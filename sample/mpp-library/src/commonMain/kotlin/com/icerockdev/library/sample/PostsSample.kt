@@ -4,47 +4,50 @@
 
 package com.icerockdev.library.sample
 
-import com.icerockdev.library.units.PostCollectionUnitItem
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.mvvm.livedata.map
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
-import dev.icerock.moko.widgets.CollectionWidget
-import dev.icerock.moko.widgets.collection
+import dev.icerock.moko.widgets.container
+import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
-import dev.icerock.moko.widgets.core.WidgetScope
-import dev.icerock.moko.widgets.style.view.PaddingValues
+import dev.icerock.moko.widgets.style.view.SizeSpec
+import dev.icerock.moko.widgets.style.view.WidgetSize
 
 class PostsScreen(
-    private val widgetScope: WidgetScope,
+    private val theme: Theme,
     private val viewModel: PostsViewModelContract
 ) {
-    fun createWidget(): Widget = widgetScope.createWidget()
-
-    private fun WidgetScope.createWidget(): Widget {
-        return collection(
-            id = Id.Collection,
-            items = viewModel.posts.map { posts ->
-                posts.map { post ->
-                    PostCollectionUnitItem(
-                        widgetScope = this,
-                        itemId = post.id,
-                        data = post
-                    )
-                }
-            },
-            styled = {
-                it.copy(
-                    padding = PaddingValues(4f)
-                )
-            }
-        )
+    fun createWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
+        return with(theme) {
+            container(
+                size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.AsParent),
+                children = emptyMap()
+            )
+//            collection(
+//                id = Id.Collection,
+//                items = viewModel.posts.map { posts ->
+//                    posts.map { post ->
+//                        PostCollectionUnitItem(
+//                            theme = this,
+//                            itemId = post.id,
+//                            data = post
+//                        )
+//                    }
+//                },
+//                styled = {
+//                    it.copy(
+//                        padding = PaddingValues(4f)
+//                    )
+//                }
+//            )
+        }
     }
 
     object Id {
-        object Collection : CollectionWidget.Id
+//        object Collection : CollectionWidget.Id
     }
 }
 
@@ -66,20 +69,21 @@ class PostsViewModel : ViewModel(), PostsViewModelContract {
     private val _postsTitle: MutableLiveData<List<String>> = MutableLiveData(
         initialValue = List(20) { "Test $it post" }
     )
-    override val posts: LiveData<List<PostsViewModelContract.PostItem>> = _postsTitle.map { titles ->
-        titles.map { title ->
-            val id = title.hashCode().toLong()
-            PostItem(
-                id = id,
-                nickname = "@alex009".desc(),
-                imageUrl = "https://html5box.com/html5lightbox/images/mountain.jpg",
-                viewsCount = "24.5K".desc(),
-                title = title.desc(),
-                tags = null,
-                onClick = { println("clicked $id!") }
-            )
+    override val posts: LiveData<List<PostsViewModelContract.PostItem>> =
+        _postsTitle.map { titles ->
+            titles.map { title ->
+                val id = title.hashCode().toLong()
+                PostItem(
+                    id = id,
+                    nickname = "@alex009".desc(),
+                    imageUrl = "https://html5box.com/html5lightbox/images/mountain.jpg",
+                    viewsCount = "24.5K".desc(),
+                    title = title.desc(),
+                    tags = null,
+                    onClick = { println("clicked $id!") }
+                )
+            }
         }
-    }
 
     data class PostItem(
         override val id: Long,

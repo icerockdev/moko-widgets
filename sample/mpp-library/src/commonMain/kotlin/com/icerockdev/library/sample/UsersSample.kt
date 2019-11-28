@@ -11,63 +11,64 @@ import dev.icerock.moko.mvvm.livedata.mergeWith
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.units.CollectionUnitItem
 import dev.icerock.moko.units.TableUnitItem
-import dev.icerock.moko.widgets.CollectionWidget
-import dev.icerock.moko.widgets.ListWidget
-import dev.icerock.moko.widgets.TabsWidget
-import dev.icerock.moko.widgets.collection
+import dev.icerock.moko.widgets.container
+import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
-import dev.icerock.moko.widgets.core.WidgetScope
-import dev.icerock.moko.widgets.list
-import dev.icerock.moko.widgets.style.view.PaddingValues
-import dev.icerock.moko.widgets.tabs
+import dev.icerock.moko.widgets.style.view.SizeSpec
+import dev.icerock.moko.widgets.style.view.WidgetSize
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class UsersScreen(
-    private val widgetScope: WidgetScope,
+    private val theme: Theme,
     private val viewModel: UsersViewModelContract
 ) {
-    fun createWidget(): Widget {
-        return with(widgetScope) {
-            tabs(
-                tabs = listOf(
-                    TabsWidget.Tab(
-                        title = const("list"),
-                        body = list(
-                            id = Id.List,
-                            items = viewModel.tableItems,
-                            styled = {
-                                it.copy(
-                                    padding = PaddingValues(8f)
-                                )
-                            },
-                            onRefresh = viewModel::refresh,
-                            onReachEnd = viewModel::loadNextPage
-                        )
-                    ),
-                    TabsWidget.Tab(
-                        title = const("collection"),
-                        body = collection(
-                            id = Id.Collection,
-                            items = viewModel.collectionItems,
-                            styled = {
-                                it.copy(
-                                    padding = PaddingValues(8f)
-                                )
-                            },
-                            onRefresh = viewModel::refresh,
-                            onReachEnd = viewModel::loadNextPage
-                        )
-                    )
-                )
+    fun createWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
+        return with(theme) {
+            container(
+                size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.AsParent),
+                children = emptyMap()
             )
+
+//            tabs(
+//                tabs = listOf(
+//                    TabsWidget.Tab(
+//                        title = const("list"),
+//                        body = list(
+//                            id = Id.List,
+//                            items = viewModel.tableItems,
+//                            styled = {
+//                                it.copy(
+//                                    padding = PaddingValues(8f)
+//                                )
+//                            },
+//                            onRefresh = viewModel::refresh,
+//                            onReachEnd = viewModel::loadNextPage
+//                        )
+//                    ),
+//                    TabsWidget.Tab(
+//                        title = const("collection"),
+//                        body = collection(
+//                            id = Id.Collection,
+//                            items = viewModel.collectionItems,
+//                            styled = {
+//                                it.copy(
+//                                    padding = PaddingValues(8f)
+//                                )
+//                            },
+//                            onRefresh = viewModel::refresh,
+//                            onReachEnd = viewModel::loadNextPage
+//                        )
+//                    )
+//                )
+//            )
         }
     }
 
     object Id {
-        object List : ListWidget.Id
-        object Collection : CollectionWidget.Id
+//        object List : ListWidget.Id
+//        object Collection : CollectionWidget.Id
     }
 }
 

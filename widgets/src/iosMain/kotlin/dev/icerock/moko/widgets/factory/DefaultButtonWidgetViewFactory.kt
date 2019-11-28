@@ -8,10 +8,10 @@ import dev.icerock.moko.graphics.toUIColor
 import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.applyStateBackground
 import dev.icerock.moko.widgets.utils.applyTextStyle
+import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.setEventHandler
 import platform.UIKit.UIButton
 import platform.UIKit.UIButtonTypeSystem
@@ -28,9 +28,9 @@ actual class DefaultButtonWidgetViewFactory actual constructor(
 ) : DefaultButtonWidgetViewFactoryBase(style) {
 
     override fun <WS : WidgetSize> build(
-        widget: ButtonWidget<WidgetSize>,
+        widget: ButtonWidget<out WidgetSize>,
         size: WS,
-        context: ViewFactoryContext
+        viewFactoryContext: ViewFactoryContext
     ): ViewBundle<WS> {
         val button = UIButton.buttonWithType(UIButtonTypeSystem).apply {
             translatesAutoresizingMaskIntoConstraints = false

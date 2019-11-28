@@ -10,56 +10,58 @@ import dev.icerock.moko.fields.validate
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.ButtonWidget
-import dev.icerock.moko.widgets.InputWidget
-import dev.icerock.moko.widgets.button
+import dev.icerock.moko.widgets.container
+import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
-import dev.icerock.moko.widgets.core.WidgetScope
-import dev.icerock.moko.widgets.input
-import dev.icerock.moko.widgets.linear
-import dev.icerock.moko.widgets.scroll
-import dev.icerock.moko.widgets.style.input.InputType
+import dev.icerock.moko.widgets.style.view.SizeSpec
+import dev.icerock.moko.widgets.style.view.WidgetSize
 
 class McommerceProfileScreen(
-    private val widgetScope: WidgetScope,
+    private val theme: Theme,
     private val viewModel: McommerceProfileViewModelContract
 ) {
-    fun createWidget(): Widget {
-        return with(widgetScope) {
-            scroll(
-                child = linear(
-                    children = listOf(
-                        input(
-                            id = Id.NameInput,
-                            label = const("Ваше имя"),
-                            field = viewModel.nameField
-                        ),
-                        input(
-                            id = Id.BirthdayInput,
-                            label = const("Дата рождения"),
-                            field = viewModel.birthdayField,
-                            inputType = InputType.DATE
-                        ),
-                        input(
-                            id = Id.PhoneInput,
-                            label = const("Телефон"),
-                            field = viewModel.phoneField,
-                            inputType = InputType.PHONE
-                        ),
-                        button(
-                            id = Id.SubmitButton,
-                            text = const("Подтвердить"),
-                            onTap = viewModel::onSavePressed
-                        )
-                    )
-                )
+    fun createWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
+        return with(theme) {
+            container(
+                size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.AsParent),
+                children = emptyMap()
             )
+//
+//            scroll(
+//                child = linear(
+//                    children = listOf(
+//                        input(
+//                            id = Id.NameInput,
+//                            label = const("Ваше имя"),
+//                            field = viewModel.nameField
+//                        ),
+//                        input(
+//                            id = Id.BirthdayInput,
+//                            label = const("Дата рождения"),
+//                            field = viewModel.birthdayField,
+//                            inputType = InputType.DATE
+//                        ),
+//                        input(
+//                            id = Id.PhoneInput,
+//                            label = const("Телефон"),
+//                            field = viewModel.phoneField,
+//                            inputType = InputType.PHONE
+//                        ),
+//                        button(
+//                            id = Id.SubmitButton,
+//                            text = const("Подтвердить"),
+//                            onTap = viewModel::onSavePressed
+//                        )
+//                    )
+//                )
+//            )
         }
     }
 
     object Id {
-        object NameInput : InputWidget.Id
-        object BirthdayInput : InputWidget.Id
-        object PhoneInput : InputWidget.Id
+        //        object NameInput : InputWidget.Id
+//        object BirthdayInput : InputWidget.Id
+//        object PhoneInput : InputWidget.Id
         object SubmitButton : ButtonWidget.Id
     }
 }
@@ -74,8 +76,10 @@ interface McommerceProfileViewModelContract {
 
 class McommerceProfileViewModel() : ViewModel(), McommerceProfileViewModelContract {
     override val nameField: FormField<String, StringDesc> = FormField("Aleksey", liveBlock { null })
-    override val phoneField: FormField<String, StringDesc> = FormField("+79999999999", liveBlock { null })
-    override val birthdayField: FormField<String, StringDesc> = FormField("31.05.1993", liveBlock { null })
+    override val phoneField: FormField<String, StringDesc> =
+        FormField("+79999999999", liveBlock { null })
+    override val birthdayField: FormField<String, StringDesc> =
+        FormField("31.05.1993", liveBlock { null })
 
     private val fields = listOf(
         nameField,

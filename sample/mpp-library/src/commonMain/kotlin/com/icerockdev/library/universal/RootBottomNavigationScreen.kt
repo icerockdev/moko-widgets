@@ -5,7 +5,6 @@
 package com.icerockdev.library.universal
 
 import com.icerockdev.library.MR
-import com.icerockdev.library.Theme
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.screen.BottomNavigationItem
 import dev.icerock.moko.widgets.screen.BottomNavigationScreen

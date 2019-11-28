@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import com.icerockdev.library.SharedFactory
 import com.icerockdev.library.universal.WidgetsScreen
 import dev.icerock.moko.widgets.core.BasePreviewView
+import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.screen.Screen
 
 class PreviewView @JvmOverloads constructor(
@@ -14,6 +15,6 @@ class PreviewView @JvmOverloads constructor(
 ) : BasePreviewView(context, attrs, defStyleAttr) {
 
     override fun createScreen(): Screen<*> {
-        return WidgetsScreen(sharedFactory = SharedFactory())
+        return WidgetsScreen(sharedFactory = SharedFactory(), theme = Theme())
     }
 }

@@ -9,11 +9,11 @@ import com.icerockdev.library.units.LoadingUnitWidget
 import com.icerockdev.library.units.UserUnitWidget
 import dev.icerock.moko.units.CollectionUnitItem
 import dev.icerock.moko.units.TableUnitItem
-import dev.icerock.moko.widgets.core.WidgetScope
+import dev.icerock.moko.widgets.core.Theme
 
 class SharedFactory {
     val mainWidgetScope by lazy {
-        WidgetScope()
+        Theme()
     }
 
     val usersUnitsFactory by lazy {
@@ -24,7 +24,7 @@ class SharedFactory {
                 avatarUrl: String,
                 onClick: () -> Unit
             ): TableUnitItem = UserUnitWidget.TableUnitItem(
-                widgetScope = mainWidgetScope,
+                theme = mainWidgetScope,
                 itemId = itemId,
                 data = UserUnitWidget.Data(
                     name = name,
@@ -39,7 +39,7 @@ class SharedFactory {
                 avatarUrl: String,
                 onClick: () -> Unit
             ): CollectionUnitItem = UserUnitWidget.CollectionUnitItem(
-                widgetScope = mainWidgetScope,
+                theme = mainWidgetScope,
                 itemId = itemId,
                 data = UserUnitWidget.Data(
                     name = name,
@@ -51,14 +51,14 @@ class SharedFactory {
             override fun createLoadingTableUnit(
                 itemId: Long
             ): TableUnitItem = LoadingUnitWidget.TableUnitItem(
-                widgetScope = mainWidgetScope,
+                theme = mainWidgetScope,
                 itemId = itemId
             )
 
             override fun createLoadingCollectionUnit(
                 itemId: Long
             ): CollectionUnitItem = LoadingUnitWidget.CollectionUnitItem(
-                widgetScope = mainWidgetScope,
+                theme = mainWidgetScope,
                 itemId = itemId
             )
         }

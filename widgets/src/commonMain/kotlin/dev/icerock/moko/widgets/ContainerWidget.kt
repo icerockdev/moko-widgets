@@ -5,48 +5,26 @@
 package dev.icerock.moko.widgets
 
 import dev.icerock.moko.widgets.core.OptionalId
-import dev.icerock.moko.widgets.core.Styled
-import dev.icerock.moko.widgets.core.VFC
-import dev.icerock.moko.widgets.core.View
+import dev.icerock.moko.widgets.core.Theme
+import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
-import dev.icerock.moko.widgets.core.WidgetScope
-import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.view.Alignment
-import dev.icerock.moko.widgets.style.view.Backgrounded
-import dev.icerock.moko.widgets.style.view.MarginValues
-import dev.icerock.moko.widgets.style.view.Margined
-import dev.icerock.moko.widgets.style.view.Padded
-import dev.icerock.moko.widgets.style.view.PaddingValues
-import dev.icerock.moko.widgets.style.view.SizeSpec
-import dev.icerock.moko.widgets.style.view.Sized
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-expect var containerWidgetViewFactory: VFC<ContainerWidget>
-
 @WidgetDef
-class ContainerWidget(
-    val factory: VFC<ContainerWidget>,
-    override val style: Style,
+class ContainerWidget<WS : WidgetSize>(
+    val factory: ViewFactory<ContainerWidget<out WidgetSize>>,
+    val size: WS,
     override val id: Id?,
-    @Suppress("RemoveRedundantQualifierName")
-    val children: Map<Widget, Alignment>
-) : Widget(), Styled<ContainerWidget.Style>, OptionalId<ContainerWidget.Id> {
+    val children: Map<out Widget<out WidgetSize>, Alignment>
+) : Widget<WS>(), OptionalId<ContainerWidget.Id> {
 
-    override fun buildView(viewFactoryContext: ViewFactoryContext): View {
-        return factory(viewFactoryContext, this)
+    override fun buildView(viewFactoryContext: ViewFactoryContext): ViewBundle<WS> {
+        return factory.build(this, size, viewFactoryContext)
     }
 
-    data class Style(
-        override val size: WidgetSize = WidgetSize.Const(
-            width = SizeSpec.AsParent,
-            height = SizeSpec.AsParent
-        ),
-        override val padding: PaddingValues? = null,
-        override val margins: MarginValues? = null,
-        override val background: Background? = null
-    ) : Widget.Style, Sized, Padded, Margined, Backgrounded
-
-    interface Id : WidgetScope.Id
+    interface Id : Theme.Id
 }

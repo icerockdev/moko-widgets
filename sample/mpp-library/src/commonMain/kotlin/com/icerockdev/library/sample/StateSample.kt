@@ -7,99 +7,89 @@ package com.icerockdev.library.sample
 import dev.icerock.moko.mvvm.State
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
-import dev.icerock.moko.mvvm.livedata.map
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.resources.desc.StringDesc
-import dev.icerock.moko.resources.desc.desc
-import dev.icerock.moko.widgets.TabsWidget
-import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.container
+import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
-import dev.icerock.moko.widgets.core.WidgetScope
-import dev.icerock.moko.widgets.core.asLiveData
-import dev.icerock.moko.widgets.flatAlert
-import dev.icerock.moko.widgets.linear
-import dev.icerock.moko.widgets.progressBar
-import dev.icerock.moko.widgets.stateful
 import dev.icerock.moko.widgets.style.view.Alignment
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
-import dev.icerock.moko.widgets.tabs
-import dev.icerock.moko.widgets.text
 
 open class StateScreen(
-    private val widgetScope: WidgetScope,
+    private val theme: Theme,
     private val viewModel: StateViewModelContract
 ) {
-    fun createWidget(): Widget {
-        return with(widgetScope) {
-            linear(
-                children = listOf(
-                    button(
-                        text = "change state".desc().asLiveData(),
-                        onTap = viewModel::onChangeStatePressed
-                    ),
-                    stateful(
-                        state = viewModel.state,
-                        empty = {
-                            container(
-                                children = mapOf(
-                                    text(
-                                        styled = {
-                                            it.copy(
-                                                size = WidgetSize.Const(
-                                                    width = SizeSpec.WrapContent,
-                                                    height = SizeSpec.WrapContent
-                                                )
-                                            )
-                                        },
-                                        text = const("empty")
-                                    ) to Alignment.CENTER
-                                )
-                            )
-                        },
-                        loading = {
-                            container(
-                                children = mapOf(
-                                    progressBar() to Alignment.CENTER
-                                )
-                            )
-                        },
-                        data = { data ->
-                            tabs(
-                                tabs = listOf(
-                                    TabsWidget.Tab(
-                                        title = const("first page"),
-                                        body = flatAlertWrapped(message = data.map { it?.desc() })
-                                    ),
-                                    TabsWidget.Tab(
-                                        title = const("second page"),
-                                        body = flatAlertWrapped(message = "SECOND".desc().asLiveData())
-                                    )
-                                )
-                            )
-                        },
-                        error = { error ->
-                            flatAlertWrapped(message = error.map { it?.desc() })
-                        }
-                    )
-                )
+    fun createWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
+        return with(theme) {
+            container(
+                size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.AsParent),
+                children = emptyMap()
             )
+
+//            linear(
+//                children = listOf(
+//                    button(
+//                        text = "change state".desc().asLiveData(),
+//                        onTap = viewModel::onChangeStatePressed
+//                    ),
+//                    stateful(
+//                        state = viewModel.state,
+//                        empty = {
+//                            container(
+//                                children = mapOf(
+//                                    text(
+//                                        styled = {
+//                                            it.copy(
+//                                                size = WidgetSize.Const(
+//                                                    width = SizeSpec.WrapContent,
+//                                                    height = SizeSpec.WrapContent
+//                                                )
+//                                            )
+//                                        },
+//                                        text = const("empty")
+//                                    ) to Alignment.CENTER
+//                                )
+//                            )
+//                        },
+//                        loading = {
+//                            container(
+//                                children = mapOf(
+//                                    progressBar() to Alignment.CENTER
+//                                )
+//                            )
+//                        },
+//                        data = { data ->
+//                            tabs(
+//                                tabs = listOf(
+//                                    TabsWidget.Tab(
+//                                        title = const("first page"),
+//                                        body = flatAlertWrapped(message = data.map { it?.desc() })
+//                                    ),
+//                                    TabsWidget.Tab(
+//                                        title = const("second page"),
+//                                        body = flatAlertWrapped(message = "SECOND".desc().asLiveData())
+//                                    )
+//                                )
+//                            )
+//                        },
+//                        error = { error ->
+//                            flatAlertWrapped(message = error.map { it?.desc() })
+//                        }
+//                    )
+//                )
+//            )
         }
     }
 
-    private fun WidgetScope.flatAlertWrapped(message: LiveData<StringDesc?>): Widget {
+    private fun Theme.flatAlertWrapped(message: LiveData<StringDesc?>): Widget<out WidgetSize> {
         return container(
-            styled = {
-                it.copy(
-                    size = WidgetSize.Const(
-                        width = SizeSpec.AsParent,
-                        height = SizeSpec.AsParent
-                    )
-                )
-            },
+            size = WidgetSize.Const(
+                width = SizeSpec.AsParent,
+                height = SizeSpec.AsParent
+            ),
             children = mapOf(
-                flatAlert(message = message) to Alignment.CENTER
+//                flatAlert(message = message) to Alignment.CENTER
             )
         )
     }
@@ -112,7 +102,8 @@ interface StateViewModelContract {
 }
 
 class StateViewModel : ViewModel(), StateViewModelContract {
-    private val _state: MutableLiveData<State<String, String>> = MutableLiveData(initialValue = State.Empty())
+    private val _state: MutableLiveData<State<String, String>> =
+        MutableLiveData(initialValue = State.Empty())
     override val state: LiveData<State<String, String>> = _state
 
     override fun onChangeStatePressed() {

@@ -10,6 +10,7 @@ import com.icerockdev.library.universal.ProductsNavigationScreen
 import com.icerockdev.library.universal.ProductsScreen
 import com.icerockdev.library.universal.RootBottomNavigationScreen
 import com.icerockdev.library.universal.WidgetsScreen
+import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.BaseApplication
 import dev.icerock.moko.widgets.screen.Screen
@@ -20,14 +21,15 @@ import kotlin.reflect.KClass
 object App : BaseApplication() {
     override fun setup() {
         val sharedFactory = SharedFactory()
+        val theme = Theme()
 
         registerScreenFactory(RootBottomNavigationScreen::class) { RootBottomNavigationScreen(this) }
         registerScreenFactory(ProductsNavigationScreen::class) { ProductsNavigationScreen(this) }
         registerScreenFactory(CartNavigationScreen::class) { CartNavigationScreen(this) }
-        registerScreenFactory(WidgetsScreen::class) { WidgetsScreen(sharedFactory) }
-        registerScreenFactory(ProductsScreen::class) { ProductsScreen() }
-        registerScreenFactory(CartScreen::class) { CartScreen() }
-        registerScreenFactory(ProductScreen::class) { ProductScreen() }
+        registerScreenFactory(WidgetsScreen::class) { WidgetsScreen(sharedFactory, theme) }
+        registerScreenFactory(ProductsScreen::class) { ProductsScreen(theme) }
+        registerScreenFactory(CartScreen::class) { CartScreen(theme) }
+        registerScreenFactory(ProductScreen::class) { ProductScreen(theme) }
     }
 
     override fun getRootScreen(): KClass<out Screen<Args.Empty>> {

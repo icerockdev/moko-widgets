@@ -12,83 +12,83 @@ import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.ButtonWidget
-import dev.icerock.moko.widgets.InputWidget
-import dev.icerock.moko.widgets.TextWidget
-import dev.icerock.moko.widgets.button
+import dev.icerock.moko.widgets.container
+import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
-import dev.icerock.moko.widgets.core.WidgetScope
-import dev.icerock.moko.widgets.input
-import dev.icerock.moko.widgets.linear
-import dev.icerock.moko.widgets.scroll
-import dev.icerock.moko.widgets.style.input.InputType
-import dev.icerock.moko.widgets.text
+import dev.icerock.moko.widgets.style.view.SizeSpec
+import dev.icerock.moko.widgets.style.view.WidgetSize
 
 class CryptoProfileScreen(
-    private val widgetScope: WidgetScope,
+    private val theme: Theme,
     private val viewModel: CryptoProfileContract
 ) {
-    fun createWidget(): Widget {
-        return with(widgetScope) {
-            scroll(
-                child = linear(
-                    children = listOf(
-                        input(
-                            id = Id.NameInput,
-                            label = const("Name"),
-                            field = viewModel.nameField
-                        ),
-                        input(
-                            id = Id.PhoneInput,
-                            label = const("Phone number"),
-                            field = viewModel.phoneField,
-                            inputType = InputType.PHONE
-                        ),
-                        input(
-                            id = Id.EmailInput,
-                            label = const("Email"),
-                            field = viewModel.emailField,
-                            inputType = InputType.EMAIL
-                        ),
-                        input(
-                            id = Id.PasswordInput,
-                            label = const("Password"),
-                            field = viewModel.passwordField,
-                            inputType = InputType.PASSWORD
-                        ),
-                        input(
-                            id = Id.RepeatPasswordInput,
-                            label = const("Repeat password"),
-                            field = viewModel.repeatPasswordField,
-                            inputType = InputType.PASSWORD
-                        ),
-                        button(
-                            id = Id.JoinButton,
-                            text = const("Join"),
-                            onTap = viewModel::onSavePressed
-                        ),
-                        text(
-                            id = Id.DelimiterText,
-                            text = const("or")
-                        ),
-                        button(
-                            id = Id.TryDemoButton,
-                            text = const("Try Demo"),
-                            onTap = viewModel::onSavePressed
-                        )
-                    )
-                )
+    fun createWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
+        return with(theme) {
+            container(
+                size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.AsParent),
+                children = emptyMap()
             )
+//            scroll(
+//                child = linear(
+//                    children = listOf(
+//                        input(
+//                            id = Id.NameInput,
+//                            label = const("Name"),
+//                            field = viewModel.nameField
+//                        ),
+//                        input(
+//                            id = Id.PhoneInput,
+//                            label = const("Phone number"),
+//                            field = viewModel.phoneField,
+//                            inputType = InputType.PHONE
+//                        ),
+//                        input(
+//                            id = Id.EmailInput,
+//                            label = const("Email"),
+//                            field = viewModel.emailField,
+//                            inputType = InputType.EMAIL
+//                        ),
+//                        input(
+//                            id = Id.PasswordInput,
+//                            label = const("Password"),
+//                            field = viewModel.passwordField,
+//                            inputType = InputType.PASSWORD
+//                        ),
+//                        input(
+//                            id = Id.RepeatPasswordInput,
+//                            label = const("Repeat password"),
+//                            field = viewModel.repeatPasswordField,
+//                            inputType = InputType.PASSWORD
+//                        ),
+//                        button(
+//                            id = Id.JoinButton,
+//                            text = const("Join"),
+//                            onTap = viewModel::onSavePressed
+//                        ),
+//                        text(
+//                            id = Id.DelimiterText,
+//                            text = const("or")
+//                        ),
+//                        button(
+//                            id = Id.TryDemoButton,
+//                            text = const("Try Demo"),
+//                            onTap = viewModel::onSavePressed
+//                        )
+//                    )
+//                )
+//            )
         }
     }
 
     object Id {
-        object NameInput : InputWidget.Id
-        object PhoneInput : InputWidget.Id
-        object EmailInput : InputWidget.Id
-        object PasswordInput : InputWidget.Id
-        object RepeatPasswordInput : InputWidget.Id
+        //        object NameInput : InputWidget.Id
+//        object PhoneInput : InputWidget.Id
+//        object EmailInput : InputWidget.Id
+//        object PasswordInput : InputWidget.Id
+//        object RepeatPasswordInput : InputWidget.Id
+//        object DelimiterText : TextWidget.Id
         object JoinButton : ButtonWidget.Id
-        object DelimiterText : TextWidget.Id
+
         object TryDemoButton : ButtonWidget.Id
     }
 }
@@ -105,18 +105,22 @@ interface CryptoProfileContract {
 
 class CryptoProfileViewModel : ViewModel(), CryptoProfileContract {
     override val nameField: FormField<String, StringDesc> = FormField("Aleksey", liveBlock { null })
-    override val emailField: FormField<String, StringDesc> = FormField("am@icerock.dev", liveBlock { email ->
-        if (email.contains("@")) null
-        else "Should contain @".desc()
-    })
-    override val phoneField: FormField<String, StringDesc> = FormField("+79999999999", liveBlock { null })
-    override val passwordField: FormField<String, StringDesc> = FormField("123456", liveBlock { null })
-    override val repeatPasswordField: FormField<String, StringDesc> = FormField("1234567") { repeatPasswordData ->
-        repeatPasswordData.mergeWith(passwordField.data) { repeatPassword, password ->
-            if (repeatPassword != password) "should be same".desc() as StringDesc
-            else null
+    override val emailField: FormField<String, StringDesc> =
+        FormField("am@icerock.dev", liveBlock { email ->
+            if (email.contains("@")) null
+            else "Should contain @".desc()
+        })
+    override val phoneField: FormField<String, StringDesc> =
+        FormField("+79999999999", liveBlock { null })
+    override val passwordField: FormField<String, StringDesc> =
+        FormField("123456", liveBlock { null })
+    override val repeatPasswordField: FormField<String, StringDesc> =
+        FormField("1234567") { repeatPasswordData ->
+            repeatPasswordData.mergeWith(passwordField.data) { repeatPassword, password ->
+                if (repeatPassword != password) "should be same".desc() as StringDesc
+                else null
+            }
         }
-    }
 
     private val fields = listOf(
         nameField,

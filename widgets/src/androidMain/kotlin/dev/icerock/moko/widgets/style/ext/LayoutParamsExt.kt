@@ -5,6 +5,7 @@
 package dev.icerock.moko.widgets.style.ext
 
 import android.content.Context
+import android.util.DisplayMetrics
 import android.view.View
 import android.view.ViewGroup
 import dev.icerock.moko.widgets.style.view.MarginValues
@@ -20,6 +21,18 @@ fun ViewGroup.MarginLayoutParams.applyMargin(
         margin.top.dp(context),
         margin.end.dp(context),
         margin.bottom.dp(context)
+    )
+}
+
+fun ViewGroup.MarginLayoutParams.applyMargin(
+    dm: DisplayMetrics,
+    margin: MarginValues
+) {
+    setMargins(
+        margin.start.dp(dm),
+        margin.top.dp(dm),
+        margin.end.dp(dm),
+        margin.bottom.dp(dm)
     )
 }
 
