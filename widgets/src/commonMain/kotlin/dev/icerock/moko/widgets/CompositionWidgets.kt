@@ -7,36 +7,37 @@ package dev.icerock.moko.widgets
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.resources.desc.StringDesc
+import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
-import dev.icerock.moko.widgets.core.WidgetScope
+import dev.icerock.moko.widgets.factory.DefaultLinearWidgetViewFactory
+import dev.icerock.moko.widgets.factory.DefaultLinearWidgetViewFactoryBase
 import dev.icerock.moko.widgets.style.background.Orientation
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-fun WidgetScope.switchLabeled(
+fun Theme.switchLabeled(
     switchId: SwitchWidget.Id,
     switchState: MutableLiveData<Boolean>,
     text: LiveData<StringDesc>,
     linearId: LinearWidget.Id? = null,
     textId: TextWidget.Id? = null
-): Widget {
+): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.WrapContent>> {
     return linear(
+        size = WidgetSize.WidthAsParentHeightWrapContent,
         id = linearId,
-        styled = {
-            it.copy(
-                size = WidgetSize.Const(
-                    width = SizeSpec.AsParent,
-                    height = SizeSpec.WrapContent
-                ),
+        factory = DefaultLinearWidgetViewFactory(
+            DefaultLinearWidgetViewFactoryBase.Style(
                 orientation = Orientation.HORIZONTAL
             )
-        },
-        children = listOf(
+        ),
+        children = listOf<Widget<out WidgetSize>>(
             switch(
+                size = WidgetSize.WrapContent,
                 id = switchId,
                 state = switchState
             ),
             text(
+                size = WidgetSize.WidthAsParentHeightWrapContent,
                 id = textId,
                 text = text
             )

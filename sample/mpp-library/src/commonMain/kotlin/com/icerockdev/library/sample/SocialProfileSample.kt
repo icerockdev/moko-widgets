@@ -18,6 +18,7 @@ import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.LinearWidget
 import dev.icerock.moko.widgets.ScrollWidget
+import dev.icerock.moko.widgets.SwitchWidget
 import dev.icerock.moko.widgets.TextWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.core.Theme
@@ -28,6 +29,7 @@ import dev.icerock.moko.widgets.scroll
 import dev.icerock.moko.widgets.style.input.InputType
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.switchLabeled
 import dev.icerock.moko.widgets.text
 
 class SocialProfileScreen(
@@ -94,13 +96,13 @@ class SocialProfileScreen(
 //                            values = viewModel.genders,
 //                            cancelLabel = const("Отмена")
 //                        ),
-//                        switchLabeled(
-//                            switchId = Id.AgreementSwitch,
-//                            switchState = viewModel.agreement,
-//                            text = const("Согласен с условиями пользования"),
-//                            linearId = Id.AgreementContainer,
-//                            textId = Id.AgreementText
-//                        ),
+                        switchLabeled(
+                            switchId = Id.AgreementSwitch,
+                            switchState = viewModel.agreement,
+                            text = const("Согласен с условиями пользования"),
+                            linearId = Id.AgreementContainer,
+                            textId = Id.AgreementText
+                        ),
                         button(
                             size = WidgetSize.WidthAsParentHeightWrapContent,
                             id = Id.SubmitButton,
@@ -115,8 +117,8 @@ class SocialProfileScreen(
 
     object Id {
         //        object GenderChoice : SingleChoiceWidget.Id
-//        object AgreementSwitch : SwitchWidget.Id
 
+        object AgreementSwitch : SwitchWidget.Id
         object RootScroll : ScrollWidget.Id
         object AgreementText : TextWidget.Id
         object AgreementContainer : LinearWidget.Id
