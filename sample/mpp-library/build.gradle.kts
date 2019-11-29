@@ -41,6 +41,7 @@ dependencies {
 
     androidLibrary(Deps.Libs.Android.recyclerView)
     androidLibrary(Deps.Libs.Android.appCompat)
+    androidLibrary(Deps.Libs.Android.material)
 
     mppModule(MultiPlatformModule(":widgets"))
 }
