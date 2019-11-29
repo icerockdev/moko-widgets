@@ -3,7 +3,6 @@
  */
 
 import com.icerockdev.library.SharedFactory
-import com.icerockdev.library.custom.MaterialButtonWidgetViewFactory
 import com.icerockdev.library.sample.CryptoProfileScreen
 import com.icerockdev.library.sample.UsersScreen
 import com.icerockdev.library.universal.CartNavigationScreen
@@ -13,7 +12,6 @@ import com.icerockdev.library.universal.ProductsNavigationScreen
 import com.icerockdev.library.universal.ProductsScreen
 import com.icerockdev.library.universal.RootBottomNavigationScreen
 import com.icerockdev.library.universal.WidgetsScreen
-import dev.icerock.moko.widgets.buttonFactory
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.factory.DefaultListWidgetViewFactory
 import dev.icerock.moko.widgets.factory.DefaultListWidgetViewFactoryBase
@@ -24,11 +22,8 @@ import dev.icerock.moko.widgets.screen.BaseApplication
 import dev.icerock.moko.widgets.screen.Screen
 import dev.icerock.moko.widgets.setListFactory
 import dev.icerock.moko.widgets.setTextFactory
-import dev.icerock.moko.widgets.style.view.Colors
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.TextAlignment
-import dev.icerock.moko.widgets.style.view.TextStyle
-import dev.icerock.moko.widgets.textFactory
 import kotlin.native.concurrent.ThreadLocal
 import kotlin.reflect.KClass
 
@@ -37,8 +32,6 @@ object App : BaseApplication() {
     override fun setup() {
         val sharedFactory = SharedFactory()
         val theme = Theme {
-//            buttonFactory = MaterialButtonWidgetViewFactory()
-
             setTextFactory(
                 DefaultTextWidgetViewFactory(
                     DefaultTextWidgetViewFactoryBase.Style(
@@ -53,18 +46,6 @@ object App : BaseApplication() {
                         padding = PaddingValues(8f)
                     )
                 ), UsersScreen.Id.List
-            )
-        }
-
-        val myTheme = Theme {
-            textFactory = DefaultTextWidgetViewFactory(
-                DefaultTextWidgetViewFactoryBase.Style(
-                    textStyle = TextStyle(
-                        size = 24,
-                        color = Colors.black
-                    ),
-                    padding = PaddingValues(padding = 16f)
-                )
             )
         }
 
