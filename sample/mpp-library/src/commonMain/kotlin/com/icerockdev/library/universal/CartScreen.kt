@@ -12,7 +12,6 @@ import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.NavigationItem
 import dev.icerock.moko.widgets.screen.WidgetScreen
-import dev.icerock.moko.widgets.style.view.Alignment
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.text
@@ -25,15 +24,14 @@ class CartScreen(
 
     override fun createContentWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         return with(theme) {
-            container(
-                size = WidgetSize.AsParent,
-                children = mapOf(
+            container(size = WidgetSize.AsParent) {
+                center {
                     text(
                         size = WidgetSize.WrapContent,
                         text = const("cart")
-                    ) to Alignment.CENTER
-                )
-            )
+                    )
+                }
+            }
         }
     }
 }

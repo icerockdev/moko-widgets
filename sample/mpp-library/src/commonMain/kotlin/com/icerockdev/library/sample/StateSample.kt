@@ -20,7 +20,6 @@ import dev.icerock.moko.widgets.flatAlert
 import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.progressBar
 import dev.icerock.moko.widgets.stateful
-import dev.icerock.moko.widgets.style.view.Alignment
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.tabs
@@ -45,23 +44,21 @@ open class StateScreen(
                         size = WidgetSize.AsParent,
                         state = viewModel.state,
                         empty = {
-                            container(
-                                size = WidgetSize.AsParent,
-                                children = mapOf(
+                            container(size = WidgetSize.AsParent) {
+                                center {
                                     text(
                                         size = WidgetSize.WrapContent,
                                         text = const("empty")
-                                    ) to Alignment.CENTER
-                                )
-                            )
+                                    )
+                                }
+                            }
                         },
                         loading = {
-                            container(
-                                size = WidgetSize.AsParent,
-                                children = mapOf(
-                                    progressBar(WidgetSize.WrapContent) to Alignment.CENTER
-                                )
-                            )
+                            container(size = WidgetSize.AsParent) {
+                                center {
+                                    progressBar(WidgetSize.WrapContent)
+                                }
+                            }
                         },
                         data = { data ->
                             tabs(
@@ -88,15 +85,14 @@ open class StateScreen(
     }
 
     private fun Theme.flatAlertWrapped(message: LiveData<StringDesc?>) =
-        container(
-            size = WidgetSize.AsParent,
-            children = mapOf(
+        container(size = WidgetSize.AsParent) {
+            center {
                 flatAlert(
                     size = WidgetSize.WrapContent,
                     message = message
-                ) to Alignment.CENTER
-            )
-        )
+                )
+            }
+        }
 }
 
 interface StateViewModelContract {

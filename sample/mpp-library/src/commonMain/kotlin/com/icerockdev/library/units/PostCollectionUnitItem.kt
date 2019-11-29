@@ -26,7 +26,6 @@ import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Direction
 import dev.icerock.moko.widgets.style.background.Fill
-import dev.icerock.moko.widgets.style.view.Alignment
 import dev.icerock.moko.widgets.style.view.Colors
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
@@ -43,7 +42,6 @@ class PostCollectionUnitItem(
     data: PostsViewModelContract.PostItem
 ) : WidgetsCollectionUnitItem<PostsViewModelContract.PostItem>(itemId, data) {
     override val reuseId: String = "PostUnitItem"
-
 
     override fun createWidget(data: LiveData<PostsViewModelContract.PostItem>): UnitItemRoot {
         return with(theme) {
@@ -65,8 +63,9 @@ class PostCollectionUnitItem(
                 size = WidgetSize.AspectByWidth(
                     width = SizeSpec.AsParent,
                     aspectRatio = 0.73f
-                ),
-                children = mapOf(
+                )
+            ) {
+                center {
                     image(
                         size = WidgetSize.Const(
                             width = SizeSpec.AsParent,
@@ -78,11 +77,15 @@ class PostCollectionUnitItem(
                             )
                         ),
                         image = data.map { Image.network(it.imageUrl) }
-                    ) to Alignment.CENTER,
-                    createHeader(data) to Alignment.TOP,
-                    createFooter(data) to Alignment.BOTTOM
-                )
-            ),
+                    )
+                }
+                top {
+                    createHeader(data)
+                }
+                bottom {
+                    createFooter(data)
+                }
+            },
             onClick = {
                 println("item $data pressed!")
             }
@@ -104,8 +107,9 @@ class PostCollectionUnitItem(
                     padding = PaddingValues(bottom = 8f)
                 )
             ),
-            size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
-            children = mapOf(
+            size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent)
+        ) {
+            center {
                 text(
                     size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
                     factory = DefaultTextWidgetViewFactory(
@@ -118,9 +122,9 @@ class PostCollectionUnitItem(
                         )
                     ),
                     text = data.map { it.nickname }
-                ) to Alignment.CENTER
-            )
-        )
+                )
+            }
+        }
 
     private fun Theme.createFooter(
         data: LiveData<PostsViewModelContract.PostItem>
@@ -167,8 +171,9 @@ class PostCollectionUnitItem(
                     ),
                     padding = PaddingValues(top = 16f)
                 )
-            ),
-            children = mapOf(
+            )
+        ) {
+            center {
                 linear(
                     size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
                     factory = DefaultLinearWidgetViewFactory(
@@ -177,8 +182,8 @@ class PostCollectionUnitItem(
                         )
                     ),
                     children = regularItems
-                ) to Alignment.CENTER
-            )
-        )
+                )
+            }
+        }
     }
 }

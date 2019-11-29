@@ -11,7 +11,6 @@ import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.factory.DefaultProgressBarWidgetViewFactory
 import dev.icerock.moko.widgets.factory.DefaultProgressBarWidgetViewFactoryBase
 import dev.icerock.moko.widgets.progressBar
-import dev.icerock.moko.widgets.style.view.Alignment
 import dev.icerock.moko.widgets.style.view.Colors
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
@@ -28,8 +27,9 @@ class LoadingUnitWidget(
                 size = WidgetSize.Const(
                     width = SizeSpec.AsParent,
                     height = SizeSpec.Exact(48f)
-                ),
-                children = mapOf(
+                )
+            ) {
+                center {
                     progressBar(
                         size = WidgetSize.Const(
                             width = SizeSpec.Exact(24f),
@@ -40,9 +40,9 @@ class LoadingUnitWidget(
                                 color = Colors.black
                             )
                         )
-                    ) to Alignment.CENTER
-                )
-            )
+                    )
+                }
+            }
         }
     }
 

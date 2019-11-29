@@ -21,7 +21,6 @@ import dev.icerock.moko.widgets.screen.getArgument
 import dev.icerock.moko.widgets.screen.getParentScreen
 import dev.icerock.moko.widgets.screen.getViewModel
 import dev.icerock.moko.widgets.screen.listen
-import dev.icerock.moko.widgets.style.view.Alignment
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.text
@@ -44,9 +43,8 @@ class ProductScreen(
         viewModel.eventsDispatcher.listen(this, this)
 
         return with(theme) {
-            container(
-                size = WidgetSize.AsParent,
-                children = mapOf(
+            container(size = WidgetSize.AsParent) {
+                center {
                     linear(
                         size = WidgetSize.WrapContent,
                         children = listOf<Widget<out WidgetSize>>(
@@ -60,9 +58,9 @@ class ProductScreen(
                                 onTap = viewModel::onCartPressed
                             )
                         )
-                    ) to Alignment.CENTER
-                )
-            )
+                    )
+                }
+            }
         }
     }
 

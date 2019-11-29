@@ -19,11 +19,45 @@ class ContainerWidget<WS : WidgetSize>(
     private val factory: ViewFactory<ContainerWidget<out WidgetSize>>,
     override val size: WS,
     override val id: Id?,
-    val children: Map<out Widget<out WidgetSize>, Alignment>
+    @Suppress("RemoveRedundantQualifierName")
+    builder: ContainerWidget.ChildrenBuilder.() -> Unit
 ) : Widget<WS>(), OptionalId<ContainerWidget.Id> {
+
+    val children: Map<out Widget<out WidgetSize>, Alignment> = ChildrenBuilder().run {
+        builder()
+        build()
+    }
 
     override fun buildView(viewFactoryContext: ViewFactoryContext): ViewBundle<WS> {
         return factory.build(this, size, viewFactoryContext)
+    }
+
+    class ChildrenBuilder {
+        private val children: MutableMap<Widget<out WidgetSize>, Alignment> = mutableMapOf()
+
+        fun center(block: () -> Widget<out WidgetSize>) {
+            children[block.invoke()] = Alignment.CENTER
+        }
+
+        fun left(block: () -> Widget<out WidgetSize>) {
+            children[block.invoke()] = Alignment.LEFT
+        }
+
+        fun right(block: () -> Widget<out WidgetSize>) {
+            children[block.invoke()] = Alignment.RIGHT
+        }
+
+        fun top(block: () -> Widget<out WidgetSize>) {
+            children[block.invoke()] = Alignment.TOP
+        }
+
+        fun bottom(block: () -> Widget<out WidgetSize>) {
+            children[block.invoke()] = Alignment.BOTTOM
+        }
+
+        fun build(): Map<out Widget<out WidgetSize>, Alignment> {
+            return children
+        }
     }
 
     interface Id : Theme.Id

@@ -14,7 +14,6 @@ import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.NavigationItem
 import dev.icerock.moko.widgets.screen.WidgetScreen
 import dev.icerock.moko.widgets.screen.getParentScreen
-import dev.icerock.moko.widgets.style.view.Alignment
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
@@ -25,16 +24,15 @@ class ProductsScreen(
 
     override fun createContentWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         return with(theme) {
-            container(
-                size = WidgetSize.AsParent,
-                children = mapOf(
+            container(size = WidgetSize.AsParent) {
+                center {
                     button(
                         size = WidgetSize.WrapContent,
                         text = const("go to product"),
                         onTap = ::onProductPressed
-                    ) to Alignment.CENTER
-                )
-            )
+                    )
+                }
+            }
         }
     }
 
