@@ -21,6 +21,8 @@ import platform.UIKit.UIButton
 import platform.UIKit.UIControl
 import platform.UIKit.UIView
 import platform.UIKit.backgroundColor
+import kotlin.math.max
+import kotlin.math.min
 
 fun Background.caLayer(): CALayer {
 
@@ -182,8 +184,13 @@ fun UIView.applyBackground(background: Background?) {
         is Shape.Rectangle -> {
             val cornerRadius = shape.cornerRadius
             if (cornerRadius != null) {
-                layer.cornerRadius = cornerRadius.toDouble()
                 layer.masksToBounds = true
+
+                // FIXME memoryleak.
+                layer.displayLink {
+                    val minEdge = layer.bounds.useContents { min(size.width, size.height) }
+                    layer.cornerRadius = min(minEdge / 2, cornerRadius.toDouble())
+                }
             }
         }
         is Shape.Oval -> {
