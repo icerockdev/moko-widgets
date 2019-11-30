@@ -12,6 +12,7 @@ import dev.icerock.moko.widgets.LinearWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.applyStyle
+import dev.icerock.moko.widgets.style.ext.applyMargin
 import dev.icerock.moko.widgets.style.ext.toLinearLayoutOrientation
 import dev.icerock.moko.widgets.style.ext.toPlatformSize
 import dev.icerock.moko.widgets.style.view.SizeSpec
@@ -45,6 +46,8 @@ actual class DefaultLinearWidgetViewFactory actual constructor(
             )
             val (lp, view) = (viewBundle.size to viewBundle.view)
                 .toLinearLayoutParams(dm)
+
+            viewBundle.margins?.let { lp.applyMargin(dm, it) }
 
             container.addView(view, lp)
         }
