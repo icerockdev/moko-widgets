@@ -32,55 +32,52 @@ open class StateScreen(
 ) {
     fun createWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         return with(theme) {
-            linear(
-                size = WidgetSize.AsParent,
-                children = listOf<Widget<out WidgetSize>>(
-                    button(
-                        size = WidgetSize.WrapContent,
-                        text = const("change state"),
-                        onTap = viewModel::onChangeStatePressed
-                    ),
-                    stateful(
-                        size = WidgetSize.AsParent,
-                        state = viewModel.state,
-                        empty = {
-                            container(size = WidgetSize.AsParent) {
-                                center {
-                                    text(
-                                        size = WidgetSize.WrapContent,
-                                        text = const("empty")
-                                    )
-                                }
+            linear(size = WidgetSize.AsParent) {
+                +button(
+                    size = WidgetSize.WrapContent,
+                    text = const("change state"),
+                    onTap = viewModel::onChangeStatePressed
+                )
+                +stateful(
+                    size = WidgetSize.AsParent,
+                    state = viewModel.state,
+                    empty = {
+                        container(size = WidgetSize.AsParent) {
+                            center {
+                                text(
+                                    size = WidgetSize.WrapContent,
+                                    text = const("empty")
+                                )
                             }
-                        },
-                        loading = {
-                            container(size = WidgetSize.AsParent) {
-                                center {
-                                    progressBar(WidgetSize.WrapContent)
-                                }
+                        }
+                    },
+                    loading = {
+                        container(size = WidgetSize.AsParent) {
+                            center {
+                                progressBar(WidgetSize.WrapContent)
                             }
-                        },
-                        data = { data ->
-                            tabs(
-                                size = WidgetSize.AsParent,
-                                tabs = listOf(
-                                    TabsWidget.Tab(
-                                        title = const("first page"),
-                                        body = flatAlertWrapped(message = data.map { it?.desc() })
-                                    ),
-                                    TabsWidget.Tab(
-                                        title = const("second page"),
-                                        body = flatAlertWrapped(message = "SECOND".desc().asLiveData())
-                                    )
+                        }
+                    },
+                    data = { data ->
+                        tabs(
+                            size = WidgetSize.AsParent,
+                            tabs = listOf(
+                                TabsWidget.Tab(
+                                    title = const("first page"),
+                                    body = flatAlertWrapped(message = data.map { it?.desc() })
+                                ),
+                                TabsWidget.Tab(
+                                    title = const("second page"),
+                                    body = flatAlertWrapped(message = "SECOND".desc().asLiveData())
                                 )
                             )
-                        },
-                        error = { error ->
-                            flatAlertWrapped(message = error.map { it?.desc() })
-                        }
-                    )
+                        )
+                    },
+                    error = { error ->
+                        flatAlertWrapped(message = error.map { it?.desc() })
+                    }
                 )
-            )
+            }
         }
     }
 

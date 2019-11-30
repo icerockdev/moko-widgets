@@ -35,62 +35,59 @@ class CryptoProfileScreen(
             scroll(
                 id = Id.RootScroll,
                 size = WidgetSize.AsParent,
-                child = linear(
-                    size = WidgetSize.WidthAsParentHeightWrapContent,
-                    children = listOf<Widget<out WidgetSize>>(
-                        input(
-                            size = WidgetSize.WidthAsParentHeightWrapContent,
-                            id = Id.NameInput,
-                            label = const("Name"),
-                            field = viewModel.nameField
-                        ),
-                        input(
-                            size = WidgetSize.WidthAsParentHeightWrapContent,
-                            id = Id.PhoneInput,
-                            label = const("Phone number"),
-                            field = viewModel.phoneField,
-                            inputType = InputType.PHONE
-                        ),
-                        input(
-                            size = WidgetSize.WidthAsParentHeightWrapContent,
-                            id = Id.EmailInput,
-                            label = const("Email"),
-                            field = viewModel.emailField,
-                            inputType = InputType.EMAIL
-                        ),
-                        input(
-                            size = WidgetSize.WidthAsParentHeightWrapContent,
-                            id = Id.PasswordInput,
-                            label = const("Password"),
-                            field = viewModel.passwordField,
-                            inputType = InputType.PASSWORD
-                        ),
-                        input(
-                            size = WidgetSize.WidthAsParentHeightWrapContent,
-                            id = Id.RepeatPasswordInput,
-                            label = const("Repeat password"),
-                            field = viewModel.repeatPasswordField,
-                            inputType = InputType.PASSWORD
-                        ),
-                        button(
-                            size = WidgetSize.WidthAsParentHeightWrapContent,
-                            id = Id.JoinButton,
-                            text = const("Join"),
-                            onTap = viewModel::onSavePressed
-                        ),
-                        text(
-                            size = WidgetSize.WidthAsParentHeightWrapContent,
-                            id = Id.DelimiterText,
-                            text = const("or")
-                        ),
-                        button(
-                            size = WidgetSize.WidthAsParentHeightWrapContent,
-                            id = Id.TryDemoButton,
-                            text = const("Try Demo"),
-                            onTap = viewModel::onSavePressed
-                        )
+                child = linear(size = WidgetSize.WidthAsParentHeightWrapContent) {
+                    +input(
+                        size = WidgetSize.WidthAsParentHeightWrapContent,
+                        id = Id.NameInput,
+                        label = const("Name"),
+                        field = viewModel.nameField
                     )
-                )
+                    +input(
+                        size = WidgetSize.WidthAsParentHeightWrapContent,
+                        id = Id.PhoneInput,
+                        label = const("Phone number"),
+                        field = viewModel.phoneField,
+                        inputType = InputType.PHONE
+                    )
+                    +input(
+                        size = WidgetSize.WidthAsParentHeightWrapContent,
+                        id = Id.EmailInput,
+                        label = const("Email"),
+                        field = viewModel.emailField,
+                        inputType = InputType.EMAIL
+                    )
+                    +input(
+                        size = WidgetSize.WidthAsParentHeightWrapContent,
+                        id = Id.PasswordInput,
+                        label = const("Password"),
+                        field = viewModel.passwordField,
+                        inputType = InputType.PASSWORD
+                    )
+                    +input(
+                        size = WidgetSize.WidthAsParentHeightWrapContent,
+                        id = Id.RepeatPasswordInput,
+                        label = const("Repeat password"),
+                        field = viewModel.repeatPasswordField,
+                        inputType = InputType.PASSWORD
+                    )
+                    +button(
+                        size = WidgetSize.WidthAsParentHeightWrapContent,
+                        id = Id.JoinButton,
+                        text = const("Join"),
+                        onTap = viewModel::onSavePressed
+                    )
+                    +text(
+                        size = WidgetSize.WidthAsParentHeightWrapContent,
+                        id = Id.DelimiterText,
+                        text = const("or")
+                    )
+                    +button(
+                        size = WidgetSize.WidthAsParentHeightWrapContent,
+                        id = Id.TryDemoButton,
+                        text = const("Try Demo"),
+                        onTap = viewModel::onSavePressed
+                    )
+                }
             )
         }
     }

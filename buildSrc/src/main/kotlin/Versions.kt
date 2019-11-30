@@ -10,7 +10,7 @@ object Versions {
     }
 
     const val kotlin = "1.3.60"
-    private const val mokoWidgets = "0.1.0-dev-3"
+    private const val mokoWidgets = "0.1.0-dev-4"
     private const val mokoResources = "0.6.0-dev-1"
 
     object Plugins {
@@ -22,7 +22,7 @@ object Versions {
         object Android {
             const val appCompat = "1.1.0"
             const val swipeRefreshLayout = "1.0.0"
-            const val material = "1.1.0-beta02"
+            const val material = "1.0.0"
             const val constraintLayout = "1.1.3"
             const val lifecycle = "2.0.0"
             const val recyclerView = "1.0.0"
@@ -31,7 +31,7 @@ object Versions {
         }
 
         object MultiPlatform {
-            const val coroutines = "1.3.2-1.3.60-eap-76"
+            const val coroutines = "1.3.2-1.3.60"
 
             const val mokoWidgets = Versions.mokoWidgets
             const val mokoResources = Versions.mokoResources

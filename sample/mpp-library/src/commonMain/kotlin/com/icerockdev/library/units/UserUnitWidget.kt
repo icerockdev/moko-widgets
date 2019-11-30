@@ -11,7 +11,6 @@ import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.clickable
 import dev.icerock.moko.widgets.core.Image
 import dev.icerock.moko.widgets.core.Theme
-import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.factory.DefaultImageWidgetViewFactory
 import dev.icerock.moko.widgets.factory.DefaultImageWidgetViewFactoryBase
 import dev.icerock.moko.widgets.factory.DefaultLinearWidgetViewFactory
@@ -40,47 +39,45 @@ class UserUnitWidget(
                             orientation = Orientation.HORIZONTAL,
                             padding = PaddingValues(padding = 8f)
                         )
-                    ),
-                    children = listOf<Widget<out WidgetSize>>(
-                        image(
-                            factory = DefaultImageWidgetViewFactory(
-                                DefaultImageWidgetViewFactoryBase.Style(
-                                    scaleType = DefaultImageWidgetViewFactoryBase.ScaleType.FILL
-                                )
-                            ),
-                            size = WidgetSize.Const(
-                                width = SizeSpec.Exact(48f),
-                                height = SizeSpec.Exact(48f)
-                            ),
-                            image = data.map { Image.network(it.avatarUrl) }
+                    )
+                ) {
+                    +image(
+                        factory = DefaultImageWidgetViewFactory(
+                            DefaultImageWidgetViewFactoryBase.Style(
+                                scaleType = DefaultImageWidgetViewFactoryBase.ScaleType.FILL
+                            )
                         ),
-                        linear(
-                            size = WidgetSize.WidthAsParentHeightWrapContent,
-                            factory = DefaultLinearWidgetViewFactory(
-                                DefaultLinearWidgetViewFactoryBase.Style(
-                                    orientation = Orientation.VERTICAL,
-                                    padding = PaddingValues(padding = 8f)
-                                )
-                            ),
-                            children = listOf<Widget<out WidgetSize>>(
-                                text(
-                                    size = WidgetSize.Const(
-                                        SizeSpec.AsParent,
-                                        SizeSpec.WrapContent
-                                    ),
-                                    text = const("Name:")
-                                ),
-                                text(
-                                    size = WidgetSize.Const(
-                                        SizeSpec.AsParent,
-                                        SizeSpec.WrapContent
-                                    ),
-                                    text = data.map { it.name.desc() as StringDesc }
-                                )
+                        size = WidgetSize.Const(
+                            width = SizeSpec.Exact(48f),
+                            height = SizeSpec.Exact(48f)
+                        ),
+                        image = data.map { Image.network(it.avatarUrl) }
+                    )
+                    +linear(
+                        size = WidgetSize.WidthAsParentHeightWrapContent,
+                        factory = DefaultLinearWidgetViewFactory(
+                            DefaultLinearWidgetViewFactoryBase.Style(
+                                orientation = Orientation.VERTICAL,
+                                padding = PaddingValues(padding = 8f)
                             )
                         )
-                    )
-                ),
+                    ) {
+                        +text(
+                            size = WidgetSize.Const(
+                                SizeSpec.AsParent,
+                                SizeSpec.WrapContent
+                            ),
+                            text = const("Name:")
+                        )
+                        +text(
+                            size = WidgetSize.Const(
+                                SizeSpec.AsParent,
+                                SizeSpec.WrapContent
+                            ),
+                            text = data.map { it.name.desc() as StringDesc }
+                        )
+                    }
+                },
                 onClick = {
                     data.value.onClick()
                 }

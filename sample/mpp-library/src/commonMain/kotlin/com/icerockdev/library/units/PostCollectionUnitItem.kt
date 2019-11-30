@@ -180,9 +180,10 @@ class PostCollectionUnitItem(
                         DefaultLinearWidgetViewFactoryBase.Style(
                             padding = PaddingValues(8f)
                         )
-                    ),
-                    children = regularItems
-                )
+                    )
+                ) {
+                    regularItems.forEach { +it }
+                }
             }
         }
     }

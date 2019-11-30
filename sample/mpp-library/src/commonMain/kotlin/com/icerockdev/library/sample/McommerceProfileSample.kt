@@ -31,37 +31,34 @@ class McommerceProfileScreen(
             scroll(
                 id = Id.RootScroll,
                 size = WidgetSize.AsParent,
-                child = linear(
-                    size = WidgetSize.WidthAsParentHeightWrapContent,
-                    children = listOf<Widget<out WidgetSize>>(
-                        input(
-                            size = WidgetSize.WidthAsParentHeightWrapContent,
-                            id = Id.NameInput,
-                            label = const("Ваше имя"),
-                            field = viewModel.nameField
-                        ),
-                        input(
-                            size = WidgetSize.WidthAsParentHeightWrapContent,
-                            id = Id.BirthdayInput,
-                            label = const("Дата рождения"),
-                            field = viewModel.birthdayField,
-                            inputType = InputType.DATE
-                        ),
-                        input(
-                            size = WidgetSize.WidthAsParentHeightWrapContent,
-                            id = Id.PhoneInput,
-                            label = const("Телефон"),
-                            field = viewModel.phoneField,
-                            inputType = InputType.PHONE
-                        ),
-                        button(
-                            size = WidgetSize.WidthAsParentHeightWrapContent,
-                            id = Id.SubmitButton,
-                            text = const("Подтвердить"),
-                            onTap = viewModel::onSavePressed
-                        )
+                child = linear(size = WidgetSize.WidthAsParentHeightWrapContent) {
+                    +input(
+                        size = WidgetSize.WidthAsParentHeightWrapContent,
+                        id = Id.NameInput,
+                        label = const("Ваше имя"),
+                        field = viewModel.nameField
                     )
-                )
+                    +input(
+                        size = WidgetSize.WidthAsParentHeightWrapContent,
+                        id = Id.BirthdayInput,
+                        label = const("Дата рождения"),
+                        field = viewModel.birthdayField,
+                        inputType = InputType.DATE
+                    )
+                    +input(
+                        size = WidgetSize.WidthAsParentHeightWrapContent,
+                        id = Id.PhoneInput,
+                        label = const("Телефон"),
+                        field = viewModel.phoneField,
+                        inputType = InputType.PHONE
+                    )
+                    +button(
+                        size = WidgetSize.WidthAsParentHeightWrapContent,
+                        id = Id.SubmitButton,
+                        text = const("Подтвердить"),
+                        onTap = viewModel::onSavePressed
+                    )
+                }
             )
         }
     }

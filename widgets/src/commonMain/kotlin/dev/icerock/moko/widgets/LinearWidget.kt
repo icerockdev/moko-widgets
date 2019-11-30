@@ -18,11 +18,30 @@ class LinearWidget<WS : WidgetSize>(
     private val factory: ViewFactory<LinearWidget<out WidgetSize>>,
     override val size: WS,
     override val id: Id?,
-    val children: List<Widget<out WidgetSize>> // TODO set limit of size by orientation
+    @Suppress("RemoveRedundantQualifierName")
+    builder: LinearWidget.ChildrenBuilder.() -> Unit
 ) : Widget<WS>(), OptionalId<LinearWidget.Id> {
+
+    val children: List<Widget<out WidgetSize>> = ChildrenBuilder().run {
+        builder()
+        build()
+    }
 
     override fun buildView(viewFactoryContext: ViewFactoryContext): ViewBundle<WS> {
         return factory.build(this, size, viewFactoryContext)
+    }
+
+    class ChildrenBuilder {
+        private val children: MutableList<Widget<out WidgetSize>> = mutableListOf()
+
+        // TODO set limit of size by orientation
+        operator fun Widget<out WidgetSize>.unaryPlus() {
+            children.add(this)
+        }
+
+        fun build(): List<Widget<out WidgetSize>> {
+            return children
+        }
     }
 
     interface Id : Theme.Id

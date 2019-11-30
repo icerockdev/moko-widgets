@@ -29,18 +29,17 @@ fun Theme.switchLabeled(
             DefaultLinearWidgetViewFactoryBase.Style(
                 orientation = Orientation.HORIZONTAL
             )
-        ),
-        children = listOf<Widget<out WidgetSize>>(
-            switch(
-                size = WidgetSize.WrapContent,
-                id = switchId,
-                state = switchState
-            ),
-            text(
-                size = WidgetSize.WidthAsParentHeightWrapContent,
-                id = textId,
-                text = text
-            )
         )
-    )
+    ) {
+        +switch(
+            size = WidgetSize.WrapContent,
+            id = switchId,
+            state = switchState
+        )
+        +text(
+            size = WidgetSize.WidthAsParentHeightWrapContent,
+            id = textId,
+            text = text
+        )
+    }
 }

@@ -23,7 +23,7 @@ actual class MaterialButtonWidgetViewFactory actual constructor() : ViewFactory<
     ): ViewBundle<WS> {
         val ctx = viewFactoryContext.androidContext
 
-        val button = MaterialButton(ContextThemeWrapper(ctx, R.style.Theme_MaterialComponents_DayNight))
+        val button = MaterialButton(ContextThemeWrapper(ctx, R.style.Theme_MaterialComponents_Light_NoActionBar))
 
         widget.enabled?.bind(viewFactoryContext.lifecycleOwner) { enabled ->
             button.isEnabled = enabled == true

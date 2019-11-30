@@ -45,20 +45,17 @@ class ProductScreen(
         return with(theme) {
             container(size = WidgetSize.AsParent) {
                 center {
-                    linear(
-                        size = WidgetSize.WrapContent,
-                        children = listOf<Widget<out WidgetSize>>(
-                            text(
-                                size = WidgetSize.WrapContent,
-                                text = viewModel.title
-                            ),
-                            button(
-                                size = WidgetSize.WrapContent,
-                                text = const("Add to Cart"),
-                                onTap = viewModel::onCartPressed
-                            )
+                    linear(size = WidgetSize.WrapContent) {
+                        +text(
+                            size = WidgetSize.WrapContent,
+                            text = viewModel.title
                         )
-                    )
+                        +button(
+                            size = WidgetSize.WrapContent,
+                            text = const("Add to Cart"),
+                            onTap = viewModel::onCartPressed
+                        )
+                    }
                 }
             }
         }

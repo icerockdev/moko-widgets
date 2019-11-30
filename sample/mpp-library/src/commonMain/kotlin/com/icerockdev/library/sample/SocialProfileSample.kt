@@ -43,77 +43,74 @@ class SocialProfileScreen(
             scroll(
                 id = Id.RootScroll,
                 size = WidgetSize.AsParent,
-                child = linear(
-                    size = WidgetSize.WidthAsParentHeightWrapContent,
-                    children = listOf<Widget<out WidgetSize>>(
-                        input(
-                            size = WidgetSize.WidthAsParentHeightWrapContent,
-                            id = Id.NameInput,
-                            label = const("Имя*"),
-                            field = viewModel.nameField
-                        ),
-                        input(
-                            size = WidgetSize.WidthAsParentHeightWrapContent,
-                            id = Id.NickNameInput,
-                            label = const("Никнейм*"),
-                            field = viewModel.nicknameField
-                        ),
-                        input(
-                            size = WidgetSize.WidthAsParentHeightWrapContent,
-                            id = Id.AboutInput,
-                            label = const("О себе"),
-                            field = viewModel.aboutField,
-                            maxLines = MutableLiveData<Int?>(null)
-                        ),
-                        text(
-                            size = WidgetSize.WidthAsParentHeightWrapContent,
-                            id = Id.InfoHeaderText,
-                            text = const("ЛИЧНАЯ ИНФОРМАЦИЯ")
-                        ),
-                        input(
-                            size = WidgetSize.WidthAsParentHeightWrapContent,
-                            id = Id.EmailInput,
-                            label = const("Email"),
-                            field = viewModel.emailField,
-                            inputType = InputType.EMAIL
-                        ),
-                        input(
-                            size = WidgetSize.WidthAsParentHeightWrapContent,
-                            id = Id.PhoneInput,
-                            label = const("Телефон"),
-                            field = viewModel.phoneField,
-                            inputType = InputType.PHONE
-                        ),
-                        input(
-                            size = WidgetSize.WidthAsParentHeightWrapContent,
-                            id = Id.BirthdayInput,
-                            label = const("Дата рождения"),
-                            field = viewModel.birthdayField,
-                            inputType = InputType.DATE
-                        ),
-                        singleChoice(
-                            size = WidgetSize.WidthAsParentHeightWrapContent,
-                            id = Id.GenderChoice,
-                            label = const("Пол"),
-                            field = viewModel.genderField,
-                            values = viewModel.genders,
-                            cancelLabel = const("Отмена")
-                        ),
-                        switchLabeled(
-                            switchId = Id.AgreementSwitch,
-                            switchState = viewModel.agreement,
-                            text = const("Согласен с условиями пользования"),
-                            linearId = Id.AgreementContainer,
-                            textId = Id.AgreementText
-                        ),
-                        button(
-                            size = WidgetSize.WidthAsParentHeightWrapContent,
-                            id = Id.SubmitButton,
-                            text = const("Сохранить"),
-                            onTap = viewModel::onSavePressed
-                        )
+                child = linear(size = WidgetSize.WidthAsParentHeightWrapContent) {
+                    +input(
+                        size = WidgetSize.WidthAsParentHeightWrapContent,
+                        id = Id.NameInput,
+                        label = const("Имя*"),
+                        field = viewModel.nameField
                     )
-                )
+                    +input(
+                        size = WidgetSize.WidthAsParentHeightWrapContent,
+                        id = Id.NickNameInput,
+                        label = const("Никнейм*"),
+                        field = viewModel.nicknameField
+                    )
+                    +input(
+                        size = WidgetSize.WidthAsParentHeightWrapContent,
+                        id = Id.AboutInput,
+                        label = const("О себе"),
+                        field = viewModel.aboutField,
+                        maxLines = MutableLiveData<Int?>(null)
+                    )
+                    +text(
+                        size = WidgetSize.WidthAsParentHeightWrapContent,
+                        id = Id.InfoHeaderText,
+                        text = const("ЛИЧНАЯ ИНФОРМАЦИЯ")
+                    )
+                    +input(
+                        size = WidgetSize.WidthAsParentHeightWrapContent,
+                        id = Id.EmailInput,
+                        label = const("Email"),
+                        field = viewModel.emailField,
+                        inputType = InputType.EMAIL
+                    )
+                    +input(
+                        size = WidgetSize.WidthAsParentHeightWrapContent,
+                        id = Id.PhoneInput,
+                        label = const("Телефон"),
+                        field = viewModel.phoneField,
+                        inputType = InputType.PHONE
+                    )
+                    +input(
+                        size = WidgetSize.WidthAsParentHeightWrapContent,
+                        id = Id.BirthdayInput,
+                        label = const("Дата рождения"),
+                        field = viewModel.birthdayField,
+                        inputType = InputType.DATE
+                    )
+                    +singleChoice(
+                        size = WidgetSize.WidthAsParentHeightWrapContent,
+                        id = Id.GenderChoice,
+                        label = const("Пол"),
+                        field = viewModel.genderField,
+                        values = viewModel.genders,
+                        cancelLabel = const("Отмена")
+                    )
+                    +switchLabeled(
+                        switchId = Id.AgreementSwitch,
+                        switchState = viewModel.agreement,
+                        text = const("Согласен с условиями пользования"),
+                        linearId = Id.AgreementContainer,
+                        textId = Id.AgreementText
+                    )
+                    +button(
+                        size = WidgetSize.WidthAsParentHeightWrapContent,
+                        id = Id.SubmitButton,
+                        text = const("Сохранить"),
+                        onTap = viewModel::onSavePressed
+                    )
+                }
             )
         }
     }

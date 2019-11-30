@@ -80,9 +80,7 @@ class UsersViewModel(
     private val _items: MutableLiveData<List<Pair<String, String>>> = MutableLiveData(
         initialValue = listOf(
             "Aleksey Mikhailov" to "https://avatars0.githubusercontent.com/u/5010169",
-            "Alexandr Pogrebnyak" to "https://avatars1.githubusercontent.com/u/10958304",
-            "Andrey Breslav" to "https://avatars1.githubusercontent.com/u/888318",
-            "Nikolay Igotti" to "https://avatars3.githubusercontent.com/u/2600522"
+            "Alexandr Pogrebnyak" to "https://avatars1.githubusercontent.com/u/10958304"
         )
     )
     override val tableItems: LiveData<List<TableUnitItem>> = _items.map { items ->
