@@ -10,6 +10,7 @@ import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.utils.Edges
 import dev.icerock.moko.widgets.utils.applyBackground
 import dev.icerock.moko.widgets.utils.applyTextStyle
 import dev.icerock.moko.widgets.utils.bind
@@ -56,7 +57,16 @@ actual class DefaultInputWidgetViewFactory actual constructor(
         size: WS,
         viewFactoryContext: ViewFactoryContext
     ): ViewBundle<WS> {
-        val textField = InputWidgetView().apply {
+        val paddingEdges = style.padding.run {
+            Edges<CGFloat>(
+                top = this?.top?.toDouble() ?: 0.0,
+                leading = this?.start?.toDouble() ?: 0.0,
+                bottom = this?.bottom?.toDouble() ?: 0.0,
+                trailing = this?.end?.toDouble() ?: 0.0
+            )
+        }
+
+        val textField = InputWidgetView(paddingEdges).apply {
             translatesAutoresizingMaskIntoConstraints = false
             accessibilityIdentifier = widget.identifier()
             applyBackground(style.background)
@@ -92,7 +102,9 @@ actual class DefaultInputWidgetViewFactory actual constructor(
         )
     }
 
-    class InputWidgetView : UIView(frame = CGRectZero.readValue()), UITextFieldDelegateProtocol,
+    class InputWidgetView(
+        private val padding: Edges<CGFloat>
+    ) : UIView(frame = CGRectZero.readValue()), UITextFieldDelegateProtocol,
         UIAccessibilityIdentificationProtocol {
 
         var placeholder: String?
@@ -145,10 +157,10 @@ actual class DefaultInputWidgetViewFactory actual constructor(
 
                 container.addSubview(this)
 
-                topAnchor.constraintEqualToAnchor(container.topAnchor, constant = 14.0).active =
+                topAnchor.constraintEqualToAnchor(container.topAnchor, constant = 14.0 + padding.top).active =
                     true
-                leadingAnchor.constraintEqualToAnchor(container.leadingAnchor).active = true
-                trailingAnchor.constraintEqualToAnchor(container.trailingAnchor).active = true
+                leadingAnchor.constraintEqualToAnchor(container.leadingAnchor, constant = padding.leading).active = true
+                trailingAnchor.constraintEqualToAnchor(container.trailingAnchor, constant = -padding.trailing).active = true
 
                 delegate = this@InputWidgetView
 
@@ -166,9 +178,9 @@ actual class DefaultInputWidgetViewFactory actual constructor(
 
                 topAnchor.constraintEqualToAnchor(textField.bottomAnchor, constant = 4.0).active =
                     true
-                leadingAnchor.constraintEqualToAnchor(container.leadingAnchor).active = true
-                trailingAnchor.constraintEqualToAnchor(container.trailingAnchor).active = true
-                bottomAnchor.constraintEqualToAnchor(container.bottomAnchor).active = true
+                leadingAnchor.constraintEqualToAnchor(container.leadingAnchor, constant = padding.leading).active = true
+                trailingAnchor.constraintEqualToAnchor(container.trailingAnchor, constant = -padding.trailing).active = true
+                bottomAnchor.constraintEqualToAnchor(container.bottomAnchor, constant = -padding.bottom).active = true
 
                 font = UIFont.systemFontOfSize(11.0)
                 textColor = UIColor.systemRedColor

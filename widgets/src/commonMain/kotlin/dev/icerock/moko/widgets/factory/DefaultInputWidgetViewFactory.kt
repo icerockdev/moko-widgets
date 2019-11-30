@@ -11,6 +11,8 @@ import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.view.Backgrounded
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.Margined
+import dev.icerock.moko.widgets.style.view.Padded
+import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
@@ -25,10 +27,11 @@ abstract class DefaultInputWidgetViewFactoryBase(
     data class Style(
         override val background: Background? = null,
         override val margins: MarginValues? = null,
+        override val padding: PaddingValues? = null,
         val textStyle: TextStyle = TextStyle(),
         val labelTextStyle: TextStyle = TextStyle(),
         val errorTextStyle: TextStyle = TextStyle(),
         val underLineColor: Color? = null,
         val underLineFocusedColor: Color? = null
-    ) : Margined, Backgrounded
+    ) : Margined, Backgrounded, Padded
 }

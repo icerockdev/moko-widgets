@@ -40,8 +40,8 @@ class WidgetViewController : UIViewController(nibName = null, bundle = null) {
 
             widgetView.leadingAnchor.constraintEqualToAnchor(leadingAnchor).active = true
             widgetView.trailingAnchor.constraintEqualToAnchor(trailingAnchor).active = true
-            widgetView.topAnchor.constraintEqualToAnchor(guide.topAnchor).active = true
-            widgetView.bottomAnchor.constraintEqualToAnchor(guide.bottomAnchor).active = true
+            widgetView.topAnchor.constraintEqualToAnchor(topAnchor).active = true
+            widgetView.bottomAnchor.constraintEqualToAnchor(bottomAnchor).active = true
         }
     }
 }
