@@ -60,7 +60,8 @@ actual class DefaultConstraintWidgetViewFactory actual constructor(
 
         val constraintsHandler = object : ConstraintsApi {
             private fun constraint(
-                firstItem: ConstraintItem, secondItem: ConstraintItem,
+                firstItem: ConstraintItem,
+                secondItem: ConstraintItem,
                 field: ConstraintLayout.LayoutParams.(Int) -> Unit
             ) {
                 val firstView = firstItem.view()
@@ -100,11 +101,13 @@ actual class DefaultConstraintWidgetViewFactory actual constructor(
             }
 
             override fun ConstraintItem.Child.centerYToCenterY(to: ConstraintItem) {
-                TODO()
+                constraint(this, to) { topToTop = it }
+                constraint(this, to) { bottomToBottom = it }
             }
 
             override fun ConstraintItem.Child.centerXToCenterX(to: ConstraintItem) {
-                TODO()
+                constraint(this, to) { leftToLeft = it }
+                constraint(this, to) { rightToRight = it }
             }
 
             override fun ConstraintItem.Child.bottomToBottom(to: ConstraintItem) {

@@ -13,7 +13,11 @@ import com.icerockdev.library.universal.ProductsNavigationScreen
 import com.icerockdev.library.universal.ProductsScreen
 import com.icerockdev.library.universal.RootBottomNavigationScreen
 import com.icerockdev.library.universal.WidgetsScreen
+import dev.icerock.moko.graphics.Color
+import dev.icerock.moko.widgets.constraintFactory
 import dev.icerock.moko.widgets.core.Theme
+import dev.icerock.moko.widgets.factory.DefaultConstraintWidgetViewFactory
+import dev.icerock.moko.widgets.factory.DefaultConstraintWidgetViewFactoryBase
 import dev.icerock.moko.widgets.factory.DefaultListWidgetViewFactory
 import dev.icerock.moko.widgets.factory.DefaultListWidgetViewFactoryBase
 import dev.icerock.moko.widgets.factory.DefaultTextWidgetViewFactory
@@ -23,6 +27,8 @@ import dev.icerock.moko.widgets.screen.BaseApplication
 import dev.icerock.moko.widgets.screen.Screen
 import dev.icerock.moko.widgets.setListFactory
 import dev.icerock.moko.widgets.setTextFactory
+import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.TextAlignment
 import kotlin.native.concurrent.ThreadLocal
@@ -50,6 +56,17 @@ object App : BaseApplication() {
             )
         }
 
+        val loginTheme = Theme(theme) {
+            constraintFactory = DefaultConstraintWidgetViewFactory(
+                DefaultConstraintWidgetViewFactoryBase.Style(
+                    padding = PaddingValues(16f),
+                    background = Background(
+                        fill = Fill.Solid(Color(0xBBBBBBFF))
+                    )
+                )
+            )
+        }
+
         registerScreenFactory(RootBottomNavigationScreen::class) { RootBottomNavigationScreen(this) }
         registerScreenFactory(ProductsNavigationScreen::class) { ProductsNavigationScreen(this) }
         registerScreenFactory(CartNavigationScreen::class) { CartNavigationScreen(this) }
@@ -58,7 +75,7 @@ object App : BaseApplication() {
         registerScreenFactory(CartScreen::class) { CartScreen(theme) }
         registerScreenFactory(ProductScreen::class) { ProductScreen(theme) }
 
-        registerScreenFactory(LoginScreen::class) { LoginScreen(theme) }
+        registerScreenFactory(LoginScreen::class) { LoginScreen(loginTheme) }
     }
 
     override fun getRootScreen(): KClass<out Screen<Args.Empty>> {

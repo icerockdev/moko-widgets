@@ -4,6 +4,7 @@
 
 package com.icerockdev.library.universal
 
+import com.icerockdev.library.MR
 import dev.icerock.moko.fields.FormField
 import dev.icerock.moko.fields.liveBlock
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
@@ -32,7 +33,7 @@ class LoginScreen(
         constraint(size = WidgetSize.AsParent) {
             val logoImage = +image(
                 size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.Exact(100f)),
-                image = const(Image.network(""))
+                image = const(Image.resource(MR.images.logo))
             )
 
             val loginInput = +input(
@@ -57,7 +58,7 @@ class LoginScreen(
                 passwordInput centerYToCenterY root
                 passwordInput fillWidth root
 
-                loginInput bottomToTop root
+                loginInput bottomToTop passwordInput
                 loginInput fillWidth root
 
                 submitButton topToBottom passwordInput
