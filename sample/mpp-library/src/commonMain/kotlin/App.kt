@@ -7,6 +7,7 @@ import com.icerockdev.library.sample.CryptoProfileScreen
 import com.icerockdev.library.sample.UsersScreen
 import com.icerockdev.library.universal.CartNavigationScreen
 import com.icerockdev.library.universal.CartScreen
+import com.icerockdev.library.universal.LoginScreen
 import com.icerockdev.library.universal.ProductScreen
 import com.icerockdev.library.universal.ProductsNavigationScreen
 import com.icerockdev.library.universal.ProductsScreen
@@ -56,9 +57,11 @@ object App : BaseApplication() {
         registerScreenFactory(ProductsScreen::class) { ProductsScreen(theme) }
         registerScreenFactory(CartScreen::class) { CartScreen(theme) }
         registerScreenFactory(ProductScreen::class) { ProductScreen(theme) }
+
+        registerScreenFactory(LoginScreen::class) { LoginScreen(theme) }
     }
 
     override fun getRootScreen(): KClass<out Screen<Args.Empty>> {
-        return RootBottomNavigationScreen::class
+        return LoginScreen::class
     }
 }

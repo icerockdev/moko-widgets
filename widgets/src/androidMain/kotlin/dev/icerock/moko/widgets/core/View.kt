@@ -10,7 +10,7 @@ import androidx.lifecycle.LifecycleOwner
 
 actual typealias View = android.view.View
 
-actual class ViewFactoryContext(
+actual data class ViewFactoryContext(
     val context: Context,
     val lifecycleOwner: LifecycleOwner,
     val parent: ViewGroup? = null
