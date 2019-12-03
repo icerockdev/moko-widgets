@@ -10,7 +10,7 @@ import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.Edges
 import dev.icerock.moko.widgets.utils.applyBackground
-import dev.icerock.moko.widgets.utils.layoutWidget
+import dev.icerock.moko.widgets.utils.applySizeToChild
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGFloat
 import platform.CoreGraphics.CGRectZero
@@ -50,7 +50,7 @@ actual class DefaultScrollWidgetViewFactory actual constructor(
         with(scrollView) {
             addSubview(childView)
 
-            val edges: Edges<CGFloat> = layoutWidget(
+            val edges: Edges<CGFloat> = applySizeToChild(
                 rootView = this,
                 rootPadding = style.padding,
                 childView = childView,

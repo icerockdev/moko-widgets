@@ -32,7 +32,7 @@ class LoginScreen(
 
         constraint(size = WidgetSize.AsParent) {
             val logoImage = +image(
-                size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.Exact(100f)),
+                size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
                 image = const(Image.resource(MR.images.logo))
             )
 
@@ -65,9 +65,11 @@ class LoginScreen(
                 submitButton fillWidth root
 
                 // logo image height must be automatic ?
-                logoImage topToTop root
                 logoImage fillWidth root
-                logoImage bottomToTop loginInput
+                logoImage.verticalCenterBetween(
+                    top = root.top,
+                    bottom = loginInput.top
+                )
             }
         }
     }

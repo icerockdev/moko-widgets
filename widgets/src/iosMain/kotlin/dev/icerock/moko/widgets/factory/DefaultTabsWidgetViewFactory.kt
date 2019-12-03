@@ -12,7 +12,7 @@ import dev.icerock.moko.widgets.utils.Edges
 import dev.icerock.moko.widgets.utils.applyBackground
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.fillChildView
-import dev.icerock.moko.widgets.utils.layoutWidget
+import dev.icerock.moko.widgets.utils.applySizeToChild
 import dev.icerock.moko.widgets.utils.setEventHandler
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGFloat
@@ -88,7 +88,7 @@ actual class DefaultTabsWidgetViewFactory actual constructor(
             with(container) {
                 addSubview(view)
 
-                val edges: Edges<CGFloat> = layoutWidget(
+                val edges: Edges<CGFloat> = applySizeToChild(
                     rootView = container,
                     rootPadding = null,
                     childView = view,

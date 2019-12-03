@@ -13,7 +13,7 @@ import dev.icerock.moko.widgets.utils.Edges
 import dev.icerock.moko.widgets.utils.UIViewWithIdentifier
 import dev.icerock.moko.widgets.utils.applyBackground
 import dev.icerock.moko.widgets.utils.identifier
-import dev.icerock.moko.widgets.utils.layoutWidget
+import dev.icerock.moko.widgets.utils.applySizeToChild
 import platform.CoreGraphics.CGFloat
 import platform.UIKit.UIViewController
 import platform.UIKit.addSubview
@@ -49,7 +49,7 @@ actual class DefaultContainerWidgetViewFactory actual constructor(
 
             root.addSubview(childView)
 
-            val edges: Edges<CGFloat> = layoutWidget(
+            val edges: Edges<CGFloat> = applySizeToChild(
                 rootView = root,
                 rootPadding = style.padding,
                 childView = childView,

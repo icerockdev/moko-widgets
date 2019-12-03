@@ -20,8 +20,6 @@ import platform.QuartzCore.CATransaction
 import platform.UIKit.UIButton
 import platform.UIKit.UIControl
 import platform.UIKit.UIView
-import platform.UIKit.backgroundColor
-import kotlin.math.max
 import kotlin.math.min
 
 fun Background.caLayer(): CALayer {
@@ -37,7 +35,6 @@ fun Background.caLayer(): CALayer {
                 colors = cgColors(fill.colors.map {
                     it.toUIColor()
                 })
-                println("colors: $colors")
 
                 masksToBounds = true
 
@@ -71,8 +68,18 @@ fun Background.caLayer(): CALayer {
         is Shape.Rectangle -> {
             val cornerRadius = shape.cornerRadius
             if (cornerRadius != null) {
-                backgroundLayer.cornerRadius = cornerRadius.toDouble()
                 backgroundLayer.masksToBounds = true
+
+                // FIXME memoryleak.
+                backgroundLayer.displayLink {
+                    CATransaction.begin()
+                    CATransaction.setDisableActions(true)
+
+                    val minEdge = backgroundLayer.bounds.useContents { min(size.width, size.height) }
+                    backgroundLayer.cornerRadius = min(minEdge / 2, cornerRadius.toDouble())
+
+                    CATransaction.commit()
+                }
             }
         }
         is Shape.Oval -> {
@@ -138,69 +145,26 @@ fun UIButton.applyStateBackground(background: StateBackground?) {
 fun UIView.applyBackground(background: Background?) {
     if (background == null) return
 
-    when (val fill = background.fill) {
-        is Fill.Solid -> backgroundColor = fill.color.toUIColor()
-        is Fill.Gradient -> {
-            val gradientLayer = CAGradientLayer().apply {
-                colors = cgColors(fill.colors.map {
-                    it.toUIColor()
-                })
-                println("colors: $colors")
+    val bgLayer = background.caLayer()
+    layer.insertSublayer(bgLayer, 0)
 
-                frame = layer.bounds
-                masksToBounds = true
+    // FIXME memoryleak, perfomance problem !!!
+    displayLink {
+        val (width, height) = layer.bounds.useContents { size.width to size.height }
 
-                val (start, end) = when (fill.direction) {
-                    Direction.LEFT_RIGHT -> CGPointMake(0.0, 0.5) to CGPointMake(1.0, 0.5)
-                    Direction.RIGHT_LEFT -> CGPointMake(1.0, 0.5) to CGPointMake(0.0, 0.5)
-                    Direction.TOP_BOTTOM -> CGPointMake(0.5, 0.0) to CGPointMake(0.5, 1.0)
-                    Direction.BOTTOM_TOP -> CGPointMake(0.5, 1.0) to CGPointMake(0.5, 0.0)
-                    Direction.BL_TR -> CGPointMake(0.0, 1.0) to CGPointMake(1.0, 0.0)
-                    Direction.BR_TL -> CGPointMake(1.0, 1.0) to CGPointMake(0.0, 0.0)
-                    Direction.TR_BL -> CGPointMake(1.0, 0.0) to CGPointMake(0.0, 1.0)
-                    Direction.TL_BR -> CGPointMake(0.0, 0.0) to CGPointMake(1.0, 1.0)
-                }
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
 
-                startPoint = start
-                endPoint = end
-            }
-            layer.insertSublayer(gradientLayer, atIndex = 0)
+        bgLayer.frame = CGRectMake(0.0, 0.0, width, height)
 
-            // FIXME memoryleak.
-            layer.displayLink {
-                val (width, height) = layer.bounds.useContents { size.width to size.height }
-                gradientLayer.frame = CGRectMake(0.0, 0.0, width, height)
-            }
-        }
-    }
-
-    val border = background.border
-    if (border != null) {
-        layer.borderWidth = border.width.toDouble()
-        layer.borderColor = border.color.toUIColor().CGColor
-    }
-
-    when (val shape = background.shape) {
-        is Shape.Rectangle -> {
-            val cornerRadius = shape.cornerRadius
-            if (cornerRadius != null) {
-                layer.masksToBounds = true
-
-                // FIXME memoryleak.
-                layer.displayLink {
-                    val minEdge = layer.bounds.useContents { min(size.width, size.height) }
-                    layer.cornerRadius = min(minEdge / 2, cornerRadius.toDouble())
-                }
-            }
-        }
-        is Shape.Oval -> {
-            TODO()
-        }
+        CATransaction.commit()
     }
 }
 
 fun UIControl.applyBackground(stateBackground: StateBackground?) {
     if (stateBackground == null) return
 
+    // TODO complete it
     applyBackground(stateBackground.normal)
 }
+ 

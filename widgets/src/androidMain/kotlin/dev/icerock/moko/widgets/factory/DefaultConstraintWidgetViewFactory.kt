@@ -117,6 +117,42 @@ actual class DefaultConstraintWidgetViewFactory actual constructor(
             override fun ConstraintItem.Child.bottomToTop(to: ConstraintItem) {
                 constraint(this, to) { bottomToTop = it }
             }
+
+            override fun ConstraintItem.Child.verticalCenterBetween(
+                top: ConstraintItem.VerticalAnchor,
+                bottom: ConstraintItem.VerticalAnchor
+            ) {
+                constraint(this, top.item) {
+                    when (top.edge) {
+                        ConstraintItem.VerticalAnchor.Edge.TOP -> topToTop = it
+                        ConstraintItem.VerticalAnchor.Edge.BOTTOM -> topToBottom = it
+                    }
+                }
+                constraint(this, bottom.item) {
+                    when (bottom.edge) {
+                        ConstraintItem.VerticalAnchor.Edge.TOP -> bottomToTop = it
+                        ConstraintItem.VerticalAnchor.Edge.BOTTOM -> bottomToBottom = it
+                    }
+                }
+            }
+
+            override fun ConstraintItem.Child.horizontalCenterBetween(
+                left: ConstraintItem.HorizontalAnchor,
+                right: ConstraintItem.HorizontalAnchor
+            ) {
+                constraint(this, left.item) {
+                    when (left.edge) {
+                        ConstraintItem.HorizontalAnchor.Edge.LEFT -> leftToLeft = it
+                        ConstraintItem.HorizontalAnchor.Edge.RIGHT -> leftToRight = it
+                    }
+                }
+                constraint(this, right.item) {
+                    when (right.edge) {
+                        ConstraintItem.HorizontalAnchor.Edge.LEFT -> rightToLeft = it
+                        ConstraintItem.HorizontalAnchor.Edge.RIGHT -> rightToRight = it
+                    }
+                }
+            }
         }
 
         widget.constraints.invoke(constraintsHandler)
@@ -144,8 +180,8 @@ actual class DefaultConstraintWidgetViewFactory actual constructor(
                     widgetSize.width.toPlatformSize(dm),
                     0
                 ).apply {
-                    val ratio = widgetSize.aspectRatio
-                    dimensionRatio = "W:$ratio:1" // TODO CHECK
+                    // TODO test
+                    dimensionRatio = widgetSize.aspectRatio.toString()
                 }
             }
             is WidgetSize.AspectByHeight<out SizeSpec> -> {
@@ -153,8 +189,8 @@ actual class DefaultConstraintWidgetViewFactory actual constructor(
                     0,
                     widgetSize.height.toPlatformSize(dm)
                 ).apply {
-                    val ratio = widgetSize.aspectRatio
-                    dimensionRatio = "H:1:$ratio" // TODO CHECK
+                    // TODO test
+                    dimensionRatio = widgetSize.aspectRatio.toString()
                 }
             }
         }

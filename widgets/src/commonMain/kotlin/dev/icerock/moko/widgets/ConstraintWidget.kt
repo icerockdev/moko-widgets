@@ -26,10 +26,9 @@ class ConstraintWidget<WS : WidgetSize>(
     val constraints: ConstraintsApi.() -> Unit
 
     init {
-        ChildrenBuilder().run {
-            constraints = this.builder()
-            children = build()
-        }
+        val cb = ChildrenBuilder()
+        constraints = builder(cb)
+        children = cb.build()
     }
 
     override fun buildView(viewFactoryContext: ViewFactoryContext): ViewBundle<WS> {
@@ -61,6 +60,26 @@ class ConstraintWidget<WS : WidgetSize>(
 sealed class ConstraintItem {
     object Root : ConstraintItem()
     data class Child(val widget: Widget<out WidgetSize>) : ConstraintItem()
+
+    val top = VerticalAnchor(item = this, edge = VerticalAnchor.Edge.TOP)
+    val bottom = VerticalAnchor(item = this, edge = VerticalAnchor.Edge.BOTTOM)
+
+    val left = HorizontalAnchor(item = this, edge = HorizontalAnchor.Edge.LEFT)
+    val right = HorizontalAnchor(item = this, edge = HorizontalAnchor.Edge.RIGHT)
+
+    class VerticalAnchor(val item: ConstraintItem, val edge: Edge) {
+        enum class Edge {
+            TOP,
+            BOTTOM
+        }
+    }
+
+    class HorizontalAnchor(val item: ConstraintItem, val edge: Edge) {
+        enum class Edge {
+            LEFT,
+            RIGHT
+        }
+    }
 }
 
 interface ConstraintsApi {
@@ -79,4 +98,14 @@ interface ConstraintsApi {
         this leftToLeft to
         this rightToRight to
     }
+
+    fun ConstraintItem.Child.verticalCenterBetween(
+        top: ConstraintItem.VerticalAnchor,
+        bottom: ConstraintItem.VerticalAnchor
+    )
+
+    fun ConstraintItem.Child.horizontalCenterBetween(
+        left: ConstraintItem.HorizontalAnchor,
+        right: ConstraintItem.HorizontalAnchor
+    )
 }

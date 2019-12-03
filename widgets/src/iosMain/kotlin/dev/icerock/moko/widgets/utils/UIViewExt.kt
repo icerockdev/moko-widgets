@@ -21,7 +21,7 @@ import platform.UIKit.topAnchor
 import platform.UIKit.trailingAnchor
 import platform.UIKit.widthAnchor
 
-fun layoutWidget(
+fun applySizeToChild(
     rootView: UIView,
     rootPadding: PaddingValues?,
     childView: UIView,
