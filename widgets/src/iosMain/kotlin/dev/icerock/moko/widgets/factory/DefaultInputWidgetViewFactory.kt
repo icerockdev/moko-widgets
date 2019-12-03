@@ -134,7 +134,15 @@ actual class DefaultInputWidgetViewFactory actual constructor(
         var textChanged: ((text: String) -> Unit)? = null
 
         var selectedColor: UIColor = UIColor.blackColor
+            set(value) {
+                field = value
+                underlineLayer.fillColor = (if (textField.isFocused()) value else deselectedColor).CGColor
+            }
         var deselectedColor: UIColor = UIColor.systemGray3Color
+            set(value) {
+                field = value
+                underlineLayer.fillColor = (if (textField.isFocused()) selectedColor else value).CGColor
+            }
         private val textField: UITextField
 
         private val errorLabel: UILabel
@@ -144,6 +152,10 @@ actual class DefaultInputWidgetViewFactory actual constructor(
         private var placeholderAnimationDuration: CGFloat = 0.25
 
         var placeholderTextSize: CGFloat = UIFont.systemFontSize
+            set(value) {
+                field = value
+                placeholderTextLayer.fontSize = value
+            }
 
         private var _accessibilityIdentifier: String? = null
 
@@ -160,7 +172,8 @@ actual class DefaultInputWidgetViewFactory actual constructor(
                 topAnchor.constraintEqualToAnchor(container.topAnchor, constant = 14.0 + padding.top).active =
                     true
                 leadingAnchor.constraintEqualToAnchor(container.leadingAnchor, constant = padding.leading).active = true
-                trailingAnchor.constraintEqualToAnchor(container.trailingAnchor, constant = -padding.trailing).active = true
+                trailingAnchor.constraintEqualToAnchor(container.trailingAnchor, constant = -padding.trailing).active =
+                    true
 
                 delegate = this@InputWidgetView
 
@@ -179,7 +192,8 @@ actual class DefaultInputWidgetViewFactory actual constructor(
                 topAnchor.constraintEqualToAnchor(textField.bottomAnchor, constant = 4.0).active =
                     true
                 leadingAnchor.constraintEqualToAnchor(container.leadingAnchor, constant = padding.leading).active = true
-                trailingAnchor.constraintEqualToAnchor(container.trailingAnchor, constant = -padding.trailing).active = true
+                trailingAnchor.constraintEqualToAnchor(container.trailingAnchor, constant = -padding.trailing).active =
+                    true
                 bottomAnchor.constraintEqualToAnchor(container.bottomAnchor, constant = -padding.bottom).active = true
 
                 font = UIFont.systemFontOfSize(11.0)
