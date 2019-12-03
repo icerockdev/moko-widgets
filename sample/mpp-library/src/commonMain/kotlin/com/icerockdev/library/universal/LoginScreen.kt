@@ -56,16 +56,16 @@ class LoginScreen(
 
             constraints {
                 passwordInput centerYToCenterY root
-                passwordInput fillWidth root
+                passwordInput leftRightToLeftRight root
 
                 loginInput bottomToTop passwordInput
-                loginInput fillWidth root
+                loginInput leftRightToLeftRight root
 
                 submitButton topToBottom passwordInput
-                submitButton fillWidth root
+                submitButton leftRightToLeftRight root
 
                 // logo image height must be automatic ?
-                logoImage fillWidth root
+                logoImage leftRightToLeftRight root
                 logoImage.verticalCenterBetween(
                     top = root.top,
                     bottom = loginInput.top

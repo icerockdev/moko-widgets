@@ -94,7 +94,7 @@ interface ConstraintsApi {
     infix fun ConstraintItem.Child.bottomToBottom(to: ConstraintItem)
     infix fun ConstraintItem.Child.bottomToTop(to: ConstraintItem)
 
-    infix fun ConstraintItem.Child.fillWidth(to: ConstraintItem) {
+    infix fun ConstraintItem.Child.leftRightToLeftRight(to: ConstraintItem) {
         this leftToLeft to
         this rightToRight to
     }
