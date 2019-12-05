@@ -169,7 +169,7 @@ actual class DefaultInputWidgetViewFactory actual constructor(
 
                 container.addSubview(this)
 
-                topAnchor.constraintEqualToAnchor(container.topAnchor, constant = 14.0 + padding.top).active =
+                topAnchor.constraintEqualToAnchor(container.topAnchor, constant = 18.0 + padding.top).active =
                     true
                 leadingAnchor.constraintEqualToAnchor(container.leadingAnchor, constant = padding.leading).active = true
                 trailingAnchor.constraintEqualToAnchor(container.trailingAnchor, constant = -padding.trailing).active =
