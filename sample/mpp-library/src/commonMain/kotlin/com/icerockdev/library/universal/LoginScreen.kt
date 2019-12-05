@@ -25,11 +25,12 @@ import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
 class LoginScreen(
-    private val theme: Theme
+    private val theme: Theme,
+    private val loginViewModelFactory: () -> LoginViewModel
 ) : WidgetScreen<Args.Empty>() {
 
     override fun createContentWidget() = with(theme) {
-        val viewModel = getViewModel { LoginViewModel() }
+        val viewModel = getViewModel(loginViewModelFactory)
 
         constraint(size = WidgetSize.AsParent) {
             val logoImage = +image(
@@ -39,9 +40,9 @@ class LoginScreen(
 
             val emailInput = +input(
                 size = WidgetSize.WidthAsParentHeightWrapContent,
-                id = Id.LoginInputId,
+                id = Id.EmailInputId,
                 label = const("Email".desc() as StringDesc),
-                field = viewModel.loginField
+                field = viewModel.emailField
             )
             val passwordInput = +input(
                 size = WidgetSize.WidthAsParentHeightWrapContent,
@@ -52,7 +53,7 @@ class LoginScreen(
             val loginButton = +button(
                 size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.Exact(50f)),
                 text = const("Login".desc() as StringDesc),
-                onTap = viewModel::onSubmitPressed
+                onTap = viewModel::onLoginPressed
             )
 
             val registerButton = +button(
@@ -86,21 +87,17 @@ class LoginScreen(
     }
 
     object Id {
-        object LoginInputId : InputWidget.Id
+        object EmailInputId : InputWidget.Id
         object PasswordInputId : InputWidget.Id
         object RegistrationButtonId : ButtonWidget.Id
     }
 }
 
 class LoginViewModel : ViewModel() {
-    val loginField = FormField<String, StringDesc>("", liveBlock { null })
+    val emailField = FormField<String, StringDesc>("", liveBlock { null })
     val passwordField = FormField<String, StringDesc>("", liveBlock { null })
 
-    fun onSubmitPressed() {
+    fun onLoginPressed() {}
 
-    }
-
-    fun onRegistrationPressed() {
-
-    }
+    fun onRegistrationPressed() {}
 }
