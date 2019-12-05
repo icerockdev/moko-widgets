@@ -10,7 +10,9 @@ import dev.icerock.moko.parcelize.Parcelable
 private const val sScreenArgsParameter = "args"
 
 actual fun <T : Parcelable> Screen<Args.Parcel<T>>.getArgument(): T {
-    return requireNotNull(arguments?.getParcelable(sScreenArgsParameter)) { "screen with arguments should have notnull args" }
+    return requireNotNull(arguments?.getParcelable(sScreenArgsParameter)) {
+        "screen with arguments should have notnull args"
+    }
 }
 
 internal fun <T : Parcelable> Screen<Args.Parcel<T>>.setArgument(arg: T) {

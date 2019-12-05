@@ -94,7 +94,7 @@ class GenerateSourcesExtension(private val messageCollector: MessageCollector) :
         }
 
         override fun log(string: String) {
-            messageCollector.report(CompilerMessageSeverity.WARNING, string)
+            messageCollector.report(CompilerMessageSeverity.INFO, string)
         }
     }
 

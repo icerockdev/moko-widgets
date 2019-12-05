@@ -26,4 +26,3 @@ abstract class BaseApplication : ScreenFactory {
         return instantiateScreen(getRootScreen())
     }
 }
-

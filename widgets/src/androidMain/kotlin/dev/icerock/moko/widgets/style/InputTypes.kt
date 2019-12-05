@@ -24,7 +24,6 @@ internal fun EditText.applyInputType(
                 ) {
                     maskFilledListener(formattedValue, maskFilled)
                 }
-
             })
 
         addTextChangedListener(maskedInputListener)

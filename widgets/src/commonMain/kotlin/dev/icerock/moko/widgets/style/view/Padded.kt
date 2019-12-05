@@ -10,4 +10,3 @@ package dev.icerock.moko.widgets.style.view
 interface Padded {
     val padding: PaddingValues?
 }
-

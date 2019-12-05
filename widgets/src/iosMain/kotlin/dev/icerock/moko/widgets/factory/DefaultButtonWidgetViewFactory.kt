@@ -13,7 +13,6 @@ import dev.icerock.moko.widgets.utils.applyStateBackground
 import dev.icerock.moko.widgets.utils.applyTextStyle
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.setEventHandler
-import platform.CoreGraphics.CGRectEdge
 import platform.UIKit.UIButton
 import platform.UIKit.UIButtonTypeSystem
 import platform.UIKit.UIControlEventTouchUpInside

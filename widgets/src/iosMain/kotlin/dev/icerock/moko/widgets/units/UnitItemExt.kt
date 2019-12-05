@@ -6,9 +6,9 @@ package dev.icerock.moko.widgets.units
 
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
+import dev.icerock.moko.widgets.objc.getAssociatedObject
+import dev.icerock.moko.widgets.objc.setAssociatedObject
 import dev.icerock.moko.widgets.utils.applySize
-import dev.icerock.plural.getAssociatedObject
-import dev.icerock.plural.setAssociatedObject
 import kotlinx.cinterop.useContents
 import platform.UIKit.UIApplication
 import platform.UIKit.UIView

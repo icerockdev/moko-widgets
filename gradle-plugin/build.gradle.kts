@@ -10,7 +10,7 @@ plugins {
 }
 
 dependencies {
-    implementation(Deps.Libs.MultiPlatform.kotlinStdLib.android!!)
+    implementation(Deps.Libs.Jvm.kotlinStdLib)
 
     compileOnly(Deps.Libs.Jvm.kotlinGradlePlugin)
     implementation(Deps.Libs.Jvm.kotlinGradlePluginApi)

@@ -25,7 +25,7 @@ android {
         applicationId = "dev.icerock.moko.samples.widgets"
 
         versionCode = 1
-        versionName = "0.1.0"
+        versionName = Versions.Libs.MultiPlatform.mokoWidgets
 
         vectorDrawables.useSupportLibrary = true
     }

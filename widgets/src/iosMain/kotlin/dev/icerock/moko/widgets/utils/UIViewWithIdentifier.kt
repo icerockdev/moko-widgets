@@ -12,7 +12,6 @@ import platform.CoreGraphics.CGRectZero
 import platform.UIKit.UIAccessibilityIdentificationProtocol
 import platform.UIKit.UIView
 
-
 class UIViewWithIdentifier : UIView(frame = CGRectZero.readValue()),
     UIAccessibilityIdentificationProtocol {
     private var _accessibilityIdentifier: String? = null

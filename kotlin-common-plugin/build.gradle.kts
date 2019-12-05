@@ -12,7 +12,7 @@ java {
 }
 
 dependencies {
-    compileOnly(Deps.Libs.MultiPlatform.kotlinStdLib.android!!)
+    compileOnly(Deps.Libs.Jvm.kotlinStdLib)
 
     compileOnly("org.jetbrains.kotlin:kotlin-script-runtime")
     compileOnly("org.jetbrains.kotlin:kotlin-reflect")

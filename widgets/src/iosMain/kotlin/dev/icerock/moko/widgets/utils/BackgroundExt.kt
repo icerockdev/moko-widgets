@@ -5,12 +5,12 @@
 package dev.icerock.moko.widgets.utils
 
 import dev.icerock.moko.graphics.toUIColor
+import dev.icerock.moko.widgets.objc.cgColors
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Direction
 import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.background.Shape
 import dev.icerock.moko.widgets.style.background.StateBackground
-import dev.icerock.plural.cgColors
 import kotlinx.cinterop.useContents
 import platform.CoreGraphics.CGPointMake
 import platform.CoreGraphics.CGRectMake

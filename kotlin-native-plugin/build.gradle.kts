@@ -16,9 +16,9 @@ java {
 }
 
 dependencies {
-    implementation(Deps.Libs.MultiPlatform.kotlinStdLib.android!!)
+    implementation(Deps.Libs.Jvm.kotlinStdLib)
 
-    compile(project(":kotlin-common-plugin"))
+    implementation(project(":kotlin-common-plugin"))
 
     compileOnly("org.jetbrains.kotlin:kotlin-compiler")
 

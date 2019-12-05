@@ -1,9 +1,13 @@
-![moko-widgets](img/logo.png)  
-[![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![Download](https://api.bintray.com/packages/icerockdev/moko/moko-widgets/images/download.svg) ](https://bintray.com/icerockdev/moko/moko-units/_latestVersion) ![kotlin-version](https://img.shields.io/badge/kotlin-1.3.50-orange)
+![moko-widgets](https://user-images.githubusercontent.com/5010169/70204294-93a45900-1752-11ea-9bb6-820d514ceef9.png)  
+[![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![Download](https://api.bintray.com/packages/icerockdev/moko/moko-widgets/images/download.svg) ](https://bintray.com/icerockdev/moko/moko-units/_latestVersion) ![kotlin-version](https://img.shields.io/badge/kotlin-1.3.60-orange)
 
 # Mobile Kotlin widgets
 This is a Kotlin MultiPlatform library that provides UI in common code.  
 **NOT RELEASED YET. WORK IN PROGRESS.**
+
+|Android|iOS|
+|---|---|
+|![Sample Android](https://user-images.githubusercontent.com/5010169/70204616-d0bd1b00-1753-11ea-95d1-749341631ba7.png)|![Sample iOS](https://user-images.githubusercontent.com/5010169/70204576-aff4c580-1753-11ea-95b9-14e488edb689.png)|
 
 ## Table of Contents
 - [Features](#features)
@@ -17,18 +21,19 @@ This is a Kotlin MultiPlatform library that provides UI in common code.
 - [License](#license)
 
 ## Features
-- **** .
-TODO
+- **compliance with platform rules**; 
+- **declare structure, not rendering**;
+- **compile-time safety**;
+- **reactive data handling**.
 
 ## Requirements
 - Gradle version 5.4.1+
-- Android API 21+
+- Android API 16+
 - iOS version 9.0+
 
 ## Versions
-- kotlin 1.3.50
+- kotlin 1.3.60
   - 0.1.0
-  - 0.1.1
 
 ## Installation
 root build.gradle  
@@ -52,15 +57,24 @@ settings.gradle
 enableFeaturePreview("GRADLE_METADATA")
 ```
 
-On iOS, in addition to the Kotlin library add Pod in the Podfile.
-```ruby
-pod 'MultiPlatformLibraryWidgets', :git => 'https://github.com/icerockdev/moko-widgets.git', :tag => 'release/0.1.0'
+### Codegen for new Widgets with @WidgetDef
+```groovy
+buildscript {
+    repositories {
+        maven { url = "https://dl.bintray.com/icerockdev/plugins" } // gradle plugin
+    }
+
+    dependencies {
+        classpath "dev.icerock.moko.widgets:gradle-plugin:0.1.0"
+    }
+}
+
+allprojects {
+    repositories {
+        maven { url = uri("https://dl.bintray.com/icerockdev/plugins") } // compiler plugins
+    }
+}
 ```
-**`MultiPlatformLibraryWidgets` CocoaPod requires that the framework compiled from Kotlin be named 
-`MultiPlatformLibrary` and be connected as a CocoaPod `MultiPlatformLibrary`. 
-[Here](sample/ios-app/Podfile)'s an example.
-To simplify integration with MultiPlatformFramework you can use [mobile-multiplatform-plugin](https://github.com/icerockdev/mobile-multiplatform-gradle-plugin)**.  
-`MultiPlatformLibraryWidgets` CocoaPod contains an *****.
 
 ## Usage
 TODO
@@ -70,8 +84,15 @@ Please see more examples in the [sample directory](sample).
 
 ## Set Up Locally 
 - The [widgets directory](widgets) contains the `widgets` library;
+- The [gradle-plugin directory](gradle-plugin) contains the gradle-plugin which apply compiler plugins for Native and JVM;
+- The [kotlin-plugin directory](kotlin-plugin) contains the JVM compiler plugin with code-generation from @WidgetDef annotation;
+- The [kotlin-native-plugin directory](kotlin-native-plugin) contains the Native compiler plugin with code-generation from @WidgetDef annotation;
+- The [kotlin-common-plugin directory](kotlin-common-plugin) contains the common code of JVM and Native compiler plugins;
 - The [sample directory](sample) contains sample apps for Android and iOS; plus the mpp-library connected to the apps;
-- For local testing a library use the `:widgets:publishToMavenLocal` gradle task - so that sample apps use the locally published version.
+- For local testing a library use:
+  - `./gradlew -PpluginPublish publishPluginPublicationToMavenLocal`
+  - `./gradlew -PlibraryPublish publishToMavenLocal` 
+  - sample apps priority use the locally published version.
 
 ## Contributing
 All development (both new features and bug fixes) is performed in the `develop` branch. This way `master` always contains the sources of the most recently released version. Please send PRs with bug fixes to the `develop` branch. Documentation fixes in the markdown files are an exception to this rule. They are updated directly in `master`.

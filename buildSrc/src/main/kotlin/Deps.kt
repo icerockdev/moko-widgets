@@ -4,7 +4,8 @@
 
 object Deps {
     object Plugins {
-        const val mokoWidgets = "dev.icerock.moko.widgets:gradle-plugin:${Versions.Plugins.mokoWidgets}"
+        const val mokoWidgets =
+            "dev.icerock.moko.widgets:gradle-plugin:${Versions.Plugins.mokoWidgets}"
         const val mokoResources =
             "dev.icerock.moko:resources-generator:${Versions.Plugins.mokoResources}"
     }
@@ -93,6 +94,7 @@ object Deps {
         }
 
         object Jvm {
+            val kotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlin}"
             val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
             val kotlinGradlePluginApi = "org.jetbrains.kotlin:kotlin-gradle-plugin-api:${Versions.kotlin}"
             val autoService = "com.google.auto.service:auto-service:1.0-rc6"

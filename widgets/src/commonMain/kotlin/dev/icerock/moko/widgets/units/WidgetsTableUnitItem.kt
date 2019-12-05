@@ -15,4 +15,3 @@ expect abstract class WidgetsTableUnitItem<T>(
 
     abstract fun createWidget(data: LiveData<T>): UnitItemRoot
 }
-

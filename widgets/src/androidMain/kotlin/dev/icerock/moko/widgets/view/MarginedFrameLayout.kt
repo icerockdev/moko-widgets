@@ -19,4 +19,3 @@ internal open class MarginedFrameLayout(context: Context) : FrameLayout(context)
         }
     }
 }
-

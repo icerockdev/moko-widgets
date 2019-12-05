@@ -9,4 +9,3 @@ import dev.icerock.moko.widgets.style.background.Background
 interface Backgrounded {
     val background: Background?
 }
-

@@ -6,17 +6,11 @@ package dev.icerock.moko.widgets.style.view
 
 import dev.icerock.moko.graphics.Color
 
+// TODO move standard colors to moko-graphics
 object Colors {
     val white get() = Color(0xFF, 0xFF, 0xFF, 0xFF)
     val black get() = Color(0x00, 0x00, 0x00, 0xFF)
 }
-
-fun ColorF(red: Double, green: Double, blue: Double, alpha: Double) = Color(
-    red = (0xFF * red).toInt(),
-    green = (0xFF * green).toInt(),
-    blue = (0xFF * blue).toInt(),
-    alpha = (0xFF * alpha).toInt()
-)
 
 fun rgba(red: Int, green: Int, blue: Int, alpha: Double) = Color(
     red = red,

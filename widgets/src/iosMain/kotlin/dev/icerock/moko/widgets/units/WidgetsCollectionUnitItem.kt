@@ -29,4 +29,3 @@ actual abstract class WidgetsCollectionUnitItem<T> actual constructor(
         cell.contentView.setupWidgetContent(data, ::createWidget)
     }
 }
-

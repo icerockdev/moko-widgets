@@ -59,9 +59,9 @@ publishing {
 kotlin {
     targets.filterIsInstance<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>().forEach { target ->
         target.compilations.getByName("main") {
-            val pluralsFormat by cinterops.creating {
-                defFile(project.file("src/iosMain/def/stringFormat.def"))
-                packageName("dev.icerock.plural")
+            val objcAddtition by cinterops.creating {
+                defFile(project.file("src/iosMain/def/objcAddtition.def"))
+                packageName("dev.icerock.moko.widgets.objc")
             }
         }
     }

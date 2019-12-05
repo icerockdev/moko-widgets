@@ -12,4 +12,3 @@ package dev.icerock.moko.widgets.style.view
 interface Margined {
     val margins: MarginValues?
 }
-

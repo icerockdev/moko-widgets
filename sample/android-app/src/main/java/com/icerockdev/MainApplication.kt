@@ -6,11 +6,18 @@ package com.icerockdev
 
 import App
 import android.app.Application
+import dev.icerock.moko.widgets.screen.BaseApplication
 
 class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        App.setup()
+        mppApp = App().apply {
+            setup()
+        }
+    }
+
+    companion object {
+        lateinit var mppApp: BaseApplication
     }
 }

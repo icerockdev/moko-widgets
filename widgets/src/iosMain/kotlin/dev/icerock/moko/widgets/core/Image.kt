@@ -6,13 +6,12 @@ package dev.icerock.moko.widgets.core
 
 import dev.icerock.moko.media.Bitmap
 import dev.icerock.moko.resources.ImageResource
-import dev.icerock.plural.dataTask
+import dev.icerock.moko.widgets.objc.dataTask
 import platform.Foundation.NSURL
 import platform.Foundation.NSURLSession
 import platform.Foundation.NSURLSessionConfiguration
 import platform.UIKit.UIImage
 import platform.UIKit.UIImageView
-
 
 actual abstract class Image {
 

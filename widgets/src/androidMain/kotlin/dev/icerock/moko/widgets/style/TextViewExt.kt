@@ -7,7 +7,6 @@ package dev.icerock.moko.widgets.style
 import android.widget.TextView
 import dev.icerock.moko.widgets.style.view.TextStyle
 
-
 fun TextView.applyTextStyle(textStyle: TextStyle) {
     textStyle.color?.also {
         setTextColor(it.argb.toInt())
