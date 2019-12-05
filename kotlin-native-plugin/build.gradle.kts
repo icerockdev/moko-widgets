@@ -18,7 +18,7 @@ java {
 dependencies {
     implementation(Deps.Libs.Jvm.kotlinStdLib)
 
-    implementation(project(":kotlin-common-plugin"))
+    compile(project(":kotlin-common-plugin"))
 
     compileOnly("org.jetbrains.kotlin:kotlin-compiler")
 
