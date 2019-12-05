@@ -321,6 +321,42 @@ Result:
 |---|---|
 |![Custom style Android](https://user-images.githubusercontent.com/5010169/69857575-d1bcfb00-12c2-11ea-9cbb-ee6b17357db2.png)|![Custom style iOS](https://user-images.githubusercontent.com/5010169/69857701-09c43e00-12c3-11ea-9e9d-181a298a7edf.png)|
 
+### Bind data to UI
+```kotlin
+class TimerScreen(
+    private val theme: Theme
+) : WidgetScreen<Args.Empty>() {
+    override fun createContentWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
+        val viewModel = getViewModel { TimerViewModel() }
+
+        return with(theme) {
+            container(size = WidgetSize.AsParent) {
+                center {
+                    text(
+                        size = WidgetSize.WrapContent,
+                        text = viewModel.text
+                    )
+                }
+            }
+        }
+    }
+}
+
+class TimerViewModel : ViewModel() {
+    private val iteration = MutableLiveData<Int>(0)
+    val text: LiveData<StringDesc> = iteration.map { it.toString().desc() }
+
+    init {
+        viewModelScope.launch {
+            while (isActive) {
+                delay(1000)
+                iteration.value = iteration.value + 1
+            }
+        }
+    }
+}
+```
+
 ## Samples
 Please see more examples in the [sample directory](sample).
 
