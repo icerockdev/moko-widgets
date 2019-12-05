@@ -5,10 +5,180 @@
 This is a Kotlin MultiPlatform library that provides declarative UI and application screens management
  in common code. You can implement full application for Android and iOS only from common code with it.  
 
-# Sample Screen
+## Current status
+Current version - `0.1.0-dev-5`. Dev version is not tested in production tasks yet, API can be changed and
+ bugs may be found. But dev version is chance to test limits of API and concepts to feedback and improve lib.
+ We open for any feedback and ideas (go to issues or #moko at [kotlinlang.slack.com](https://kotlinlang.slack.com))!
+
+## Roadmap
+- December-January: Test library in real project;
+- February: 0.1.0 release with flexible API; production usage at IceRock;
+- First half of 2019: more widgets, more factories; figma template and generation of screens.
+
+## Sample Screen
 |Android|iOS|
 |---|---|
 |![Sample Android](https://user-images.githubusercontent.com/5010169/70204616-d0bd1b00-1753-11ea-95d1-749341631ba7.png)|![Sample iOS](https://user-images.githubusercontent.com/5010169/70204576-aff4c580-1753-11ea-95b9-14e488edb689.png)|
+Code of screen structure:
+```kotlin
+class LoginScreen(
+    private val theme: Theme,
+    private val loginViewModelFactory: () -> LoginViewModel
+) : WidgetScreen<Args.Empty>() {
+
+    override fun createContentWidget() = with(theme) {
+        val viewModel = getViewModel(loginViewModelFactory)
+
+        constraint(size = WidgetSize.AsParent) {
+            val logoImage = +image(
+                size = WidgetSize.Const(SizeSpec.WrapContent, SizeSpec.WrapContent),
+                image = const(Image.resource(MR.images.logo))
+            )
+
+            val emailInput = +input(
+                size = WidgetSize.WidthAsParentHeightWrapContent,
+                id = Id.EmailInputId,
+                label = const("Email".desc() as StringDesc),
+                field = viewModel.emailField
+            )
+            val passwordInput = +input(
+                size = WidgetSize.WidthAsParentHeightWrapContent,
+                id = Id.PasswordInputId,
+                label = const("Password".desc() as StringDesc),
+                field = viewModel.passwordField
+            )
+            val loginButton = +button(
+                size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.Exact(50f)),
+                text = const("Login".desc() as StringDesc),
+                onTap = viewModel::onLoginPressed
+            )
+
+            val registerButton = +button(
+                id = Id.RegistrationButtonId,
+                size = WidgetSize.Const(SizeSpec.WrapContent, SizeSpec.Exact(40f)),
+                text = const("Registration".desc() as StringDesc),
+                onTap = viewModel::onRegistrationPressed
+            )
+
+            constraints {
+                passwordInput centerYToCenterY root
+                passwordInput leftRightToLeftRight root
+
+                emailInput bottomToTop passwordInput
+                emailInput leftRightToLeftRight root
+
+                loginButton topToBottom passwordInput
+                loginButton leftRightToLeftRight root
+
+                registerButton topToBottom loginButton
+                registerButton rightToRight root
+
+                // logo image height must be automatic ?
+                logoImage centerXToCenterX root
+                logoImage.verticalCenterBetween(
+                    top = root.top,
+                    bottom = emailInput.top
+                )
+            }
+        }
+    }
+
+    object Id {
+        object EmailInputId : InputWidget.Id
+        object PasswordInputId : InputWidget.Id
+        object RegistrationButtonId : ButtonWidget.Id
+    }
+}
+```
+
+Code of theme:
+```kotlin
+val loginScreen = Theme(baseTheme) {
+    constraintFactory = DefaultConstraintWidgetViewFactory(
+        DefaultConstraintWidgetViewFactoryBase.Style(
+            padding = PaddingValues(16f),
+            background = Background(
+                fill = Fill.Solid(Colors.white)
+            )
+        )
+    )
+
+    imageFactory = DefaultImageWidgetViewFactory(
+        DefaultImageWidgetViewFactoryBase.Style(
+            scaleType = DefaultImageWidgetViewFactoryBase.ScaleType.FIT
+        )
+    )
+
+    inputFactory = DefaultInputWidgetViewFactory(
+        DefaultInputWidgetViewFactoryBase.Style(
+            margins = MarginValues(bottom = 8f),
+            underLineColor = Color(0xe5e6eeFF),
+            labelTextStyle = TextStyle(
+                color = Color(0x777889FF)
+            )
+        )
+    )
+
+    val corners = platformSpecific(android = 8f, ios = 25f)
+
+    buttonFactory = DefaultButtonWidgetViewFactory(
+        DefaultButtonWidgetViewFactoryBase.Style(
+            margins = MarginValues(top = 32f),
+            background = {
+                val bg: (Color) -> Background = {
+                    Background(
+                        fill = Fill.Solid(it),
+                        shape = Shape.Rectangle(
+                            cornerRadius = corners
+                        )
+                    )
+                }
+                StateBackground(
+                    normal = bg(Color(0x6770e0FF)),
+                    pressed = bg(Color(0x6770e0EE)),
+                    disabled = bg(Color(0x6770e0BB))
+                )
+            }.invoke(),
+            textStyle = TextStyle(
+                color = Colors.white
+            )
+        )
+    )
+
+    setButtonFactory(
+        DefaultButtonWidgetViewFactory(
+            DefaultButtonWidgetViewFactoryBase.Style(
+                margins = MarginValues(top = 16f),
+                padding = platformSpecific(
+                    ios = PaddingValues(start = 16f, end = 16f),
+                    android = null
+                ),
+                background = {
+                    val bg: (Color) -> Background = {
+                        Background(
+                            fill = Fill.Solid(it),
+                            border = Border(
+                                color = Color(0xF2F2F8FF),
+                                width = 2f
+                            ),
+                            shape = Shape.Rectangle(cornerRadius = corners)
+                        )
+                    }
+                    StateBackground(
+                        normal = bg(Colors.white),
+                        pressed = bg(Color(0xEEEEEEFF)),
+                        disabled = bg(Color(0xBBBBBBFF))
+                    )
+                }.invoke(),
+                textStyle = TextStyle(
+                    color = Color(0x777889FF)
+                )
+            )
+        ),
+        LoginScreen.Id.RegistrationButtonId
+    )
+}
+```
 
 ## Table of Contents
 - [Features](#features)
@@ -26,6 +196,67 @@ This is a Kotlin MultiPlatform library that provides declarative UI and applicat
 - **declare structure, not rendering**;
 - **compile-time safety**;
 - **reactive data handling**.
+
+## Requirements
+- Gradle version 5.4.1+
+- Android API 16+
+- iOS version 9.0+
+
+## Versions
+- kotlin 1.3.50
+  - 0.1.0-dev-1
+- kotlin 1.3.60
+  - 0.1.0-dev-2
+  - 0.1.0-dev-3
+  - 0.1.0-dev-4
+  - 0.1.0-dev-5
+
+## Installation
+root build.gradle  
+```groovy
+allprojects {
+    repositories {
+        maven { url = "https://dl.bintray.com/icerockdev/moko" }
+    }
+}
+```
+
+project build.gradle
+```groovy
+dependencies {
+    commonMainApi("dev.icerock.moko:widgets:0.1.0-dev-5")
+}
+```
+
+settings.gradle  
+```groovy
+enableFeaturePreview("GRADLE_METADATA")
+```
+
+### Codegen for new Widgets with @WidgetDef
+root build.gradle  
+```groovy
+buildscript {
+    repositories {
+        maven { url = "https://dl.bintray.com/icerockdev/plugins" } // gradle plugin
+    }
+
+    dependencies {
+        classpath "dev.icerock.moko.widgets:gradle-plugin:0.1.0-dev-5"
+    }
+}
+
+allprojects {
+    repositories {
+        maven { url = uri("https://dl.bintray.com/icerockdev/plugins") } // compiler plugins
+    }
+}
+```
+
+project build.gradle
+```groovy
+apply plugin: "dev.icerock.mobile.multiplatform-widgets-generator"
+```
 
 ## Usage
 ### Hello world
@@ -89,62 +320,6 @@ Result:
 |Android|iOS|
 |---|---|
 |![Custom style Android](https://user-images.githubusercontent.com/5010169/69857575-d1bcfb00-12c2-11ea-9cbb-ee6b17357db2.png)|![Custom style iOS](https://user-images.githubusercontent.com/5010169/69857701-09c43e00-12c3-11ea-9e9d-181a298a7edf.png)|
-
-## Requirements
-- Gradle version 5.4.1+
-- Android API 16+
-- iOS version 9.0+
-
-## Versions
-- kotlin 1.3.60
-  - 0.1.0
-
-## Installation
-root build.gradle  
-```groovy
-allprojects {
-    repositories {
-        maven { url = "https://dl.bintray.com/icerockdev/moko" }
-    }
-}
-```
-
-project build.gradle
-```groovy
-dependencies {
-    commonMainApi("dev.icerock.moko:widgets:0.1.0")
-}
-```
-
-settings.gradle  
-```groovy
-enableFeaturePreview("GRADLE_METADATA")
-```
-
-### Codegen for new Widgets with @WidgetDef
-root build.gradle  
-```groovy
-buildscript {
-    repositories {
-        maven { url = "https://dl.bintray.com/icerockdev/plugins" } // gradle plugin
-    }
-
-    dependencies {
-        classpath "dev.icerock.moko.widgets:gradle-plugin:0.1.0"
-    }
-}
-
-allprojects {
-    repositories {
-        maven { url = uri("https://dl.bintray.com/icerockdev/plugins") } // compiler plugins
-    }
-}
-```
-
-project build.gradle
-```groovy
-apply plugin: "dev.icerock.mobile.multiplatform-widgets-generator"
-```
 
 ## Samples
 Please see more examples in the [sample directory](sample).
