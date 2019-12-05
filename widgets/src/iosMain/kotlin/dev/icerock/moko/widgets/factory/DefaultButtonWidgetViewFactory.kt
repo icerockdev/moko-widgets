@@ -13,10 +13,12 @@ import dev.icerock.moko.widgets.utils.applyStateBackground
 import dev.icerock.moko.widgets.utils.applyTextStyle
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.setEventHandler
+import platform.CoreGraphics.CGRectEdge
 import platform.UIKit.UIButton
 import platform.UIKit.UIButtonTypeSystem
 import platform.UIKit.UIControlEventTouchUpInside
 import platform.UIKit.UIControlStateNormal
+import platform.UIKit.UIEdgeInsetsMake
 import platform.UIKit.UILayoutConstraintAxisHorizontal
 import platform.UIKit.UILayoutConstraintAxisVertical
 import platform.UIKit.UILayoutPriorityRequired
@@ -49,6 +51,15 @@ actual class DefaultButtonWidgetViewFactory actual constructor(
 
             style.textStyle.color?.also {
                 setTintColor(it.toUIColor())
+            }
+
+            style.padding?.let {
+                contentEdgeInsets = UIEdgeInsetsMake(
+                    top = it.top.toDouble(),
+                    bottom = it.bottom.toDouble(),
+                    left = it.start.toDouble(),
+                    right = it.end.toDouble()
+                )
             }
         }
 
