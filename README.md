@@ -2,9 +2,10 @@
 [![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![Download](https://api.bintray.com/packages/icerockdev/moko/moko-widgets/images/download.svg) ](https://bintray.com/icerockdev/moko/moko-units/_latestVersion) ![kotlin-version](https://img.shields.io/badge/kotlin-1.3.60-orange)
 
 # Mobile Kotlin widgets
-This is a Kotlin MultiPlatform library that provides UI in common code.  
-**NOT RELEASED YET. WORK IN PROGRESS.**
+This is a Kotlin MultiPlatform library that provides declarative UI and application screens management
+ in common code. You can implement full application for Android and iOS only from common code with it.  
 
+# Sample Screen
 |Android|iOS|
 |---|---|
 |![Sample Android](https://user-images.githubusercontent.com/5010169/70204616-d0bd1b00-1753-11ea-95d1-749341631ba7.png)|![Sample iOS](https://user-images.githubusercontent.com/5010169/70204576-aff4c580-1753-11ea-95b9-14e488edb689.png)|
@@ -25,6 +26,69 @@ This is a Kotlin MultiPlatform library that provides UI in common code.
 - **declare structure, not rendering**;
 - **compile-time safety**;
 - **reactive data handling**.
+
+## Usage
+### Hello world
+Multiplatform application definition at `mpp-library/src/commonMain/kotlin/App.kt`:
+```kotlin
+class App : BaseApplication() {
+    override fun setup() {
+        val theme = Theme()
+
+        registerScreenFactory(HelloWorldScreen::class) { HelloWorldScreen(theme) }
+    }
+
+    override fun getRootScreen(): KClass<out Screen<Args.Empty>> {
+        return HelloWorldScreen::class
+    }
+}
+```
+
+Screen definition `mpp-library/src/commonMain/kotlin/HelloWorldScreen.kt`: 
+```kotlin
+class HelloWorldScreen(
+    private val theme: Theme
+) : WidgetScreen<Args.Empty>() {
+
+    override fun createContentWidget() = with(theme) {
+        container(size = WidgetSize.AsParent) {
+            center {
+                text(
+                    size = WidgetSize.WrapContent,
+                    text = const("Hello World!")
+                )
+            }
+        }
+    }
+}
+```
+
+Result:
+
+|Android|iOS|
+|---|---|
+|![HelloWorld Android](https://user-images.githubusercontent.com/5010169/69857402-84408e00-12c2-11ea-945a-5f287a754e67.png)|![HelloWorld iOS](https://user-images.githubusercontent.com/5010169/69857202-febcde00-12c1-11ea-8679-5b68b5b11c42.png)|
+
+### Configure styles
+Setup theme config:
+```kotlin
+val theme = Theme {
+    textFactory = DefaultTextWidgetViewFactory(
+        DefaultTextWidgetViewFactoryBase.Style(
+            textStyle = TextStyle(
+                size = 24,
+                color = Colors.black
+            ),
+            padding = PaddingValues(padding = 16f)
+        )
+    )
+}
+```
+Result:
+
+|Android|iOS|
+|---|---|
+|![Custom style Android](https://user-images.githubusercontent.com/5010169/69857575-d1bcfb00-12c2-11ea-9cbb-ee6b17357db2.png)|![Custom style iOS](https://user-images.githubusercontent.com/5010169/69857701-09c43e00-12c3-11ea-9e9d-181a298a7edf.png)|
 
 ## Requirements
 - Gradle version 5.4.1+
@@ -81,9 +145,6 @@ project build.gradle
 ```groovy
 apply plugin: "dev.icerock.mobile.multiplatform-widgets-generator"
 ```
-
-## Usage
-TODO
 
 ## Samples
 Please see more examples in the [sample directory](sample).
