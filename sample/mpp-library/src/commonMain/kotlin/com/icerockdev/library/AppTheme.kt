@@ -42,7 +42,7 @@ import dev.icerock.moko.widgets.style.view.rgba
 import dev.icerock.moko.widgets.utils.platformSpecific
 
 object AppTheme {
-    object Color {
+    object AppColor {
         val white = Color(0xFF, 0xFF, 0xFF, 0xFF)
         val redError = Color(0xFF, 0x66, 0x66, 0xFF)
         val grayText = Color(0x26, 0x26, 0x28, 0xFF)
@@ -86,8 +86,6 @@ object AppTheme {
             )
         )
 
-        val corners = platformSpecific(android = 8f, ios = 25f)
-
         inputFactory = DefaultInputWidgetViewFactory(
             DefaultInputWidgetViewFactoryBase.Style(
                 margins = MarginValues(bottom = 8f),
@@ -98,19 +96,26 @@ object AppTheme {
             )
         )
 
+        val corners = platformSpecific(android = 8f, ios = 25f)
+
         buttonFactory = DefaultButtonWidgetViewFactory(
             DefaultButtonWidgetViewFactoryBase.Style(
                 margins = MarginValues(top = 32f),
-                background = StateBackground(
-                    normal = Background(
-                        fill = Fill.Solid(Color(0x6770e0FF)),
-                        shape = Shape.Rectangle(
-                            cornerRadius = corners
+                background = {
+                    val bg: (Color) -> Background = {
+                        Background(
+                            fill = Fill.Solid(it),
+                            shape = Shape.Rectangle(
+                                cornerRadius = corners
+                            )
                         )
-                    ),
-                    pressed = Background(),
-                    disabled = Background()
-                ),
+                    }
+                    StateBackground(
+                        normal = bg(Color(0x6770e0FF)),
+                        pressed = bg(Color(0x6770e0EE)),
+                        disabled = bg(Color(0x6770e0BB))
+                    )
+                }.invoke(),
                 textStyle = TextStyle(
                     color = Colors.white
                 )
@@ -125,18 +130,23 @@ object AppTheme {
                         ios = PaddingValues(start = 16f, end = 16f),
                         android = null
                     ),
-                    background = StateBackground(
-                        normal = Background(
-                            fill = Fill.Solid(Colors.white),
-                            border = Border(
-                                color = Color(0xF2F2F8FF),
-                                width = 2f
-                            ),
-                            shape = Shape.Rectangle(cornerRadius = corners)
-                        ),
-                        pressed = Background(),
-                        disabled = Background()
-                    ),
+                    background = {
+                        val bg: (Color) -> Background = {
+                            Background(
+                                fill = Fill.Solid(it),
+                                border = Border(
+                                    color = Color(0xF2F2F8FF),
+                                    width = 2f
+                                ),
+                                shape = Shape.Rectangle(cornerRadius = corners)
+                            )
+                        }
+                        StateBackground(
+                            normal = bg(Colors.white),
+                            pressed = bg(Color(0xEEEEEEFF)),
+                            disabled = bg(Color(0xBBBBBBFF))
+                        )
+                    }.invoke(),
                     textStyle = TextStyle(
                         color = Color(0x777889FF)
                     )
