@@ -58,6 +58,7 @@ enableFeaturePreview("GRADLE_METADATA")
 ```
 
 ### Codegen for new Widgets with @WidgetDef
+root build.gradle  
 ```groovy
 buildscript {
     repositories {
@@ -74,6 +75,11 @@ allprojects {
         maven { url = uri("https://dl.bintray.com/icerockdev/plugins") } // compiler plugins
     }
 }
+```
+
+project build.gradle
+```groovy
+apply plugin: "dev.icerock.mobile.multiplatform-widgets-generator"
 ```
 
 ## Usage
