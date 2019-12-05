@@ -10,6 +10,7 @@ import dev.icerock.moko.fields.liveBlock
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
+import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.constraint
@@ -32,43 +33,53 @@ class LoginScreen(
 
         constraint(size = WidgetSize.AsParent) {
             val logoImage = +image(
-                size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
+                size = WidgetSize.Const(SizeSpec.WrapContent, SizeSpec.WrapContent),
                 image = const(Image.resource(MR.images.logo))
             )
 
-            val loginInput = +input(
+            val emailInput = +input(
                 size = WidgetSize.WidthAsParentHeightWrapContent,
                 id = Id.LoginInputId,
-                label = const("login".desc() as StringDesc),
+                label = const("Email".desc() as StringDesc),
                 field = viewModel.loginField
             )
             val passwordInput = +input(
                 size = WidgetSize.WidthAsParentHeightWrapContent,
                 id = Id.PasswordInputId,
-                label = const("password".desc() as StringDesc),
+                label = const("Password".desc() as StringDesc),
                 field = viewModel.passwordField
             )
-            val submitButton = +button(
+            val loginButton = +button(
                 size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.Exact(50f)),
-                text = const("submit".desc() as StringDesc),
+                text = const("Login".desc() as StringDesc),
                 onTap = viewModel::onSubmitPressed
+            )
+
+            val registerButton = +button(
+                id = Id.RegistrationButtonId,
+                size = WidgetSize.Const(SizeSpec.WrapContent, SizeSpec.Exact(40f)),
+                text = const("Registration".desc() as StringDesc),
+                onTap = viewModel::onRegistrationPressed
             )
 
             constraints {
                 passwordInput centerYToCenterY root
                 passwordInput leftRightToLeftRight root
 
-                loginInput bottomToTop passwordInput
-                loginInput leftRightToLeftRight root
+                emailInput bottomToTop passwordInput
+                emailInput leftRightToLeftRight root
 
-                submitButton topToBottom passwordInput
-                submitButton leftRightToLeftRight root
+                loginButton topToBottom passwordInput
+                loginButton leftRightToLeftRight root
+
+                registerButton topToBottom loginButton
+                registerButton rightToRight root
 
                 // logo image height must be automatic ?
-                logoImage leftRightToLeftRight root
+                logoImage centerXToCenterX root
                 logoImage.verticalCenterBetween(
                     top = root.top,
-                    bottom = loginInput.top
+                    bottom = emailInput.top
                 )
             }
         }
@@ -77,6 +88,7 @@ class LoginScreen(
     object Id {
         object LoginInputId : InputWidget.Id
         object PasswordInputId : InputWidget.Id
+        object RegistrationButtonId : ButtonWidget.Id
     }
 }
 
@@ -85,6 +97,10 @@ class LoginViewModel : ViewModel() {
     val passwordField = FormField<String, StringDesc>("", liveBlock { null })
 
     fun onSubmitPressed() {
+
+    }
+
+    fun onRegistrationPressed() {
 
     }
 }

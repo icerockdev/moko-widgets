@@ -25,18 +25,23 @@ import dev.icerock.moko.widgets.factory.DefaultImageWidgetViewFactory
 import dev.icerock.moko.widgets.factory.DefaultImageWidgetViewFactoryBase
 import dev.icerock.moko.widgets.factory.DefaultInputWidgetViewFactory
 import dev.icerock.moko.widgets.factory.DefaultInputWidgetViewFactoryBase
+import dev.icerock.moko.widgets.factory.DefaultLinearWidgetViewFactory
+import dev.icerock.moko.widgets.factory.DefaultLinearWidgetViewFactoryBase
 import dev.icerock.moko.widgets.factory.DefaultListWidgetViewFactory
 import dev.icerock.moko.widgets.factory.DefaultListWidgetViewFactoryBase
 import dev.icerock.moko.widgets.factory.DefaultTextWidgetViewFactory
 import dev.icerock.moko.widgets.factory.DefaultTextWidgetViewFactoryBase
 import dev.icerock.moko.widgets.imageFactory
 import dev.icerock.moko.widgets.inputFactory
+import dev.icerock.moko.widgets.linearFactory
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.BaseApplication
 import dev.icerock.moko.widgets.screen.Screen
+import dev.icerock.moko.widgets.setButtonFactory
 import dev.icerock.moko.widgets.setListFactory
 import dev.icerock.moko.widgets.setTextFactory
 import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Border
 import dev.icerock.moko.widgets.style.background.Direction
 import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.background.Shape
@@ -77,10 +82,7 @@ object App : BaseApplication() {
                 DefaultConstraintWidgetViewFactoryBase.Style(
                     padding = PaddingValues(16f),
                     background = Background(
-                        fill = Fill.Gradient(
-                            colors = listOf(Color(0x684ECEFF), Color(0x9077E6FF)),
-                            direction = Direction.BOTTOM_TOP
-                        )
+                        fill = Fill.Solid(Colors.white)
                     )
                 )
             )
@@ -91,29 +93,24 @@ object App : BaseApplication() {
                 )
             )
 
-            val corners = platformSpecific(android = 16f, ios = 25f)
+            val corners = platformSpecific(android = 8f, ios = 25f)
 
             inputFactory = DefaultInputWidgetViewFactory(
                 DefaultInputWidgetViewFactoryBase.Style(
                     margins = MarginValues(bottom = 8f),
-                    padding = PaddingValues(start = 20f, end = 20f),
-                    background = Background(
-                        fill = Fill.Solid(Colors.white.copy(alpha = 0xAA)),
-                        shape = Shape.Rectangle(cornerRadius = corners)
-                    ),
-                    underLineColor = Color(0x00000000),
+                    underLineColor = Color(0xe5e6eeFF),
                     labelTextStyle = TextStyle(
-                        color = Colors.black
+                        color = Color(0x777889FF)
                     )
                 )
             )
 
             buttonFactory = DefaultButtonWidgetViewFactory(
                 DefaultButtonWidgetViewFactoryBase.Style(
-                    margins = MarginValues(top = 8f),
+                    margins = MarginValues(top = 32f),
                     background = StateBackground(
                         normal = Background(
-                            fill = Fill.Solid(Colors.white),
+                            fill = Fill.Solid(Color(0x6770e0FF)),
                             shape = Shape.Rectangle(
                                 cornerRadius = corners
                             )
@@ -122,9 +119,37 @@ object App : BaseApplication() {
                         disabled = Background()
                     ),
                     textStyle = TextStyle(
-                        color = Colors.black
+                        color = Colors.white
                     )
                 )
+            )
+
+            setButtonFactory(
+                DefaultButtonWidgetViewFactory(
+                    DefaultButtonWidgetViewFactoryBase.Style(
+                        margins = MarginValues(top = 16f),
+                        padding = platformSpecific(
+                            ios = PaddingValues(start = 16f, end = 16f),
+                            android = null
+                        ),
+                        background = StateBackground(
+                            normal = Background(
+                                fill = Fill.Solid(Colors.white),
+                                border = Border(
+                                    color = Color(0xF2F2F8FF),
+                                    width = 2f
+                                ),
+                                shape = Shape.Rectangle(cornerRadius = corners)
+                            ),
+                            pressed = Background(),
+                            disabled = Background()
+                        ),
+                        textStyle = TextStyle(
+                            color = Color(0x777889FF)
+                        )
+                    )
+                ),
+                LoginScreen.Id.RegistrationButtonId
             )
         }
 
