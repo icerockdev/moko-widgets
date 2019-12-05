@@ -15,11 +15,7 @@ MOKO Widgets позволяет реализовывать UI мобильных
  но использовать его в общем коде;
 * **compile-time safety** - API строготипизировано и почти всё проверяется на этапе компиляции;
 * **reactive data handling** - ui связан с данными реактивно, поэтому изменение каких-либо данных автоматически
- отразится в интерфейсе;
-* **styles not a part of structure** - стилизация элементов и структура экрана могут быть разделены;
-* **one common declaration may have different platfrom views** - объявление одного и того же элемента в
- общем коде может иметь разное визуальное представление на целевых платформах (кнопка в структуре экрана
- всегда остается кнопкой, но на целевых платформах может быть реализовано по разному в разных местах приложения). 
+ отразится в интерфейсе.
 
 ## Compliance with platform rules
 ### Учитывается пересоздание Activity на Android
@@ -62,16 +58,13 @@ class DemoScreen(
         scroll(
             id = Id.RootScroll,
             size = WidgetSize.AsParent,
-            child = linear(
-                size = WidgetSize.WidthAsParentHeightWrapContent,
-                children = listOf(
-                    input(
-                        size = WidgetSize.WidthAsParentHeightWrapContent,
-                        id = Id.NameInput,
-                        label = const("Ваше имя")
-                    )
-                )
-            )
+            child = linear(size = WidgetSize.WidthAsParentHeightWrapContent) {
+                +input(
+                     size = WidgetSize.WidthAsParentHeightWrapContent,
+                     id = Id.NameInput,
+                     label = const("Ваше имя")
+                 )
+            }
         )
     }
 
