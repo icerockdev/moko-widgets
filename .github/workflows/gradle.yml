@@ -4,7 +4,6 @@ on: [push]
 
 jobs:
   build:
-    
     runs-on: macOS-latest
 
     steps:
@@ -16,4 +15,4 @@ jobs:
     - name: Build and publish local plugin
       run: ./gradlew -PpluginPublish publishPluginPublicationToMavenLocal
     - name: Build multiplatform library
-      run: ./gradlew -PlibraryPublish publishToMavenLocal
+      run: ./gradlew -PlibraryPublish :widgets:publishToMavenLocal
