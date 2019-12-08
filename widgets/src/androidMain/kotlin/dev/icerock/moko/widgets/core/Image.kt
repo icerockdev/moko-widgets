@@ -4,16 +4,15 @@
 
 package dev.icerock.moko.widgets.core
 
-import android.graphics.drawable.Drawable
 import android.net.Uri
-import com.bumptech.glide.RequestBuilder
-import com.bumptech.glide.RequestManager
+import android.widget.ImageView
+import com.bumptech.glide.Glide
 import dev.icerock.moko.media.Bitmap
 import dev.icerock.moko.resources.ImageResource
 
 actual abstract class Image {
 
-    abstract fun loadIn(requestManager: RequestManager): RequestBuilder<Drawable>
+    abstract fun loadIn(imageView: ImageView)
 
     actual companion object {
         actual fun resource(imageResource: ImageResource): Image {
@@ -30,20 +29,22 @@ actual abstract class Image {
     }
 }
 
-class ResourceImage(val imageResource: ImageResource) : Image() {
-    override fun loadIn(requestManager: RequestManager): RequestBuilder<Drawable> {
-        return requestManager.load(imageResource.drawableResId)
+private class ResourceImage(val imageResource: ImageResource) : Image() {
+    override fun loadIn(imageView: ImageView) {
+        imageView.setImageResource(imageResource.drawableResId)
     }
 }
 
-class NetworkImage(val url: String) : Image() {
-    override fun loadIn(requestManager: RequestManager): RequestBuilder<Drawable> {
-        return requestManager.load(Uri.parse(url))
+private class NetworkImage(val url: String) : Image() {
+    override fun loadIn(imageView: ImageView) {
+        Glide.with(imageView)
+            .load(Uri.parse(url))
+            .into(imageView)
     }
 }
 
-class BitmapImage(val bitmap: Bitmap) : Image() {
-    override fun loadIn(requestManager: RequestManager): RequestBuilder<Drawable> {
-        return requestManager.load(bitmap.platformBitmap)
+private class BitmapImage(val bitmap: Bitmap) : Image() {
+    override fun loadIn(imageView: ImageView) {
+        imageView.setImageBitmap(bitmap.platformBitmap)
     }
 }

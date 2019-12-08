@@ -40,9 +40,7 @@ actual class DefaultImageWidgetViewFactory actual constructor(
                 return@bind
             }
 
-            Glide.with(imageView)
-                .let { image.loadIn(it) }
-                .into(imageView)
+            image.loadIn(imageView)
         }
 
         return ViewBundle(
