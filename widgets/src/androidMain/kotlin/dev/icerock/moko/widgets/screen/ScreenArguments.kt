@@ -15,7 +15,7 @@ actual fun <T : Parcelable> Screen<Args.Parcel<T>>.getArgument(): T {
     }
 }
 
-internal fun <T : Parcelable> Screen<Args.Parcel<T>>.setArgument(arg: T) {
+fun <T : Parcelable> Screen<Args.Parcel<T>>.setArgument(arg: T) {
     arguments = Bundle().apply {
         putParcelable(sScreenArgsParameter, arg)
     }
