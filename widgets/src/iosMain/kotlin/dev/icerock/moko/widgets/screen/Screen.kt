@@ -10,7 +10,9 @@ import platform.UIKit.UIViewController
 
 actual abstract class Screen<Arg : Args> {
     val viewModelStore = mutableMapOf<Any, ViewModel>()
+    // TODO private?
     var arg: Arg? = null
+    // TODO private?
     var parent: Screen<*>? = null
 
     actual inline fun <reified VM : ViewModel, Key : Any> getViewModel(

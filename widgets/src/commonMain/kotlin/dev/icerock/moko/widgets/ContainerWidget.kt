@@ -35,6 +35,7 @@ class ContainerWidget<WS : WidgetSize>(
     class ChildrenBuilder {
         private val children: MutableMap<Widget<out WidgetSize>, Alignment> = mutableMapOf()
 
+        // TODO change from lambda to argument (required only one item)
         fun center(block: () -> Widget<out WidgetSize>) {
             children[block.invoke()] = Alignment.CENTER
         }
