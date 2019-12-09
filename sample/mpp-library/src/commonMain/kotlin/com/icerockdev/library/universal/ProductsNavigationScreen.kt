@@ -5,15 +5,14 @@
 package com.icerockdev.library.universal
 
 import dev.icerock.moko.widgets.screen.NavigationScreen
+import dev.icerock.moko.widgets.screen.RootNavigationScreen
 import dev.icerock.moko.widgets.screen.ScreenFactory
 import dev.icerock.moko.widgets.screen.getParentScreen
-import kotlin.reflect.KClass
 
 class ProductsNavigationScreen(
     screenFactory: ScreenFactory
-) : NavigationScreen<ProductsScreen>(screenFactory), ProductsScreen.Parent, ProductScreen.Parent {
-    override val rootScreen: KClass<out ProductsScreen>
-        get() = ProductsScreen::class
+) : NavigationScreen(screenFactory), ProductsScreen.Parent, ProductScreen.Parent {
+    override val rootScreen = RootNavigationScreen.from(ProductsScreen::class)
 
     override fun routeToProduct(productId: Int) {
         routeToScreen(

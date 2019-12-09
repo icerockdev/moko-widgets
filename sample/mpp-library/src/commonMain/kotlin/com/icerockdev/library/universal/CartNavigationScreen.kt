@@ -5,12 +5,11 @@
 package com.icerockdev.library.universal
 
 import dev.icerock.moko.widgets.screen.NavigationScreen
+import dev.icerock.moko.widgets.screen.RootNavigationScreen
 import dev.icerock.moko.widgets.screen.ScreenFactory
-import kotlin.reflect.KClass
 
 class CartNavigationScreen(
     screenFactory: ScreenFactory
-) : NavigationScreen<CartScreen>(screenFactory) {
-    override val rootScreen: KClass<out CartScreen>
-        get() = CartScreen::class
+) : NavigationScreen(screenFactory) {
+    override val rootScreen = RootNavigationScreen.from(CartScreen::class)
 }

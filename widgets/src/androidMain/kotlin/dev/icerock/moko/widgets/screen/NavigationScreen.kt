@@ -21,9 +21,9 @@ import dev.icerock.moko.widgets.utils.ThemeAttrs
 import dev.icerock.moko.widgets.utils.dp
 import kotlin.reflect.KClass
 
-actual abstract class NavigationScreen<S> actual constructor(
+actual abstract class NavigationScreen actual constructor(
     private val screenFactory: ScreenFactory
-) : Screen<Args.Empty>() where S : Screen<Args.Empty>, S : NavigationItem {
+) : Screen<Args.Empty>() {
     private val fragmentNavigation = FragmentNavigation(this)
 
     private var toolbar: Toolbar? = null
@@ -91,12 +91,13 @@ actual abstract class NavigationScreen<S> actual constructor(
         }
     }
 
-
     override fun onViewCreated(view: android.view.View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         if (savedInstanceState == null) {
-            val instance = screenFactory.instantiateScreen(rootScreen)
+            val instance = screenFactory.instantiateScreen(rootScreen.screenClass)
+            instance as NavigationItem // RootNavigationScreen require NavigationItem interface, so here we know that
+            // instance is implementation of this interface
             toolbar?.title = instance.navigationTitle.toString(requireContext())
             fragmentNavigation.setScreen(instance)
         }
@@ -123,7 +124,7 @@ actual abstract class NavigationScreen<S> actual constructor(
         toolbar = null
     }
 
-    actual abstract val rootScreen: KClass<out S>
+    actual abstract val rootScreen: RootNavigationScreen
 
     actual fun <S> routeToScreen(
         screen: KClass<out S>

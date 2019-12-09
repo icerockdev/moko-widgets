@@ -10,17 +10,19 @@ import platform.UIKit.UIViewController
 import platform.UIKit.navigationItem
 import kotlin.reflect.KClass
 
-actual abstract class NavigationScreen<S> actual constructor(
+actual abstract class NavigationScreen actual constructor(
     private val screenFactory: ScreenFactory
-) : Screen<Args.Empty>() where S : Screen<Args.Empty>, S : NavigationItem {
+) : Screen<Args.Empty>() {
 
-    actual abstract val rootScreen: KClass<out S>
+    actual abstract val rootScreen: RootNavigationScreen
 
     private var navigationController: UINavigationController? = null
 
     override fun createViewController(): UIViewController {
         val controller = UINavigationController()
-        val rootScreen = screenFactory.instantiateScreen(rootScreen)
+        val rootScreen = screenFactory.instantiateScreen(rootScreen.screenClass)
+        rootScreen as NavigationItem // RootNavigationScreen require NavigationItem interface, so here we know that
+        // instance is implementation of this interface
         rootScreen.parent = this
         val rootViewController = rootScreen.createViewController()
         rootViewController.navigationItem.title = rootScreen.navigationTitle.localized()

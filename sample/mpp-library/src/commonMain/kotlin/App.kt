@@ -35,6 +35,6 @@ class App : BaseApplication() {
     }
 
     override fun getRootScreen(): KClass<out Screen<Args.Empty>> {
-        return LoginScreen::class
+        return RootBottomNavigationScreen::class
     }
 }
