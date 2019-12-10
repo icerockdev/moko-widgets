@@ -12,6 +12,7 @@ import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.applyStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.utils.bindNotNull
 
 actual class DefaultSwitchWidgetViewFactory actual constructor(
     style: Style
@@ -51,6 +52,14 @@ actual class DefaultSwitchWidgetViewFactory actual constructor(
             }
 
             applyStyle(style)
+        }
+
+        widget.state.bindNotNull(viewFactoryContext.lifecycleOwner) {
+            switch.isChecked = it
+        }
+
+        switch.setOnCheckedChangeListener { _, isChecked ->
+            widget.state.value = isChecked
         }
 
         return ViewBundle(
