@@ -29,6 +29,7 @@ import platform.UIKit.centerXAnchor
 import platform.UIKit.centerYAnchor
 import platform.UIKit.leftAnchor
 import platform.UIKit.rightAnchor
+import platform.UIKit.safeAreaLayoutGuide
 import platform.UIKit.topAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
@@ -66,186 +67,11 @@ actual class DefaultConstraintWidgetViewFactory actual constructor(
                 viewBundle
             }
 
-        fun ConstraintItem.view(): UIView {
-            return when (this) {
-                ConstraintItem.Root -> container
-                // api of widget will not accept case of null
-                is ConstraintItem.Child -> widgetViewBundle[this.widget]!!.view
-            }
-        }
-
-        fun ConstraintItem.Child.viewBundle(): ViewBundle<out WidgetSize> {
-            return widgetViewBundle[this.widget]!! // api of widget will not accept case of null
-        }
-
-        val constraintsHandler = object : ConstraintsApi {
-            private fun ConstraintItem.Child.calcConstant(
-                to: ConstraintItem,
-                marginGetter: MarginValues.() -> Float,
-                paddingGetter: PaddingValues.() -> Float
-            ): CGFloat {
-                var const: CGFloat = viewBundle().margins?.let(marginGetter)?.toDouble() ?: 0.0
-                if (to is ConstraintItem.Root) const += style.padding?.let(paddingGetter)?.toDouble() ?: 0.0
-                return const
-            }
-
-            private fun constraint(
-                firstItem: ConstraintItem.Child,
-                secondItem: ConstraintItem,
-                firstMargin: MarginValues.() -> Float = { 0.0f },
-                secondPadding: PaddingValues.() -> Float = { 0.0f },
-                block: UIView.(UIView) -> NSLayoutConstraint
-            ) {
-                val firstView = firstItem.view()
-                val secondView = secondItem.view()
-
-                val const = firstItem.calcConstant(
-                    secondItem,
-                    marginGetter = firstMargin,
-                    paddingGetter = secondPadding
-                )
-
-                // TODO margins + padding apply
-                block(firstView, secondView).apply {
-                    constant = const
-                    active = true
-                }
-            }
-
-            override fun ConstraintItem.Child.leftToRight(to: ConstraintItem) {
-                constraint(
-                    firstItem = this,
-                    secondItem = to,
-                    firstMargin = { this.start },
-                    secondPadding = { this.end },
-                    block = { leftAnchor.constraintEqualToAnchor(it.rightAnchor) }
-                )
-            }
-
-            override fun ConstraintItem.Child.leftToLeft(to: ConstraintItem) {
-                constraint(
-                    firstItem = this,
-                    secondItem = to,
-                    firstMargin = { this.start },
-                    secondPadding = { this.start },
-                    block = { leftAnchor.constraintEqualToAnchor(it.leftAnchor) }
-                )
-            }
-
-            override fun ConstraintItem.Child.rightToRight(to: ConstraintItem) {
-                constraint(
-                    firstItem = this,
-                    secondItem = to,
-                    firstMargin = { this.end },
-                    secondPadding = { this.end },
-                    block = { it.rightAnchor.constraintEqualToAnchor(rightAnchor) }
-                )
-            }
-
-            override fun ConstraintItem.Child.rightToLeft(to: ConstraintItem) {
-                constraint(
-                    firstItem = this,
-                    secondItem = to,
-                    firstMargin = { this.end },
-                    secondPadding = { this.start },
-                    block = { it.leftAnchor.constraintEqualToAnchor(rightAnchor) }
-                )
-            }
-
-            override fun ConstraintItem.Child.topToTop(to: ConstraintItem) {
-                constraint(
-                    firstItem = this,
-                    secondItem = to,
-                    firstMargin = { this.top },
-                    secondPadding = { this.top },
-                    block = { topAnchor.constraintEqualToAnchor(it.topAnchor) }
-                )
-            }
-
-            override fun ConstraintItem.Child.topToBottom(to: ConstraintItem) {
-                constraint(
-                    firstItem = this,
-                    secondItem = to,
-                    firstMargin = { this.top },
-                    secondPadding = { this.bottom },
-                    block = { topAnchor.constraintEqualToAnchor(it.bottomAnchor) }
-                )
-            }
-
-            override fun ConstraintItem.Child.bottomToBottom(to: ConstraintItem) {
-                constraint(
-                    firstItem = this,
-                    secondItem = to,
-                    firstMargin = { this.bottom },
-                    secondPadding = { this.bottom },
-                    block = { it.bottomAnchor.constraintEqualToAnchor(bottomAnchor) }
-                )
-            }
-
-            override fun ConstraintItem.Child.bottomToTop(to: ConstraintItem) {
-                constraint(
-                    firstItem = this,
-                    secondItem = to,
-                    firstMargin = { this.bottom },
-                    secondPadding = { this.top },
-                    block = { it.topAnchor.constraintEqualToAnchor(bottomAnchor) }
-                )
-            }
-
-            override fun ConstraintItem.Child.centerYToCenterY(to: ConstraintItem) {
-                constraint(this, to) { centerYAnchor.constraintEqualToAnchor(it.centerYAnchor) }
-            }
-
-            override fun ConstraintItem.Child.centerXToCenterX(to: ConstraintItem) {
-                constraint(this, to) { centerXAnchor.constraintEqualToAnchor(it.centerXAnchor) }
-            }
-
-            override fun ConstraintItem.Child.verticalCenterBetween(
-                top: ConstraintItem.VerticalAnchor,
-                bottom: ConstraintItem.VerticalAnchor
-            ) {
-                val layoutGuide = UILayoutGuide()
-                container.addLayoutGuide(layoutGuide)
-
-                val topView = top.item.view()
-                val bottomView = bottom.item.view()
-                layoutGuide.topAnchor.constraintEqualToAnchor(top.edge.toAnchor(topView)).active = true
-                layoutGuide.bottomAnchor.constraintEqualToAnchor(bottom.edge.toAnchor(bottomView)).active = true
-
-                val view = this.view()
-                view.centerYAnchor.constraintEqualToAnchor(layoutGuide.centerYAnchor).active = true
-            }
-
-            private fun ConstraintItem.VerticalAnchor.Edge.toAnchor(view: UIView): NSLayoutAnchor {
-                return when (this) {
-                    ConstraintItem.VerticalAnchor.Edge.TOP -> view.topAnchor
-                    ConstraintItem.VerticalAnchor.Edge.BOTTOM -> view.bottomAnchor
-                }
-            }
-
-            override fun ConstraintItem.Child.horizontalCenterBetween(
-                left: ConstraintItem.HorizontalAnchor,
-                right: ConstraintItem.HorizontalAnchor
-            ) {
-                val layoutGuide = UILayoutGuide()
-                container.addLayoutGuide(layoutGuide)
-
-                val leftView = left.item.view()
-                val rightView = right.item.view()
-                layoutGuide.leftAnchor.constraintEqualToAnchor(left.edge.toAnchor(leftView)).active = true
-                layoutGuide.rightAnchor.constraintEqualToAnchor(right.edge.toAnchor(rightView)).active = true
-
-                val view = this.view()
-                view.centerXAnchor.constraintEqualToAnchor(layoutGuide.centerXAnchor).active = true
-            }
-
-            private fun ConstraintItem.HorizontalAnchor.Edge.toAnchor(view: UIView): NSLayoutAnchor {
-                return when (this) {
-                    ConstraintItem.HorizontalAnchor.Edge.LEFT -> view.leftAnchor
-                    ConstraintItem.HorizontalAnchor.Edge.RIGHT -> view.rightAnchor
-                }
-            }
-        }
+        val constraintsHandler = AutoLayoutConstraintsApi(
+            container = container,
+            widgetViewBundle = widgetViewBundle,
+            style = style
+        )
 
         widget.constraints.invoke(constraintsHandler)
 
@@ -254,5 +80,250 @@ actual class DefaultConstraintWidgetViewFactory actual constructor(
             size = size,
             margins = style.margins
         )
+    }
+}
+
+@Suppress("TooManyFunctions")
+class AutoLayoutConstraintsApi(
+    private val container: UIView,
+    private val widgetViewBundle: Map<out Widget<out WidgetSize>, ViewBundle<out WidgetSize>>,
+    private val style: DefaultConstraintWidgetViewFactoryBase.Style
+) : ConstraintsApi {
+    class AnchorSet private constructor(
+        val topAnchor: NSLayoutAnchor,
+        val leftAnchor: NSLayoutAnchor,
+        val rightAnchor: NSLayoutAnchor,
+        val bottomAnchor: NSLayoutAnchor,
+        val centerXAnchor: NSLayoutAnchor,
+        val centerYAnchor: NSLayoutAnchor
+    ) {
+        constructor(view: UIView) : this(
+            topAnchor = view.topAnchor,
+            leftAnchor = view.leftAnchor,
+            rightAnchor = view.rightAnchor,
+            bottomAnchor = view.bottomAnchor,
+            centerXAnchor = view.centerXAnchor,
+            centerYAnchor = view.centerYAnchor
+        )
+
+        constructor(guide: UILayoutGuide) : this(
+            topAnchor = guide.topAnchor,
+            leftAnchor = guide.leftAnchor,
+            rightAnchor = guide.rightAnchor,
+            bottomAnchor = guide.bottomAnchor,
+            centerXAnchor = guide.centerXAnchor,
+            centerYAnchor = guide.centerYAnchor
+        )
+    }
+
+    private fun ConstraintItem.view(): UIView {
+        return when (this) {
+            ConstraintItem.Root -> container
+            // api of widget will not accept case of null
+            is ConstraintItem.Child -> widgetViewBundle[this.widget]!!.view
+            is ConstraintItem.SafeArea -> container
+        }
+    }
+
+    private fun ConstraintItem.anchorSet(): AnchorSet {
+        return when (this) {
+            ConstraintItem.Root -> AnchorSet(container)
+            is ConstraintItem.Child -> AnchorSet(this.view())
+            is ConstraintItem.SafeArea -> AnchorSet(container.safeAreaLayoutGuide)
+        }
+    }
+
+    private fun ConstraintItem.Child.viewBundle(): ViewBundle<out WidgetSize> {
+        return widgetViewBundle[this.widget]!! // api of widget will not accept case of null
+    }
+
+    private fun ConstraintItem.Child.calcConstant(
+        to: ConstraintItem,
+        marginGetter: MarginValues.() -> Float,
+        paddingGetter: PaddingValues.() -> Float
+    ): CGFloat {
+        var const: CGFloat = viewBundle().margins?.let(marginGetter)?.toDouble() ?: 0.0
+        if (to is ConstraintItem.Root) const += style.padding?.let(paddingGetter)?.toDouble() ?: 0.0
+        return const
+    }
+
+    private fun constraint(
+        firstItem: ConstraintItem.Child,
+        secondItem: ConstraintItem,
+        firstMargin: MarginValues.() -> Float = { 0.0f },
+        secondPadding: PaddingValues.() -> Float = { 0.0f },
+        block: AnchorSet.(AnchorSet) -> NSLayoutConstraint
+    ) {
+        val firstView = firstItem.anchorSet()
+        val secondView = secondItem.anchorSet()
+
+        val const = firstItem.calcConstant(
+            secondItem,
+            marginGetter = firstMargin,
+            paddingGetter = secondPadding
+        )
+
+        block(firstView, secondView).apply {
+            constant = const
+            active = true
+        }
+    }
+
+    override fun ConstraintItem.Child.leftToRight(to: ConstraintItem) {
+        constraint(
+            firstItem = this,
+            secondItem = to,
+            firstMargin = { this.start },
+            secondPadding = { this.end },
+            block = { leftAnchor.constraintEqualToAnchor(it.rightAnchor) }
+        )
+    }
+
+    override fun ConstraintItem.Child.leftToLeft(to: ConstraintItem) {
+        constraint(
+            firstItem = this,
+            secondItem = to,
+            firstMargin = { this.start },
+            secondPadding = { this.start },
+            block = { leftAnchor.constraintEqualToAnchor(it.leftAnchor) }
+        )
+    }
+
+    override fun ConstraintItem.Child.rightToRight(to: ConstraintItem) {
+        constraint(
+            firstItem = this,
+            secondItem = to,
+            firstMargin = { this.end },
+            secondPadding = { this.end },
+            block = { it.rightAnchor.constraintEqualToAnchor(rightAnchor) }
+        )
+    }
+
+    override fun ConstraintItem.Child.rightToLeft(to: ConstraintItem) {
+        constraint(
+            firstItem = this,
+            secondItem = to,
+            firstMargin = { this.end },
+            secondPadding = { this.start },
+            block = { it.leftAnchor.constraintEqualToAnchor(rightAnchor) }
+        )
+    }
+
+    override fun ConstraintItem.Child.topToTop(to: ConstraintItem) {
+        constraint(
+            firstItem = this,
+            secondItem = to,
+            firstMargin = { this.top },
+            secondPadding = { this.top },
+            block = { topAnchor.constraintEqualToAnchor(it.topAnchor) }
+        )
+    }
+
+    override fun ConstraintItem.Child.topToBottom(to: ConstraintItem) {
+        constraint(
+            firstItem = this,
+            secondItem = to,
+            firstMargin = { this.top },
+            secondPadding = { this.bottom },
+            block = { topAnchor.constraintEqualToAnchor(it.bottomAnchor) }
+        )
+    }
+
+    override fun ConstraintItem.Child.bottomToBottom(to: ConstraintItem) {
+        constraint(
+            firstItem = this,
+            secondItem = to,
+            firstMargin = { this.bottom },
+            secondPadding = { this.bottom },
+            block = { it.bottomAnchor.constraintEqualToAnchor(bottomAnchor) }
+        )
+    }
+
+    override fun ConstraintItem.Child.bottomToTop(to: ConstraintItem) {
+        constraint(
+            firstItem = this,
+            secondItem = to,
+            firstMargin = { this.bottom },
+            secondPadding = { this.top },
+            block = { it.topAnchor.constraintEqualToAnchor(bottomAnchor) }
+        )
+    }
+
+    override fun ConstraintItem.Child.centerYToCenterY(to: ConstraintItem) {
+        constraint(this, to) { centerYAnchor.constraintEqualToAnchor(it.centerYAnchor) }
+    }
+
+    override fun ConstraintItem.Child.centerXToCenterX(to: ConstraintItem) {
+        constraint(this, to) { centerXAnchor.constraintEqualToAnchor(it.centerXAnchor) }
+    }
+
+    override fun ConstraintItem.Child.verticalCenterBetween(
+        top: ConstraintItem.VerticalAnchor,
+        bottom: ConstraintItem.VerticalAnchor
+    ) {
+        val layoutGuide = UILayoutGuide()
+        container.addLayoutGuide(layoutGuide)
+
+        val topAnchorSet = top.item.anchorSet()
+        val bottomAnchorSet = bottom.item.anchorSet()
+
+        layoutGuide.topAnchor.constraintEqualToAnchor(top.edge.toAnchor(topAnchorSet)).active = true
+        layoutGuide.bottomAnchor.constraintEqualToAnchor(bottom.edge.toAnchor(bottomAnchorSet)).active = true
+
+        val childAnchorSet = this.anchorSet()
+        childAnchorSet.centerYAnchor.constraintEqualToAnchor(layoutGuide.centerYAnchor).active = true
+    }
+
+    private fun ConstraintItem.VerticalAnchor.Edge.toAnchor(anchorSet: AnchorSet): NSLayoutAnchor {
+        return when (this) {
+            ConstraintItem.VerticalAnchor.Edge.TOP -> anchorSet.topAnchor
+            ConstraintItem.VerticalAnchor.Edge.BOTTOM -> anchorSet.bottomAnchor
+        }
+    }
+
+    private fun ConstraintItem.HorizontalAnchor.Edge.toAnchor(anchorSet: AnchorSet): NSLayoutAnchor {
+        return when (this) {
+            ConstraintItem.HorizontalAnchor.Edge.LEFT -> anchorSet.leftAnchor
+            ConstraintItem.HorizontalAnchor.Edge.RIGHT -> anchorSet.rightAnchor
+        }
+    }
+
+    override fun ConstraintItem.Child.horizontalCenterBetween(
+        left: ConstraintItem.HorizontalAnchor,
+        right: ConstraintItem.HorizontalAnchor
+    ) {
+        val layoutGuide = UILayoutGuide()
+        container.addLayoutGuide(layoutGuide)
+
+        val firstAnchorSet = left.item.anchorSet()
+        val secondAnchorSet = right.item.anchorSet()
+
+        layoutGuide.leftAnchor.constraintEqualToAnchor(left.edge.toAnchor(firstAnchorSet)).active = true
+        layoutGuide.rightAnchor.constraintEqualToAnchor(right.edge.toAnchor(secondAnchorSet)).active = true
+
+        val childAnchorSet = this.anchorSet()
+        childAnchorSet.centerXAnchor.constraintEqualToAnchor(layoutGuide.centerXAnchor).active = true
+    }
+
+    override fun ConstraintItem.VerticalAnchor.pin(to: ConstraintItem.VerticalAnchor) {
+        // TODO padding margin
+        val firstAnchorSet = this.item.anchorSet()
+        val secondAnchorSet = to.item.anchorSet()
+
+        val firstAnchor = this.edge.toAnchor(firstAnchorSet)
+        val secondAnchor = to.edge.toAnchor(secondAnchorSet)
+
+        firstAnchor.constraintEqualToAnchor(secondAnchor).active = true
+    }
+
+    override fun ConstraintItem.HorizontalAnchor.pin(to: ConstraintItem.HorizontalAnchor) {
+        // TODO padding margin
+        val firstAnchorSet = this.item.anchorSet()
+        val secondAnchorSet = to.item.anchorSet()
+
+        val firstAnchor = this.edge.toAnchor(firstAnchorSet)
+        val secondAnchor = to.edge.toAnchor(secondAnchorSet)
+
+        firstAnchor.constraintEqualToAnchor(secondAnchor).active = true
     }
 }

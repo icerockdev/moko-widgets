@@ -38,7 +38,7 @@ class ConstraintWidget<WS : WidgetSize>(
     class ChildrenBuilder internal constructor() {
         private val children: MutableList<Widget<out WidgetSize>> = mutableListOf()
 
-        val root: ConstraintItem = ConstraintItem.Root
+        val root: ConstraintItem.Root = ConstraintItem.Root
 
         operator fun Widget<out WidgetSize>.unaryPlus(): ConstraintItem.Child {
             children.add(this)
@@ -58,14 +58,18 @@ class ConstraintWidget<WS : WidgetSize>(
 }
 
 sealed class ConstraintItem {
-    object Root : ConstraintItem()
+    object Root : ConstraintItem() {
+        val safeArea = SafeArea(from = this)
+    }
+
     data class Child(val widget: Widget<out WidgetSize>) : ConstraintItem()
+    data class SafeArea(val from: Root) : ConstraintItem()
 
-    val top = VerticalAnchor(item = this, edge = VerticalAnchor.Edge.TOP)
-    val bottom = VerticalAnchor(item = this, edge = VerticalAnchor.Edge.BOTTOM)
+    val top get() = VerticalAnchor(item = this, edge = VerticalAnchor.Edge.TOP)
+    val bottom get() = VerticalAnchor(item = this, edge = VerticalAnchor.Edge.BOTTOM)
 
-    val left = HorizontalAnchor(item = this, edge = HorizontalAnchor.Edge.LEFT)
-    val right = HorizontalAnchor(item = this, edge = HorizontalAnchor.Edge.RIGHT)
+    val left get() = HorizontalAnchor(item = this, edge = HorizontalAnchor.Edge.LEFT)
+    val right get() = HorizontalAnchor(item = this, edge = HorizontalAnchor.Edge.RIGHT)
 
     class VerticalAnchor(val item: ConstraintItem, val edge: Edge) {
         enum class Edge {
@@ -82,6 +86,7 @@ sealed class ConstraintItem {
     }
 }
 
+// TODO rework for allow extension from outside
 interface ConstraintsApi {
     infix fun ConstraintItem.Child.leftToRight(to: ConstraintItem)
     infix fun ConstraintItem.Child.leftToLeft(to: ConstraintItem)
@@ -108,4 +113,7 @@ interface ConstraintsApi {
         left: ConstraintItem.HorizontalAnchor,
         right: ConstraintItem.HorizontalAnchor
     )
+
+    infix fun ConstraintItem.VerticalAnchor.pin(to: ConstraintItem.VerticalAnchor)
+    infix fun ConstraintItem.HorizontalAnchor.pin(to: ConstraintItem.HorizontalAnchor)
 }

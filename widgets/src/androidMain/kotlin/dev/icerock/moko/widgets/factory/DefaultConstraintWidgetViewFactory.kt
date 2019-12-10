@@ -51,109 +51,10 @@ actual class DefaultConstraintWidgetViewFactory actual constructor(
                 viewBundle
             }
 
-        fun ConstraintItem.view(): View {
-            return when (this) {
-                ConstraintItem.Root -> constraintLayout
-                is ConstraintItem.Child -> widgetViewBundle[this.widget]!!.view // api of widget will not accept this case
-            }
-        }
-
-        val constraintsHandler = object : ConstraintsApi {
-            private fun constraint(
-                firstItem: ConstraintItem,
-                secondItem: ConstraintItem,
-                field: ConstraintLayout.LayoutParams.(Int) -> Unit
-            ) {
-                val firstView = firstItem.view()
-                val secondView = secondItem.view()
-                val secondId = if (secondView == constraintLayout) {
-                    ConstraintLayout.LayoutParams.PARENT_ID
-                } else {
-                    secondView.id
-                }
-
-                val clp = firstView.layoutParams as ConstraintLayout.LayoutParams
-                clp.field(secondId)
-            }
-
-            override fun ConstraintItem.Child.leftToRight(to: ConstraintItem) {
-                constraint(this, to) { leftToRight = it }
-            }
-
-            override fun ConstraintItem.Child.leftToLeft(to: ConstraintItem) {
-                constraint(this, to) { leftToLeft = it }
-            }
-
-            override fun ConstraintItem.Child.rightToRight(to: ConstraintItem) {
-                constraint(this, to) { rightToRight = it }
-            }
-
-            override fun ConstraintItem.Child.rightToLeft(to: ConstraintItem) {
-                constraint(this, to) { rightToLeft = it }
-            }
-
-            override fun ConstraintItem.Child.topToTop(to: ConstraintItem) {
-                constraint(this, to) { topToTop = it }
-            }
-
-            override fun ConstraintItem.Child.topToBottom(to: ConstraintItem) {
-                constraint(this, to) { topToBottom = it }
-            }
-
-            override fun ConstraintItem.Child.centerYToCenterY(to: ConstraintItem) {
-                constraint(this, to) { topToTop = it }
-                constraint(this, to) { bottomToBottom = it }
-            }
-
-            override fun ConstraintItem.Child.centerXToCenterX(to: ConstraintItem) {
-                constraint(this, to) { leftToLeft = it }
-                constraint(this, to) { rightToRight = it }
-            }
-
-            override fun ConstraintItem.Child.bottomToBottom(to: ConstraintItem) {
-                constraint(this, to) { bottomToBottom = it }
-            }
-
-            override fun ConstraintItem.Child.bottomToTop(to: ConstraintItem) {
-                constraint(this, to) { bottomToTop = it }
-            }
-
-            override fun ConstraintItem.Child.verticalCenterBetween(
-                top: ConstraintItem.VerticalAnchor,
-                bottom: ConstraintItem.VerticalAnchor
-            ) {
-                constraint(this, top.item) {
-                    when (top.edge) {
-                        ConstraintItem.VerticalAnchor.Edge.TOP -> topToTop = it
-                        ConstraintItem.VerticalAnchor.Edge.BOTTOM -> topToBottom = it
-                    }
-                }
-                constraint(this, bottom.item) {
-                    when (bottom.edge) {
-                        ConstraintItem.VerticalAnchor.Edge.TOP -> bottomToTop = it
-                        ConstraintItem.VerticalAnchor.Edge.BOTTOM -> bottomToBottom = it
-                    }
-                }
-            }
-
-            override fun ConstraintItem.Child.horizontalCenterBetween(
-                left: ConstraintItem.HorizontalAnchor,
-                right: ConstraintItem.HorizontalAnchor
-            ) {
-                constraint(this, left.item) {
-                    when (left.edge) {
-                        ConstraintItem.HorizontalAnchor.Edge.LEFT -> leftToLeft = it
-                        ConstraintItem.HorizontalAnchor.Edge.RIGHT -> leftToRight = it
-                    }
-                }
-                constraint(this, right.item) {
-                    when (right.edge) {
-                        ConstraintItem.HorizontalAnchor.Edge.LEFT -> rightToLeft = it
-                        ConstraintItem.HorizontalAnchor.Edge.RIGHT -> rightToRight = it
-                    }
-                }
-            }
-        }
+        val constraintsHandler = ConstraintLayoutConstraintsApi(
+            constraintLayout = constraintLayout,
+            widgetViewBundle = widgetViewBundle
+        )
 
         widget.constraints.invoke(constraintsHandler)
 
@@ -198,5 +99,162 @@ actual class DefaultConstraintWidgetViewFactory actual constructor(
             lp.applyMargin(dm, viewBundle.margins)
         }
         addView(view, lp)
+    }
+}
+
+@Suppress("TooManyFunctions")
+class ConstraintLayoutConstraintsApi(
+    private val constraintLayout: ConstraintLayout,
+    private val widgetViewBundle: Map<out Widget<out WidgetSize>, ViewBundle<out WidgetSize>>
+) : ConstraintsApi {
+    private fun ConstraintItem.view(): View {
+        return when (this) {
+            ConstraintItem.Root -> constraintLayout
+            is ConstraintItem.Child -> widgetViewBundle[this.widget]!!.view // api of widget will not accept this case
+            is ConstraintItem.SafeArea -> constraintLayout // TODO WindowInsets support should be implemented
+        }
+    }
+
+    private fun constraint(
+        firstItem: ConstraintItem,
+        secondItem: ConstraintItem,
+        field: ConstraintLayout.LayoutParams.(Int) -> Unit
+    ) {
+        val firstView = firstItem.view()
+        val secondView = secondItem.view()
+        val secondId = if (secondView == constraintLayout) {
+            ConstraintLayout.LayoutParams.PARENT_ID
+        } else {
+            secondView.id
+        }
+
+        val clp = firstView.layoutParams as ConstraintLayout.LayoutParams
+        clp.field(secondId)
+    }
+
+    override fun ConstraintItem.Child.leftToRight(to: ConstraintItem) {
+        constraint(this, to) { leftToRight = it }
+    }
+
+    override fun ConstraintItem.Child.leftToLeft(to: ConstraintItem) {
+        constraint(this, to) { leftToLeft = it }
+    }
+
+    override fun ConstraintItem.Child.rightToRight(to: ConstraintItem) {
+        constraint(this, to) { rightToRight = it }
+    }
+
+    override fun ConstraintItem.Child.rightToLeft(to: ConstraintItem) {
+        constraint(this, to) { rightToLeft = it }
+    }
+
+    override fun ConstraintItem.Child.topToTop(to: ConstraintItem) {
+        constraint(this, to) { topToTop = it }
+    }
+
+    override fun ConstraintItem.Child.topToBottom(to: ConstraintItem) {
+        constraint(this, to) { topToBottom = it }
+    }
+
+    override fun ConstraintItem.Child.centerYToCenterY(to: ConstraintItem) {
+        constraint(this, to) { topToTop = it }
+        constraint(this, to) { bottomToBottom = it }
+    }
+
+    override fun ConstraintItem.Child.centerXToCenterX(to: ConstraintItem) {
+        constraint(this, to) { leftToLeft = it }
+        constraint(this, to) { rightToRight = it }
+    }
+
+    override fun ConstraintItem.Child.bottomToBottom(to: ConstraintItem) {
+        constraint(this, to) { bottomToBottom = it }
+    }
+
+    override fun ConstraintItem.Child.bottomToTop(to: ConstraintItem) {
+        constraint(this, to) { bottomToTop = it }
+    }
+
+    override fun ConstraintItem.Child.verticalCenterBetween(
+        top: ConstraintItem.VerticalAnchor,
+        bottom: ConstraintItem.VerticalAnchor
+    ) {
+        constraint(this, top.item) {
+            when (top.edge) {
+                ConstraintItem.VerticalAnchor.Edge.TOP -> topToTop = it
+                ConstraintItem.VerticalAnchor.Edge.BOTTOM -> topToBottom = it
+            }
+        }
+        constraint(this, bottom.item) {
+            when (bottom.edge) {
+                ConstraintItem.VerticalAnchor.Edge.TOP -> bottomToTop = it
+                ConstraintItem.VerticalAnchor.Edge.BOTTOM -> bottomToBottom = it
+            }
+        }
+    }
+
+    override fun ConstraintItem.Child.horizontalCenterBetween(
+        left: ConstraintItem.HorizontalAnchor,
+        right: ConstraintItem.HorizontalAnchor
+    ) {
+        constraint(this, left.item) {
+            when (left.edge) {
+                ConstraintItem.HorizontalAnchor.Edge.LEFT -> leftToLeft = it
+                ConstraintItem.HorizontalAnchor.Edge.RIGHT -> leftToRight = it
+            }
+        }
+        constraint(this, right.item) {
+            when (right.edge) {
+                ConstraintItem.HorizontalAnchor.Edge.LEFT -> rightToLeft = it
+                ConstraintItem.HorizontalAnchor.Edge.RIGHT -> rightToRight = it
+            }
+        }
+    }
+
+    override fun ConstraintItem.VerticalAnchor.pin(to: ConstraintItem.VerticalAnchor) {
+        val firstView = this.item.view()
+        val secondView = to.item.view()
+
+        val flp = firstView.layoutParams as ConstraintLayout.LayoutParams
+
+        val sid = secondView.id
+
+        when (this.edge) {
+            ConstraintItem.VerticalAnchor.Edge.TOP -> {
+                when (to.edge) {
+                    ConstraintItem.VerticalAnchor.Edge.TOP -> flp.topToTop = sid
+                    ConstraintItem.VerticalAnchor.Edge.BOTTOM -> flp.topToBottom = sid
+                }
+            }
+            ConstraintItem.VerticalAnchor.Edge.BOTTOM -> {
+                when (to.edge) {
+                    ConstraintItem.VerticalAnchor.Edge.TOP -> flp.bottomToTop = sid
+                    ConstraintItem.VerticalAnchor.Edge.BOTTOM -> flp.bottomToBottom = sid
+                }
+            }
+        }
+    }
+
+    override fun ConstraintItem.HorizontalAnchor.pin(to: ConstraintItem.HorizontalAnchor) {
+        val firstView = this.item.view()
+        val secondView = to.item.view()
+
+        val flp = firstView.layoutParams as ConstraintLayout.LayoutParams
+
+        val sid = secondView.id
+
+        when (this.edge) {
+            ConstraintItem.HorizontalAnchor.Edge.LEFT -> {
+                when (to.edge) {
+                    ConstraintItem.HorizontalAnchor.Edge.LEFT -> flp.leftToLeft = sid
+                    ConstraintItem.HorizontalAnchor.Edge.RIGHT -> flp.leftToRight = sid
+                }
+            }
+            ConstraintItem.HorizontalAnchor.Edge.RIGHT -> {
+                when (to.edge) {
+                    ConstraintItem.HorizontalAnchor.Edge.LEFT -> flp.rightToLeft = sid
+                    ConstraintItem.HorizontalAnchor.Edge.RIGHT -> flp.rightToRight = sid
+                }
+            }
+        }
     }
 }
