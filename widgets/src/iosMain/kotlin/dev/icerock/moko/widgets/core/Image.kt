@@ -11,11 +11,11 @@ import platform.Foundation.NSURL
 import platform.Foundation.NSURLSession
 import platform.Foundation.NSURLSessionConfiguration
 import platform.UIKit.UIImage
-import platform.UIKit.UIImageView
+import platform.UIKit.UIView
 
 actual abstract class Image {
 
-    abstract fun apply(imageView: UIImageView)
+    abstract fun apply(view: UIView, block: (UIImage?) -> Unit)
 
     actual companion object {
         actual fun resource(imageResource: ImageResource): Image {
@@ -35,16 +35,17 @@ actual abstract class Image {
 class ResourceImage(
     private val imageResource: ImageResource
 ) : Image() {
-    override fun apply(imageView: UIImageView) {
-        imageView.image = imageResource.toUIImage()
+    override fun apply(view: UIView, block: (UIImage?) -> Unit) {
+        val image = requireNotNull(imageResource.toUIImage()) { "resource not found" }
+        block(image)
     }
 }
 
 class BitmapImage(
     private val bitmap: Bitmap
 ) : Image() {
-    override fun apply(imageView: UIImageView) {
-        imageView.image = bitmap.image
+    override fun apply(view: UIView, block: (UIImage?) -> Unit) {
+        block(bitmap.image)
     }
 }
 
@@ -52,12 +53,12 @@ class BitmapImage(
 class NetworkImage(
     private val url: String
 ) : Image() {
-    override fun apply(imageView: UIImageView) {
-        imageView.image = null
+    override fun apply(view: UIView, block: (UIImage?) -> Unit) {
+        block(null)
 
         try {
             val tag = url.hashCode().toLong()
-            imageView.tag = tag
+            view.tag = tag
             val nsUrl = NSURL.URLWithString(url) ?: return
 
             val config = NSURLSessionConfiguration.defaultSessionConfiguration().apply {
@@ -73,9 +74,9 @@ class NetworkImage(
                 }
                 if (data == null) return@dataTask
 
-                if (imageView.tag != tag) return@dataTask
+                if (view.tag != tag) return@dataTask
 
-                imageView.image = UIImage.imageWithData(data)
+                block(UIImage.imageWithData(data))
             }?.resume()
         } catch (error: Throwable) {
             error.printStackTrace()

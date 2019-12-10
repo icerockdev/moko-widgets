@@ -28,7 +28,9 @@ actual class DefaultImageWidgetViewFactory actual constructor(
         val imageView = UIImageView().apply {
             translatesAutoresizingMaskIntoConstraints = false
 
-            widget.image.bind { it.apply(this) }
+            widget.image.bind { image ->
+                image.apply(this) { this.image = it }
+            }
 
             when (style.scaleType) {
                 ScaleType.FILL -> this.contentMode =
