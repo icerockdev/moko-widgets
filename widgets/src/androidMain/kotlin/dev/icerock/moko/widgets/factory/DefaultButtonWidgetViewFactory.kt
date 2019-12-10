@@ -4,10 +4,13 @@
 
 package dev.icerock.moko.widgets.factory
 
+import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
 import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.core.bind
 import dev.icerock.moko.widgets.style.applyStyle
 import dev.icerock.moko.widgets.style.applyTextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
@@ -24,12 +27,28 @@ actual class DefaultButtonWidgetViewFactory actual constructor(
     ): ViewBundle<WS> {
         val ctx = viewFactoryContext.androidContext
 
-        val button = Button(ctx).apply {
-            applyTextStyle(style.textStyle)
-            applyStyle(style)
-
-            style.isAllCaps?.also { isAllCaps = it }
+        // it is hell. Compose save us! ImageButton is ImageView, not Button!
+        val button: View = when (widget.content) {
+            is ButtonWidget.Content.Text -> {
+                Button(ctx).apply {
+                    widget.content.text.bind(viewFactoryContext.lifecycleOwner) { text ->
+                        this.text = text?.toString(ctx)
+                    }
+                    applyTextStyle(style.textStyle)
+                    style.isAllCaps?.also { isAllCaps = it }
+                }
+            }
+            is ButtonWidget.Content.Icon -> {
+                ImageButton(ctx).apply {
+                    widget.content.image.bind(viewFactoryContext.lifecycleOwner) { image ->
+                        image.loadIn(this)
+                    }
+                    background = null
+                }
+            }
         }
+
+        button.applyStyle(style)
 
         widget.enabled?.bind(viewFactoryContext.lifecycleOwner) { enabled ->
             button.isEnabled = enabled == true
@@ -37,10 +56,6 @@ actual class DefaultButtonWidgetViewFactory actual constructor(
 
         button.setOnClickListener {
             widget.onTap()
-        }
-
-        widget.text.bind(viewFactoryContext.lifecycleOwner) { text ->
-            button.text = text?.toString(ctx)
         }
 
         return ViewBundle(

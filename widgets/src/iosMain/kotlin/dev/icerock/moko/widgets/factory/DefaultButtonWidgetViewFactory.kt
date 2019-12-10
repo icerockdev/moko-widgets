@@ -8,20 +8,16 @@ import dev.icerock.moko.graphics.toUIColor
 import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.core.bind
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.applyStateBackground
 import dev.icerock.moko.widgets.utils.applyTextStyle
-import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.setEventHandler
 import platform.UIKit.UIButton
 import platform.UIKit.UIButtonTypeSystem
 import platform.UIKit.UIControlEventTouchUpInside
 import platform.UIKit.UIControlStateNormal
 import platform.UIKit.UIEdgeInsetsMake
-import platform.UIKit.UILayoutConstraintAxisHorizontal
-import platform.UIKit.UILayoutConstraintAxisVertical
-import platform.UIKit.UILayoutPriorityRequired
-import platform.UIKit.setContentHuggingPriority
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
 actual class DefaultButtonWidgetViewFactory actual constructor(
@@ -35,14 +31,6 @@ actual class DefaultButtonWidgetViewFactory actual constructor(
     ): ViewBundle<WS> {
         val button = UIButton.buttonWithType(UIButtonTypeSystem).apply {
             translatesAutoresizingMaskIntoConstraints = false
-            setContentHuggingPriority(
-                UILayoutPriorityRequired,
-                forAxis = UILayoutConstraintAxisHorizontal
-            )
-            setContentHuggingPriority(
-                UILayoutPriorityRequired,
-                forAxis = UILayoutConstraintAxisVertical
-            )
 
             applyStateBackground(style.background)
 
@@ -62,8 +50,19 @@ actual class DefaultButtonWidgetViewFactory actual constructor(
             }
         }
 
-        widget.text.bind {
-            button.setTitle(title = it.localized(), forState = UIControlStateNormal)
+        when (widget.content) {
+            is ButtonWidget.Content.Text -> {
+                widget.content.text.bind { text ->
+                    button.setTitle(title = text?.localized(), forState = UIControlStateNormal)
+                }
+            }
+            is ButtonWidget.Content.Icon -> {
+                widget.content.image.bind { image ->
+                    image.apply(button) {
+                        button.setImage(it, forState = UIControlStateNormal)
+                    }
+                }
+            }
         }
 
         button.setEventHandler(UIControlEventTouchUpInside) {
