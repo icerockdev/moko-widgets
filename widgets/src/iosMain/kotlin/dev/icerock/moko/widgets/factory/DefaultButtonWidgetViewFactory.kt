@@ -12,6 +12,7 @@ import dev.icerock.moko.widgets.core.bind
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.applyStateBackground
 import dev.icerock.moko.widgets.utils.applyTextStyle
+import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.setEventHandler
 import platform.UIKit.UIButton
 import platform.UIKit.UIButtonTypeSystem
@@ -63,6 +64,10 @@ actual class DefaultButtonWidgetViewFactory actual constructor(
                     }
                 }
             }
+        }
+
+        widget.enabled?.apply {
+            bind { button.setEnabled(it) }
         }
 
         button.setEventHandler(UIControlEventTouchUpInside) {
