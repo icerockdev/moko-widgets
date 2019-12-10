@@ -20,7 +20,6 @@ import platform.UIKit.NSTextAlignmentRight
 import platform.UIKit.UILabel
 import platform.UIKit.UILayoutConstraintAxisHorizontal
 import platform.UIKit.UILayoutConstraintAxisVertical
-import platform.UIKit.UILayoutPriorityDefaultHigh
 import platform.UIKit.setContentCompressionResistancePriority
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
@@ -36,18 +35,12 @@ actual class DefaultTextWidgetViewFactory actual constructor(
             translatesAutoresizingMaskIntoConstraints = false
             applyBackground(style.background)
 
-            setContentCompressionResistancePriority(
-                UILayoutPriorityDefaultHigh,
-                UILayoutConstraintAxisVertical
-            )
-            setContentCompressionResistancePriority(
-                UILayoutPriorityDefaultHigh,
-                UILayoutConstraintAxisHorizontal
-            )
-
             numberOfLines = 0
 
             style.textStyle?.also { applyTextStyle(it) }
+
+            setContentCompressionResistancePriority(749f, UILayoutConstraintAxisHorizontal)
+            setContentCompressionResistancePriority(749f, UILayoutConstraintAxisVertical)
 
             when (style.textAlignment) {
                 TextAlignment.LEFT -> textAlignment = NSTextAlignmentLeft
