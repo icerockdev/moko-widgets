@@ -4,6 +4,7 @@
 
 package dev.icerock.moko.widgets.factory
 
+import dev.icerock.moko.widgets.Constraint
 import dev.icerock.moko.widgets.ConstraintItem
 import dev.icerock.moko.widgets.ConstraintWidget
 import dev.icerock.moko.widgets.ConstraintsApi
@@ -56,14 +57,6 @@ actual class DefaultConstraintWidgetViewFactory actual constructor(
 
                 container.addSubview(childView)
 
-                applySizeToChild(
-                    rootView = container,
-                    rootPadding = style.padding,
-                    childView = childView,
-                    childSize = viewBundle.size,
-                    childMargins = viewBundle.margins
-                )
-
                 viewBundle
             }
 
@@ -74,6 +67,26 @@ actual class DefaultConstraintWidgetViewFactory actual constructor(
         )
 
         widget.constraints.invoke(constraintsHandler)
+
+        widgetViewBundle.forEach { (childWidget, viewBundle) ->
+            val childView = viewBundle.view
+            val childMargins = viewBundle.margins
+            val extraMargins = constraintsHandler.widgetAdditionalMargins[childWidget]
+            val margins = when {
+                childMargins != null && extraMargins != null -> childMargins + extraMargins
+                childMargins != null -> childMargins
+                extraMargins != null -> extraMargins
+                else -> null
+            }
+
+            applySizeToChild(
+                rootView = container,
+                rootPadding = style.padding,
+                childView = childView,
+                childSize = viewBundle.size,
+                childMargins = margins
+            )
+        }
 
         return ViewBundle(
             view = container,
@@ -116,6 +129,19 @@ class AutoLayoutConstraintsApi(
         )
     }
 
+    private val _widgetAdditionalMargins = mutableMapOf<Widget<out WidgetSize>, MarginValues>()
+    val widgetAdditionalMargins: Map<out Widget<out WidgetSize>, MarginValues> = _widgetAdditionalMargins
+
+    private fun applyAdditionalMargins(
+        widget: Widget<out WidgetSize>,
+        offset: Float,
+        transform: MarginValues.(Float) -> MarginValues
+    ) {
+        val currentMargins = _widgetAdditionalMargins[widget] ?: MarginValues()
+        val newMargins = currentMargins.transform(offset)
+        _widgetAdditionalMargins[widget] = newMargins
+    }
+
     private fun ConstraintItem.view(): UIView {
         return when (this) {
             ConstraintItem.Root -> container
@@ -147,13 +173,15 @@ class AutoLayoutConstraintsApi(
         return const
     }
 
+    @Suppress("LongParameterList")
     private fun constraint(
         firstItem: ConstraintItem.Child,
         secondItem: ConstraintItem,
         firstMargin: MarginValues.() -> Float = { 0.0f },
         secondPadding: PaddingValues.() -> Float = { 0.0f },
+        applyExtraMargins: (MarginValues.(Float) -> MarginValues)? = null,
         block: AnchorSet.(AnchorSet) -> NSLayoutConstraint
-    ) {
+    ): Constraint {
         val firstView = firstItem.anchorSet()
         val secondView = secondItem.anchorSet()
 
@@ -163,88 +191,105 @@ class AutoLayoutConstraintsApi(
             paddingGetter = secondPadding
         )
 
-        block(firstView, secondView).apply {
+        return block(firstView, secondView).apply {
             constant = const
             active = true
+        }.let {
+            object : Constraint {
+                override fun offset(points: Int) {
+                    it.constant = const + points
+                    if (applyExtraMargins != null) {
+                        applyAdditionalMargins(firstItem.widget, points.toFloat(), applyExtraMargins)
+                    }
+                }
+            }
         }
     }
 
-    override fun ConstraintItem.Child.leftToRight(to: ConstraintItem) {
-        constraint(
+    override fun ConstraintItem.Child.leftToRight(to: ConstraintItem): Constraint {
+        return constraint(
             firstItem = this,
             secondItem = to,
             firstMargin = { this.start },
             secondPadding = { this.end },
+            applyExtraMargins = { copy(start = it) },
             block = { leftAnchor.constraintEqualToAnchor(it.rightAnchor) }
         )
     }
 
-    override fun ConstraintItem.Child.leftToLeft(to: ConstraintItem) {
-        constraint(
+    override fun ConstraintItem.Child.leftToLeft(to: ConstraintItem): Constraint {
+        return constraint(
             firstItem = this,
             secondItem = to,
             firstMargin = { this.start },
             secondPadding = { this.start },
+            applyExtraMargins = { copy(start = it) },
             block = { leftAnchor.constraintEqualToAnchor(it.leftAnchor) }
         )
     }
 
-    override fun ConstraintItem.Child.rightToRight(to: ConstraintItem) {
-        constraint(
+    override fun ConstraintItem.Child.rightToRight(to: ConstraintItem): Constraint {
+        return constraint(
             firstItem = this,
             secondItem = to,
             firstMargin = { this.end },
             secondPadding = { this.end },
+            applyExtraMargins = { copy(end = it) },
             block = { it.rightAnchor.constraintEqualToAnchor(rightAnchor) }
         )
     }
 
-    override fun ConstraintItem.Child.rightToLeft(to: ConstraintItem) {
-        constraint(
+    override fun ConstraintItem.Child.rightToLeft(to: ConstraintItem): Constraint {
+        return constraint(
             firstItem = this,
             secondItem = to,
             firstMargin = { this.end },
             secondPadding = { this.start },
+            applyExtraMargins = { copy(end = it) },
             block = { it.leftAnchor.constraintEqualToAnchor(rightAnchor) }
         )
     }
 
-    override fun ConstraintItem.Child.topToTop(to: ConstraintItem) {
-        constraint(
+    override fun ConstraintItem.Child.topToTop(to: ConstraintItem): Constraint {
+        return constraint(
             firstItem = this,
             secondItem = to,
             firstMargin = { this.top },
             secondPadding = { this.top },
+            applyExtraMargins = { copy(top = it) },
             block = { topAnchor.constraintEqualToAnchor(it.topAnchor) }
         )
     }
 
-    override fun ConstraintItem.Child.topToBottom(to: ConstraintItem) {
-        constraint(
+    override fun ConstraintItem.Child.topToBottom(to: ConstraintItem): Constraint {
+        return constraint(
             firstItem = this,
             secondItem = to,
             firstMargin = { this.top },
             secondPadding = { this.bottom },
+            applyExtraMargins = { copy(top = it) },
             block = { topAnchor.constraintEqualToAnchor(it.bottomAnchor) }
         )
     }
 
-    override fun ConstraintItem.Child.bottomToBottom(to: ConstraintItem) {
-        constraint(
+    override fun ConstraintItem.Child.bottomToBottom(to: ConstraintItem): Constraint {
+        return constraint(
             firstItem = this,
             secondItem = to,
             firstMargin = { this.bottom },
             secondPadding = { this.bottom },
+            applyExtraMargins = { copy(bottom = it) },
             block = { it.bottomAnchor.constraintEqualToAnchor(bottomAnchor) }
         )
     }
 
-    override fun ConstraintItem.Child.bottomToTop(to: ConstraintItem) {
-        constraint(
+    override fun ConstraintItem.Child.bottomToTop(to: ConstraintItem): Constraint {
+        return constraint(
             firstItem = this,
             secondItem = to,
             firstMargin = { this.bottom },
             secondPadding = { this.top },
+            applyExtraMargins = { copy(bottom = it) },
             block = { it.topAnchor.constraintEqualToAnchor(bottomAnchor) }
         )
     }
@@ -305,7 +350,7 @@ class AutoLayoutConstraintsApi(
         childAnchorSet.centerXAnchor.constraintEqualToAnchor(layoutGuide.centerXAnchor).active = true
     }
 
-    override fun ConstraintItem.VerticalAnchor.pin(to: ConstraintItem.VerticalAnchor) {
+    override fun ConstraintItem.VerticalAnchor.pin(to: ConstraintItem.VerticalAnchor): Constraint {
         // TODO padding margin
         val firstAnchorSet = this.item.anchorSet()
         val secondAnchorSet = to.item.anchorSet()
@@ -313,10 +358,18 @@ class AutoLayoutConstraintsApi(
         val firstAnchor = this.edge.toAnchor(firstAnchorSet)
         val secondAnchor = to.edge.toAnchor(secondAnchorSet)
 
-        firstAnchor.constraintEqualToAnchor(secondAnchor).active = true
+        return firstAnchor.constraintEqualToAnchor(secondAnchor).let {
+            it.active = true
+            object : Constraint {
+                override fun offset(points: Int) {
+                    // TODO padding margin
+                    it.constant = points.toDouble()
+                }
+            }
+        }
     }
 
-    override fun ConstraintItem.HorizontalAnchor.pin(to: ConstraintItem.HorizontalAnchor) {
+    override fun ConstraintItem.HorizontalAnchor.pin(to: ConstraintItem.HorizontalAnchor): Constraint {
         // TODO padding margin
         val firstAnchorSet = this.item.anchorSet()
         val secondAnchorSet = to.item.anchorSet()
@@ -324,6 +377,14 @@ class AutoLayoutConstraintsApi(
         val firstAnchor = this.edge.toAnchor(firstAnchorSet)
         val secondAnchor = to.edge.toAnchor(secondAnchorSet)
 
-        firstAnchor.constraintEqualToAnchor(secondAnchor).active = true
+        return firstAnchor.constraintEqualToAnchor(secondAnchor).let {
+            it.active = true
+            object : Constraint {
+                override fun offset(points: Int) {
+                    // TODO padding margin
+                    it.constant = points.toDouble()
+                }
+            }
+        }
     }
 }

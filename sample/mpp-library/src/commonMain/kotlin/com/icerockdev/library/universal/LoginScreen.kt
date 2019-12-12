@@ -66,10 +66,10 @@ class LoginScreen(
 
             constraints {
                 passwordInput centerYToCenterY root
-                passwordInput leftRightToLeftRight root
+                passwordInput leftRightToLeftRight root offset 16
 
-                emailInput bottomToTop passwordInput
-                emailInput leftRightToLeftRight root
+                emailInput bottomToTop passwordInput offset 8
+                emailInput leftRightToLeftRight root offset 16
 
                 loginButton topToBottom passwordInput
                 loginButton leftRightToLeftRight root

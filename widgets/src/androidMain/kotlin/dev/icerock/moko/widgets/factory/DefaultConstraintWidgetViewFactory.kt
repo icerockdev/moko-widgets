@@ -4,7 +4,9 @@
 
 package dev.icerock.moko.widgets.factory
 
+import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
+import dev.icerock.moko.widgets.Constraint
 import dev.icerock.moko.widgets.ConstraintItem
 import dev.icerock.moko.widgets.ConstraintWidget
 import dev.icerock.moko.widgets.ConstraintsApi
@@ -17,6 +19,7 @@ import dev.icerock.moko.widgets.style.ext.applyMargin
 import dev.icerock.moko.widgets.style.ext.toPlatformSize
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.utils.dp
 
 actual class DefaultConstraintWidgetViewFactory actual constructor(
     style: Style
@@ -132,28 +135,34 @@ class ConstraintLayoutConstraintsApi(
         clp.field(secondId)
     }
 
-    override fun ConstraintItem.Child.leftToRight(to: ConstraintItem) {
+    override fun ConstraintItem.Child.leftToRight(to: ConstraintItem): Constraint {
         constraint(this, to) { leftToRight = it }
+        return ConstraintImpl(this) { leftMargin = it }
     }
 
-    override fun ConstraintItem.Child.leftToLeft(to: ConstraintItem) {
+    override fun ConstraintItem.Child.leftToLeft(to: ConstraintItem): Constraint {
         constraint(this, to) { leftToLeft = it }
+        return ConstraintImpl(this) { leftMargin = it }
     }
 
-    override fun ConstraintItem.Child.rightToRight(to: ConstraintItem) {
+    override fun ConstraintItem.Child.rightToRight(to: ConstraintItem): Constraint {
         constraint(this, to) { rightToRight = it }
+        return ConstraintImpl(this) { rightMargin = it }
     }
 
-    override fun ConstraintItem.Child.rightToLeft(to: ConstraintItem) {
+    override fun ConstraintItem.Child.rightToLeft(to: ConstraintItem): Constraint {
         constraint(this, to) { rightToLeft = it }
+        return ConstraintImpl(this) { rightMargin = it }
     }
 
-    override fun ConstraintItem.Child.topToTop(to: ConstraintItem) {
+    override fun ConstraintItem.Child.topToTop(to: ConstraintItem): Constraint {
         constraint(this, to) { topToTop = it }
+        return ConstraintImpl(this) { topMargin = it }
     }
 
-    override fun ConstraintItem.Child.topToBottom(to: ConstraintItem) {
+    override fun ConstraintItem.Child.topToBottom(to: ConstraintItem): Constraint {
         constraint(this, to) { topToBottom = it }
+        return ConstraintImpl(this) { topMargin = it }
     }
 
     override fun ConstraintItem.Child.centerYToCenterY(to: ConstraintItem) {
@@ -166,12 +175,14 @@ class ConstraintLayoutConstraintsApi(
         constraint(this, to) { rightToRight = it }
     }
 
-    override fun ConstraintItem.Child.bottomToBottom(to: ConstraintItem) {
+    override fun ConstraintItem.Child.bottomToBottom(to: ConstraintItem): Constraint {
         constraint(this, to) { bottomToBottom = it }
+        return ConstraintImpl(this) { bottomMargin = it }
     }
 
-    override fun ConstraintItem.Child.bottomToTop(to: ConstraintItem) {
+    override fun ConstraintItem.Child.bottomToTop(to: ConstraintItem): Constraint {
         constraint(this, to) { bottomToTop = it }
+        return ConstraintImpl(this) { bottomMargin = it }
     }
 
     override fun ConstraintItem.Child.verticalCenterBetween(
@@ -210,7 +221,7 @@ class ConstraintLayoutConstraintsApi(
         }
     }
 
-    override fun ConstraintItem.VerticalAnchor.pin(to: ConstraintItem.VerticalAnchor) {
+    override fun ConstraintItem.VerticalAnchor.pin(to: ConstraintItem.VerticalAnchor): Constraint {
         val firstView = this.item.view()
         val secondView = to.item.view()
 
@@ -232,9 +243,23 @@ class ConstraintLayoutConstraintsApi(
                 }
             }
         }
+
+        return ConstraintImpl(
+            item = this.item,
+            marginSetter = {
+                when (this@pin.edge) {
+                    ConstraintItem.VerticalAnchor.Edge.TOP -> {
+                        topMargin = it
+                    }
+                    ConstraintItem.VerticalAnchor.Edge.BOTTOM -> {
+                        bottomMargin = it
+                    }
+                }
+            }
+        )
     }
 
-    override fun ConstraintItem.HorizontalAnchor.pin(to: ConstraintItem.HorizontalAnchor) {
+    override fun ConstraintItem.HorizontalAnchor.pin(to: ConstraintItem.HorizontalAnchor): Constraint {
         val firstView = this.item.view()
         val secondView = to.item.view()
 
@@ -254,6 +279,36 @@ class ConstraintLayoutConstraintsApi(
                     ConstraintItem.HorizontalAnchor.Edge.LEFT -> flp.rightToLeft = sid
                     ConstraintItem.HorizontalAnchor.Edge.RIGHT -> flp.rightToRight = sid
                 }
+            }
+        }
+
+        return ConstraintImpl(
+            item = this.item,
+            marginSetter = {
+                when (this@pin.edge) {
+                    ConstraintItem.HorizontalAnchor.Edge.LEFT -> {
+                        leftMargin = it
+                    }
+                    ConstraintItem.HorizontalAnchor.Edge.RIGHT -> {
+                        rightMargin = it
+                    }
+                }
+            }
+        )
+    }
+
+    private inner class ConstraintImpl(
+        val view: View,
+        val marginSetter: ViewGroup.MarginLayoutParams.(Int) -> Unit
+    ) : Constraint {
+        constructor(
+            item: ConstraintItem,
+            marginSetter: ViewGroup.MarginLayoutParams.(Int) -> Unit
+        ) : this(view = item.view(), marginSetter = marginSetter)
+
+        override fun offset(points: Int) {
+            with(view.layoutParams as ViewGroup.MarginLayoutParams) {
+                this.marginSetter(points.dp(view.context))
             }
         }
     }

@@ -14,4 +14,11 @@ data class MarginValues(
     val bottom: Float = 0.0F
 ) {
     constructor(marginAll: Float) : this(marginAll, marginAll, marginAll, marginAll)
+
+    operator fun plus(other: MarginValues) = MarginValues(
+        top = top + other.top,
+        start = start + other.start,
+        end = end + other.end,
+        bottom = bottom + other.bottom
+    )
 }

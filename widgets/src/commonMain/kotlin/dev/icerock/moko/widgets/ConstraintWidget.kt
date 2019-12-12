@@ -89,22 +89,34 @@ sealed class ConstraintItem {
     }
 }
 
+interface Constraint {
+    infix fun offset(points: Int)
+}
+
 // TODO rework for allow extension from outside
+@Suppress("TooManyFunctions")
 interface ConstraintsApi {
-    infix fun ConstraintItem.Child.leftToRight(to: ConstraintItem)
-    infix fun ConstraintItem.Child.leftToLeft(to: ConstraintItem)
-    infix fun ConstraintItem.Child.rightToRight(to: ConstraintItem)
-    infix fun ConstraintItem.Child.rightToLeft(to: ConstraintItem)
-    infix fun ConstraintItem.Child.topToTop(to: ConstraintItem)
-    infix fun ConstraintItem.Child.topToBottom(to: ConstraintItem)
+    infix fun ConstraintItem.Child.leftToRight(to: ConstraintItem): Constraint
+    infix fun ConstraintItem.Child.leftToLeft(to: ConstraintItem): Constraint
+    infix fun ConstraintItem.Child.rightToRight(to: ConstraintItem): Constraint
+    infix fun ConstraintItem.Child.rightToLeft(to: ConstraintItem): Constraint
+    infix fun ConstraintItem.Child.topToTop(to: ConstraintItem): Constraint
+    infix fun ConstraintItem.Child.topToBottom(to: ConstraintItem): Constraint
     infix fun ConstraintItem.Child.centerYToCenterY(to: ConstraintItem)
     infix fun ConstraintItem.Child.centerXToCenterX(to: ConstraintItem)
-    infix fun ConstraintItem.Child.bottomToBottom(to: ConstraintItem)
-    infix fun ConstraintItem.Child.bottomToTop(to: ConstraintItem)
+    infix fun ConstraintItem.Child.bottomToBottom(to: ConstraintItem): Constraint
+    infix fun ConstraintItem.Child.bottomToTop(to: ConstraintItem): Constraint
 
-    infix fun ConstraintItem.Child.leftRightToLeftRight(to: ConstraintItem) {
-        this leftToLeft to
-        this rightToRight to
+    infix fun ConstraintItem.Child.leftRightToLeftRight(to: ConstraintItem): Constraint {
+        val lc = this leftToLeft to
+        val rc = this rightToRight to
+
+        return object : Constraint {
+            override fun offset(points: Int) {
+                lc.offset(points)
+                rc.offset(points)
+            }
+        }
     }
 
     fun ConstraintItem.Child.verticalCenterBetween(
@@ -117,6 +129,6 @@ interface ConstraintsApi {
         right: ConstraintItem.HorizontalAnchor
     )
 
-    infix fun ConstraintItem.VerticalAnchor.pin(to: ConstraintItem.VerticalAnchor)
-    infix fun ConstraintItem.HorizontalAnchor.pin(to: ConstraintItem.HorizontalAnchor)
+    infix fun ConstraintItem.VerticalAnchor.pin(to: ConstraintItem.VerticalAnchor): Constraint
+    infix fun ConstraintItem.HorizontalAnchor.pin(to: ConstraintItem.HorizontalAnchor): Constraint
 }
