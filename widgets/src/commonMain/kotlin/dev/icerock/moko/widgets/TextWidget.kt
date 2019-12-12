@@ -27,5 +27,8 @@ class TextWidget<WS : WidgetSize>(
         return factory.build(this, size, viewFactoryContext)
     }
 
-    interface Id : Theme.Id
+    interface Id : Theme.Id<TextWidget<out WidgetSize>>
+    interface Category : Theme.Category<TextWidget<out WidgetSize>>
+
+    object DefaultCategory : Category
 }

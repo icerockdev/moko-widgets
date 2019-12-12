@@ -5,12 +5,15 @@
 package com.icerockdev.library.custom
 
 import android.view.ContextThemeWrapper
+import android.view.View
+import android.widget.ImageButton
 import com.google.android.material.button.MaterialButton
 import com.icerockdev.library.R
 import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.core.bind
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.bind
 
@@ -23,7 +26,23 @@ actual class MaterialButtonWidgetViewFactory actual constructor() : ViewFactory<
     ): ViewBundle<WS> {
         val ctx = viewFactoryContext.androidContext
 
-        val button = MaterialButton(ContextThemeWrapper(ctx, R.style.Theme_MaterialComponents_Light_NoActionBar))
+        val content = widget.content
+        val button: View = when (content) {
+            is ButtonWidget.Content.Text -> {
+                MaterialButton(ContextThemeWrapper(ctx, R.style.Theme_MaterialComponents_Light_NoActionBar)).apply {
+                    content.text.bind(viewFactoryContext.lifecycleOwner) { text ->
+                        this.text = text?.toString(ctx)
+                    }
+                }
+            }
+            is ButtonWidget.Content.Icon -> {
+                ImageButton(ctx).apply {
+                    content.image.bind(viewFactoryContext.lifecycleOwner) { image ->
+                        image.loadIn(this)
+                    }
+                }
+            }
+        }
 
         widget.enabled?.bind(viewFactoryContext.lifecycleOwner) { enabled ->
             button.isEnabled = enabled == true
@@ -31,10 +50,6 @@ actual class MaterialButtonWidgetViewFactory actual constructor() : ViewFactory<
 
         button.setOnClickListener {
             widget.onTap()
-        }
-
-        widget.text.bind(viewFactoryContext.lifecycleOwner) { text ->
-            button.text = text?.toString(ctx)
         }
 
         return ViewBundle(

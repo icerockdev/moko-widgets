@@ -69,7 +69,7 @@ actual class DefaultLinearWidgetViewFactory actual constructor(
 
                 val lastCV = lastChildView
                 val lastCVMargins = lastMargins
-                val edges = when (style.orientation) {
+                val edges = when (widget.orientation) {
                     Orientation.VERTICAL -> {
                         if (lastCV != null) {
                             childView.topAnchor.constraintEqualToAnchor(
@@ -127,7 +127,7 @@ actual class DefaultLinearWidgetViewFactory actual constructor(
                         )
                     }
                 }
-                corretChildSize(childSize, style.orientation).also {
+                corretChildSize(childSize, widget.orientation).also {
                     childView.applySize(
                         size = it,
                         parent = this,
@@ -148,7 +148,7 @@ actual class DefaultLinearWidgetViewFactory actual constructor(
             childSize != null
         ) {
 
-            when (style.orientation) {
+            when (widget.orientation) {
                 Orientation.VERTICAL -> {
                     if (size.height == SizeSpec.WrapContent) {
                         container.bottomAnchor.constraintEqualToAnchor(

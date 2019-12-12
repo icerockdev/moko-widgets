@@ -37,5 +37,8 @@ class ButtonWidget<WS : WidgetSize>(
         data class Icon(val image: Value<Image>) : Content()
     }
 
-    interface Id : Theme.Id
+    interface Id : Theme.Id<ButtonWidget<out WidgetSize>>
+    interface Category : Theme.Category<ButtonWidget<out WidgetSize>>
+
+    object DefaultCategory : Category
 }

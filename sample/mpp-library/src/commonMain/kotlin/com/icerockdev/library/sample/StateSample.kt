@@ -11,10 +11,12 @@ import dev.icerock.moko.mvvm.livedata.map
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
+import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Theme
+import dev.icerock.moko.widgets.core.Value
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.flatAlert
 import dev.icerock.moko.widgets.linear
@@ -35,7 +37,7 @@ open class StateScreen(
             linear(size = WidgetSize.AsParent) {
                 +button(
                     size = WidgetSize.WrapContent,
-                    text = const("change state"),
+                    content = ButtonWidget.Content.Text(Value.data("change state".desc())),
                     onTap = viewModel::onChangeStatePressed
                 )
                 +stateful(
@@ -54,7 +56,7 @@ open class StateScreen(
                     loading = {
                         container(size = WidgetSize.AsParent) {
                             center {
-                                progressBar(WidgetSize.WrapContent)
+                                progressBar(size = WidgetSize.WrapContent)
                             }
                         }
                     },

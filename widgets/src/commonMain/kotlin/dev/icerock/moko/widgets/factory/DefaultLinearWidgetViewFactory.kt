@@ -26,7 +26,6 @@ abstract class DefaultLinearWidgetViewFactoryBase(
     data class Style(
         override val background: Background? = null,
         override val padding: PaddingValues? = null,
-        override val margins: MarginValues? = null,
-        val orientation: Orientation = Orientation.VERTICAL
+        override val margins: MarginValues? = null
     ) : Padded, Backgrounded, Margined
 }

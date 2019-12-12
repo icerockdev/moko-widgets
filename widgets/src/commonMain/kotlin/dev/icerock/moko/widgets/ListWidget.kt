@@ -29,5 +29,8 @@ class ListWidget<WS : WidgetSize>(
         return factory.build(this, size, viewFactoryContext)
     }
 
-    interface Id : Theme.Id
+    interface Id : Theme.Id<ListWidget<out WidgetSize>>
+    interface Category : Theme.Category<ListWidget<out WidgetSize>>
+
+    object DefaultCategory : Category
 }

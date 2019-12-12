@@ -9,11 +9,13 @@ import dev.icerock.moko.fields.liveBlock
 import dev.icerock.moko.fields.validate
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.resources.desc.StringDesc
+import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.ScrollWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.core.Theme
+import dev.icerock.moko.widgets.core.Value
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.input
 import dev.icerock.moko.widgets.linear
@@ -55,7 +57,7 @@ class McommerceProfileScreen(
                     +button(
                         size = WidgetSize.WidthAsParentHeightWrapContent,
                         id = Id.SubmitButton,
-                        text = const("Подтвердить"),
+                        content = ButtonWidget.Content.Text(Value.data("Подтвердить".desc())),
                         onTap = viewModel::onSavePressed
                     )
                 }

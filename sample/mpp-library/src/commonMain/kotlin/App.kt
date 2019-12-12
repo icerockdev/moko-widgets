@@ -26,7 +26,7 @@ class App : BaseApplication() {
         registerScreenFactory(RootBottomNavigationScreen::class) { RootBottomNavigationScreen(this) }
         registerScreenFactory(ProductsNavigationScreen::class) { ProductsNavigationScreen(this) }
         registerScreenFactory(CartNavigationScreen::class) { CartNavigationScreen(this) }
-        registerScreenFactory(WidgetsScreen::class) { WidgetsScreen(sharedFactory, theme) }
+        registerScreenFactory(WidgetsScreen::class) { WidgetsScreen(sharedFactory, theme, AppTheme.PostsCollection) }
         registerScreenFactory(ProductsScreen::class) { ProductsScreen(theme) }
         registerScreenFactory(CartScreen::class) { CartScreen(theme) }
         registerScreenFactory(ProductScreen::class) { ProductScreen(theme) }

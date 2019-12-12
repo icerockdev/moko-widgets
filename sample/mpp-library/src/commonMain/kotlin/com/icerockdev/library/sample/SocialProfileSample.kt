@@ -23,6 +23,7 @@ import dev.icerock.moko.widgets.SwitchWidget
 import dev.icerock.moko.widgets.TextWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.core.Theme
+import dev.icerock.moko.widgets.core.Value
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.input
 import dev.icerock.moko.widgets.linear
@@ -38,6 +39,7 @@ class SocialProfileScreen(
     private val theme: Theme,
     private val viewModel: SocialProfileViewModelContract
 ) {
+    @Suppress("LongMethod")
     fun createWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         return with(theme) {
             scroll(
@@ -107,7 +109,7 @@ class SocialProfileScreen(
                     +button(
                         size = WidgetSize.WidthAsParentHeightWrapContent,
                         id = Id.SubmitButton,
-                        text = const("Сохранить"),
+                        content = ButtonWidget.Content.Text(Value.data("Сохранить".desc())),
                         onTap = viewModel::onSavePressed
                     )
                 }

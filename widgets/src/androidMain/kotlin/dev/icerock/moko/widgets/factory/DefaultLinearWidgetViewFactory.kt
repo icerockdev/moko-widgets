@@ -31,7 +31,7 @@ actual class DefaultLinearWidgetViewFactory actual constructor(
         val dm = context.resources.displayMetrics
 
         val container = LinearLayout(context).apply {
-            orientation = style.orientation.toLinearLayoutOrientation()
+            orientation = widget.orientation.toLinearLayoutOrientation()
 
             applyStyle(style)
         }

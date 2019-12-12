@@ -33,5 +33,8 @@ class InputWidget<WS : WidgetSize>(
         return factory.build(this, size, viewFactoryContext)
     }
 
-    interface Id : Theme.Id
+    interface Id : Theme.Id<InputWidget<out WidgetSize>>
+    interface Category : Theme.Category<InputWidget<out WidgetSize>>
+
+    object DefaultCategory : Category
 }

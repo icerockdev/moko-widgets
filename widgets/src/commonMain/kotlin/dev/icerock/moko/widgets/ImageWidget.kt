@@ -27,5 +27,8 @@ class ImageWidget<WS : WidgetSize>(
         return factory.build(this, size, viewFactoryContext)
     }
 
-    interface Id : Theme.Id
+    interface Id : Theme.Id<ImageWidget<out WidgetSize>>
+    interface Category : Theme.Category<ImageWidget<out WidgetSize>>
+
+    object DefaultCategory : Category
 }

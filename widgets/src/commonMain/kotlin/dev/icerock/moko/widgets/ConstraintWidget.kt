@@ -54,7 +54,10 @@ class ConstraintWidget<WS : WidgetSize>(
         }
     }
 
-    interface Id : Theme.Id
+    interface Id : Theme.Id<ConstraintWidget<out WidgetSize>>
+    interface Category : Theme.Category<ConstraintWidget<out WidgetSize>>
+
+    object DefaultCategory : Category
 }
 
 sealed class ConstraintItem {

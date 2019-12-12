@@ -16,6 +16,7 @@ import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.constraint
 import dev.icerock.moko.widgets.core.Image
 import dev.icerock.moko.widgets.core.Theme
+import dev.icerock.moko.widgets.core.Value
 import dev.icerock.moko.widgets.image
 import dev.icerock.moko.widgets.input
 import dev.icerock.moko.widgets.screen.Args
@@ -52,14 +53,14 @@ class LoginScreen(
             )
             val loginButton = +button(
                 size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.Exact(50f)),
-                text = const("Login".desc() as StringDesc),
+                content = ButtonWidget.Content.Text(Value.data("Login".desc())),
                 onTap = viewModel::onLoginPressed
             )
 
             val registerButton = +button(
                 id = Id.RegistrationButtonId,
                 size = WidgetSize.Const(SizeSpec.WrapContent, SizeSpec.Exact(40f)),
-                text = const("Registration".desc() as StringDesc),
+                content = ButtonWidget.Content.Text(Value.data("Registration".desc())),
                 onTap = viewModel::onRegistrationPressed
             )
 

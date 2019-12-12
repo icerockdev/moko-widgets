@@ -24,5 +24,8 @@ class ProgressBarWidget<WS : WidgetSize>(
         return factory.build(this, size, viewFactoryContext)
     }
 
-    interface Id : Theme.Id
+    interface Id : Theme.Id<ProgressBarWidget<out WidgetSize>>
+    interface Category : Theme.Category<ProgressBarWidget<out WidgetSize>>
+
+    object DefaultCategory : Category
 }

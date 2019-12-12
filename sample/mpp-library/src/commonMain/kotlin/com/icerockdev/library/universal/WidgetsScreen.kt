@@ -17,6 +17,7 @@ import com.icerockdev.library.sample.StateScreen
 import com.icerockdev.library.sample.StateViewModel
 import com.icerockdev.library.sample.UsersScreen
 import com.icerockdev.library.sample.UsersViewModel
+import dev.icerock.moko.widgets.CollectionWidget
 import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
@@ -28,7 +29,8 @@ import dev.icerock.moko.widgets.tabs
 
 class WidgetsScreen(
     private val sharedFactory: SharedFactory,
-    private val theme: Theme
+    private val theme: Theme,
+    private val postsCollectionCategory: CollectionWidget.Category
 ) : WidgetScreen<Args.Empty>() {
 
     override fun createContentWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
@@ -75,7 +77,8 @@ class WidgetsScreen(
                         title = const("P"),
                         body = PostsScreen(
                             theme = this,
-                            viewModel = PostsViewModel()
+                            viewModel = PostsViewModel(),
+                            collectionCategory = postsCollectionCategory
                         ).createWidget()
                     ),
                     TabsWidget.Tab(

@@ -34,5 +34,8 @@ class TabsWidget<WS : WidgetSize>(
         val body: Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>
     )
 
-    interface Id : Theme.Id
+    interface Id : Theme.Id<TabsWidget<out WidgetSize>>
+    interface Category : Theme.Category<TabsWidget<out WidgetSize>>
+
+    object DefaultCategory : Category
 }

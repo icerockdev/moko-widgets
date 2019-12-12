@@ -27,6 +27,8 @@ class ClickableWidget<WS : WidgetSize>(
         return factory.build(this, size, viewFactoryContext)
     }
 
-    interface Id : Theme.Id
-}
+    interface Id : Theme.Id<ClickableWidget<out WidgetSize>>
+    interface Category : Theme.Category<ClickableWidget<out WidgetSize>>
 
+    object DefaultCategory : Category
+}

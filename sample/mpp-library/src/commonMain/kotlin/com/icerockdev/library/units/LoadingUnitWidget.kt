@@ -34,12 +34,12 @@ class LoadingUnitWidget(
                         size = WidgetSize.Const(
                             width = SizeSpec.Exact(24f),
                             height = SizeSpec.Exact(24f)
-                        ),
-                        factory = DefaultProgressBarWidgetViewFactory(
-                            DefaultProgressBarWidgetViewFactoryBase.Style(
-                                color = Colors.black
-                            )
-                        )
+                        )//,
+//                        factory = DefaultProgressBarWidgetViewFactory(
+//                            DefaultProgressBarWidgetViewFactoryBase.Style(
+//                                color = Colors.black
+//                            )
+//                        )
                     )
                 }
             }

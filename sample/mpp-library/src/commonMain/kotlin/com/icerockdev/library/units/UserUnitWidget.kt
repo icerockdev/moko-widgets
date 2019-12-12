@@ -34,19 +34,20 @@ class UserUnitWidget(
             clickable(
                 child = linear(
                     size = WidgetSize.WidthAsParentHeightWrapContent,
-                    factory = DefaultLinearWidgetViewFactory(
-                        DefaultLinearWidgetViewFactoryBase.Style(
-                            orientation = Orientation.HORIZONTAL,
-                            padding = PaddingValues(padding = 8f)
-                        )
-                    )
+                    orientation = Orientation.HORIZONTAL
+//                    factory = DefaultLinearWidgetViewFactory(
+//                        DefaultLinearWidgetViewFactoryBase.Style(
+//                            orientation = Orientation.HORIZONTAL,
+//                            padding = PaddingValues(padding = 8f)
+//                        )
+//                    )
                 ) {
                     +image(
-                        factory = DefaultImageWidgetViewFactory(
-                            DefaultImageWidgetViewFactoryBase.Style(
-                                scaleType = DefaultImageWidgetViewFactoryBase.ScaleType.FILL
-                            )
-                        ),
+//                        factory = DefaultImageWidgetViewFactory(
+//                            DefaultImageWidgetViewFactoryBase.Style(
+//                                scaleType = DefaultImageWidgetViewFactoryBase.ScaleType.FILL
+//                            )
+//                        ),
                         size = WidgetSize.Const(
                             width = SizeSpec.Exact(48f),
                             height = SizeSpec.Exact(48f)
@@ -54,13 +55,13 @@ class UserUnitWidget(
                         image = data.map { Image.network(it.avatarUrl) }
                     )
                     +linear(
-                        size = WidgetSize.WidthAsParentHeightWrapContent,
-                        factory = DefaultLinearWidgetViewFactory(
-                            DefaultLinearWidgetViewFactoryBase.Style(
-                                orientation = Orientation.VERTICAL,
-                                padding = PaddingValues(padding = 8f)
-                            )
-                        )
+                        size = WidgetSize.WidthAsParentHeightWrapContent//,
+//                        factory = DefaultLinearWidgetViewFactory(
+//                            DefaultLinearWidgetViewFactoryBase.Style(
+//                                orientation = Orientation.VERTICAL,
+//                                padding = PaddingValues(padding = 8f)
+//                            )
+//                        )
                     ) {
                         +text(
                             size = WidgetSize.Const(

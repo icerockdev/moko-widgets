@@ -40,22 +40,16 @@ class StatefulWidget<WS : WidgetSize, T, E> constructor(
         return factory.build(this, size, viewFactoryContext)
     }
 
-    interface Id : Theme.Id
+    interface Id : Theme.Id<StatefulWidget<out WidgetSize, *, *>>
+    interface Category : Theme.Category<StatefulWidget<out WidgetSize, *, *>>
+
+    object DefaultCategory : Category
 }
 
-// manual writed boilerplate (plugin can't generate it because Widget use generic)
-private object StatefulWidgetFactoryKey :
-    Theme.Key<ViewFactory<StatefulWidget<out WidgetSize, *, *>>>
-
-val Theme.statefulFactory: ViewFactory<StatefulWidget<out WidgetSize, *, *>>
-        by Theme.readProperty(StatefulWidgetFactoryKey) { DefaultStatefulWidgetViewFactory() }
-
-var Theme.Builder.statefulFactory: ViewFactory<StatefulWidget<out WidgetSize, *, *>>
-        by Theme.readWriteProperty(StatefulWidgetFactoryKey, Theme::statefulFactory)
-
+@Suppress("LongParameterList")
 fun <WS : WidgetSize, T, E> Theme.stateful(
-    factory: ViewFactory<StatefulWidget<out WidgetSize, *, *>> = this.statefulFactory,
     id: StatefulWidget.Id? = null,
+    category: StatefulWidget.Category? = null,
     size: WS,
     state: LiveData<State<T, E>>,
     empty: () -> Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>,
@@ -64,39 +58,12 @@ fun <WS : WidgetSize, T, E> Theme.stateful(
     error: (LiveData<E?>) -> Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>
 ): StatefulWidget<WS, T, E> {
     return StatefulWidget(
-        factory = factory,
-        size = size,
-        id = id,
-        state = state,
-        empty = empty,
-        loading = loading,
-        data = data,
-        error = error
-    )
-}
-
-fun Theme.getStatefulFactory(id: StatefulWidget.Id): ViewFactory<StatefulWidget<out WidgetSize, *, *>> {
-    return getIdProperty(id, StatefulWidgetFactoryKey, ::statefulFactory)
-}
-
-fun Theme.Builder.setStatefulFactory(
-    factory: ViewFactory<StatefulWidget<out WidgetSize, *, *>>,
-    vararg ids: CollectionWidget.Id
-) {
-    ids.forEach { setIdProperty(it, StatefulWidgetFactoryKey, factory) }
-}
-
-fun <WS : WidgetSize, T, E> Theme.stateful(
-    id: StatefulWidget.Id? = null,
-    size: WS,
-    state: LiveData<State<T, E>>,
-    empty: () -> Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>,
-    loading: () -> Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>,
-    data: (LiveData<T?>) -> Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>,
-    error: (LiveData<E?>) -> Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>
-): StatefulWidget<WS, T, E> {
-    return StatefulWidget(
-        factory = id?.let { this.getStatefulFactory(it) } ?: this.statefulFactory,
+        factory = this.factory.get(
+            id = id,
+            category = category,
+            defaultCategory = StatefulWidget.DefaultCategory,
+            fallback = { DefaultStatefulWidgetViewFactory() }
+        ),
         size = size,
         id = id,
         state = state,

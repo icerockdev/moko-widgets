@@ -26,5 +26,8 @@ class ScrollWidget<WS : WidgetSize>(
         return factory.build(this, size, viewFactoryContext)
     }
 
-    interface Id : Theme.Id
+    interface Id : Theme.Id<ScrollWidget<out WidgetSize>>
+    interface Category : Theme.Category<ScrollWidget<out WidgetSize>>
+
+    object DefaultCategory : Category
 }

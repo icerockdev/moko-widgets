@@ -6,9 +6,11 @@ package com.icerockdev.library.universal
 
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
+import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Theme
+import dev.icerock.moko.widgets.core.Value
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.NavigationItem
@@ -28,7 +30,7 @@ class ProductsScreen(
                 center {
                     button(
                         size = WidgetSize.WrapContent,
-                        text = const("go to product"),
+                        content = ButtonWidget.Content.Text(Value.data("Go to product".desc())),
                         onTap = ::onProductPressed
                     )
                 }

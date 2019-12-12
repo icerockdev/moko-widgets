@@ -9,9 +9,11 @@ import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.parcelize.Parcelize
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
+import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Theme
+import dev.icerock.moko.widgets.core.Value
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.screen.Args
@@ -52,7 +54,7 @@ class ProductScreen(
                         )
                         +button(
                             size = WidgetSize.WrapContent,
-                            text = const("Add to Cart"),
+                            content = ButtonWidget.Content.Text(Value.data("Add to cart".desc())),
                             onTap = viewModel::onCartPressed
                         )
                     }

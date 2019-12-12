@@ -29,5 +29,8 @@ class CollectionWidget<WS : WidgetSize>(
         return factory.build(this, size, viewFactoryContext)
     }
 
-    interface Id : Theme.Id
+    interface Id : Theme.Id<CollectionWidget<out WidgetSize>>
+    interface Category : Theme.Category<CollectionWidget<out WidgetSize>>
+
+    object DefaultCategory : Category
 }

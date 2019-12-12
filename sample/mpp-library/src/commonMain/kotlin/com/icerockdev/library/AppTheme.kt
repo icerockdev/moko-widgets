@@ -8,11 +8,17 @@ import com.icerockdev.library.sample.CryptoProfileScreen
 import com.icerockdev.library.sample.UsersScreen
 import com.icerockdev.library.universal.LoginScreen
 import dev.icerock.moko.graphics.Color
-import dev.icerock.moko.widgets.buttonFactory
-import dev.icerock.moko.widgets.constraintFactory
+import dev.icerock.moko.widgets.ButtonWidget
+import dev.icerock.moko.widgets.CollectionWidget
+import dev.icerock.moko.widgets.ConstraintWidget
+import dev.icerock.moko.widgets.ImageWidget
+import dev.icerock.moko.widgets.InputWidget
+import dev.icerock.moko.widgets.StatefulWidget
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.factory.DefaultButtonWidgetViewFactory
 import dev.icerock.moko.widgets.factory.DefaultButtonWidgetViewFactoryBase
+import dev.icerock.moko.widgets.factory.DefaultCollectionWidgetViewFactory
+import dev.icerock.moko.widgets.factory.DefaultCollectionWidgetViewFactoryBase
 import dev.icerock.moko.widgets.factory.DefaultConstraintWidgetViewFactory
 import dev.icerock.moko.widgets.factory.DefaultConstraintWidgetViewFactoryBase
 import dev.icerock.moko.widgets.factory.DefaultImageWidgetViewFactory
@@ -21,13 +27,9 @@ import dev.icerock.moko.widgets.factory.DefaultInputWidgetViewFactory
 import dev.icerock.moko.widgets.factory.DefaultInputWidgetViewFactoryBase
 import dev.icerock.moko.widgets.factory.DefaultListWidgetViewFactory
 import dev.icerock.moko.widgets.factory.DefaultListWidgetViewFactoryBase
+import dev.icerock.moko.widgets.factory.DefaultStatefulWidgetViewFactory
 import dev.icerock.moko.widgets.factory.DefaultTextWidgetViewFactory
 import dev.icerock.moko.widgets.factory.DefaultTextWidgetViewFactoryBase
-import dev.icerock.moko.widgets.imageFactory
-import dev.icerock.moko.widgets.inputFactory
-import dev.icerock.moko.widgets.setButtonFactory
-import dev.icerock.moko.widgets.setListFactory
-import dev.icerock.moko.widgets.setTextFactory
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Border
 import dev.icerock.moko.widgets.style.background.Fill
@@ -42,6 +44,8 @@ import dev.icerock.moko.widgets.style.view.rgba
 import dev.icerock.moko.widgets.utils.platformSpecific
 
 object AppTheme {
+    object PostsCollection : CollectionWidget.Category
+
     object AppColor {
         val white = Color(0xFF, 0xFF, 0xFF, 0xFF)
         val redError = Color(0xFF, 0x66, 0x66, 0xFF)
@@ -53,25 +57,29 @@ object AppTheme {
     }
 
     val baseTheme = Theme {
-        setTextFactory(
-            DefaultTextWidgetViewFactory(
-                DefaultTextWidgetViewFactoryBase.Style(
-                    textAlignment = TextAlignment.CENTER
-                )
-            ), CryptoProfileScreen.Id.DelimiterText
+        factory[CryptoProfileScreen.Id.DelimiterText] = DefaultTextWidgetViewFactory(
+            DefaultTextWidgetViewFactoryBase.Style(
+                textAlignment = TextAlignment.CENTER
+            )
+        )
+        factory[UsersScreen.Id.List] = DefaultListWidgetViewFactory(
+            DefaultListWidgetViewFactoryBase.Style(
+                padding = PaddingValues(8f)
+            )
         )
 
-        setListFactory(
-            DefaultListWidgetViewFactory(
-                DefaultListWidgetViewFactoryBase.Style(
-                    padding = PaddingValues(8f)
-                )
-            ), UsersScreen.Id.List
+        factory[StatefulWidget.DefaultCategory] = DefaultStatefulWidgetViewFactory()
+        factory[CryptoProfileScreen.Id.JoinButton] = DefaultButtonWidgetViewFactory()
+
+        factory[PostsCollection] = DefaultCollectionWidgetViewFactory(
+            DefaultCollectionWidgetViewFactoryBase.Style(
+                padding = PaddingValues(4f)
+            )
         )
     }
 
     val loginScreen = Theme(baseTheme) {
-        constraintFactory = DefaultConstraintWidgetViewFactory(
+        factory[ConstraintWidget.DefaultCategory] = DefaultConstraintWidgetViewFactory(
             DefaultConstraintWidgetViewFactoryBase.Style(
                 padding = PaddingValues(16f),
                 background = Background(
@@ -80,13 +88,13 @@ object AppTheme {
             )
         )
 
-        imageFactory = DefaultImageWidgetViewFactory(
+        factory[ImageWidget.DefaultCategory] = DefaultImageWidgetViewFactory(
             DefaultImageWidgetViewFactoryBase.Style(
                 scaleType = DefaultImageWidgetViewFactoryBase.ScaleType.FIT
             )
         )
 
-        inputFactory = DefaultInputWidgetViewFactory(
+        factory[InputWidget.DefaultCategory] = DefaultInputWidgetViewFactory(
             DefaultInputWidgetViewFactoryBase.Style(
                 margins = MarginValues(bottom = 8f),
                 underLineColor = Color(0xe5e6eeFF),
@@ -98,7 +106,7 @@ object AppTheme {
 
         val corners = platformSpecific(android = 8f, ios = 25f)
 
-        buttonFactory = DefaultButtonWidgetViewFactory(
+        factory[ButtonWidget.DefaultCategory] = DefaultButtonWidgetViewFactory(
             DefaultButtonWidgetViewFactoryBase.Style(
                 margins = MarginValues(top = 32f),
                 background = {
@@ -122,37 +130,34 @@ object AppTheme {
             )
         )
 
-        setButtonFactory(
-            DefaultButtonWidgetViewFactory(
-                DefaultButtonWidgetViewFactoryBase.Style(
-                    margins = MarginValues(top = 16f),
-                    padding = platformSpecific(
-                        ios = PaddingValues(start = 16f, end = 16f),
-                        android = null
-                    ),
-                    background = {
-                        val bg: (Color) -> Background = {
-                            Background(
-                                fill = Fill.Solid(it),
-                                border = Border(
-                                    color = Color(0xF2F2F8FF),
-                                    width = 2f
-                                ),
-                                shape = Shape.Rectangle(cornerRadius = corners)
-                            )
-                        }
-                        StateBackground(
-                            normal = bg(Colors.white),
-                            pressed = bg(Color(0xEEEEEEFF)),
-                            disabled = bg(Color(0xBBBBBBFF))
+        factory[LoginScreen.Id.RegistrationButtonId] = DefaultButtonWidgetViewFactory(
+            DefaultButtonWidgetViewFactoryBase.Style(
+                margins = MarginValues(top = 16f),
+                padding = platformSpecific(
+                    ios = PaddingValues(start = 16f, end = 16f),
+                    android = null
+                ),
+                background = {
+                    val bg: (Color) -> Background = {
+                        Background(
+                            fill = Fill.Solid(it),
+                            border = Border(
+                                color = Color(0xF2F2F8FF),
+                                width = 2f
+                            ),
+                            shape = Shape.Rectangle(cornerRadius = corners)
                         )
-                    }.invoke(),
-                    textStyle = TextStyle(
-                        color = Color(0x777889FF)
+                    }
+                    StateBackground(
+                        normal = bg(Colors.white),
+                        pressed = bg(Color(0xEEEEEEFF)),
+                        disabled = bg(Color(0xBBBBBBFF))
                     )
+                }.invoke(),
+                textStyle = TextStyle(
+                    color = Color(0x777889FF)
                 )
-            ),
-            LoginScreen.Id.RegistrationButtonId
+            )
         )
     }
 

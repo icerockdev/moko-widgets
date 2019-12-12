@@ -31,5 +31,8 @@ class SingleChoiceWidget<WS : WidgetSize>(
         return factory.build(this, size, viewFactoryContext)
     }
 
-    interface Id : Theme.Id
+    interface Id : Theme.Id<SingleChoiceWidget<out WidgetSize>>
+    interface Category : Theme.Category<SingleChoiceWidget<out WidgetSize>>
+
+    object DefaultCategory : Category
 }

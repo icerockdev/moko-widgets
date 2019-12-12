@@ -61,5 +61,8 @@ class ContainerWidget<WS : WidgetSize>(
         }
     }
 
-    interface Id : Theme.Id
+    interface Id : Theme.Id<ContainerWidget<out WidgetSize>>
+    interface Category : Theme.Category<ContainerWidget<out WidgetSize>>
+
+    object DefaultCategory : Category
 }

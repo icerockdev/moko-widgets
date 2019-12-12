@@ -33,5 +33,8 @@ class FlatAlertWidget<WS : WidgetSize>(
         return factory.build(this, size, viewFactoryContext)
     }
 
-    object Id : Theme.Id
+    interface Id : Theme.Id<FlatAlertWidget<out WidgetSize>>
+    interface Category : Theme.Category<FlatAlertWidget<out WidgetSize>>
+
+    object DefaultCategory : Category
 }

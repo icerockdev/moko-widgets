@@ -26,5 +26,8 @@ class SwitchWidget<WS : WidgetSize>(
         return factory.build(this, size, viewFactoryContext)
     }
 
-    interface Id : Theme.Id
+    interface Id : Theme.Id<SwitchWidget<out WidgetSize>>
+    interface Category : Theme.Category<SwitchWidget<out WidgetSize>>
+
+    object DefaultCategory : Category
 }
