@@ -12,7 +12,9 @@ class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        mppApp = App().apply {
+        mppApp = App(
+            widgetsPlatformDeps = object : App.WidgetsPlatformDeps {}
+        ).apply {
             setup()
         }
     }

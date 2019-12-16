@@ -25,8 +25,12 @@ android {
 }
 
 val deps = listOf(
-    Deps.Libs.MultiPlatform.mokoUnits
-//    Deps.Libs.MultiPlatform.mokoWidgets
+    Deps.Libs.MultiPlatform.mokoResources,
+    Deps.Libs.MultiPlatform.mokoMvvm,
+    Deps.Libs.MultiPlatform.mokoUnits,
+    Deps.Libs.MultiPlatform.mokoGraphics,
+    Deps.Libs.MultiPlatform.mokoWidgets,
+    Deps.Libs.MultiPlatform.mokoWidgetsFlat
 )
 
 setupFramework(
@@ -42,8 +46,6 @@ dependencies {
     androidLibrary(Deps.Libs.Android.recyclerView)
     androidLibrary(Deps.Libs.Android.appCompat)
     androidLibrary(Deps.Libs.Android.material)
-
-    mppModule(MultiPlatformModule(":widgets"))
 }
 
 multiplatformResources {
