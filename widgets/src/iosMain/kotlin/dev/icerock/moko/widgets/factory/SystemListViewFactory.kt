@@ -8,7 +8,11 @@ import dev.icerock.moko.units.TableUnitItem
 import dev.icerock.moko.units.UnitTableViewDataSource
 import dev.icerock.moko.widgets.ListWidget
 import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.Edges
 import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
@@ -29,9 +33,13 @@ import platform.UIKit.UITableViewStyle
 import platform.UIKit.layoutMargins
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
-actual class DefaultListWidgetViewFactory actual constructor(
-    style: Style
-) : DefaultListWidgetViewFactoryBase(style) {
+actual class SystemListViewFactory actual constructor(
+    private val background: Background?,
+    private val dividerEnabled: Boolean?,
+    private val reversed: Boolean,
+    private val padding: PaddingValues?,
+    private val margins: MarginValues?
+) : ViewFactory<ListWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
         widget: ListWidget<out WidgetSize>,
@@ -43,7 +51,6 @@ actual class DefaultListWidgetViewFactory actual constructor(
             style = UITableViewStyle.UITableViewStylePlain
         )
         val unitDataSource = UnitTableViewDataSource(tableView)
-        val widgetStyle = style
 
         with(tableView) {
             translatesAutoresizingMaskIntoConstraints = false
@@ -52,9 +59,9 @@ actual class DefaultListWidgetViewFactory actual constructor(
             estimatedRowHeight = UITableViewAutomaticDimension
             allowsSelection = false
 
-            applyBackgroundIfNeeded(widgetStyle.background)
+            applyBackgroundIfNeeded(background)
 
-            widgetStyle.padding?.toEdgeInsets()?.also { insetsValue ->
+            padding?.toEdgeInsets()?.also { insetsValue ->
                 val insets = insetsValue.useContents {
                     Edges(
                         top = this.top,
@@ -87,7 +94,7 @@ actual class DefaultListWidgetViewFactory actual constructor(
                 }
             }
 
-            if (widgetStyle.dividerEnabled == false) {
+            if (dividerEnabled == false) {
                 separatorStyle = UITableViewCellSeparatorStyle.UITableViewCellSeparatorStyleNone
             }
 
@@ -105,7 +112,7 @@ actual class DefaultListWidgetViewFactory actual constructor(
         return ViewBundle(
             view = tableView,
             size = size,
-            margins = style.margins
+            margins = margins
         )
     }
 

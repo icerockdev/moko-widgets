@@ -4,19 +4,23 @@
 
 package dev.icerock.moko.widgets.factory
 
+import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.graphics.toUIColor
 import dev.icerock.moko.widgets.ProgressBarWidget
 import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import platform.UIKit.UIActivityIndicatorView
 import platform.UIKit.UIActivityIndicatorViewStyleWhite
 import platform.UIKit.UIColor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
-actual class DefaultProgressBarWidgetViewFactory actual constructor(
-    style: Style
-) : DefaultProgressBarWidgetViewFactoryBase(style) {
+actual class SystemProgressBarViewFactory actual constructor(
+    private val margins: MarginValues?,
+    private val color: Color?
+) : ViewFactory<ProgressBarWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
         widget: ProgressBarWidget<out WidgetSize>,
@@ -27,14 +31,14 @@ actual class DefaultProgressBarWidgetViewFactory actual constructor(
             activityIndicatorStyle = UIActivityIndicatorViewStyleWhite
         ).apply {
             translatesAutoresizingMaskIntoConstraints = false
-            color = style.color?.toUIColor() ?: UIColor.darkGrayColor
+            color = this@SystemProgressBarViewFactory.color?.toUIColor() ?: UIColor.darkGrayColor
             startAnimating()
         }
 
         return ViewBundle(
             view = activityIndicator,
             size = size,
-            margins = style.margins
+            margins = margins
         )
     }
 }

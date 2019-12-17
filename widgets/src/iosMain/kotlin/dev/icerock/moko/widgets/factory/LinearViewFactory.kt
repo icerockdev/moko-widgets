@@ -6,9 +6,12 @@ package dev.icerock.moko.widgets.factory
 
 import dev.icerock.moko.widgets.LinearWidget
 import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Orientation
 import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.Edges
@@ -31,9 +34,11 @@ import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 import platform.UIKit.widthAnchor
 
-actual class DefaultLinearWidgetViewFactory actual constructor(
-    style: Style
-) : DefaultLinearWidgetViewFactoryBase(style) {
+actual class LinearViewFactory actual constructor(
+    private val background: Background?,
+    private val padding: PaddingValues?,
+    private val margins: MarginValues?
+) : ViewFactory<LinearWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
         widget: LinearWidget<out WidgetSize>,
@@ -44,14 +49,14 @@ actual class DefaultLinearWidgetViewFactory actual constructor(
 
         val container = UIView(frame = CGRectZero.readValue()).apply {
             translatesAutoresizingMaskIntoConstraints = false
-            applyBackgroundIfNeeded(style.background)
+            applyBackgroundIfNeeded(background)
         }
 
         fun pm(padding: Float?, margin: Float?): CGFloat {
             return (padding?.toDouble() ?: 0.0) + (margin?.toDouble() ?: 0.0)
         }
 
-        val contentPadding = style.padding
+        val contentPadding = padding
 
         var lastChildView: UIView? = null
         var lastMargins: MarginValues? = null
@@ -127,7 +132,7 @@ actual class DefaultLinearWidgetViewFactory actual constructor(
                         )
                     }
                 }
-                corretChildSize(childSize, widget.orientation).also {
+                correctChildSize(childSize, widget.orientation).also {
                     childView.applySize(
                         size = it,
                         parent = this,
@@ -198,11 +203,11 @@ actual class DefaultLinearWidgetViewFactory actual constructor(
         return ViewBundle(
             view = container,
             size = size,
-            margins = style.margins
+            margins = margins
         )
     }
 
-    private fun corretChildSize(size: WidgetSize, orientation: Orientation): WidgetSize {
+    private fun correctChildSize(size: WidgetSize, orientation: Orientation): WidgetSize {
         //TODO: Support aspects correcting?
 
         var result = size

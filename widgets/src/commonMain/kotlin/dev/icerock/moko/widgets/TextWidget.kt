@@ -16,6 +16,7 @@ import dev.icerock.moko.widgets.core.WidgetDef
 import dev.icerock.moko.widgets.factory.SystemTextViewFactory
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
+@WidgetDef(SystemTextViewFactory::class)
 class TextWidget<WS : WidgetSize>(
     private val factory: ViewFactory<TextWidget<out WidgetSize>>,
     override val size: WS,
@@ -32,20 +33,3 @@ class TextWidget<WS : WidgetSize>(
 
     object DefaultCategory : Category
 }
-
-fun <WS: WidgetSize> Theme.text(
-    category: TextWidget.Category? = null,
-    size: WS,
-    id: TextWidget.Id? = null,
-    text: LiveData<StringDesc>
-) = TextWidget(
-    factory = this.factory.get(
-        id = id,
-        category = category,
-        defaultCategory = TextWidget.DefaultCategory,
-        fallback = { SystemTextViewFactory() }
-    ),
-    size = size,
-    id = id,
-    text = text
-)

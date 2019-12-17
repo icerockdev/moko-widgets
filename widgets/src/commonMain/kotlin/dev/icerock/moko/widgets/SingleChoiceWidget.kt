@@ -17,6 +17,7 @@ import dev.icerock.moko.widgets.core.WidgetDef
 import dev.icerock.moko.widgets.factory.SystemSingleChoiceViewFactory
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
+@WidgetDef(SystemSingleChoiceViewFactory::class)
 class SingleChoiceWidget<WS : WidgetSize>(
     private val factory: ViewFactory<SingleChoiceWidget<out WidgetSize>>,
     override val size: WS,
@@ -36,26 +37,3 @@ class SingleChoiceWidget<WS : WidgetSize>(
 
     object DefaultCategory : Category
 }
-
-fun <WS: WidgetSize> Theme.singleChoice(
-    category: SingleChoiceWidget.Category? = null,
-    size: WS,
-    id: SingleChoiceWidget.Id,
-    field: FormField<Int?, StringDesc>,
-    label: LiveData<StringDesc>,
-    cancelLabel: LiveData<StringDesc>,
-    values: LiveData<List<StringDesc>>
-) = SingleChoiceWidget(
-    factory = this.factory.get(
-        id = id,
-        category = category,
-        defaultCategory = SingleChoiceWidget.DefaultCategory,
-        fallback = { SystemSingleChoiceViewFactory() }
-    ),
-    size = size,
-    id = id,
-    field = field,
-    label = label,
-    cancelLabel = cancelLabel,
-    values = values
-)

@@ -8,15 +8,22 @@ import android.widget.FrameLayout
 import android.widget.ScrollView
 import dev.icerock.moko.widgets.ScrollWidget
 import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.style.applyStyle
+import dev.icerock.moko.widgets.style.applyBackgroundIfNeeded
+import dev.icerock.moko.widgets.style.applyPaddingIfNeeded
+import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.ext.applyMargin
 import dev.icerock.moko.widgets.style.ext.toPlatformSize
+import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-actual class DefaultScrollWidgetViewFactory actual constructor(
-    style: Style
-) : DefaultScrollWidgetViewFactoryBase(style) {
+actual class SystemScrollViewFactory actual constructor(
+    private val background: Background?,
+    private val padding: PaddingValues?,
+    private val margins: MarginValues?
+) : ViewFactory<ScrollWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
         widget: ScrollWidget<out WidgetSize>,
@@ -28,7 +35,8 @@ actual class DefaultScrollWidgetViewFactory actual constructor(
         val dm = context.resources.displayMetrics
 
         val scrollView = ScrollView(context).apply {
-            applyStyle(style)
+            applyBackgroundIfNeeded(this@SystemScrollViewFactory.background)
+            applyPaddingIfNeeded(padding)
 
             id = widget.id::javaClass.name.hashCode()
         }
@@ -57,7 +65,7 @@ actual class DefaultScrollWidgetViewFactory actual constructor(
         return ViewBundle(
             view = scrollView,
             size = size,
-            margins = style.margins
+            margins = margins
         )
     }
 }

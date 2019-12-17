@@ -23,10 +23,9 @@ import dev.icerock.moko.widgets.factory.DefaultImageWidgetViewFactory
 import dev.icerock.moko.widgets.factory.DefaultImageWidgetViewFactoryBase
 import dev.icerock.moko.widgets.factory.DefaultInputWidgetViewFactory
 import dev.icerock.moko.widgets.factory.DefaultInputWidgetViewFactoryBase
-import dev.icerock.moko.widgets.factory.DefaultListWidgetViewFactory
-import dev.icerock.moko.widgets.factory.DefaultListWidgetViewFactoryBase
 import dev.icerock.moko.widgets.factory.SimpleStatefulViewFactory
 import dev.icerock.moko.widgets.factory.SystemButtonViewFactory
+import dev.icerock.moko.widgets.factory.SystemListViewFactory
 import dev.icerock.moko.widgets.factory.SystemTextViewFactory
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Border
@@ -58,10 +57,8 @@ object AppTheme {
         factory[CryptoProfileScreen.Id.DelimiterText] = SystemTextViewFactory(
             textAlignment = TextAlignment.CENTER
         )
-        factory[UsersScreen.Id.List] = DefaultListWidgetViewFactory(
-            DefaultListWidgetViewFactoryBase.Style(
-                padding = PaddingValues(8f)
-            )
+        factory[UsersScreen.Id.List] = SystemListViewFactory(
+            padding = PaddingValues(8f)
         )
 
         factory[StatefulWidget.DefaultCategory] = SimpleStatefulViewFactory(

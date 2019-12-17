@@ -11,10 +11,11 @@ import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
+import dev.icerock.moko.widgets.factory.LinearViewFactory
 import dev.icerock.moko.widgets.style.background.Orientation
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-@WidgetDef
+@WidgetDef(LinearViewFactory::class)
 class LinearWidget<WS : WidgetSize>(
     private val factory: ViewFactory<LinearWidget<out WidgetSize>>,
     override val size: WS,

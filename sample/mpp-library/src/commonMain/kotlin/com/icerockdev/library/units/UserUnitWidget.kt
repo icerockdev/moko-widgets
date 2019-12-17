@@ -11,14 +11,9 @@ import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.clickable
 import dev.icerock.moko.widgets.core.Image
 import dev.icerock.moko.widgets.core.Theme
-import dev.icerock.moko.widgets.factory.DefaultImageWidgetViewFactory
-import dev.icerock.moko.widgets.factory.DefaultImageWidgetViewFactoryBase
-import dev.icerock.moko.widgets.factory.DefaultLinearWidgetViewFactory
-import dev.icerock.moko.widgets.factory.DefaultLinearWidgetViewFactoryBase
 import dev.icerock.moko.widgets.image
 import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.style.background.Orientation
-import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.text

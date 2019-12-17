@@ -11,7 +11,9 @@ abstract class CommonGenerator<KtFile, KtFileStub> {
         val packageName: String,
         val className: String,
         val imports: List<String>,
-        val arguments: Map<String, ArgInfo>
+        val arguments: Map<String, ArgInfo>,
+        val factoryClass: String,
+        val genericTypes: List<String>
     ) {
         data class ArgInfo(
             val type: String,
@@ -57,7 +59,6 @@ abstract class CommonGenerator<KtFile, KtFileStub> {
 
         val importNames = input.imports
             .plus("dev.icerock.moko.widgets.core.Theme")
-            .plus("dev.icerock.moko.widgets.factory.Default${widgetName}ViewFactory")
             .distinct()
 
         val imports = importNames.joinToString("\n") { "import $it" }
@@ -88,11 +89,16 @@ abstract class CommonGenerator<KtFile, KtFileStub> {
             "    ${it.key} = ${it.key}"
         }.joinToString(",\n")
 
-        val coreContent = """package ${input.packageName}
+        val generics = input.genericTypes
+            .filter { it != "WS" }
+            .let { listOf("WS: WidgetSize").plus(it) }
+            .joinToString(",")
+
+        return """package ${input.packageName}
 
 $imports
 
-fun <WS: WidgetSize> Theme.$shortName(
+fun <$generics> Theme.$shortName(
     category: $widgetName.Category? = null,
 $params
 ) = $widgetName(
@@ -100,12 +106,10 @@ $params
         id = id,
         category = category,
         defaultCategory = $widgetName.DefaultCategory,
-        fallback = { Default${widgetName}ViewFactory() }
+        fallback = { ${input.factoryClass}() }
     ),
 $paramsSet
 )
 """
-
-        return coreContent
     }
 }

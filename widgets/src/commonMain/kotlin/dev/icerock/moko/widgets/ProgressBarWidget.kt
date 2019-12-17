@@ -11,9 +11,10 @@ import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
+import dev.icerock.moko.widgets.factory.SystemProgressBarViewFactory
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-@WidgetDef
+@WidgetDef(SystemProgressBarViewFactory::class)
 class ProgressBarWidget<WS : WidgetSize>(
     private val factory: ViewFactory<ProgressBarWidget<out WidgetSize>>,
     override val size: WS,

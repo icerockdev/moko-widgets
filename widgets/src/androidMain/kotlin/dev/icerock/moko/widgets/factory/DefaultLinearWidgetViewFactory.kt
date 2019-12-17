@@ -10,18 +10,25 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import dev.icerock.moko.widgets.LinearWidget
 import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.style.applyStyle
+import dev.icerock.moko.widgets.style.applyBackgroundIfNeeded
+import dev.icerock.moko.widgets.style.applyPaddingIfNeeded
+import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.ext.applyMargin
 import dev.icerock.moko.widgets.style.ext.toLinearLayoutOrientation
 import dev.icerock.moko.widgets.style.ext.toPlatformSize
+import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.view.AspectRatioFrameLayout
 
-actual class DefaultLinearWidgetViewFactory actual constructor(
-    style: Style
-) : DefaultLinearWidgetViewFactoryBase(style) {
+actual class LinearViewFactory actual constructor(
+    private val background: Background?,
+    private val padding: PaddingValues?,
+    private val margins: MarginValues?
+) : ViewFactory<LinearWidget<out WidgetSize>> {
     override fun <WS : WidgetSize> build(
         widget: LinearWidget<out WidgetSize>,
         size: WS,
@@ -33,7 +40,8 @@ actual class DefaultLinearWidgetViewFactory actual constructor(
         val container = LinearLayout(context).apply {
             orientation = widget.orientation.toLinearLayoutOrientation()
 
-            applyStyle(style)
+            applyPaddingIfNeeded(padding)
+            applyBackgroundIfNeeded(this@LinearViewFactory.background)
         }
 
         widget.children.forEach { child ->
@@ -55,7 +63,7 @@ actual class DefaultLinearWidgetViewFactory actual constructor(
         return ViewBundle(
             view = container,
             size = size,
-            margins = style.margins
+            margins = margins
         )
     }
 }

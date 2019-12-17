@@ -8,8 +8,4 @@ import dev.icerock.moko.widgets.ClickableWidget
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-expect class DefaultClickableWidgetViewFactory() : DefaultClickableWidgetViewFactoryBase
-
-abstract class DefaultClickableWidgetViewFactoryBase(
-) : ViewFactory<ClickableWidget<out WidgetSize>> {
-}
+expect class ClickableViewFactory() : ViewFactory<ClickableWidget<out WidgetSize>>

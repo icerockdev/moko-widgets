@@ -13,15 +13,23 @@ import dev.icerock.moko.units.adapter.UnitsRecyclerViewAdapter
 import dev.icerock.moko.widgets.ListWidget
 import dev.icerock.moko.widgets.core.View
 import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.style.applyStyle
-import dev.icerock.moko.widgets.style.ext.applyPadding
+import dev.icerock.moko.widgets.style.applyBackgroundIfNeeded
+import dev.icerock.moko.widgets.style.applyPaddingIfNeeded
+import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.bind
 
-actual class DefaultListWidgetViewFactory actual constructor(
-    style: Style
-) : DefaultListWidgetViewFactoryBase(style) {
+actual class SystemListViewFactory actual constructor(
+    private val background: Background?,
+    private val dividerEnabled: Boolean?,
+    private val reversed: Boolean,
+    private val padding: PaddingValues?,
+    private val margins: MarginValues?
+) : ViewFactory<ListWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
         widget: ListWidget<out WidgetSize>,
@@ -37,14 +45,16 @@ actual class DefaultListWidgetViewFactory actual constructor(
         val recyclerView = RecyclerView(context).apply {
             clipToPadding = false
 
-            layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, style.reversed)
+            layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, reversed)
             adapter = unitsAdapter
 
-            if (style.dividerEnabled == true) {
+            if (dividerEnabled == true) {
                 val dividerDecoration =
                     DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
                 addItemDecoration(dividerDecoration)
             }
+
+            applyPaddingIfNeeded(padding)
 
             id = widget.id::javaClass.name.hashCode()
         }
@@ -76,17 +86,13 @@ actual class DefaultListWidgetViewFactory actual constructor(
         }
 
         with(resultView) {
-            applyStyle(style)
-            if (resultView != recyclerView) {
-                style.padding?.let { recyclerView.applyPadding(it) }
-                resultView.setPadding(0, 0, 0, 0)
-            }
+            applyBackgroundIfNeeded(this@SystemListViewFactory.background)
         }
 
         return ViewBundle(
             view = resultView,
             size = size,
-            margins = style.margins
+            margins = margins
         )
     }
 

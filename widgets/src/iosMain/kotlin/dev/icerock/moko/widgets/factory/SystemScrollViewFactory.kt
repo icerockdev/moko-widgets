@@ -6,7 +6,11 @@ package dev.icerock.moko.widgets.factory
 
 import dev.icerock.moko.widgets.ScrollWidget
 import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.Edges
 import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
@@ -24,9 +28,11 @@ import platform.UIKit.topAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 import platform.UIKit.widthAnchor
 
-actual class DefaultScrollWidgetViewFactory actual constructor(
-    style: Style
-) : DefaultScrollWidgetViewFactoryBase(style) {
+actual class SystemScrollViewFactory actual constructor(
+    private val background: Background?,
+    private val padding: PaddingValues?,
+    private val margins: MarginValues?
+) : ViewFactory<ScrollWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
         widget: ScrollWidget<out WidgetSize>,
@@ -38,9 +44,8 @@ actual class DefaultScrollWidgetViewFactory actual constructor(
         val scrollView = UIScrollView(frame = CGRectZero.readValue()).apply {
             translatesAutoresizingMaskIntoConstraints = false
             alwaysBounceVertical = true
-            keyboardDismissMode =
-                UIScrollViewKeyboardDismissMode.UIScrollViewKeyboardDismissModeInteractive
-            applyBackgroundIfNeeded(style.background)
+            keyboardDismissMode = UIScrollViewKeyboardDismissMode.UIScrollViewKeyboardDismissModeInteractive
+            applyBackgroundIfNeeded(background)
         }
 
         val childBundle = widget.child.buildView(viewController)
@@ -52,7 +57,7 @@ actual class DefaultScrollWidgetViewFactory actual constructor(
 
             val edges: Edges<CGFloat> = applySizeToChild(
                 rootView = this,
-                rootPadding = style.padding,
+                rootPadding = padding,
                 childView = childView,
                 childSize = childBundle.size,
                 childMargins = childBundle.margins
@@ -82,7 +87,7 @@ actual class DefaultScrollWidgetViewFactory actual constructor(
         return ViewBundle(
             view = scrollView,
             size = size,
-            margins = style.margins
+            margins = margins
         )
     }
 }

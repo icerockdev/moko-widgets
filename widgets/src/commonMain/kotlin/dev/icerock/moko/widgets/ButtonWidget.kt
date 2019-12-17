@@ -18,6 +18,7 @@ import dev.icerock.moko.widgets.core.WidgetDef
 import dev.icerock.moko.widgets.factory.SystemButtonViewFactory
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
+@WidgetDef(SystemButtonViewFactory::class)
 class ButtonWidget<WS : WidgetSize>(
     private val factory: ViewFactory<ButtonWidget<out WidgetSize>>,
     override val size: WS,
@@ -42,24 +43,3 @@ class ButtonWidget<WS : WidgetSize>(
 
     object DefaultCategory : Category
 }
-
-fun <WS: WidgetSize> Theme.button(
-    category: ButtonWidget.Category? = null,
-    size: WS,
-    id: ButtonWidget.Id? = null,
-    content: ButtonWidget.Content,
-    enabled: LiveData<Boolean>? = null,
-    onTap: () -> Unit
-) = ButtonWidget(
-    factory = this.factory.get(
-        id = id,
-        category = category,
-        defaultCategory = ButtonWidget.DefaultCategory,
-        fallback = { SystemButtonViewFactory() }
-    ),
-    size = size,
-    id = id,
-    content = content,
-    enabled = enabled,
-    onTap = onTap
-)

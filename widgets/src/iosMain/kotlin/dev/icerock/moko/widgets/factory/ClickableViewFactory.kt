@@ -6,11 +6,15 @@ package dev.icerock.moko.widgets.factory
 
 import dev.icerock.moko.widgets.ClickableWidget
 import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.utils.setHandler
+import platform.UIKit.UITapGestureRecognizer
+import platform.UIKit.addGestureRecognizer
 
-actual class DefaultClickableWidgetViewFactory actual constructor() :
-    DefaultClickableWidgetViewFactoryBase() {
+actual class ClickableViewFactory actual constructor(
+) : ViewFactory<ClickableWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
         widget: ClickableWidget<out WidgetSize>,
@@ -20,10 +24,14 @@ actual class DefaultClickableWidgetViewFactory actual constructor() :
         val childViewBundle =
             widget.child.buildView(viewFactoryContext) as ViewBundle<WS>
 
-        return childViewBundle.copy(
-            view = childViewBundle.view.apply {
-                setOnClickListener { widget.onClick() }
+        childViewBundle.view.apply {
+            val recognizer = UITapGestureRecognizer().apply {
+                setHandler(widget.onClick)
             }
-        )
+            addGestureRecognizer(recognizer)
+            userInteractionEnabled = true
+        }
+
+        return childViewBundle
     }
 }

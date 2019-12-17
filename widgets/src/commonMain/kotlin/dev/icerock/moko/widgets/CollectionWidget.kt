@@ -13,9 +13,10 @@ import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
+import dev.icerock.moko.widgets.factory.DefaultCollectionWidgetViewFactory
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-@WidgetDef
+@WidgetDef(DefaultCollectionWidgetViewFactory::class)
 class CollectionWidget<WS : WidgetSize>(
     private val factory: ViewFactory<CollectionWidget<out WidgetSize>>,
     override val size: WS,
