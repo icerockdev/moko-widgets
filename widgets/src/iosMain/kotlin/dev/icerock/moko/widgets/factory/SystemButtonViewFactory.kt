@@ -7,11 +7,16 @@ package dev.icerock.moko.widgets.factory
 import dev.icerock.moko.graphics.toUIColor
 import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.bind
+import dev.icerock.moko.widgets.style.background.StateBackground
+import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.PaddingValues
+import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
-import dev.icerock.moko.widgets.utils.applyStateBackground
-import dev.icerock.moko.widgets.utils.applyTextStyle
+import dev.icerock.moko.widgets.utils.applyStateBackgroundIfNeeded
+import dev.icerock.moko.widgets.utils.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.setEventHandler
 import platform.UIKit.UIButton
@@ -21,9 +26,13 @@ import platform.UIKit.UIControlStateNormal
 import platform.UIKit.UIEdgeInsetsMake
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
-actual class DefaultButtonWidgetViewFactory actual constructor(
-    style: Style
-) : DefaultButtonWidgetViewFactoryBase(style) {
+actual class SystemButtonViewFactory actual constructor(
+    private val background: StateBackground?,
+    private val textStyle: TextStyle?,
+    private val isAllCaps: Boolean?,
+    private val padding: PaddingValues?,
+    private val margins: MarginValues?
+) : ViewFactory<ButtonWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
         widget: ButtonWidget<out WidgetSize>,
@@ -33,15 +42,13 @@ actual class DefaultButtonWidgetViewFactory actual constructor(
         val button = UIButton.buttonWithType(UIButtonTypeSystem).apply {
             translatesAutoresizingMaskIntoConstraints = false
 
-            applyStateBackground(style.background)
+            applyStateBackgroundIfNeeded(background)
 
-            titleLabel?.applyTextStyle(style.textStyle)
+            titleLabel?.applyTextStyleIfNeeded(textStyle)
 
-            style.textStyle.color?.also {
-                setTintColor(it.toUIColor())
-            }
+            textStyle?.color?.also { setTintColor(it.toUIColor()) }
 
-            style.padding?.let {
+            padding?.let {
                 contentEdgeInsets = UIEdgeInsetsMake(
                     top = it.top.toDouble(),
                     bottom = it.bottom.toDouble(),
@@ -54,7 +61,13 @@ actual class DefaultButtonWidgetViewFactory actual constructor(
         when (widget.content) {
             is ButtonWidget.Content.Text -> {
                 widget.content.text.bind { text ->
-                    button.setTitle(title = text?.localized(), forState = UIControlStateNormal)
+                    val localizedText = text?.localized()
+                    val processedText = if (isAllCaps == true) {
+                        localizedText?.toUpperCase()
+                    } else {
+                        localizedText
+                    }
+                    button.setTitle(title = processedText, forState = UIControlStateNormal)
                 }
             }
             is ButtonWidget.Content.Icon -> {
@@ -77,7 +90,7 @@ actual class DefaultButtonWidgetViewFactory actual constructor(
         return ViewBundle(
             view = button,
             size = size,
-            margins = style.margins
+            margins = margins
         )
     }
 }

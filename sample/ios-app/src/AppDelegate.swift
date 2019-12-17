@@ -31,7 +31,7 @@ extension AppDelegate: AppWidgetsPlatformDeps {
     func createFlatInputWidgetView(
         widget: InputWidget<WidgetSize>,
         viewController: UIViewController,
-        style: FlatInputStyle
+        style: FlatInputViewFactory.Style
     ) -> UIView {
         return FlatInputPlatformDeps().createFlatInputWidgetView(
             widget: widget,

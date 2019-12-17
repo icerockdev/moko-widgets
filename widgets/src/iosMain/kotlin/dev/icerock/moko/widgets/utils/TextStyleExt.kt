@@ -13,7 +13,9 @@ import platform.UIKit.UILabel
 import platform.UIKit.UITextField
 import platform.UIKit.systemFontSize
 
-fun UILabel.applyTextStyle(textStyle: TextStyle) {
+fun UILabel.applyTextStyleIfNeeded(textStyle: TextStyle?) {
+    if(textStyle == null) return
+
     val currentFontSize = font.pointSize
     val styleSize = textStyle.size?.toDouble()
     val styleStyle = textStyle.fontStyle
@@ -27,7 +29,9 @@ fun UILabel.applyTextStyle(textStyle: TextStyle) {
     textStyle.color?.also { textColor = it.toUIColor() }
 }
 
-fun UITextField.applyTextStyle(textStyle: TextStyle) {
+fun UITextField.applyTextStyleIfNeeded(textStyle: TextStyle?) {
+    if(textStyle == null) return
+
     val currentFontSize = font?.pointSize ?: UIFont.systemFontSize
     val styleSize = textStyle.size?.toDouble()
     val styleStyle = textStyle.fontStyle
@@ -41,7 +45,9 @@ fun UITextField.applyTextStyle(textStyle: TextStyle) {
     textStyle.color?.also { textColor = it.toUIColor() }
 }
 
-fun CATextLayer.applyTextStyle(textStyle: TextStyle) {
+fun CATextLayer.applyTextStyleIfNeeded(textStyle: TextStyle?) {
+    if(textStyle == null) return
+
     textStyle.size?.let {
         fontSize = it.toDouble()
     }

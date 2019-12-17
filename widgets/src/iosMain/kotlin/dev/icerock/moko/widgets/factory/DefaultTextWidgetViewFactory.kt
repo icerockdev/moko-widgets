@@ -10,7 +10,7 @@ import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.view.TextAlignment
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.applyBackground
-import dev.icerock.moko.widgets.utils.applyTextStyle
+import dev.icerock.moko.widgets.utils.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.utils.bind
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGRectZero
@@ -37,7 +37,7 @@ actual class DefaultTextWidgetViewFactory actual constructor(
 
             numberOfLines = 0
 
-            style.textStyle?.also { applyTextStyle(it) }
+            applyTextStyleIfNeeded(style.textStyle)
 
             setContentCompressionResistancePriority(749f, UILayoutConstraintAxisHorizontal)
             setContentCompressionResistancePriority(749f, UILayoutConstraintAxisVertical)

@@ -9,14 +9,20 @@ import android.widget.Switch
 import androidx.core.graphics.drawable.DrawableCompat
 import dev.icerock.moko.widgets.SwitchWidget
 import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.style.applyStyle
+import dev.icerock.moko.widgets.style.ColorStyle
+import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.buildBackground
+import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.bindNotNull
 
-actual class DefaultSwitchWidgetViewFactory actual constructor(
-    style: Style
-) : DefaultSwitchWidgetViewFactoryBase(style) {
+actual class SystemSwitchViewFactory actual constructor(
+    private val background: Background?,
+    private val switchColor: ColorStyle?,
+    private val margins: MarginValues?
+) : ViewFactory<SwitchWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
         widget: SwitchWidget<out WidgetSize>,
@@ -26,7 +32,7 @@ actual class DefaultSwitchWidgetViewFactory actual constructor(
         val context = viewFactoryContext.androidContext
 
         val switch = Switch(context).apply {
-            style.switchColor?.also { colorStyle ->
+            switchColor?.also { colorStyle ->
                 val thumbStates = ColorStateList(
                     arrayOf(
                         intArrayOf(-android.R.attr.state_checked),
@@ -51,7 +57,9 @@ actual class DefaultSwitchWidgetViewFactory actual constructor(
                 DrawableCompat.setTintList(trackDrawable, trackStates)
             }
 
-            applyStyle(style)
+            this@SystemSwitchViewFactory.background?.also {
+                this.background = it.buildBackground(context)
+            }
         }
 
         widget.state.bindNotNull(viewFactoryContext.lifecycleOwner) {
@@ -65,7 +73,7 @@ actual class DefaultSwitchWidgetViewFactory actual constructor(
         return ViewBundle(
             view = switch,
             size = size,
-            margins = style.margins
+            margins = margins
         )
     }
 }

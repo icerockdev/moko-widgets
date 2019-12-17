@@ -12,7 +12,7 @@ import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.Edges
 import dev.icerock.moko.widgets.utils.applyBackground
-import dev.icerock.moko.widgets.utils.applyTextStyle
+import dev.icerock.moko.widgets.utils.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.identifier
 import kotlinx.cinterop.ObjCAction
@@ -292,15 +292,15 @@ actual class DefaultInputWidgetViewFactory actual constructor(
         }
 
         fun applyTextStyle(textStyle: TextStyle) {
-            textField.applyTextStyle(textStyle)
+            textField.applyTextStyleIfNeeded(textStyle)
         }
 
         fun applyLabelStyle(textStyle: TextStyle) {
-            placeholderTextLayer.applyTextStyle(textStyle)
+            placeholderTextLayer.applyTextStyleIfNeeded(textStyle)
         }
 
         fun applyErrorStyle(textStyle: TextStyle) {
-            errorLabel.applyTextStyle(textStyle)
+            errorLabel.applyTextStyleIfNeeded(textStyle)
         }
 
         private fun animate(

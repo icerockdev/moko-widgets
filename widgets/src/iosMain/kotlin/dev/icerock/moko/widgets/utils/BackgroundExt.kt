@@ -89,7 +89,7 @@ fun Background.caLayer(): CALayer {
     return backgroundLayer
 }
 
-fun UIButton.applyStateBackground(background: StateBackground?) {
+fun UIButton.applyStateBackgroundIfNeeded(background: StateBackground?) {
     if (background == null) return
 
     adjustsImageWhenDisabled = false

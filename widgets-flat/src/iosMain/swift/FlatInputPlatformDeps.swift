@@ -11,7 +11,7 @@ public class FlatInputPlatformDeps: NSObject, FlatInputViewFactoryPlatformDepend
     public func createFlatInputWidgetView(
         widget: InputWidget<WidgetSize>,
         viewController: UIViewController,
-        style: FlatInputStyle
+        style: FlatInputViewFactory.Style
     ) -> UIView {
         let background = UIView()
         background.translatesAutoresizingMaskIntoConstraints = false
