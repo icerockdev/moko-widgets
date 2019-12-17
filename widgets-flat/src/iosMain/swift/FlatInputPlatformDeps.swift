@@ -2,7 +2,7 @@
  * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
 
-import AnyFormatKit
+import InputMask
 import UIKit
 import MultiPlatformLibrary
 import MultiPlatformLibraryMvvm
@@ -29,6 +29,33 @@ public class FlatInputPlatformDeps: NSObject, FlatInputViewFactoryPlatformDepend
         field.bindTextTwoWay(liveData: widget.field.data)
         widget.label.addObserver { text in
             field.placeholder = text?.localized()
+        }
+        
+        if let inputType = widget.inputType {
+            switch inputType {
+            case .plainText:
+                break
+            case .password:
+                field.isSecureTextEntry = true
+                break
+            case .email:
+                field.keyboardType = .emailAddress
+                break
+            case .date:
+                break
+            case .phone:
+                field.keyboardType = .phonePad
+                break
+            case .digits:
+                field.keyboardType = .numberPad
+                break
+            default:
+                fatalError("kotlin enum unknown \(inputType)")
+            }
+            
+            if let mask = inputType.mask {
+                field.setFormat(mask, prefix: nil)
+            }
         }
 
         background.addSubview(field)

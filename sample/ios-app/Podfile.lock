@@ -2,9 +2,9 @@ PODS:
   - Alamofire (4.9.1)
   - AlamofireImage (3.6.0):
     - Alamofire (~> 4.9)
-  - AnyFormatKit (2.0.0)
+  - InputMask (5.0.0)
   - moko-widgets-flat (0.1.0):
-    - AnyFormatKit (~> 2.0.0)
+    - InputMask (~> 5.0.0)
     - MultiPlatformLibrary
     - MultiPlatformLibraryMvvm
   - MultiPlatformLibrary (0.1.0)
@@ -32,7 +32,7 @@ SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - Alamofire
     - AlamofireImage
-    - AnyFormatKit
+    - InputMask
     - SkyFloatingLabelTextField
 
 EXTERNAL SOURCES:
@@ -52,8 +52,8 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   AlamofireImage: be9963c6582d68b39e89191f64c82a7d7bf40fdd
-  AnyFormatKit: f42939cb80e91663dea5692cb26b26989d5e3e0a
-  moko-widgets-flat: 4e83cab3265f27902e7213c926cc8a927f68053c
+  InputMask: 8a10dbc8ac3f94f0a5b4c380424bbe6795c69b16
+  moko-widgets-flat: 5c2b402c2ba05ea1db0e832360daefb57f7be320
   MultiPlatformLibrary: 176fb8ade516666cd47e93de1b71ba0441a541bb
   MultiPlatformLibraryMvvm: 999ac3896d8214fd65e0e0a376a2e553bf4515b3
   SkyFloatingLabelTextField: 4b46db0ab1ccde0919cded29c656e6b4805eda04

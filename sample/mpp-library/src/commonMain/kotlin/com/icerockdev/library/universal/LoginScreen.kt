@@ -23,6 +23,7 @@ import dev.icerock.moko.widgets.input
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.WidgetScreen
 import dev.icerock.moko.widgets.screen.getViewModel
+import dev.icerock.moko.widgets.style.input.InputType
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
@@ -45,7 +46,8 @@ class LoginScreen(
                 size = WidgetSize.WidthAsParentHeightWrapContent,
                 id = Id.EmailInputId,
                 label = const("Email".desc() as StringDesc),
-                field = viewModel.emailField
+                field = viewModel.emailField,
+                inputType = InputType.PHONE
             )
             val passwordInput = +input(
                 size = WidgetSize.WidthAsParentHeightWrapContent,

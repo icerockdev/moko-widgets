@@ -13,7 +13,7 @@ Pod::Spec.new do |spec|
 
     spec.dependency 'MultiPlatformLibrary'
     spec.dependency 'MultiPlatformLibraryMvvm'
-    spec.dependency 'AnyFormatKit', '~> 2.0.0'
+    spec.dependency 'InputMask', '~> 5.0.0'
 
     spec.ios.deployment_target  = '11.0'
     spec.swift_version          = '5.0'
