@@ -18,7 +18,6 @@ import com.icerockdev.library.sample.StateViewModel
 import com.icerockdev.library.sample.UsersScreen
 import com.icerockdev.library.sample.UsersViewModel
 import dev.icerock.moko.widgets.CollectionWidget
-import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.screen.Args
@@ -35,61 +34,58 @@ class WidgetsScreen(
 
     override fun createContentWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         return with(theme) {
-            tabs(
-                size = WidgetSize.AsParent,
-                tabs = listOf(
-                    TabsWidget.Tab(
-                        title = const("P#2"),
-                        body = SocialProfileScreen(
-                            theme = theme, //AppTheme.socialWidgetScope,
-                            viewModel = SocialProfileViewModel()
-                        ).createWidget()
-                    ),
-                    TabsWidget.Tab(
-                        title = const("P#4"),
-                        body = CryptoProfileScreen(
-                            theme = theme, //AppTheme.cryptoWidgetScope,
-                            viewModel = CryptoProfileViewModel()
-                        ).createWidget()
-                    ),
-                    TabsWidget.Tab(
-                        title = const("P#1"),
-                        body = SocialProfileScreen(
-                            theme = this,
-                            viewModel = SocialProfileViewModel()
-                        ).createWidget()
-                    ),
-                    TabsWidget.Tab(
-                        title = const("P#3"),
-                        body = McommerceProfileScreen(
-                            theme = theme, //AppTheme.mcommerceWidgetScope,
-                            viewModel = McommerceProfileViewModel()
-                        ).createWidget()
-                    ),
-                    TabsWidget.Tab(
-                        title = const("D"),
-                        body = StateScreen(
-                            theme = this,
-                            viewModel = StateViewModel()
-                        ).createWidget()
-                    ),
-                    TabsWidget.Tab(
-                        title = const("P"),
-                        body = PostsScreen(
-                            theme = this,
-                            viewModel = PostsViewModel(),
-                            collectionCategory = postsCollectionCategory
-                        ).createWidget()
-                    ),
-                    TabsWidget.Tab(
-                        title = const("U"),
-                        body = UsersScreen(
-                            theme = this,
-                            viewModel = UsersViewModel(sharedFactory.usersUnitsFactory)
-                        ).createWidget()
-                    )
+            tabs(size = WidgetSize.AsParent) {
+                tab(
+                    title = const("P#2"),
+                    body = SocialProfileScreen(
+                        theme = theme, //AppTheme.socialWidgetScope,
+                        viewModel = SocialProfileViewModel()
+                    ).createWidget()
                 )
-            )
+                tab(
+                    title = const("P#4"),
+                    body = CryptoProfileScreen(
+                        theme = theme, //AppTheme.cryptoWidgetScope,
+                        viewModel = CryptoProfileViewModel()
+                    ).createWidget()
+                )
+                tab(
+                    title = const("P#1"),
+                    body = SocialProfileScreen(
+                        theme = theme,
+                        viewModel = SocialProfileViewModel()
+                    ).createWidget()
+                )
+                tab(
+                    title = const("P#3"),
+                    body = McommerceProfileScreen(
+                        theme = theme, //AppTheme.mcommerceWidgetScope,
+                        viewModel = McommerceProfileViewModel()
+                    ).createWidget()
+                )
+                tab(
+                    title = const("D"),
+                    body = StateScreen(
+                        theme = theme,
+                        viewModel = StateViewModel()
+                    ).createWidget()
+                )
+                tab(
+                    title = const("P"),
+                    body = PostsScreen(
+                        theme = theme,
+                        viewModel = PostsViewModel(),
+                        collectionCategory = postsCollectionCategory
+                    ).createWidget()
+                )
+                tab(
+                    title = const("U"),
+                    body = UsersScreen(
+                        theme = theme,
+                        viewModel = UsersViewModel(sharedFactory.usersUnitsFactory)
+                    ).createWidget()
+                )
+            }
         }
     }
 }

@@ -61,19 +61,16 @@ open class StateScreen(
                         }
                     },
                     data = { data ->
-                        tabs(
-                            size = WidgetSize.AsParent,
-                            tabs = listOf(
-                                TabsWidget.Tab(
-                                    title = const("first page"),
-                                    body = flatAlertWrapped(message = data.map { it?.desc() })
-                                ),
-                                TabsWidget.Tab(
-                                    title = const("second page"),
-                                    body = flatAlertWrapped(message = "SECOND".desc().asLiveData())
-                                )
+                        tabs(size = WidgetSize.AsParent) {
+                            tab(
+                                title = const("first page"),
+                                body = flatAlertWrapped(message = data.map { it?.desc() })
                             )
-                        )
+                            tab(
+                                title = const("second page"),
+                                body = flatAlertWrapped(message = "SECOND".desc().asLiveData())
+                            )
+                        }
                     },
                     error = { error ->
                         flatAlertWrapped(message = error.map { it?.desc() })

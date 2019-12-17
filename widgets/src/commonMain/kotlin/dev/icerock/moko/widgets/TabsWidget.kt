@@ -12,18 +12,36 @@ import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
-import dev.icerock.moko.widgets.core.WidgetDef
+import dev.icerock.moko.widgets.factory.SystemTabsViewFactory
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-@WidgetDef
 class TabsWidget<WS : WidgetSize>(
     private val factory: ViewFactory<TabsWidget<out WidgetSize>>,
     override val size: WS,
     override val id: Id?,
-    @Suppress("RemoveRedundantQualifierName")
-    val tabs: List<TabsWidget.Tab> // for correct codegen
+    tabs: TabsBuilder.() -> Unit
 ) : Widget<WS>(), OptionalId<TabsWidget.Id> {
+
+    val tabs: List<Tab> = TabsBuilder().apply(tabs).build()
+
+    class TabsBuilder {
+        private val tabsList = mutableListOf<Tab>()
+
+        fun tab(
+            title: LiveData<StringDesc>,
+            body: Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>
+        ) {
+            val tab = Tab(
+                title = title,
+                body = body
+            )
+
+            tabsList.add(tab)
+        }
+
+        fun build(): List<Tab> = tabsList
+    }
 
     override fun buildView(viewFactoryContext: ViewFactoryContext): ViewBundle<WS> {
         return factory.build(this, size, viewFactoryContext)
@@ -39,3 +57,20 @@ class TabsWidget<WS : WidgetSize>(
 
     object DefaultCategory : Category
 }
+
+fun <WS : WidgetSize> Theme.tabs(
+    category: TabsWidget.Category? = null,
+    size: WS,
+    id: TabsWidget.Id? = null,
+    tabs: TabsWidget.TabsBuilder.() -> Unit
+) = TabsWidget(
+    factory = this.factory.get(
+        id = id,
+        category = category,
+        defaultCategory = TabsWidget.DefaultCategory,
+        fallback = { SystemTabsViewFactory() }
+    ),
+    size = size,
+    id = id,
+    tabs = tabs
+)

@@ -5,7 +5,6 @@
 package com.icerockdev.library.units
 
 import com.icerockdev.library.sample.PostsViewModelContract
-import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.map
 import dev.icerock.moko.widgets.clickable
@@ -13,24 +12,9 @@ import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Image
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
-import dev.icerock.moko.widgets.factory.DefaultContainerWidgetViewFactory
-import dev.icerock.moko.widgets.factory.DefaultContainerWidgetViewFactoryBase
-import dev.icerock.moko.widgets.factory.DefaultImageWidgetViewFactory
-import dev.icerock.moko.widgets.factory.DefaultImageWidgetViewFactoryBase
-import dev.icerock.moko.widgets.factory.DefaultLinearWidgetViewFactory
-import dev.icerock.moko.widgets.factory.DefaultLinearWidgetViewFactoryBase
-import dev.icerock.moko.widgets.factory.DefaultTextWidgetViewFactory
-import dev.icerock.moko.widgets.factory.DefaultTextWidgetViewFactoryBase
 import dev.icerock.moko.widgets.image
 import dev.icerock.moko.widgets.linear
-import dev.icerock.moko.widgets.style.background.Background
-import dev.icerock.moko.widgets.style.background.Direction
-import dev.icerock.moko.widgets.style.background.Fill
-import dev.icerock.moko.widgets.style.view.Colors
-import dev.icerock.moko.widgets.style.view.MarginValues
-import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.SizeSpec
-import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.text
 import dev.icerock.moko.widgets.units.UnitItemRoot

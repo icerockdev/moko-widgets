@@ -16,14 +16,21 @@ import androidx.appcompat.view.ContextThemeWrapper
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.style.applyStyle
+import dev.icerock.moko.widgets.style.applyBackgroundIfNeeded
+import dev.icerock.moko.widgets.style.applyPaddingIfNeeded
+import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.bindNotNull
 
-actual class DefaultTabsWidgetViewFactory actual constructor(
-    style: Style
-) : DefaultTabsWidgetViewFactoryBase(style) {
+actual class SystemTabsViewFactory actual constructor(
+    private val background: Background?,
+    private val padding: PaddingValues?,
+    private val margins: MarginValues?
+) : ViewFactory<TabsWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
         widget: TabsWidget<out WidgetSize>,
@@ -36,7 +43,7 @@ actual class DefaultTabsWidgetViewFactory actual constructor(
         val tabHost = TabHost(context).apply {
             id = android.R.id.tabhost
 
-            applyStyle(style) // TODO move padding apply to content container?
+            applyBackgroundIfNeeded(this@SystemTabsViewFactory.background)
         }
 
         val container = LinearLayout(context).apply {
@@ -61,6 +68,8 @@ actual class DefaultTabsWidgetViewFactory actual constructor(
 
         val content = FrameLayout(context).apply {
             id = android.R.id.tabcontent
+
+            applyPaddingIfNeeded(padding)
         }
         container.addView(
             content,
@@ -115,7 +124,7 @@ actual class DefaultTabsWidgetViewFactory actual constructor(
         return ViewBundle(
             view = tabHost,
             size = size,
-            margins = style.margins
+            margins = margins
         )
     }
 }

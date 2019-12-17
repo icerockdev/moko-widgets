@@ -6,13 +6,17 @@ package dev.icerock.moko.widgets.factory
 
 import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.Edges
 import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
+import dev.icerock.moko.widgets.utils.applySizeToChild
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.fillChildView
-import dev.icerock.moko.widgets.utils.applySizeToChild
 import dev.icerock.moko.widgets.utils.setEventHandler
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGFloat
@@ -35,9 +39,11 @@ import platform.UIKit.topAnchor
 import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
-actual class DefaultTabsWidgetViewFactory actual constructor(
-    style: Style
-) : DefaultTabsWidgetViewFactoryBase(style) {
+actual class SystemTabsViewFactory actual constructor(
+    private val background: Background?,
+    private val padding: PaddingValues?,
+    private val margins: MarginValues?
+) : ViewFactory<TabsWidget<out WidgetSize>> {
 
     @ExperimentalUnsignedTypes
     override fun <WS : WidgetSize> build(
@@ -90,7 +96,7 @@ actual class DefaultTabsWidgetViewFactory actual constructor(
 
                 val edges: Edges<CGFloat> = applySizeToChild(
                     rootView = container,
-                    rootPadding = null,
+                    rootPadding = padding,
                     childView = view,
                     childSize = viewBundle.size,
                     childMargins = viewBundle.margins
@@ -117,7 +123,7 @@ actual class DefaultTabsWidgetViewFactory actual constructor(
 
         val view = UIView(frame = CGRectZero.readValue()).apply {
             translatesAutoresizingMaskIntoConstraints = false
-            applyBackgroundIfNeeded(style.background)
+            applyBackgroundIfNeeded(background)
 
             addSubview(segmentedControl)
             addSubview(container)
@@ -136,7 +142,7 @@ actual class DefaultTabsWidgetViewFactory actual constructor(
         return ViewBundle(
             view = view,
             size = size,
-            margins = style.margins
+            margins = margins
         )
     }
 }
