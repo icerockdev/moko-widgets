@@ -19,10 +19,10 @@ public class FlatInputPlatformDeps: NSObject, FlatInputViewFactoryPlatformDepend
         let field = PhoneTextField()
         field.translatesAutoresizingMaskIntoConstraints = false
         
-        if let color = style.textColor {
+        if let color = style.textStyle?.color {
             field.textColor = color.toUIColor()
         }
-        if let size = style.textSize {
+        if let size = style.textStyle?.size {
             field.font = UIFont.systemFont(ofSize: CGFloat(size.intValue))
         }
         

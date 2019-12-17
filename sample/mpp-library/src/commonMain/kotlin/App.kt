@@ -20,6 +20,7 @@ import dev.icerock.moko.widgets.flat.FlatInputViewFactory
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.BaseApplication
 import dev.icerock.moko.widgets.screen.Screen
+import dev.icerock.moko.widgets.style.view.TextStyle
 import kotlin.reflect.KClass
 
 class App(
@@ -34,8 +35,10 @@ class App(
         val loginTheme = Theme(AppTheme.loginScreen) {
             factory[InputWidget.DefaultCategory] = FlatInputViewFactory(
                 platformDependency = widgetsPlatformDeps,
-                textSize = 16,
-                textColor = Color(0x16171AFF),
+                textStyle = TextStyle(
+                    size = 16,
+                    color = Color(0x16171AFF)
+                ),
                 backgroundColor = Color(0xF5F5F5FF)
             )
         }
