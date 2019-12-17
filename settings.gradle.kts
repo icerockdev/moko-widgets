@@ -28,7 +28,8 @@ val properties = startParameter.projectProperties
 // ./gradlew -PpluginPublish publishPluginPublicationToMavenLocal
 val pluginPublish: Boolean = properties.containsKey("pluginPublish")
 
-// ./gradlew -PlibraryPublish :widgets:publishToMavenLocal :widgets-flat:publishToMavenLocal
+// ./gradlew -PlibraryPublish :widgets:publishToMavenLocal
+// ./gradlew -PlibraryPublish :widgets-flat:publishToMavenLocal
 val libraryPublish: Boolean = properties.containsKey("libraryPublish")
 
 include(":kotlin-common-plugin")

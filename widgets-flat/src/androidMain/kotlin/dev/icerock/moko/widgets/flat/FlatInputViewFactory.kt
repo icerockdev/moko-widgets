@@ -9,8 +9,7 @@ import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.factory.DefaultInputWidgetViewFactory
-import dev.icerock.moko.widgets.factory.DefaultInputWidgetViewFactoryBase
+import dev.icerock.moko.widgets.factory.SystemInputViewFactory
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.view.TextStyle
@@ -23,18 +22,16 @@ actual class FlatInputViewFactory actual constructor(
     backgroundColor: Color?
 ) : ViewFactory<InputWidget<out WidgetSize>> {
 
-    private val defaultViewFactory = DefaultInputWidgetViewFactory(
-        DefaultInputWidgetViewFactoryBase.Style(
-            background = Background(
-                fill = backgroundColor?.let { Fill.Solid(color = it) }
-            ),
-            textStyle = TextStyle(
-                size = textSize,
-                color = textColor
-            ),
-            underLineColor = Color(0x00000000),
-            underLineFocusedColor = Color(0x00000000)
-        )
+    private val defaultViewFactory = SystemInputViewFactory(
+        background = Background(
+            fill = backgroundColor?.let { Fill.Solid(color = it) }
+        ),
+        textStyle = TextStyle(
+            size = textSize,
+            color = textColor
+        ),
+        underLineColor = Color(0x00000000),
+        underLineFocusedColor = Color(0x00000000)
     )
 
     override fun <WS : WidgetSize> build(
