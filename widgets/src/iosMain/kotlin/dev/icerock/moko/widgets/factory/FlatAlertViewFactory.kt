@@ -6,7 +6,10 @@ package dev.icerock.moko.widgets.factory
 
 import dev.icerock.moko.widgets.FlatAlertWidget
 import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.utils.bind
@@ -27,9 +30,10 @@ import platform.UIKit.topAnchor
 import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
-actual class DefaultFlatAlertWidgetViewFactory actual constructor(
-    style: Style
-) : DefaultFlatAlertWidgetViewFactoryBase(style) {
+actual class FlatAlertViewFactory actual constructor(
+    private val background: Background?,
+    private val margins: MarginValues?
+) : ViewFactory<FlatAlertWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
         widget: FlatAlertWidget<out WidgetSize>,
@@ -38,7 +42,7 @@ actual class DefaultFlatAlertWidgetViewFactory actual constructor(
     ): ViewBundle<WS> {
         val container = UIView(frame = CGRectZero.readValue()).apply {
             translatesAutoresizingMaskIntoConstraints = false
-            applyBackgroundIfNeeded(style.background)
+            applyBackgroundIfNeeded(background)
         }
 
         val titleLabel = widget.title?.let { title ->
@@ -106,7 +110,7 @@ actual class DefaultFlatAlertWidgetViewFactory actual constructor(
         return ViewBundle(
             view = container,
             size = size,
-            margins = style.margins
+            margins = margins
         )
     }
 }

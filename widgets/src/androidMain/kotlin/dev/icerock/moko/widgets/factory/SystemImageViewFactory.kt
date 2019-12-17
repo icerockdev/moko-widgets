@@ -5,17 +5,17 @@
 package dev.icerock.moko.widgets.factory
 
 import android.widget.ImageView
-import com.bumptech.glide.Glide
 import dev.icerock.moko.widgets.ImageWidget
 import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.style.applyStyle
+import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.bind
 
-actual class DefaultImageWidgetViewFactory actual constructor(
-    style: Style
-) : DefaultImageWidgetViewFactoryBase(style) {
+actual class SystemImageViewFactory actual constructor(
+    private val margins: MarginValues?
+) : ViewFactory<ImageWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
         widget: ImageWidget<out WidgetSize>,
@@ -25,13 +25,11 @@ actual class DefaultImageWidgetViewFactory actual constructor(
         val context = viewFactoryContext.androidContext
         val lifecycleOwner = viewFactoryContext.lifecycleOwner
 
-        val imageView = ImageView(context).apply {
-            applyStyle(style)
-        }
+        val imageView = ImageView(context)
 
-        when (style.scaleType) {
-            ScaleType.FILL -> imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-            ScaleType.FIT -> imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE
+        when (widget.scaleType) {
+            ImageWidget.ScaleType.FILL -> imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+            ImageWidget.ScaleType.FIT -> imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE
         }
 
         widget.image.bind(lifecycleOwner) { image ->
@@ -46,7 +44,7 @@ actual class DefaultImageWidgetViewFactory actual constructor(
         return ViewBundle(
             view = imageView,
             size = size,
-            margins = style.margins
+            margins = margins
         )
     }
 }

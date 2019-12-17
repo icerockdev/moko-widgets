@@ -16,22 +16,13 @@ import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-expect class DefaultInputWidgetViewFactory(
-    style: Style = Style()
-) : DefaultInputWidgetViewFactoryBase
-
-abstract class DefaultInputWidgetViewFactoryBase(
-    val style: Style
-) : ViewFactory<InputWidget<out WidgetSize>> {
-
-    data class Style(
-        override val background: Background? = null,
-        override val margins: MarginValues? = null,
-        override val padding: PaddingValues? = null,
-        val textStyle: TextStyle = TextStyle(),
-        val labelTextStyle: TextStyle = TextStyle(),
-        val errorTextStyle: TextStyle = TextStyle(),
-        val underLineColor: Color? = null,
-        val underLineFocusedColor: Color? = null
-    ) : Margined, Backgrounded, Padded
-}
+expect class SystemInputViewFactory(
+    background: Background? = null,
+    margins: MarginValues? = null,
+    padding: PaddingValues? = null,
+    textStyle: TextStyle? = null,
+    labelTextStyle: TextStyle? = null,
+    errorTextStyle: TextStyle? = null,
+    underLineColor: Color? = null,
+    underLineFocusedColor: Color? = null
+) : ViewFactory<InputWidget<out WidgetSize>>

@@ -13,19 +13,34 @@ import androidx.core.view.MarginLayoutParamsCompat
 import androidx.core.view.ViewCompat
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.style.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.style.applyInputType
-import dev.icerock.moko.widgets.style.applyStyle
-import dev.icerock.moko.widgets.style.applyTextStyle
+import dev.icerock.moko.widgets.style.applyPaddingIfNeeded
+import dev.icerock.moko.widgets.style.applyTextStyleIfNeeded
+import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.PaddingValues
+import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.dp
 
-actual class DefaultInputWidgetViewFactory actual constructor(
-    style: Style
-) : DefaultInputWidgetViewFactoryBase(style) {
+actual class SystemInputViewFactory actual constructor(
+    private val background: Background?,
+    private val margins: MarginValues?,
+    private val padding: PaddingValues?,
+    private val textStyle: TextStyle?,
+    private val labelTextStyle: TextStyle?,
+    private val errorTextStyle: TextStyle?,
+    private val underLineColor: Color?,
+    private val underLineFocusedColor: Color?
+) : ViewFactory<InputWidget<out WidgetSize>> {
+
     override fun <WS : WidgetSize> build(
         widget: InputWidget<out WidgetSize>,
         size: WS,
@@ -34,19 +49,19 @@ actual class DefaultInputWidgetViewFactory actual constructor(
         val context = viewFactoryContext.androidContext
         val lifecycleOwner = viewFactoryContext.lifecycleOwner
 
-        val textInputLayout = TextInputLayout(context).apply {
-            style.labelTextStyle.color?.also {
-                val hintColor = ColorStateList.valueOf(it.argb.toInt())
-                defaultHintTextColor = hintColor
-            }
-
-            style.errorTextStyle.color?.also {
-                val errorColor = ColorStateList.valueOf(it.argb.toInt())
-                setErrorTextColor(errorColor)
-            }
-
-            applyStyle(style)
+        val textInputLayout = TextInputLayout(context)
+        labelTextStyle?.color?.also {
+            val hintColor = ColorStateList.valueOf(it.argb.toInt())
+            textInputLayout.defaultHintTextColor = hintColor
         }
+
+        errorTextStyle?.color?.also {
+            val errorColor = ColorStateList.valueOf(it.argb.toInt())
+            textInputLayout.setErrorTextColor(errorColor)
+        }
+
+        textInputLayout.applyBackgroundIfNeeded(background)
+        textInputLayout.applyPaddingIfNeeded(padding)
 
         val editText = TextInputEditText(context).apply {
             id = widget.id::javaClass.name.hashCode()
@@ -62,11 +77,11 @@ actual class DefaultInputWidgetViewFactory actual constructor(
                 MarginLayoutParamsCompat.setMarginEnd(this, dp4)
             }
 
-            applyTextStyle(style.textStyle)
+            applyTextStyleIfNeeded(textStyle)
             widget.inputType?.also { applyInputType(it) }
 
-            val focusedColor = style.underLineFocusedColor?.argb?.toInt()
-            val defaultColor = style.underLineColor?.argb?.toInt()
+            val focusedColor = underLineFocusedColor?.argb?.toInt()
+            val defaultColor = underLineColor?.argb?.toInt()
 
             if (focusedColor != null && defaultColor != null) {
                 ViewCompat.setBackgroundTintList(
@@ -154,7 +169,7 @@ actual class DefaultInputWidgetViewFactory actual constructor(
         return ViewBundle(
             view = textInputLayout,
             size = size,
-            margins = style.margins
+            margins = margins
         )
     }
 }

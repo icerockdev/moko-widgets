@@ -4,10 +4,15 @@
 
 package dev.icerock.moko.widgets.factory
 
+import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.graphics.toUIColor
 import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.Edges
@@ -48,16 +53,23 @@ import platform.UIKit.topAnchor
 import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
-actual class DefaultInputWidgetViewFactory actual constructor(
-    style: Style
-) : DefaultInputWidgetViewFactoryBase(style) {
+actual class SystemInputViewFactory actual constructor(
+    private val background: Background?,
+    private val margins: MarginValues?,
+    private val padding: PaddingValues?,
+    private val textStyle: TextStyle?,
+    private val labelTextStyle: TextStyle?,
+    private val errorTextStyle: TextStyle?,
+    private val underLineColor: Color?,
+    private val underLineFocusedColor: Color?
+) : ViewFactory<InputWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
         widget: InputWidget<out WidgetSize>,
         size: WS,
         viewFactoryContext: ViewFactoryContext
     ): ViewBundle<WS> {
-        val paddingEdges = style.padding.run {
+        val paddingEdges = padding.run {
             Edges<CGFloat>(
                 top = this?.top?.toDouble() ?: 0.0,
                 leading = this?.start?.toDouble() ?: 0.0,
@@ -69,15 +81,15 @@ actual class DefaultInputWidgetViewFactory actual constructor(
         val textField = InputWidgetView(paddingEdges).apply {
             translatesAutoresizingMaskIntoConstraints = false
             accessibilityIdentifier = widget.identifier()
-            applyBackgroundIfNeeded(style.background)
+            applyBackgroundIfNeeded(background)
 
-            applyTextStyle(style.textStyle)
-            applyErrorStyle(style.errorTextStyle)
-            applyLabelStyle(style.labelTextStyle)
-            style.underLineColor?.let {
+            applyTextStyleIfNeeded(textStyle)
+            applyErrorStyleIfNeeded(errorTextStyle)
+            applyLabelStyleIfNeeded(labelTextStyle)
+            underLineColor?.let {
                 deselectedColor = it.toUIColor()
             }
-            style.underLineFocusedColor?.let {
+            underLineFocusedColor?.let {
                 selectedColor = it.toUIColor()
             }
 
@@ -98,7 +110,7 @@ actual class DefaultInputWidgetViewFactory actual constructor(
         return ViewBundle(
             view = textField,
             size = size,
-            margins = style.margins
+            margins = margins
         )
     }
 
@@ -291,15 +303,15 @@ actual class DefaultInputWidgetViewFactory actual constructor(
             textChanged?.invoke(textField.text.orEmpty())
         }
 
-        fun applyTextStyle(textStyle: TextStyle) {
+        fun applyTextStyleIfNeeded(textStyle: TextStyle?) {
             textField.applyTextStyleIfNeeded(textStyle)
         }
 
-        fun applyLabelStyle(textStyle: TextStyle) {
+        fun applyLabelStyleIfNeeded(textStyle: TextStyle?) {
             placeholderTextLayer.applyTextStyleIfNeeded(textStyle)
         }
 
-        fun applyErrorStyle(textStyle: TextStyle) {
+        fun applyErrorStyleIfNeeded(textStyle: TextStyle?) {
             errorLabel.applyTextStyleIfNeeded(textStyle)
         }
 

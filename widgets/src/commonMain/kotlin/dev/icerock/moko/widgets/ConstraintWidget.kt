@@ -11,10 +11,10 @@ import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
-import dev.icerock.moko.widgets.factory.DefaultConstraintWidgetViewFactory
+import dev.icerock.moko.widgets.factory.ConstraintViewFactory
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-@WidgetDef(DefaultConstraintWidgetViewFactory::class)
+@WidgetDef(ConstraintViewFactory::class)
 class ConstraintWidget<WS : WidgetSize>(
     private val factory: ViewFactory<ConstraintWidget<out WidgetSize>>,
     override val size: WS,

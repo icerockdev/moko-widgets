@@ -13,15 +13,17 @@ import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
-import dev.icerock.moko.widgets.factory.DefaultImageWidgetViewFactory
+import dev.icerock.moko.widgets.factory.SystemImageViewFactory
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-@WidgetDef(DefaultImageWidgetViewFactory::class)
+@WidgetDef(SystemImageViewFactory::class)
 class ImageWidget<WS : WidgetSize>(
     private val factory: ViewFactory<ImageWidget<out WidgetSize>>,
     override val size: WS,
     override val id: Id?,
-    val image: LiveData<Image>
+    val image: LiveData<Image>,
+    @Suppress("RemoveRedundantQualifierName")
+    val scaleType: ImageWidget.ScaleType? = null
 ) : Widget<WS>(), OptionalId<ImageWidget.Id> {
 
     override fun buildView(viewFactoryContext: ViewFactoryContext): ViewBundle<WS> {
@@ -30,6 +32,11 @@ class ImageWidget<WS : WidgetSize>(
 
     interface Id : Theme.Id<ImageWidget<out WidgetSize>>
     interface Category : Theme.Category<ImageWidget<out WidgetSize>>
+
+    enum class ScaleType {
+        FILL,
+        FIT
+    }
 
     object DefaultCategory : Category
 }

@@ -12,18 +12,25 @@ import dev.icerock.moko.widgets.ConstraintWidget
 import dev.icerock.moko.widgets.ConstraintsApi
 import dev.icerock.moko.widgets.core.View
 import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
-import dev.icerock.moko.widgets.style.applyStyle
+import dev.icerock.moko.widgets.style.applyBackgroundIfNeeded
+import dev.icerock.moko.widgets.style.applyPaddingIfNeeded
+import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.ext.applyMargin
 import dev.icerock.moko.widgets.style.ext.toPlatformSize
+import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.dp
 
-actual class DefaultConstraintWidgetViewFactory actual constructor(
-    style: Style
-) : DefaultConstraintWidgetViewFactoryBase(style) {
+actual class ConstraintViewFactory actual constructor(
+    private val background: Background?,
+    private val padding: PaddingValues?,
+    private val margins: MarginValues?
+) : ViewFactory<ConstraintWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
         widget: ConstraintWidget<out WidgetSize>,
@@ -33,7 +40,8 @@ actual class DefaultConstraintWidgetViewFactory actual constructor(
         val context = viewFactoryContext.context
 
         val constraintLayout = ConstraintLayout(context)
-        constraintLayout.applyStyle(style)
+        constraintLayout.applyBackgroundIfNeeded(background)
+        constraintLayout.applyPaddingIfNeeded(padding)
 
         val widgetViewBundle: Map<out Widget<out WidgetSize>, ViewBundle<out WidgetSize>> =
             widget.children.associateWith { childWidget ->
@@ -64,7 +72,7 @@ actual class DefaultConstraintWidgetViewFactory actual constructor(
         return ViewBundle(
             view = constraintLayout,
             size = size,
-            margins = style.margins
+            margins = margins
         )
     }
 

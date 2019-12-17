@@ -11,6 +11,7 @@ import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.ButtonWidget
+import dev.icerock.moko.widgets.ImageWidget
 import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.constraint
@@ -36,7 +37,8 @@ class LoginScreen(
         constraint(size = WidgetSize.AsParent) {
             val logoImage = +image(
                 size = WidgetSize.Const(SizeSpec.WrapContent, SizeSpec.WrapContent),
-                image = const(Image.resource(MR.images.logo))
+                image = const(Image.resource(MR.images.logo)),
+                scaleType = ImageWidget.ScaleType.FIT
             )
 
             val emailInput = +input(

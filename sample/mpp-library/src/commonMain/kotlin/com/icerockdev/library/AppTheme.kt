@@ -11,19 +11,14 @@ import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.CollectionWidget
 import dev.icerock.moko.widgets.ConstraintWidget
-import dev.icerock.moko.widgets.ImageWidget
 import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.StatefulWidget
 import dev.icerock.moko.widgets.core.Theme
-import dev.icerock.moko.widgets.factory.DefaultConstraintWidgetViewFactory
-import dev.icerock.moko.widgets.factory.DefaultConstraintWidgetViewFactoryBase
-import dev.icerock.moko.widgets.factory.DefaultImageWidgetViewFactory
-import dev.icerock.moko.widgets.factory.DefaultImageWidgetViewFactoryBase
-import dev.icerock.moko.widgets.factory.DefaultInputWidgetViewFactory
-import dev.icerock.moko.widgets.factory.DefaultInputWidgetViewFactoryBase
+import dev.icerock.moko.widgets.factory.ConstraintViewFactory
 import dev.icerock.moko.widgets.factory.StatefulViewFactory
 import dev.icerock.moko.widgets.factory.SystemButtonViewFactory
 import dev.icerock.moko.widgets.factory.SystemCollectionViewFactory
+import dev.icerock.moko.widgets.factory.SystemInputViewFactory
 import dev.icerock.moko.widgets.factory.SystemListViewFactory
 import dev.icerock.moko.widgets.factory.SystemTextViewFactory
 import dev.icerock.moko.widgets.style.background.Background
@@ -112,28 +107,18 @@ object AppTheme {
     }
 
     val loginScreen = Theme(baseTheme) {
-        factory[ConstraintWidget.DefaultCategory] = DefaultConstraintWidgetViewFactory(
-            DefaultConstraintWidgetViewFactoryBase.Style(
-                padding = PaddingValues(16f),
-                background = Background(
-                    fill = Fill.Solid(Colors.white)
-                )
+        factory[ConstraintWidget.DefaultCategory] = ConstraintViewFactory(
+            padding = PaddingValues(16f),
+            background = Background(
+                fill = Fill.Solid(Colors.white)
             )
         )
 
-        factory[ImageWidget.DefaultCategory] = DefaultImageWidgetViewFactory(
-            DefaultImageWidgetViewFactoryBase.Style(
-                scaleType = DefaultImageWidgetViewFactoryBase.ScaleType.FIT
-            )
-        )
-
-        factory[InputWidget.DefaultCategory] = DefaultInputWidgetViewFactory(
-            DefaultInputWidgetViewFactoryBase.Style(
-                margins = MarginValues(bottom = 8f),
-                underLineColor = Color(0xe5e6eeFF),
-                labelTextStyle = TextStyle(
-                    color = Color(0x777889FF)
-                )
+        factory[InputWidget.DefaultCategory] = SystemInputViewFactory(
+            margins = MarginValues(bottom = 8f),
+            underLineColor = Color(0xe5e6eeFF),
+            labelTextStyle = TextStyle(
+                color = Color(0x777889FF)
             )
         )
 

@@ -9,8 +9,10 @@ import dev.icerock.moko.widgets.ConstraintItem
 import dev.icerock.moko.widgets.ConstraintWidget
 import dev.icerock.moko.widgets.ConstraintsApi
 import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
@@ -34,9 +36,11 @@ import platform.UIKit.safeAreaLayoutGuide
 import platform.UIKit.topAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
-actual class DefaultConstraintWidgetViewFactory actual constructor(
-    style: Style
-) : DefaultConstraintWidgetViewFactoryBase(style) {
+actual class ConstraintViewFactory actual constructor(
+    private val background: Background?,
+    private val padding: PaddingValues?,
+    private val margins: MarginValues?
+) : ViewFactory<ConstraintWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
         widget: ConstraintWidget<out WidgetSize>,
@@ -46,7 +50,7 @@ actual class DefaultConstraintWidgetViewFactory actual constructor(
         val container = UIView(frame = CGRectZero.readValue()).apply {
             translatesAutoresizingMaskIntoConstraints = false
 
-            applyBackgroundIfNeeded(style.background)
+            applyBackgroundIfNeeded(background)
         }
 
         val widgetViewBundle: Map<out Widget<out WidgetSize>, ViewBundle<out WidgetSize>> =
@@ -63,7 +67,7 @@ actual class DefaultConstraintWidgetViewFactory actual constructor(
         val constraintsHandler = AutoLayoutConstraintsApi(
             container = container,
             widgetViewBundle = widgetViewBundle,
-            style = style
+            padding = padding
         )
 
         widget.constraints.invoke(constraintsHandler)
@@ -81,7 +85,7 @@ actual class DefaultConstraintWidgetViewFactory actual constructor(
 
             applySizeToChild(
                 rootView = container,
-                rootPadding = style.padding,
+                rootPadding = padding,
                 childView = childView,
                 childSize = viewBundle.size,
                 childMargins = margins
@@ -91,7 +95,7 @@ actual class DefaultConstraintWidgetViewFactory actual constructor(
         return ViewBundle(
             view = container,
             size = size,
-            margins = style.margins
+            margins = margins
         )
     }
 }
@@ -100,7 +104,7 @@ actual class DefaultConstraintWidgetViewFactory actual constructor(
 class AutoLayoutConstraintsApi(
     private val container: UIView,
     private val widgetViewBundle: Map<out Widget<out WidgetSize>, ViewBundle<out WidgetSize>>,
-    private val style: DefaultConstraintWidgetViewFactoryBase.Style
+    private val padding: PaddingValues?
 ) : ConstraintsApi {
     class AnchorSet private constructor(
         val topAnchor: NSLayoutAnchor,
@@ -169,7 +173,7 @@ class AutoLayoutConstraintsApi(
         paddingGetter: PaddingValues.() -> Float
     ): CGFloat {
         var const: CGFloat = viewBundle().margins?.let(marginGetter)?.toDouble() ?: 0.0
-        if (to is ConstraintItem.Root) const += style.padding?.let(paddingGetter)?.toDouble() ?: 0.0
+        if (to is ConstraintItem.Root) const += padding?.let(paddingGetter)?.toDouble() ?: 0.0
         return const
     }
 

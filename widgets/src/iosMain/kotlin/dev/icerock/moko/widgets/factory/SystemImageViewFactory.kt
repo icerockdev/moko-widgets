@@ -6,7 +6,9 @@ package dev.icerock.moko.widgets.factory
 
 import dev.icerock.moko.widgets.ImageWidget
 import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.bind
 import platform.UIKit.UIImageView
@@ -15,9 +17,9 @@ import platform.UIKit.clipsToBounds
 import platform.UIKit.contentMode
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
-actual class DefaultImageWidgetViewFactory actual constructor(
-    style: Style
-) : DefaultImageWidgetViewFactoryBase(style) {
+actual class SystemImageViewFactory actual constructor(
+    private val margins: MarginValues?
+) : ViewFactory<ImageWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
         widget: ImageWidget<out WidgetSize>,
@@ -32,10 +34,10 @@ actual class DefaultImageWidgetViewFactory actual constructor(
                 image.apply(this) { this.image = it }
             }
 
-            when (style.scaleType) {
-                ScaleType.FILL -> this.contentMode =
+            when (widget.scaleType) {
+                ImageWidget.ScaleType.FILL -> this.contentMode =
                     UIViewContentMode.UIViewContentModeScaleAspectFill
-                ScaleType.FIT -> this.contentMode =
+                ImageWidget.ScaleType.FIT -> this.contentMode =
                     UIViewContentMode.UIViewContentModeScaleAspectFit
             }
 
@@ -46,7 +48,7 @@ actual class DefaultImageWidgetViewFactory actual constructor(
         return ViewBundle(
             view = imageView,
             size = size,
-            margins = style.margins
+            margins = margins
         )
     }
 }

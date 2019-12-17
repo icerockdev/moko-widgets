@@ -15,15 +15,19 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.TextViewCompat
 import dev.icerock.moko.widgets.FlatAlertWidget
 import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.style.applyStyle
+import dev.icerock.moko.widgets.style.applyBackgroundIfNeeded
+import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.dp
 
-actual class DefaultFlatAlertWidgetViewFactory actual constructor(
-    style: Style
-) : DefaultFlatAlertWidgetViewFactoryBase(style) {
+actual class FlatAlertViewFactory actual constructor(
+    private val background: Background?,
+    private val margins: MarginValues?
+) : ViewFactory<FlatAlertWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
         widget: FlatAlertWidget<out WidgetSize>,
@@ -35,8 +39,8 @@ actual class DefaultFlatAlertWidgetViewFactory actual constructor(
 
         val rowsContainer = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
-            applyStyle(style)
         }
+        rowsContainer.applyBackgroundIfNeeded(background)
 
         // drawable
         val drawableLiveData = widget.drawable
@@ -153,7 +157,7 @@ actual class DefaultFlatAlertWidgetViewFactory actual constructor(
         return ViewBundle(
             view = rowsContainer,
             size = size,
-            margins = style.margins
+            margins = margins
         )
     }
 }
