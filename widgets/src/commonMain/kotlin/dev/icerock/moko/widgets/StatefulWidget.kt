@@ -14,7 +14,7 @@ import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
-import dev.icerock.moko.widgets.factory.DefaultStatefulWidgetViewFactory
+import dev.icerock.moko.widgets.factory.SimpleStatefulViewFactory
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
@@ -62,7 +62,7 @@ fun <WS : WidgetSize, T, E> Theme.stateful(
             id = id,
             category = category,
             defaultCategory = StatefulWidget.DefaultCategory,
-            fallback = { DefaultStatefulWidgetViewFactory() }
+            fallback = { SimpleStatefulViewFactory() }
         ),
         size = size,
         id = id,

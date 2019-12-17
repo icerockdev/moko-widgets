@@ -9,16 +9,23 @@ import android.widget.FrameLayout
 import dev.icerock.moko.mvvm.State
 import dev.icerock.moko.widgets.StatefulWidget
 import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.style.applyStyle
+import dev.icerock.moko.widgets.style.applyBackgroundIfNeeded
+import dev.icerock.moko.widgets.style.applyPaddingIfNeeded
+import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.ext.applyMargin
 import dev.icerock.moko.widgets.style.ext.toPlatformSize
+import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.bindNotNull
 
-actual class DefaultStatefulWidgetViewFactory actual constructor(
-    style: Style
-) : DefaultStatefulWidgetViewFactoryBase(style) {
+actual class SimpleStatefulViewFactory actual constructor(
+    private val background: Background?,
+    private val margins: MarginValues?,
+    private val padding: PaddingValues?
+) : ViewFactory<StatefulWidget<out WidgetSize, *, *>> {
 
     override fun <WS : WidgetSize> build(
         widget: StatefulWidget<out WidgetSize, *, *>,
@@ -29,8 +36,10 @@ actual class DefaultStatefulWidgetViewFactory actual constructor(
         val lifecycleOwner = viewFactoryContext.lifecycleOwner
         val dm = context.resources.displayMetrics
 
-        val root = FrameLayout(context)
-        root.applyStyle(style)
+        val root = FrameLayout(context).apply {
+            applyBackgroundIfNeeded(this@SimpleStatefulViewFactory.background)
+            applyPaddingIfNeeded(padding)
+        }
 
         val factoryContext = ViewFactoryContext(context, lifecycleOwner, root)
 
@@ -66,7 +75,7 @@ actual class DefaultStatefulWidgetViewFactory actual constructor(
         return ViewBundle(
             view = root,
             size = size,
-            margins = style.margins
+            margins = margins
         )
     }
 }

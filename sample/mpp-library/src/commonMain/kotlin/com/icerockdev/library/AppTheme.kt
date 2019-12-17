@@ -25,7 +25,7 @@ import dev.icerock.moko.widgets.factory.DefaultInputWidgetViewFactory
 import dev.icerock.moko.widgets.factory.DefaultInputWidgetViewFactoryBase
 import dev.icerock.moko.widgets.factory.DefaultListWidgetViewFactory
 import dev.icerock.moko.widgets.factory.DefaultListWidgetViewFactoryBase
-import dev.icerock.moko.widgets.factory.DefaultStatefulWidgetViewFactory
+import dev.icerock.moko.widgets.factory.SimpleStatefulViewFactory
 import dev.icerock.moko.widgets.factory.SystemButtonViewFactory
 import dev.icerock.moko.widgets.factory.SystemTextViewFactory
 import dev.icerock.moko.widgets.style.background.Background
@@ -64,7 +64,9 @@ object AppTheme {
             )
         )
 
-        factory[StatefulWidget.DefaultCategory] = DefaultStatefulWidgetViewFactory()
+        factory[StatefulWidget.DefaultCategory] = SimpleStatefulViewFactory(
+            padding = PaddingValues(16f)
+        )
         factory[CryptoProfileScreen.Id.JoinButton] = SystemButtonViewFactory(
             background = {
                 val normalBackground = Background(

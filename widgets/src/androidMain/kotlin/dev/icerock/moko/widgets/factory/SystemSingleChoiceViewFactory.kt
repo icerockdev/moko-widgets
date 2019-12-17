@@ -13,23 +13,36 @@ import android.widget.ArrayAdapter
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.Spinner
+import androidx.core.view.ViewCompat
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.mvvm.livedata.mergeWith
 import dev.icerock.moko.widgets.R
 import dev.icerock.moko.widgets.SingleChoiceWidget
 import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.style.applyStyle
-import dev.icerock.moko.widgets.style.applyTextStyle
+import dev.icerock.moko.widgets.style.applyPaddingIfNeeded
+import dev.icerock.moko.widgets.style.applyTextStyleIfNeeded
+import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.buildBackground
+import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.PaddingValues
+import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.dp
 
-actual class DefaultSingleChoiceWidgetViewFactory actual constructor(
-    style: Style
-) : DefaultSingleChoiceWidgetViewFactoryBase(style) {
+actual class SystemSingleChoiceViewFactory actual constructor(
+    private val textStyle: TextStyle?,
+    private val labelTextStyle: TextStyle?,
+    private val dropDownTextColor: Color?,
+    private val underlineColor: Color?,
+    private val dropDownBackground: Background?,
+    private val padding: PaddingValues?,
+    private val margins: MarginValues?
+) : ViewFactory<SingleChoiceWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
         widget: SingleChoiceWidget<out WidgetSize>,
@@ -38,10 +51,9 @@ actual class DefaultSingleChoiceWidgetViewFactory actual constructor(
     ): ViewBundle<WS> {
         val context = viewFactoryContext.androidContext
         val lifecycleOwner = viewFactoryContext.lifecycleOwner
-        val dm = context.resources.displayMetrics
 
         val container = FrameLayout(context)
-        container.applyStyle(style)
+        container.applyPaddingIfNeeded(padding)
 
         val textInputLayout = TextInputLayout(context).apply {
             layoutParams = LinearLayout.LayoutParams(
@@ -63,13 +75,13 @@ actual class DefaultSingleChoiceWidgetViewFactory actual constructor(
                 marginEnd = 4.dp(context)
             }
 
-            applyTextStyle(style.textStyle)
+            applyTextStyleIfNeeded(textStyle)
 
             inputType = InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
             isFocusable = false
 
-            style.underlineColor?.also {
-                backgroundTintList = ColorStateList.valueOf(it.argb.toInt())
+            underlineColor?.also {
+                ViewCompat.setBackgroundTintList(this, ColorStateList.valueOf(it.argb.toInt()))
             }
         }
 
@@ -106,7 +118,7 @@ actual class DefaultSingleChoiceWidgetViewFactory actual constructor(
             }
         }
 
-        style.dropDownBackground?.let {
+        dropDownBackground?.let {
             spinner.setPopupBackgroundDrawable(it.buildBackground(context))
         }
 
@@ -135,7 +147,7 @@ actual class DefaultSingleChoiceWidgetViewFactory actual constructor(
         return ViewBundle(
             view = container,
             size = size,
-            margins = style.margins
+            margins = margins
         )
     }
 }

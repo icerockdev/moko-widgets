@@ -7,12 +7,16 @@ package dev.icerock.moko.widgets.factory
 import dev.icerock.moko.mvvm.State
 import dev.icerock.moko.widgets.StatefulWidget
 import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.Edges
 import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
-import dev.icerock.moko.widgets.utils.fillChildView
 import dev.icerock.moko.widgets.utils.applySizeToChild
+import dev.icerock.moko.widgets.utils.fillChildView
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGFloat
 import platform.CoreGraphics.CGRectZero
@@ -22,9 +26,11 @@ import platform.UIKit.addSubview
 import platform.UIKit.hidden
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
-actual class DefaultStatefulWidgetViewFactory actual constructor(
-    style: Style
-) : DefaultStatefulWidgetViewFactoryBase(style) {
+actual class SimpleStatefulViewFactory actual constructor(
+    private val background: Background?,
+    private val margins: MarginValues?,
+    private val padding: PaddingValues?
+) : ViewFactory<StatefulWidget<out WidgetSize, *, *>> {
 
     override fun <WS : WidgetSize> build(
         widget: StatefulWidget<out WidgetSize, *, *>,
@@ -35,7 +41,8 @@ actual class DefaultStatefulWidgetViewFactory actual constructor(
 
         val container = UIView(frame = CGRectZero.readValue()).apply {
             translatesAutoresizingMaskIntoConstraints = false
-            applyBackgroundIfNeeded(style.background)
+
+            applyBackgroundIfNeeded(background)
         }
 
         listOf(
@@ -52,7 +59,7 @@ actual class DefaultStatefulWidgetViewFactory actual constructor(
                 addSubview(childView)
 
                 val edges: Edges<CGFloat> = applySizeToChild(
-                    rootPadding = style.padding,
+                    rootPadding = padding,
                     rootView = container,
                     childView = childView,
                     childSize = childViewBundle.size,
@@ -78,7 +85,7 @@ actual class DefaultStatefulWidgetViewFactory actual constructor(
         return ViewBundle(
             view = container,
             size = size,
-            margins = style.margins
+            margins = margins
         )
     }
 }
