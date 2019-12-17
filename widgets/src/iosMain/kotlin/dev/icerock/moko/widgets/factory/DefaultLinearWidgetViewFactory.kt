@@ -12,7 +12,7 @@ import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.Edges
-import dev.icerock.moko.widgets.utils.applyBackground
+import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.utils.applySize
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGFloat
@@ -44,7 +44,7 @@ actual class DefaultLinearWidgetViewFactory actual constructor(
 
         val container = UIView(frame = CGRectZero.readValue()).apply {
             translatesAutoresizingMaskIntoConstraints = false
-            applyBackground(style.background)
+            applyBackgroundIfNeeded(style.background)
         }
 
         fun pm(padding: Float?, margin: Float?): CGFloat {

@@ -9,7 +9,7 @@ import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.Edges
-import dev.icerock.moko.widgets.utils.applyBackground
+import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.fillChildView
 import dev.icerock.moko.widgets.utils.applySizeToChild
@@ -117,7 +117,7 @@ actual class DefaultTabsWidgetViewFactory actual constructor(
 
         val view = UIView(frame = CGRectZero.readValue()).apply {
             translatesAutoresizingMaskIntoConstraints = false
-            applyBackground(style.background)
+            applyBackgroundIfNeeded(style.background)
 
             addSubview(segmentedControl)
             addSubview(container)

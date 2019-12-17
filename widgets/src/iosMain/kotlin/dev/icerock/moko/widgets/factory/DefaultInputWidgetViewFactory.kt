@@ -11,7 +11,7 @@ import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.Edges
-import dev.icerock.moko.widgets.utils.applyBackground
+import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.utils.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.identifier
@@ -69,7 +69,7 @@ actual class DefaultInputWidgetViewFactory actual constructor(
         val textField = InputWidgetView(paddingEdges).apply {
             translatesAutoresizingMaskIntoConstraints = false
             accessibilityIdentifier = widget.identifier()
-            applyBackground(style.background)
+            applyBackgroundIfNeeded(style.background)
 
             applyTextStyle(style.textStyle)
             applyErrorStyle(style.errorTextStyle)

@@ -11,7 +11,7 @@ import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.Edges
-import dev.icerock.moko.widgets.utils.applyBackground
+import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.setEventHandler
 import dev.icerock.moko.widgets.utils.toEdgeInsets
@@ -52,7 +52,7 @@ actual class DefaultListWidgetViewFactory actual constructor(
             estimatedRowHeight = UITableViewAutomaticDimension
             allowsSelection = false
 
-            applyBackground(widgetStyle.background)
+            applyBackgroundIfNeeded(widgetStyle.background)
 
             widgetStyle.padding?.toEdgeInsets()?.also { insetsValue ->
                 val insets = insetsValue.useContents {

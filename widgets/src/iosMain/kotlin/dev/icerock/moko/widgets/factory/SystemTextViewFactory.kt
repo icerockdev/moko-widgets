@@ -6,10 +6,14 @@ package dev.icerock.moko.widgets.factory
 
 import dev.icerock.moko.widgets.TextWidget
 import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.TextAlignment
+import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
-import dev.icerock.moko.widgets.utils.applyBackground
+import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.utils.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.utils.bind
 import kotlinx.cinterop.readValue
@@ -23,9 +27,13 @@ import platform.UIKit.UILayoutConstraintAxisVertical
 import platform.UIKit.setContentCompressionResistancePriority
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
-actual class DefaultTextWidgetViewFactory actual constructor(
-    style: Style
-) : DefaultTextWidgetViewFactoryBase(style) {
+actual class SystemTextViewFactory actual constructor(
+    private val background: Background?,
+    private val textStyle: TextStyle?,
+    private val textAlignment: TextAlignment?,
+    private val margins: MarginValues?
+) : ViewFactory<TextWidget<out WidgetSize>> {
+
     override fun <WS : WidgetSize> build(
         widget: TextWidget<out WidgetSize>,
         size: WS,
@@ -33,16 +41,15 @@ actual class DefaultTextWidgetViewFactory actual constructor(
     ): ViewBundle<WS> {
         val label = UILabel(frame = CGRectZero.readValue()).apply {
             translatesAutoresizingMaskIntoConstraints = false
-            applyBackground(style.background)
+            applyBackgroundIfNeeded(background)
+            applyTextStyleIfNeeded(textStyle)
 
             numberOfLines = 0
-
-            applyTextStyleIfNeeded(style.textStyle)
 
             setContentCompressionResistancePriority(749f, UILayoutConstraintAxisHorizontal)
             setContentCompressionResistancePriority(749f, UILayoutConstraintAxisVertical)
 
-            when (style.textAlignment) {
+            when (this@SystemTextViewFactory.textAlignment) {
                 TextAlignment.LEFT -> textAlignment = NSTextAlignmentLeft
                 TextAlignment.CENTER -> textAlignment = NSTextAlignmentCenter
                 TextAlignment.RIGHT -> textAlignment = NSTextAlignmentRight
@@ -56,7 +63,7 @@ actual class DefaultTextWidgetViewFactory actual constructor(
         return ViewBundle(
             view = label,
             size = size,
-            margins = style.margins
+            margins = margins
         )
     }
 }

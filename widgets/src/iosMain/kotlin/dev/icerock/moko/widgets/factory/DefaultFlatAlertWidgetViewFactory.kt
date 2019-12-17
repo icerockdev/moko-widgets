@@ -8,7 +8,7 @@ import dev.icerock.moko.widgets.FlatAlertWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.view.WidgetSize
-import dev.icerock.moko.widgets.utils.applyBackground
+import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.setEventHandler
 import kotlinx.cinterop.readValue
@@ -38,7 +38,7 @@ actual class DefaultFlatAlertWidgetViewFactory actual constructor(
     ): ViewBundle<WS> {
         val container = UIView(frame = CGRectZero.readValue()).apply {
             translatesAutoresizingMaskIntoConstraints = false
-            applyBackground(style.background)
+            applyBackgroundIfNeeded(style.background)
         }
 
         val titleLabel = widget.title?.let { title ->

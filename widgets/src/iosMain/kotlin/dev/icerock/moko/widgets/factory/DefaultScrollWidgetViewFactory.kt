@@ -9,7 +9,7 @@ import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.Edges
-import dev.icerock.moko.widgets.utils.applyBackground
+import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.utils.applySizeToChild
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGFloat
@@ -40,7 +40,7 @@ actual class DefaultScrollWidgetViewFactory actual constructor(
             alwaysBounceVertical = true
             keyboardDismissMode =
                 UIScrollViewKeyboardDismissMode.UIScrollViewKeyboardDismissModeInteractive
-            applyBackground(style.background)
+            applyBackgroundIfNeeded(style.background)
         }
 
         val childBundle = widget.child.buildView(viewController)

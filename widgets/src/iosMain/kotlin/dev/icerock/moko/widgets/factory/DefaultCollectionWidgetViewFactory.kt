@@ -11,7 +11,7 @@ import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.Edges
-import dev.icerock.moko.widgets.utils.applyBackground
+import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.toEdgeInsets
 import kotlinx.cinterop.CValue
@@ -59,7 +59,7 @@ actual class DefaultCollectionWidgetViewFactory actual constructor(
             backgroundColor = UIColor.clearColor
             delegate = layoutAndDelegate
 
-            applyBackground(style.background)
+            applyBackgroundIfNeeded(style.background)
 
             style.padding?.toEdgeInsets()?.also { insetsValue ->
                 val insets = insetsValue.useContents {

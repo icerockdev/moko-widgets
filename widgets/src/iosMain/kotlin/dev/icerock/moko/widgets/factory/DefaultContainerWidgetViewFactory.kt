@@ -11,7 +11,7 @@ import dev.icerock.moko.widgets.style.view.Alignment
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.Edges
 import dev.icerock.moko.widgets.utils.UIViewWithIdentifier
-import dev.icerock.moko.widgets.utils.applyBackground
+import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.utils.identifier
 import dev.icerock.moko.widgets.utils.applySizeToChild
 import platform.CoreGraphics.CGFloat
@@ -37,7 +37,7 @@ actual class DefaultContainerWidgetViewFactory actual constructor(
 
         val root = UIViewWithIdentifier().apply {
             translatesAutoresizingMaskIntoConstraints = false
-            applyBackground(style.background)
+            applyBackgroundIfNeeded(style.background)
 
             accessibilityIdentifier = widget.identifier()
         }

@@ -26,9 +26,8 @@ import dev.icerock.moko.widgets.factory.DefaultInputWidgetViewFactoryBase
 import dev.icerock.moko.widgets.factory.DefaultListWidgetViewFactory
 import dev.icerock.moko.widgets.factory.DefaultListWidgetViewFactoryBase
 import dev.icerock.moko.widgets.factory.DefaultStatefulWidgetViewFactory
-import dev.icerock.moko.widgets.factory.DefaultTextWidgetViewFactory
-import dev.icerock.moko.widgets.factory.DefaultTextWidgetViewFactoryBase
 import dev.icerock.moko.widgets.factory.SystemButtonViewFactory
+import dev.icerock.moko.widgets.factory.SystemTextViewFactory
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Border
 import dev.icerock.moko.widgets.style.background.Fill
@@ -56,10 +55,8 @@ object AppTheme {
     }
 
     val baseTheme = Theme {
-        factory[CryptoProfileScreen.Id.DelimiterText] = DefaultTextWidgetViewFactory(
-            DefaultTextWidgetViewFactoryBase.Style(
-                textAlignment = TextAlignment.CENTER
-            )
+        factory[CryptoProfileScreen.Id.DelimiterText] = SystemTextViewFactory(
+            textAlignment = TextAlignment.CENTER
         )
         factory[UsersScreen.Id.List] = DefaultListWidgetViewFactory(
             DefaultListWidgetViewFactoryBase.Style(

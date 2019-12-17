@@ -9,16 +9,23 @@ import android.view.Gravity
 import android.widget.TextView
 import dev.icerock.moko.widgets.TextWidget
 import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.style.applyStyle
-import dev.icerock.moko.widgets.style.applyTextStyle
+import dev.icerock.moko.widgets.style.applyBackgroundIfNeeded
+import dev.icerock.moko.widgets.style.applyTextStyleIfNeeded
+import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.TextAlignment
+import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.bind
 
-actual class DefaultTextWidgetViewFactory actual constructor(
-    style: Style
-) : DefaultTextWidgetViewFactoryBase(style) {
+actual class SystemTextViewFactory actual constructor(
+    private val background: Background?,
+    private val textStyle: TextStyle?,
+    private val textAlignment: TextAlignment?,
+    private val margins: MarginValues?
+) : ViewFactory<TextWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
         widget: TextWidget<out WidgetSize>,
@@ -29,12 +36,11 @@ actual class DefaultTextWidgetViewFactory actual constructor(
         val lifecycleOwner = viewFactoryContext.lifecycleOwner
 
         val textView = TextView(context).apply {
-            style.textStyle?.also { applyTextStyle(it) }
-
-            applyStyle(style)
+            applyTextStyleIfNeeded(textStyle)
+            applyBackgroundIfNeeded(this@SystemTextViewFactory.background)
 
             @SuppressLint("RtlHardcoded")
-            when (style.textAlignment) {
+            when (this@SystemTextViewFactory.textAlignment) {
                 TextAlignment.LEFT -> gravity = Gravity.LEFT
                 TextAlignment.CENTER -> gravity = Gravity.CENTER
                 TextAlignment.RIGHT -> gravity = Gravity.RIGHT
@@ -48,7 +54,7 @@ actual class DefaultTextWidgetViewFactory actual constructor(
         return ViewBundle(
             view = textView,
             size = size,
-            margins = style.margins
+            margins = margins
         )
     }
 }

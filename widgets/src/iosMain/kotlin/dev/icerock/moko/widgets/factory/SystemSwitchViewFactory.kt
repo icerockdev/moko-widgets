@@ -12,7 +12,7 @@ import dev.icerock.moko.widgets.style.ColorStyle
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
-import dev.icerock.moko.widgets.utils.applyBackground
+import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.setEventHandler
 import kotlinx.cinterop.readValue
@@ -34,7 +34,7 @@ actual class SystemSwitchViewFactory actual constructor(
     ): ViewBundle<WS> {
         val switch = UISwitch(frame = CGRectZero.readValue()).apply {
             translatesAutoresizingMaskIntoConstraints = false
-            applyBackground(background)
+            applyBackgroundIfNeeded(background)
 
             // TODO add color style support
         }

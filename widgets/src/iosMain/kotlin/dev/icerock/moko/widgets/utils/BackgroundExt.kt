@@ -142,7 +142,7 @@ fun UIButton.applyStateBackgroundIfNeeded(background: StateBackground?) {
     }
 }
 
-fun UIView.applyBackground(background: Background?) {
+fun UIView.applyBackgroundIfNeeded(background: Background?) {
     if (background == null) return
 
     val bgLayer = background.caLayer()
@@ -161,10 +161,10 @@ fun UIView.applyBackground(background: Background?) {
     }
 }
 
-fun UIControl.applyBackground(stateBackground: StateBackground?) {
+fun UIControl.applyStateBackgroundIfNeeded(stateBackground: StateBackground?) {
     if (stateBackground == null) return
 
     // TODO complete it
-    applyBackground(stateBackground.normal)
+    applyBackgroundIfNeeded(stateBackground.normal)
 }
  

@@ -14,7 +14,7 @@ import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
-import dev.icerock.moko.widgets.utils.applyBackground
+import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.utils.applySizeToChild
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGFloat
@@ -46,7 +46,7 @@ actual class DefaultConstraintWidgetViewFactory actual constructor(
         val container = UIView(frame = CGRectZero.readValue()).apply {
             translatesAutoresizingMaskIntoConstraints = false
 
-            applyBackground(style.background)
+            applyBackgroundIfNeeded(style.background)
         }
 
         val widgetViewBundle: Map<out Widget<out WidgetSize>, ViewBundle<out WidgetSize>> =
