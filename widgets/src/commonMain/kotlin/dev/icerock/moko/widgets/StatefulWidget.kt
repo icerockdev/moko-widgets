@@ -15,11 +15,11 @@ import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
-import dev.icerock.moko.widgets.factory.SimpleStatefulViewFactory
+import dev.icerock.moko.widgets.factory.StatefulViewFactory
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-@WidgetDef(SimpleStatefulViewFactory::class)
+@WidgetDef(StatefulViewFactory::class)
 class StatefulWidget<WS : WidgetSize, T, E> constructor(
     private val factory: ViewFactory<StatefulWidget<out WidgetSize, *, *>>,
     override val size: WS,

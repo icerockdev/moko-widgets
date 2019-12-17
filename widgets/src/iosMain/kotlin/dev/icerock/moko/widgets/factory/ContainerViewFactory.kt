@@ -6,8 +6,12 @@ package dev.icerock.moko.widgets.factory
 
 import dev.icerock.moko.widgets.ContainerWidget
 import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.view.Alignment
+import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.Edges
 import dev.icerock.moko.widgets.utils.UIViewWithIdentifier
@@ -25,9 +29,12 @@ import platform.UIKit.topAnchor
 import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
-actual class DefaultContainerWidgetViewFactory actual constructor(
-    style: Style
-) : DefaultContainerWidgetViewFactoryBase(style) {
+actual class ContainerViewFactory actual constructor(
+    private val padding: PaddingValues?,
+    private val margins: MarginValues?,
+    private val background: Background?
+) : ViewFactory<ContainerWidget<out WidgetSize>> {
+
     override fun <WS : WidgetSize> build(
         widget: ContainerWidget<out WidgetSize>,
         size: WS,
@@ -37,7 +44,7 @@ actual class DefaultContainerWidgetViewFactory actual constructor(
 
         val root = UIViewWithIdentifier().apply {
             translatesAutoresizingMaskIntoConstraints = false
-            applyBackgroundIfNeeded(style.background)
+            applyBackgroundIfNeeded(background)
 
             accessibilityIdentifier = widget.identifier()
         }
@@ -51,7 +58,7 @@ actual class DefaultContainerWidgetViewFactory actual constructor(
 
             val edges: Edges<CGFloat> = applySizeToChild(
                 rootView = root,
-                rootPadding = style.padding,
+                rootPadding = padding,
                 childView = childView,
                 childSize = childViewBundle.size,
                 childMargins = childViewBundle.margins
@@ -102,7 +109,7 @@ actual class DefaultContainerWidgetViewFactory actual constructor(
         return ViewBundle(
             view = root,
             size = size,
-            margins = style.margins
+            margins = margins
         )
     }
 }

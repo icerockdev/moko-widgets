@@ -15,16 +15,15 @@ import dev.icerock.moko.widgets.ImageWidget
 import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.StatefulWidget
 import dev.icerock.moko.widgets.core.Theme
-import dev.icerock.moko.widgets.factory.DefaultCollectionWidgetViewFactory
-import dev.icerock.moko.widgets.factory.DefaultCollectionWidgetViewFactoryBase
 import dev.icerock.moko.widgets.factory.DefaultConstraintWidgetViewFactory
 import dev.icerock.moko.widgets.factory.DefaultConstraintWidgetViewFactoryBase
 import dev.icerock.moko.widgets.factory.DefaultImageWidgetViewFactory
 import dev.icerock.moko.widgets.factory.DefaultImageWidgetViewFactoryBase
 import dev.icerock.moko.widgets.factory.DefaultInputWidgetViewFactory
 import dev.icerock.moko.widgets.factory.DefaultInputWidgetViewFactoryBase
-import dev.icerock.moko.widgets.factory.SimpleStatefulViewFactory
+import dev.icerock.moko.widgets.factory.StatefulViewFactory
 import dev.icerock.moko.widgets.factory.SystemButtonViewFactory
+import dev.icerock.moko.widgets.factory.SystemCollectionViewFactory
 import dev.icerock.moko.widgets.factory.SystemListViewFactory
 import dev.icerock.moko.widgets.factory.SystemTextViewFactory
 import dev.icerock.moko.widgets.style.background.Background
@@ -61,7 +60,7 @@ object AppTheme {
             padding = PaddingValues(8f)
         )
 
-        factory[StatefulWidget.DefaultCategory] = SimpleStatefulViewFactory(
+        factory[StatefulWidget.DefaultCategory] = StatefulViewFactory(
             padding = PaddingValues(16f)
         )
         factory[CryptoProfileScreen.Id.JoinButton] = SystemButtonViewFactory(
@@ -107,10 +106,8 @@ object AppTheme {
             }()
         )
 
-        factory[PostsCollection] = DefaultCollectionWidgetViewFactory(
-            DefaultCollectionWidgetViewFactoryBase.Style(
-                padding = PaddingValues(4f)
-            )
+        factory[PostsCollection] = SystemCollectionViewFactory(
+            padding = PaddingValues(4f)
         )
     }
 

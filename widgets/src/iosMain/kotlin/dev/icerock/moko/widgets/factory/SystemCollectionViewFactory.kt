@@ -8,7 +8,12 @@ import dev.icerock.moko.units.CollectionUnitItem
 import dev.icerock.moko.units.UnitCollectionViewDataSource
 import dev.icerock.moko.widgets.CollectionWidget
 import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Orientation
+import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.Edges
 import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
@@ -38,16 +43,20 @@ import platform.UIKit.setNeedsLayout
 import platform.UIKit.systemLayoutSizeFittingSize
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
-actual class DefaultCollectionWidgetViewFactory actual constructor(
-    style: Style
-) : DefaultCollectionWidgetViewFactoryBase(style) {
+actual class SystemCollectionViewFactory actual constructor(
+    private val orientation: Orientation,
+    private val spanCount: Int,
+    private val background: Background?,
+    private val padding: PaddingValues?,
+    private val margins: MarginValues?
+) : ViewFactory<CollectionWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
         widget: CollectionWidget<out WidgetSize>,
         size: WS,
         viewFactoryContext: ViewFactoryContext
     ): ViewBundle<WS> {
-        val layoutAndDelegate = SpanCollectionViewLayout(style.spanCount).apply {
+        val layoutAndDelegate = SpanCollectionViewLayout(spanCount).apply {
             sectionInset = UIEdgeInsetsZero.readValue()
             minimumInteritemSpacing = 0.0
             minimumLineSpacing = 0.0
@@ -59,9 +68,9 @@ actual class DefaultCollectionWidgetViewFactory actual constructor(
             backgroundColor = UIColor.clearColor
             delegate = layoutAndDelegate
 
-            applyBackgroundIfNeeded(style.background)
+            applyBackgroundIfNeeded(background)
 
-            style.padding?.toEdgeInsets()?.also { insetsValue ->
+            padding?.toEdgeInsets()?.also { insetsValue ->
                 val insets = insetsValue.useContents {
                     Edges(
                         top = this.top,
@@ -85,7 +94,6 @@ actual class DefaultCollectionWidgetViewFactory actual constructor(
 //            layoutMargins = margins
             }
 
-            // TODO add reversed support
             // TODO add orientation support
         }
         val unitDataSource = UnitCollectionViewDataSource(collectionView)
@@ -101,7 +109,7 @@ actual class DefaultCollectionWidgetViewFactory actual constructor(
         return ViewBundle(
             view = collectionView,
             size = size,
-            margins = style.margins
+            margins = margins
         )
     }
 

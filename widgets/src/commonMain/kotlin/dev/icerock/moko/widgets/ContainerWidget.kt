@@ -11,11 +11,11 @@ import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
-import dev.icerock.moko.widgets.factory.DefaultContainerWidgetViewFactory
+import dev.icerock.moko.widgets.factory.ContainerViewFactory
 import dev.icerock.moko.widgets.style.view.Alignment
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-@WidgetDef(DefaultContainerWidgetViewFactory::class)
+@WidgetDef(ContainerViewFactory::class)
 class ContainerWidget<WS : WidgetSize>(
     private val factory: ViewFactory<ContainerWidget<out WidgetSize>>,
     override val size: WS,

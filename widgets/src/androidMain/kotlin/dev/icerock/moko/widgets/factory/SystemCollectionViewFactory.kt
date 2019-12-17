@@ -11,16 +11,26 @@ import dev.icerock.moko.units.adapter.UnitsRecyclerViewAdapter
 import dev.icerock.moko.widgets.CollectionWidget
 import dev.icerock.moko.widgets.core.View
 import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.style.applyStyle
+import dev.icerock.moko.widgets.style.applyBackgroundIfNeeded
+import dev.icerock.moko.widgets.style.applyPaddingIfNeeded
+import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Orientation
 import dev.icerock.moko.widgets.style.ext.toStaggeredGridLayoutManager
+import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.view.UnitItemDecorator
 
-actual class DefaultCollectionWidgetViewFactory actual constructor(
-    style: Style
-) : DefaultCollectionWidgetViewFactoryBase(style) {
+actual class SystemCollectionViewFactory actual constructor(
+    private val orientation: Orientation,
+    private val spanCount: Int,
+    private val background: Background?,
+    private val padding: PaddingValues?,
+    private val margins: MarginValues?
+) : ViewFactory<CollectionWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
         widget: CollectionWidget<out WidgetSize>,
@@ -36,12 +46,15 @@ actual class DefaultCollectionWidgetViewFactory actual constructor(
         val recyclerView = RecyclerView(context).apply {
             clipToPadding = false
             layoutManager = StaggeredGridLayoutManager(
-                style.spanCount,
-                style.orientation.toStaggeredGridLayoutManager()
+                spanCount,
+                orientation.toStaggeredGridLayoutManager()
             )
             adapter = unitsAdapter
 
             id = widget.id::javaClass.name.hashCode()
+
+            applyPaddingIfNeeded(padding)
+            applyBackgroundIfNeeded(this@SystemCollectionViewFactory.background)
         }
 
         val resultView: View = if (haveSwipeRefreshListener) {
@@ -62,8 +75,6 @@ actual class DefaultCollectionWidgetViewFactory actual constructor(
             recyclerView
         }
 
-        resultView.applyStyle(style)
-
         widget.items.bind(lifecycleOwner) { units ->
             val list = units.orEmpty()
             unitsAdapter.units = when {
@@ -78,7 +89,7 @@ actual class DefaultCollectionWidgetViewFactory actual constructor(
         return ViewBundle(
             view = resultView,
             size = size,
-            margins = style.margins
+            margins = margins
         )
     }
 }

@@ -26,7 +26,7 @@ import platform.UIKit.addSubview
 import platform.UIKit.hidden
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
-actual class SimpleStatefulViewFactory actual constructor(
+actual class StatefulViewFactory actual constructor(
     private val background: Background?,
     private val margins: MarginValues?,
     private val padding: PaddingValues?

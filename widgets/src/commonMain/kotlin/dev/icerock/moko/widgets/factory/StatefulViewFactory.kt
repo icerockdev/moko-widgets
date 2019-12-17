@@ -11,7 +11,7 @@ import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-expect class SimpleStatefulViewFactory(
+expect class StatefulViewFactory(
     background: Background? = null,
     margins: MarginValues? = null,
     padding: PaddingValues? = null

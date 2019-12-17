@@ -66,54 +66,54 @@ actual class LinearViewFactory actual constructor(
             margins = margins
         )
     }
-}
 
-fun Pair<WidgetSize, View>.toLinearLayoutParams(
-    dm: DisplayMetrics
-): Pair<LinearLayout.LayoutParams, View> {
-    val widgetSize = this.first
-    val view = this.second
-    return when (widgetSize) {
-        is WidgetSize.Const<out SizeSpec, out SizeSpec> -> {
-            LinearLayout.LayoutParams(
-                widgetSize.width.toPlatformSize(dm),
-                widgetSize.height.toPlatformSize(dm)
-            ) to view
-        }
-        is WidgetSize.AspectByWidth<out SizeSpec> -> {
-            val lp = LinearLayout.LayoutParams(
-                widgetSize.width.toPlatformSize(dm),
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-
-            lp to AspectRatioFrameLayout(
-                context = view.context,
-                aspectRatio = widgetSize.aspectRatio,
-                aspectByWidth = true
-            ).apply {
-                addView(
-                    view,
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT
-                )
+    private fun Pair<WidgetSize, View>.toLinearLayoutParams(
+        dm: DisplayMetrics
+    ): Pair<LinearLayout.LayoutParams, View> {
+        val widgetSize = this.first
+        val view = this.second
+        return when (widgetSize) {
+            is WidgetSize.Const<out SizeSpec, out SizeSpec> -> {
+                LinearLayout.LayoutParams(
+                    widgetSize.width.toPlatformSize(dm),
+                    widgetSize.height.toPlatformSize(dm)
+                ) to view
             }
-        }
-        is WidgetSize.AspectByHeight<out SizeSpec> -> {
-            val lp = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                widgetSize.height.toPlatformSize(dm)
-            )
-
-            lp to AspectRatioFrameLayout(
-                context = view.context,
-                aspectRatio = widgetSize.aspectRatio,
-                aspectByWidth = false
-            ).apply {
-                addView(
-                    view,
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT
+            is WidgetSize.AspectByWidth<out SizeSpec> -> {
+                val lp = LinearLayout.LayoutParams(
+                    widgetSize.width.toPlatformSize(dm),
+                    ViewGroup.LayoutParams.WRAP_CONTENT
                 )
+
+                lp to AspectRatioFrameLayout(
+                    context = view.context,
+                    aspectRatio = widgetSize.aspectRatio,
+                    aspectByWidth = true
+                ).apply {
+                    addView(
+                        view,
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT
+                    )
+                }
+            }
+            is WidgetSize.AspectByHeight<out SizeSpec> -> {
+                val lp = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    widgetSize.height.toPlatformSize(dm)
+                )
+
+                lp to AspectRatioFrameLayout(
+                    context = view.context,
+                    aspectRatio = widgetSize.aspectRatio,
+                    aspectByWidth = false
+                ).apply {
+                    addView(
+                        view,
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT
+                    )
+                }
             }
         }
     }

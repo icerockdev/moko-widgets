@@ -21,7 +21,7 @@ import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.bindNotNull
 
-actual class SimpleStatefulViewFactory actual constructor(
+actual class StatefulViewFactory actual constructor(
     private val background: Background?,
     private val margins: MarginValues?,
     private val padding: PaddingValues?
@@ -37,7 +37,7 @@ actual class SimpleStatefulViewFactory actual constructor(
         val dm = context.resources.displayMetrics
 
         val root = FrameLayout(context).apply {
-            applyBackgroundIfNeeded(this@SimpleStatefulViewFactory.background)
+            applyBackgroundIfNeeded(this@StatefulViewFactory.background)
             applyPaddingIfNeeded(padding)
         }
 
