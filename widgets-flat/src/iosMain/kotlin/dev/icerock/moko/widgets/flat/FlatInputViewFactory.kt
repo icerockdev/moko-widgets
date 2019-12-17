@@ -9,19 +9,21 @@ import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import platform.UIKit.UIView
 import platform.UIKit.UIViewController
 
 actual class FlatInputViewFactory actual constructor(
     private val platformDependency: PlatformDependency,
-    textColor: Color?,
-    textSize: Int?,
-    backgroundColor: Color?
+    textStyle: TextStyle?,
+    backgroundColor: Color?,
+    private val margins: MarginValues?
 ) : ViewFactory<InputWidget<out WidgetSize>> {
+
     private val style = Style(
-        textColor = textColor,
-        textSize = textSize,
+        textStyle = textStyle,
         backgroundColor = backgroundColor
     )
 
@@ -38,7 +40,7 @@ actual class FlatInputViewFactory actual constructor(
         return ViewBundle(
             view = view,
             size = size,
-            margins = null
+            margins = margins
         )
     }
 
@@ -51,8 +53,7 @@ actual class FlatInputViewFactory actual constructor(
     }
 
     data class Style(
-        val textColor: Color?,
-        val textSize: Int?,
+        val textStyle: TextStyle?,
         val backgroundColor: Color?
     )
 }

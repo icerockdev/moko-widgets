@@ -4,42 +4,97 @@
 
 package dev.icerock.moko.widgets.flat
 
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.EditText
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.factory.SystemInputViewFactory
-import dev.icerock.moko.widgets.style.background.Background
-import dev.icerock.moko.widgets.style.background.Fill
+import dev.icerock.moko.widgets.style.applyInputType
+import dev.icerock.moko.widgets.style.applyTextStyleIfNeeded
+import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.utils.bind
 
 actual class FlatInputViewFactory actual constructor(
     platformDependency: PlatformDependency,
-    textColor: Color?,
-    textSize: Int?,
-    backgroundColor: Color?
+    private val textStyle: TextStyle?,
+    private val backgroundColor: Color?,
+    private val margins: MarginValues?
 ) : ViewFactory<InputWidget<out WidgetSize>> {
-
-    private val defaultViewFactory = SystemInputViewFactory(
-        background = Background(
-            fill = backgroundColor?.let { Fill.Solid(color = it) }
-        ),
-        textStyle = TextStyle(
-            size = textSize,
-            color = textColor
-        ),
-        underLineColor = Color(0x00000000),
-        underLineFocusedColor = Color(0x00000000)
-    )
-
     override fun <WS : WidgetSize> build(
         widget: InputWidget<out WidgetSize>,
         size: WS,
         viewFactoryContext: ViewFactoryContext
     ): ViewBundle<WS> {
-        return defaultViewFactory.build(widget, size, viewFactoryContext)
+        val context = viewFactoryContext.androidContext
+        val lifecycleOwner = viewFactoryContext.lifecycleOwner
+
+        val editText = EditText(context).apply {
+            id = widget.id::javaClass.name.hashCode()
+
+            applyTextStyleIfNeeded(textStyle)
+            widget.inputType?.also { applyInputType(it) }
+
+            setOnFocusChangeListener { _, hasFocus ->
+                if (!hasFocus) widget.field.validate()
+            }
+            addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+
+                }
+
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    if (s == null) return
+
+                    widget.field.data.value = s.toString()
+                }
+            })
+        }
+
+        backgroundColor?.also {
+            editText.setBackgroundColor(it.argb.toInt())
+        }
+
+        widget.field.data.bind(lifecycleOwner) { data ->
+            if (editText.text?.toString() == data) return@bind
+
+            editText.setText(data)
+        }
+        widget.field.error.bind(lifecycleOwner) { error ->
+            // TODO
+        }
+
+        widget.label.bind(lifecycleOwner) { editText.hint = it?.toString(context) }
+        widget.enabled?.bind(lifecycleOwner) { editText.isEnabled = it == true }
+        widget.maxLines?.bind(lifecycleOwner) { maxLines ->
+            when (maxLines) {
+                null -> editText.setSingleLine(false)
+                1 -> editText.setSingleLine(true)
+                else -> {
+                    editText.setSingleLine(false)
+                    editText.maxLines = maxLines
+                }
+            }
+        }
+
+        return ViewBundle(
+            view = editText,
+            size = size,
+            margins = margins
+        )
     }
 
     // nothing required from android side

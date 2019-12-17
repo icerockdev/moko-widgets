@@ -7,13 +7,15 @@ package dev.icerock.moko.widgets.flat
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.core.ViewFactory
+import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
 expect class FlatInputViewFactory(
     platformDependency: PlatformDependency,
-    textColor: Color? = null,
-    textSize: Int? = null,
-    backgroundColor: Color? = null
+    textStyle: TextStyle? = null,
+    backgroundColor: Color? = null,
+    margins: MarginValues? = null
 ) : ViewFactory<InputWidget<out WidgetSize>> {
     interface PlatformDependency
 }
