@@ -118,6 +118,15 @@ class ConstraintLayoutConstraintsApi(
     private val constraintLayout: ConstraintLayout,
     private val widgetViewBundle: Map<out Widget<out WidgetSize>, ViewBundle<out WidgetSize>>
 ) : ConstraintsApi {
+    private val View.safeId: Int
+        get() {
+            return if (this == constraintLayout) {
+                ConstraintLayout.LayoutParams.PARENT_ID
+            } else {
+                this.id
+            }
+        }
+
     private fun ConstraintItem.view(): View {
         return when (this) {
             ConstraintItem.Root -> constraintLayout
@@ -133,11 +142,7 @@ class ConstraintLayoutConstraintsApi(
     ) {
         val firstView = firstItem.view()
         val secondView = secondItem.view()
-        val secondId = if (secondView == constraintLayout) {
-            ConstraintLayout.LayoutParams.PARENT_ID
-        } else {
-            secondView.id
-        }
+        val secondId = secondView.safeId
 
         val clp = firstView.layoutParams as ConstraintLayout.LayoutParams
         clp.field(secondId)
@@ -235,7 +240,7 @@ class ConstraintLayoutConstraintsApi(
 
         val flp = firstView.layoutParams as ConstraintLayout.LayoutParams
 
-        val sid = secondView.id
+        val sid = secondView.safeId
 
         when (this.edge) {
             ConstraintItem.VerticalAnchor.Edge.TOP -> {
@@ -273,7 +278,7 @@ class ConstraintLayoutConstraintsApi(
 
         val flp = firstView.layoutParams as ConstraintLayout.LayoutParams
 
-        val sid = secondView.id
+        val sid = secondView.safeId
 
         when (this.edge) {
             ConstraintItem.HorizontalAnchor.Edge.LEFT -> {
