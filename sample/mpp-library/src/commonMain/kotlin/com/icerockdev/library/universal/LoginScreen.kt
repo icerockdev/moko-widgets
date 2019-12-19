@@ -26,11 +26,15 @@ import dev.icerock.moko.widgets.screen.getViewModel
 import dev.icerock.moko.widgets.style.input.InputType
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.text
 
 class LoginScreen(
     private val theme: Theme,
     private val loginViewModelFactory: () -> LoginViewModel
 ) : WidgetScreen<Args.Empty>() {
+
+    override val isKeyboardResizeContent: Boolean = true
+    override val isDismissKeyboardOnTap: Boolean = true
 
     override fun createContentWidget() = with(theme) {
         val viewModel = getViewModel(loginViewModelFactory)
@@ -68,6 +72,11 @@ class LoginScreen(
                 onTap = viewModel::onRegistrationPressed
             )
 
+            val copyrightText = +text(
+                size = WidgetSize.WrapContent,
+                text = const("IceRock Development")
+            )
+
             constraints {
                 passwordInput centerYToCenterY root
                 passwordInput leftRightToLeftRight root offset 16
@@ -87,6 +96,9 @@ class LoginScreen(
                     top = root.top,
                     bottom = emailInput.top
                 )
+
+                copyrightText centerXToCenterX root
+                copyrightText bottomToBottom root.safeArea offset 8
             }
         }
     }

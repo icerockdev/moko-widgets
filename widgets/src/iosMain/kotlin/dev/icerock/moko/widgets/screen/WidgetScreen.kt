@@ -18,4 +18,7 @@ actual abstract class WidgetScreen<Arg : Args> actual constructor() : Screen<Arg
             screen = this@WidgetScreen
         }
     }
+
+    actual open val isKeyboardResizeContent: Boolean = false
+    actual open val isDismissKeyboardOnTap: Boolean = false
 }

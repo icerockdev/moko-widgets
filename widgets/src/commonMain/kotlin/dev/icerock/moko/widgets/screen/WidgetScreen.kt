@@ -10,4 +10,7 @@ import dev.icerock.moko.widgets.style.view.WidgetSize
 
 expect abstract class WidgetScreen<Arg : Args>() : Screen<Arg> {
     abstract fun createContentWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>
+
+    open val isKeyboardResizeContent: Boolean
+    open val isDismissKeyboardOnTap: Boolean
 }
