@@ -13,23 +13,48 @@ expect abstract class NavigationScreen(
 ) : Screen<Args.Empty> {
     abstract val rootScreen: RootNavigationScreen
 
-    fun <S> routeToScreen(screen: KClass<out S>) where S : Screen<Args.Empty>, S : NavigationItem
+    fun <S> routeToScreen(
+        screen: KClass<out S>
+    ) where S : Screen<Args.Empty>, S : NavigationItem
+
     fun <A : Parcelable, S> routeToScreen(
+        screen: KClass<out S>,
+        args: A
+    ) where S : Screen<Args.Parcel<A>>, S : NavigationItem
+
+    fun <S> setScreen(
+        screen: KClass<out S>
+    ) where S : Screen<Args.Empty>, S : NavigationItem
+
+    fun <A : Parcelable, S> setScreen(
         screen: KClass<out S>,
         args: A
     ) where S : Screen<Args.Parcel<A>>, S : NavigationItem
 }
 
 @Suppress("NON_PUBLIC_PRIMARY_CONSTRUCTOR_OF_INLINE_CLASS")
-inline class RootNavigationScreen private constructor(val screenClass: KClass<out Screen<Args.Empty>>) {
+inline class RootNavigationScreen private constructor(
+    val screenClass: KClass<out Screen<Args.Empty>>
+) {
     companion object {
-        fun <S> from(screenClass: KClass<out S>): RootNavigationScreen
-                where S : Screen<Args.Empty>, S : NavigationItem {
+        fun <S> from(
+            screenClass: KClass<out S>
+        ): RootNavigationScreen where S : Screen<Args.Empty>, S : NavigationItem {
             return RootNavigationScreen(screenClass)
         }
     }
 }
 
+fun <S> KClass<out S>.rootNavigationScreen(
+): RootNavigationScreen where S : Screen<Args.Empty>, S : NavigationItem {
+    return RootNavigationScreen.from(this)
+}
+
 interface NavigationItem {
-    val navigationTitle: StringDesc
+    val navigationBar: NavigationBar
+}
+
+sealed class NavigationBar {
+    object None : NavigationBar()
+    data class Normal(val title: StringDesc) : NavigationBar()
 }

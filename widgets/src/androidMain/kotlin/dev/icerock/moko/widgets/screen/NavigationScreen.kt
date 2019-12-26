@@ -43,9 +43,7 @@ actual abstract class NavigationScreen actual constructor(
                 override fun onFragmentStarted(fm: FragmentManager, f: Fragment) {
                     super.onFragmentStarted(fm, f)
 
-                    if (f is NavigationItem) {
-                        toolbar?.title = f.navigationTitle.toString(requireContext())
-                    }
+                    updateNavigation(f)
                 }
             },
             false
@@ -96,9 +94,6 @@ actual abstract class NavigationScreen actual constructor(
 
         if (savedInstanceState == null) {
             val instance = screenFactory.instantiateScreen(rootScreen.screenClass)
-            instance as NavigationItem // RootNavigationScreen require NavigationItem interface, so here we know that
-            // instance is implementation of this interface
-            toolbar?.title = instance.navigationTitle.toString(requireContext())
             fragmentNavigation.setScreen(instance)
         }
     }
@@ -138,6 +133,35 @@ actual abstract class NavigationScreen actual constructor(
         args: A
     ) where S : Screen<Args.Parcel<A>>, S : NavigationItem {
         val instance = screenFactory.instantiateScreen(screen)
-        fragmentNavigation.routeToScreen(instance, args)
+        instance.setArgument(args)
+        fragmentNavigation.routeToScreen(instance)
+    }
+
+    actual fun <S> setScreen(screen: KClass<out S>) where S : Screen<Args.Empty>, S : NavigationItem {
+        val instance = screenFactory.instantiateScreen(screen)
+        fragmentNavigation.setScreen(instance)
+    }
+
+    actual fun <A : Parcelable, S> setScreen(
+        screen: KClass<out S>,
+        args: A
+    ) where S : Screen<Args.Parcel<A>>, S : NavigationItem {
+        val instance = screenFactory.instantiateScreen(screen)
+        instance.setArgument(args)
+        fragmentNavigation.setScreen(instance)
+    }
+
+    private fun updateNavigation(fragment: Fragment) {
+        fragment as NavigationItem
+
+        when (val navBar = fragment.navigationBar) {
+            NavigationBar.None -> {
+                toolbar?.visibility = View.GONE
+            }
+            is NavigationBar.Normal -> {
+                toolbar?.visibility = View.VISIBLE
+                toolbar?.title = navBar.title.toString(requireContext())
+            }
+        }
     }
 }

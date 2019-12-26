@@ -25,7 +25,7 @@ actual abstract class NavigationScreen actual constructor(
         // instance is implementation of this interface
         rootScreen.parent = this
         val rootViewController = rootScreen.createViewController()
-        rootViewController.navigationItem.title = rootScreen.navigationTitle.localized()
+        updateNavigation(rootScreen, rootViewController)
         controller.setViewControllers(listOf(rootViewController))
 
         navigationController = controller
@@ -52,7 +52,40 @@ actual abstract class NavigationScreen actual constructor(
     private fun <A : Args, S> pushScreen(screen: S) where S : Screen<A>, S : NavigationItem {
         screen.parent = this
         val screenViewController: UIViewController = screen.createViewController()
-        screenViewController.navigationItem.title = screen.navigationTitle.localized()
+        updateNavigation(screen, screenViewController)
         navigationController?.pushViewController(screenViewController, animated = true)
+    }
+
+    actual fun <S> setScreen(screen: KClass<out S>) where S : Screen<Args.Empty>, S : NavigationItem {
+        val newScreen = screenFactory.instantiateScreen(screen)
+        newScreen.parent = this
+        val screenViewController: UIViewController = newScreen.createViewController()
+        updateNavigation(newScreen, screenViewController)
+        navigationController?.setViewControllers(listOf(screenViewController), animated = true)
+    }
+
+    actual fun <A : Parcelable, S> setScreen(
+        screen: KClass<out S>,
+        args: A
+    ) where S : Screen<Args.Parcel<A>>, S : NavigationItem {
+        val newScreen = screenFactory.instantiateScreen(screen)
+        newScreen.parent = this
+        newScreen.setArgument(args)
+        val screenViewController: UIViewController = newScreen.createViewController()
+        updateNavigation(newScreen, screenViewController)
+        navigationController?.setViewControllers(listOf(screenViewController), animated = true)
+    }
+
+    private fun updateNavigation(
+        navigationItem: NavigationItem,
+        viewController: UIViewController
+    ) {
+        when (val navBar = navigationItem.navigationBar) {
+            is NavigationBar.None -> navigationController?.navigationBarHidden = true
+            is NavigationBar.Normal -> {
+                navigationController?.navigationBarHidden = false
+                viewController.navigationItem.title = navBar.title.localized()
+            }
+        }
     }
 }
