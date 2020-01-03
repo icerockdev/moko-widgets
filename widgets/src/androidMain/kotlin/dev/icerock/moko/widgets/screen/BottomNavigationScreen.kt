@@ -4,8 +4,8 @@
 
 package dev.icerock.moko.widgets.screen
 
-import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup
@@ -14,7 +14,6 @@ import android.widget.LinearLayout
 import androidx.core.view.ViewCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dev.icerock.moko.graphics.Color
-import dev.icerock.moko.widgets.core.View
 import dev.icerock.moko.widgets.utils.ThemeAttrs
 import dev.icerock.moko.widgets.utils.dp
 
@@ -24,8 +23,13 @@ actual abstract class BottomNavigationScreen actual constructor(
     private val fragmentNavigation = FragmentNavigation(this)
     private var bottomNavigationView: BottomNavigationView? = null
 
-    override fun createView(context: Context, parent: ViewGroup?): View {
-        val container = FrameLayout(context).apply {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): android.view.View? {
+        val context = requireContext()
+        val root = FrameLayout(context).apply {
             id = android.R.id.content
         }
         val bottomNavigation = BottomNavigationView(context).apply {
@@ -69,7 +73,7 @@ actual abstract class BottomNavigationScreen actual constructor(
             setBackgroundColor(ThemeAttrs.getContentBackgroundColor(context))
 
             addView(
-                container,
+                root,
                 LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     0,

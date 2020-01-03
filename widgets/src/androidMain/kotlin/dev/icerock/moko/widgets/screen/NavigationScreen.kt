@@ -6,6 +6,7 @@ package dev.icerock.moko.widgets.screen
 
 import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
@@ -50,8 +51,13 @@ actual abstract class NavigationScreen actual constructor(
         )
     }
 
-    override fun createView(context: Context, parent: ViewGroup?): View {
-        val container = FrameLayout(context).apply {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): android.view.View? {
+        val context = requireContext()
+        val root = FrameLayout(context).apply {
             id = android.R.id.content
         }
         val toolbar = Toolbar(context).apply {
@@ -80,7 +86,7 @@ actual abstract class NavigationScreen actual constructor(
                 )
             )
             addView(
-                container,
+                root,
                 LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT

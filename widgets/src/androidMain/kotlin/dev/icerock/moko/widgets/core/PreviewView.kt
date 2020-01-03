@@ -6,6 +6,7 @@ package dev.icerock.moko.widgets.core
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import dev.icerock.moko.widgets.screen.Screen
@@ -17,7 +18,11 @@ abstract class BasePreviewView @JvmOverloads constructor(
 
     init {
         val screen = createScreen()
-        val view = screen.createView(context, this)
+        val view = screen.onCreateView(
+            LayoutInflater.from(context),
+            this,
+            null
+        )
         val layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
