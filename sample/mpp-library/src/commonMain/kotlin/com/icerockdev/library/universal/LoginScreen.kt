@@ -7,6 +7,8 @@ package com.icerockdev.library.universal
 import com.icerockdev.library.MR
 import dev.icerock.moko.fields.FormField
 import dev.icerock.moko.fields.liveBlock
+import dev.icerock.moko.mvvm.dispatcher.EventsDispatcher
+import dev.icerock.moko.mvvm.dispatcher.EventsDispatcherOwner
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
@@ -21,8 +23,12 @@ import dev.icerock.moko.widgets.core.Value
 import dev.icerock.moko.widgets.image
 import dev.icerock.moko.widgets.input
 import dev.icerock.moko.widgets.screen.Args
+import dev.icerock.moko.widgets.screen.NavigationBar
+import dev.icerock.moko.widgets.screen.NavigationItem
 import dev.icerock.moko.widgets.screen.WidgetScreen
+import dev.icerock.moko.widgets.screen.getParentScreen
 import dev.icerock.moko.widgets.screen.getViewModel
+import dev.icerock.moko.widgets.screen.listen
 import dev.icerock.moko.widgets.style.input.InputType
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
@@ -30,14 +36,19 @@ import dev.icerock.moko.widgets.text
 
 class LoginScreen(
     private val theme: Theme,
-    private val loginViewModelFactory: () -> LoginViewModel
-) : WidgetScreen<Args.Empty>() {
+    private val loginViewModelFactory: (EventsDispatcher<LoginViewModel.EventsListener>) -> LoginViewModel
+) : WidgetScreen<Args.Empty>(), NavigationItem, LoginViewModel.EventsListener {
+
+    override val navigationBar: NavigationBar = NavigationBar.None
 
     override val isKeyboardResizeContent: Boolean = true
     override val isDismissKeyboardOnTap: Boolean = true
 
     override fun createContentWidget() = with(theme) {
-        val viewModel = getViewModel(loginViewModelFactory)
+        val viewModel = getViewModel {
+            loginViewModelFactory(createEventsDispatcher())
+        }
+        viewModel.eventsDispatcher.listen(this@LoginScreen, this@LoginScreen)
 
         constraint(size = WidgetSize.AsParent) {
             val logoImage = +image(
@@ -108,13 +119,29 @@ class LoginScreen(
         object PasswordInputId : InputWidget.Id
         object RegistrationButtonId : ButtonWidget.Id
     }
+
+    interface Parent {
+        fun routeToMain()
+    }
+
+    override fun routeToMain() {
+        getParentScreen<Parent>().routeToMain()
+    }
 }
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(
+    override val eventsDispatcher: EventsDispatcher<EventsListener>
+) : ViewModel(), EventsDispatcherOwner<LoginViewModel.EventsListener> {
     val emailField = FormField<String, StringDesc>("", liveBlock { null })
     val passwordField = FormField<String, StringDesc>("", liveBlock { null })
 
-    fun onLoginPressed() {}
+    fun onLoginPressed() {
+        eventsDispatcher.dispatchEvent { routeToMain() }
+    }
 
     fun onRegistrationPressed() {}
+
+    interface EventsListener {
+        fun routeToMain()
+    }
 }
