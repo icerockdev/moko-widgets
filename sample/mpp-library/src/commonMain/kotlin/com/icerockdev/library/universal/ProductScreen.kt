@@ -17,6 +17,7 @@ import dev.icerock.moko.widgets.core.Value
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.screen.Args
+import dev.icerock.moko.widgets.screen.NavigationBar
 import dev.icerock.moko.widgets.screen.NavigationItem
 import dev.icerock.moko.widgets.screen.WidgetScreen
 import dev.icerock.moko.widgets.screen.getArgument
@@ -31,8 +32,8 @@ class ProductScreen(
     private val theme: Theme
 ) : WidgetScreen<Args.Parcel<ProductScreen.Args>>(),
     ProductViewModel.EventsListener, NavigationItem {
-    override val navigationTitle: StringDesc
-        get() = getArgument().productId.let { "Product $it".desc() }
+    override val navigationBar
+        get() = NavigationBar.Normal(title = getArgument().productId.let { "Product $it".desc() })
 
     override fun createContentWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         val arg = getArgument()

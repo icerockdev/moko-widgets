@@ -4,7 +4,6 @@
 
 package com.icerockdev.library.universal
 
-import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.button
@@ -13,6 +12,7 @@ import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Value
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.screen.Args
+import dev.icerock.moko.widgets.screen.NavigationBar
 import dev.icerock.moko.widgets.screen.NavigationItem
 import dev.icerock.moko.widgets.screen.WidgetScreen
 import dev.icerock.moko.widgets.screen.getParentScreen
@@ -22,7 +22,7 @@ import dev.icerock.moko.widgets.style.view.WidgetSize
 class ProductsScreen(
     private val theme: Theme
 ) : WidgetScreen<Args.Empty>(), NavigationItem {
-    override val navigationTitle: StringDesc get() = "Products".desc()
+    override val navigationBar = NavigationBar.Normal(title = "Products".desc())
 
     override fun createContentWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         return with(theme) {
