@@ -16,21 +16,19 @@ import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.NavigationBar
 import dev.icerock.moko.widgets.screen.NavigationItem
-import dev.icerock.moko.widgets.screen.PlatformScreen
+import dev.icerock.moko.widgets.screen.Screen
 import dev.icerock.moko.widgets.screen.getArgument
 import dev.icerock.moko.widgets.screen.getViewModel
 import dev.icerock.moko.widgets.screen.listen
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class ProfileScreen(
-    deps: Deps<Args.Parcel<Arg>, Bundle>
-) : PlatformScreen<Args.Parcel<ProfileScreen.Arg>, ProfileScreen.Bundle>(deps),
+abstract class ProfileScreen : Screen<Args.Parcel<ProfileScreen.Arg>>(),
     ProfileViewModel.EventsListener, NavigationItem {
 
-    override val navigationBar: NavigationBar = NavigationBar.None
+    override val navigationBar: NavigationBar = NavigationBar.Normal(title = "Profile".desc())
 
-    override fun createPlatformBundle(): Bundle {
+    protected val profileViewModel: ProfileViewModel by lazy {
         val arg = getArgument()
         val viewModel = getViewModel {
             ProfileViewModel(
@@ -39,9 +37,7 @@ class ProfileScreen(
             ).apply { start() }
         }
         viewModel.eventsDispatcher.listen(this, this)
-        return Bundle(
-            viewModel = viewModel
-        )
+        return@lazy viewModel
     }
 
     override fun showTimedMessage(message: StringDesc) {
@@ -56,6 +52,10 @@ class ProfileScreen(
     data class Arg(
         val userId: Int
     ) : Parcelable
+}
+
+expect class PlatformProfileScreen(deps: Deps): ProfileScreen {
+    interface Deps
 }
 
 class ProfileViewModel(

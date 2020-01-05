@@ -13,7 +13,10 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         
-        let app = App(widgetsPlatformDeps: self)
+        let app = App(
+            widgetsPlatformDeps: self,
+            screensPlatformDeps: self
+        )
         app.setup()
         
         let screen = app.createRootScreen()
@@ -27,7 +30,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     }
 }
 
-extension AppDelegate: AppWidgetsPlatformDeps {
+extension AppDelegate: WidgetsPlatformDeps {
     func createFlatInputWidgetView(
         widget: InputWidget<WidgetSize>,
         viewController: UIViewController,
@@ -38,5 +41,15 @@ extension AppDelegate: AppWidgetsPlatformDeps {
             viewController: viewController,
             style: style
         )
+    }
+}
+
+extension AppDelegate: ScreensPlatformDeps {
+    func createViewController(
+        platformProfileScreen: PlatformProfileScreen
+    ) -> UIViewController {
+        let vc = ProfileViewController(nibName: nil, bundle: nil)
+        vc.profileScreen = platformProfileScreen
+        return vc
     }
 }

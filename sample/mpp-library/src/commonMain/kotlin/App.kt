@@ -8,6 +8,7 @@ import com.icerockdev.library.universal.CartNavigationScreen
 import com.icerockdev.library.universal.CartScreen
 import com.icerockdev.library.universal.LoginScreen
 import com.icerockdev.library.universal.LoginViewModel
+import com.icerockdev.library.universal.PlatformProfileScreen
 import com.icerockdev.library.universal.ProductScreen
 import com.icerockdev.library.universal.ProductsNavigationScreen
 import com.icerockdev.library.universal.ProductsScreen
@@ -21,7 +22,6 @@ import dev.icerock.moko.widgets.flat.FlatInputViewFactory
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.BaseApplication
 import dev.icerock.moko.widgets.screen.NavigationScreen
-import dev.icerock.moko.widgets.screen.PlatformScreen
 import dev.icerock.moko.widgets.screen.RootNavigationScreen
 import dev.icerock.moko.widgets.screen.Screen
 import dev.icerock.moko.widgets.screen.ScreenFactory
@@ -29,15 +29,13 @@ import dev.icerock.moko.widgets.screen.rootNavigationScreen
 import dev.icerock.moko.widgets.style.view.TextStyle
 import kotlin.reflect.KClass
 
-class ScreensPlatformDeps(
-    val profileScreenDeps: PlatformScreen.Deps<Args.Parcel<ProfileScreen.Arg>, ProfileScreen.Bundle>
-)
+interface WidgetsPlatformDeps : FlatInputViewFactory.PlatformDependency
+interface ScreensPlatformDeps : PlatformProfileScreen.Deps
 
 class App(
     private val widgetsPlatformDeps: WidgetsPlatformDeps,
     private val screensPlatformDeps: ScreensPlatformDeps
 ) : BaseApplication() {
-    interface WidgetsPlatformDeps : FlatInputViewFactory.PlatformDependency
 
     override fun setup() {
         val sharedFactory = SharedFactory()
@@ -64,7 +62,7 @@ class App(
 
         registerScreenFactory(LoginScreen::class) { LoginScreen(loginTheme) { LoginViewModel(it) } }
 
-        registerScreenFactory(ProfileScreen::class) { ProfileScreen(screensPlatformDeps.profileScreenDeps) }
+        registerScreenFactory(PlatformProfileScreen::class) { PlatformProfileScreen(screensPlatformDeps) }
 
         registerScreenFactory(MainNavigationScreen::class) { MainNavigationScreen(this) }
     }
@@ -80,6 +78,6 @@ class MainNavigationScreen(
     override val rootScreen: RootNavigationScreen = LoginScreen::class.rootNavigationScreen()
 
     override fun routeToMain() {
-        routeToScreen(ProfileScreen::class, ProfileScreen.Arg(userId = 9))
+        routeToScreen(PlatformProfileScreen::class, ProfileScreen.Arg(userId = 9))
     }
 }
