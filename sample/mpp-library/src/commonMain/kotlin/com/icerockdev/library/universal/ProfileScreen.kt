@@ -44,17 +44,13 @@ abstract class ProfileScreen : Screen<Args.Parcel<ProfileScreen.Arg>>(),
         println(message) // TODO should be done in #4
     }
 
-    class Bundle(
-        val viewModel: ProfileViewModel
-    )
-
     @Parcelize
     data class Arg(
         val userId: Int
     ) : Parcelable
 }
 
-expect class PlatformProfileScreen(deps: Deps): ProfileScreen {
+expect class PlatformProfileScreen(deps: Deps) : ProfileScreen {
     interface Deps
 }
 
