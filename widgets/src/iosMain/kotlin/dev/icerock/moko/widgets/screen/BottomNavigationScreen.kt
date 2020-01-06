@@ -24,7 +24,7 @@ actual abstract class BottomNavigationScreen actual constructor(
         val viewControllers = items.map { item ->
             val childScreen = screenFactory.instantiateScreen(item.screen)
             childScreen.parent = this
-            childScreen.createViewController().apply {
+            childScreen.viewController.apply {
                 tabBarItem = UITabBarItem(
                     title = item.title.localized(),
                     image = item.icon?.toUIImage(),

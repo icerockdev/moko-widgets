@@ -24,7 +24,7 @@ actual abstract class NavigationScreen actual constructor(
         rootScreen as NavigationItem // RootNavigationScreen require NavigationItem interface, so here we know that
         // instance is implementation of this interface
         rootScreen.parent = this
-        val rootViewController = rootScreen.createViewController()
+        val rootViewController = rootScreen.viewController
         updateNavigation(rootScreen, rootViewController)
         controller.setViewControllers(listOf(rootViewController))
 
@@ -51,7 +51,7 @@ actual abstract class NavigationScreen actual constructor(
 
     private fun <A : Args, S> pushScreen(screen: S) where S : Screen<A>, S : NavigationItem {
         screen.parent = this
-        val screenViewController: UIViewController = screen.createViewController()
+        val screenViewController: UIViewController = screen.viewController
         updateNavigation(screen, screenViewController)
         navigationController?.pushViewController(screenViewController, animated = true)
     }
@@ -59,7 +59,7 @@ actual abstract class NavigationScreen actual constructor(
     actual fun <S> setScreen(screen: KClass<out S>) where S : Screen<Args.Empty>, S : NavigationItem {
         val newScreen = screenFactory.instantiateScreen(screen)
         newScreen.parent = this
-        val screenViewController: UIViewController = newScreen.createViewController()
+        val screenViewController: UIViewController = newScreen.viewController
         updateNavigation(newScreen, screenViewController)
         navigationController?.setViewControllers(listOf(screenViewController), animated = true)
     }
@@ -71,7 +71,7 @@ actual abstract class NavigationScreen actual constructor(
         val newScreen = screenFactory.instantiateScreen(screen)
         newScreen.parent = this
         newScreen.setArgument(args)
-        val screenViewController: UIViewController = newScreen.createViewController()
+        val screenViewController: UIViewController = newScreen.viewController
         updateNavigation(newScreen, screenViewController)
         navigationController?.setViewControllers(listOf(screenViewController), animated = true)
     }

@@ -31,7 +31,9 @@ actual abstract class Screen<Arg : Args> {
         return EventsDispatcher()
     }
 
-    abstract fun createViewController(): UIViewController
+    protected abstract fun createViewController(): UIViewController
+
+    val viewController: UIViewController by lazy { createViewController() }
 
     actual val parentScreen: Screen<*>? get() = parent
 }
