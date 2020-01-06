@@ -45,13 +45,13 @@ import platform.UIKit.window
 class WidgetViewController : UIViewController(nibName = null, bundle = null) {
 
     lateinit var widget: Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>
-    lateinit var screen: WidgetScreen<*>
 
     lateinit var bottomConstraint: NSLayoutConstraint
 
     override fun viewDidLoad() {
         super.viewDidLoad()
 
+        val screen = getAssociatedScreen() as WidgetScreen<*>
         val viewBundle = widget.buildView(this)
         val widgetView = viewBundle.view
         widgetView.translatesAutoresizingMaskIntoConstraints = false
