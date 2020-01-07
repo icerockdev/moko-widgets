@@ -18,8 +18,10 @@ import platform.QuartzCore.CAGradientLayer
 import platform.QuartzCore.CALayer
 import platform.QuartzCore.CATransaction
 import platform.UIKit.UIButton
+import platform.UIKit.UIColor
 import platform.UIKit.UIControl
 import platform.UIKit.UIView
+import platform.UIKit.backgroundColor
 import kotlin.math.min
 
 fun Background.caLayer(): CALayer {
@@ -144,6 +146,8 @@ fun UIButton.applyStateBackgroundIfNeeded(background: StateBackground?) {
 
 fun UIView.applyBackgroundIfNeeded(background: Background?) {
     if (background == null) return
+
+    this.backgroundColor = UIColor.clearColor
 
     val bgLayer = background.caLayer()
     layer.insertSublayer(bgLayer, 0)
