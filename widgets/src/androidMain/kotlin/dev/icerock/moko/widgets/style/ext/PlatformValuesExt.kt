@@ -6,6 +6,7 @@ package dev.icerock.moko.widgets.style.ext
 
 import android.util.DisplayMetrics
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import dev.icerock.moko.widgets.style.view.SizeSpec
 
 fun SizeSpec.toPlatformSize(dm: DisplayMetrics): Int {
@@ -13,5 +14,6 @@ fun SizeSpec.toPlatformSize(dm: DisplayMetrics): Int {
         SizeSpec.WrapContent -> ViewGroup.LayoutParams.WRAP_CONTENT
         SizeSpec.AsParent -> ViewGroup.LayoutParams.MATCH_PARENT
         is SizeSpec.Exact -> (this.points * dm.density).toInt()
+        SizeSpec.MatchConstraint -> ConstraintLayout.LayoutParams.MATCH_CONSTRAINT
     }
 }

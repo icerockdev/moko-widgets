@@ -8,4 +8,5 @@ sealed class SizeSpec {
     object AsParent : SizeSpec()
     object WrapContent : SizeSpec()
     data class Exact(val points: Float) : SizeSpec()
+    object MatchConstraint: SizeSpec()
 }
