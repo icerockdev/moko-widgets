@@ -19,7 +19,9 @@ actual abstract class NavigationScreen actual constructor(
     private var navigationController: UINavigationController? = null
 
     override fun createViewController(): UIViewController {
-        val controller = UINavigationController()
+        val controller = UINavigationController().also {
+            navigationController = it
+        }
         val rootScreen = screenFactory.instantiateScreen(rootScreen.screenClass)
         rootScreen as NavigationItem // RootNavigationScreen require NavigationItem interface, so here we know that
         // instance is implementation of this interface
@@ -27,8 +29,6 @@ actual abstract class NavigationScreen actual constructor(
         val rootViewController = rootScreen.viewController
         updateNavigation(rootScreen, rootViewController)
         controller.setViewControllers(listOf(rootViewController))
-
-        navigationController = controller
 
         return controller
     }
