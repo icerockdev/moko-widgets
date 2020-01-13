@@ -14,12 +14,12 @@ import dev.icerock.moko.parcelize.Parcelize
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.screen.Args
-import dev.icerock.moko.widgets.screen.NavigationBar
-import dev.icerock.moko.widgets.screen.NavigationItem
 import dev.icerock.moko.widgets.screen.Screen
 import dev.icerock.moko.widgets.screen.getArgument
 import dev.icerock.moko.widgets.screen.getViewModel
 import dev.icerock.moko.widgets.screen.listen
+import dev.icerock.moko.widgets.screen.navigation.NavigationBar
+import dev.icerock.moko.widgets.screen.navigation.NavigationItem
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

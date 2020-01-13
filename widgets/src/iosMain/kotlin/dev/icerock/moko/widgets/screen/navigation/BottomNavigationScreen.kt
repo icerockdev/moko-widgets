@@ -13,7 +13,7 @@ import platform.UIKit.UITabBarItem
 import platform.UIKit.UIViewController
 import platform.UIKit.tabBarItem
 
-actual abstract class BottomNavigationScreen actual constructor(
+actual class BottomNavigationScreen actual constructor(
     builder: BottomNavigationItem.Builder.() -> Unit
 ) : Screen<Args.Empty>() {
     actual val items: List<BottomNavigationItem> = BottomNavigationItem.Builder().apply(builder).build()

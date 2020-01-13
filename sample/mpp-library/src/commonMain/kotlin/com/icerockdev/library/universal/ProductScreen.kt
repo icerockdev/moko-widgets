@@ -17,19 +17,21 @@ import dev.icerock.moko.widgets.core.Value
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.screen.Args
-import dev.icerock.moko.widgets.screen.NavigationBar
-import dev.icerock.moko.widgets.screen.NavigationItem
 import dev.icerock.moko.widgets.screen.WidgetScreen
 import dev.icerock.moko.widgets.screen.getArgument
-import dev.icerock.moko.widgets.screen.getParentScreen
 import dev.icerock.moko.widgets.screen.getViewModel
 import dev.icerock.moko.widgets.screen.listen
+import dev.icerock.moko.widgets.screen.navigation.NavigationBar
+import dev.icerock.moko.widgets.screen.navigation.NavigationItem
+import dev.icerock.moko.widgets.screen.navigation.Route
+import dev.icerock.moko.widgets.screen.navigation.route
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.text
 
 class ProductScreen(
-    private val theme: Theme
+    private val theme: Theme,
+    private val cartRoute: Route<Unit>
 ) : WidgetScreen<Args.Parcel<ProductScreen.Args>>(),
     ProductViewModel.EventsListener, NavigationItem {
     override val navigationBar
@@ -65,15 +67,11 @@ class ProductScreen(
     }
 
     override fun routeToCart() {
-        getParentScreen<Parent>().routeToCart()
+        cartRoute.route(this)
     }
 
     @Parcelize
     data class Args(val productId: Int) : Parcelable
-
-    interface Parent {
-        fun routeToCart()
-    }
 }
 
 class ProductViewModel(

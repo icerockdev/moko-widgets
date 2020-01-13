@@ -20,7 +20,7 @@ import dev.icerock.moko.widgets.screen.Screen
 import dev.icerock.moko.widgets.utils.ThemeAttrs
 import dev.icerock.moko.widgets.utils.dp
 
-actual abstract class BottomNavigationScreen actual constructor(
+actual class BottomNavigationScreen actual constructor(
     builder: BottomNavigationItem.Builder.() -> Unit
 ) : Screen<Args.Empty>() {
     actual val items: List<BottomNavigationItem> = BottomNavigationItem.Builder().apply(builder).build()

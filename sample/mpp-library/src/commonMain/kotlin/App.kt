@@ -3,31 +3,28 @@
  */
 
 import com.icerockdev.library.AppTheme
+import com.icerockdev.library.MR
 import com.icerockdev.library.SharedFactory
-import com.icerockdev.library.universal.CartNavigationScreen
 import com.icerockdev.library.universal.CartScreen
 import com.icerockdev.library.universal.LoginScreen
 import com.icerockdev.library.universal.LoginViewModel
 import com.icerockdev.library.universal.PlatformProfileScreen
 import com.icerockdev.library.universal.ProductScreen
-import com.icerockdev.library.universal.ProductsNavigationScreen
 import com.icerockdev.library.universal.ProductsScreen
-import com.icerockdev.library.universal.ProfileScreen
-import com.icerockdev.library.universal.RootBottomNavigationScreen
 import com.icerockdev.library.universal.WidgetsScreen
 import dev.icerock.moko.graphics.Color
+import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.flat.FlatInputViewFactory
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.BaseApplication
-import dev.icerock.moko.widgets.screen.NavigationScreen
-import dev.icerock.moko.widgets.screen.RootNavigationScreen
-import dev.icerock.moko.widgets.screen.Screen
-import dev.icerock.moko.widgets.screen.ScreenFactory
-import dev.icerock.moko.widgets.screen.rootNavigationScreen
+import dev.icerock.moko.widgets.screen.ScreenDesc
+import dev.icerock.moko.widgets.screen.navigation.BottomNavigationScreen
+import dev.icerock.moko.widgets.screen.navigation.NavigationScreen
+import dev.icerock.moko.widgets.screen.navigation.createPushRoute
+import dev.icerock.moko.widgets.screen.navigation.createRouter
 import dev.icerock.moko.widgets.style.view.TextStyle
-import kotlin.reflect.KClass
 
 interface WidgetsPlatformDeps : FlatInputViewFactory.PlatformDependency
 interface ScreensPlatformDeps : PlatformProfileScreen.Deps
@@ -37,7 +34,7 @@ class App(
     private val screensPlatformDeps: ScreensPlatformDeps
 ) : BaseApplication() {
 
-    override fun setup() {
+    override fun setup(): ScreenDesc<Args.Empty> {
         val sharedFactory = SharedFactory()
         val theme = AppTheme.baseTheme
 
@@ -52,32 +49,85 @@ class App(
             )
         }
 
-        registerScreenFactory(RootBottomNavigationScreen::class) { RootBottomNavigationScreen(this) }
-        registerScreenFactory(ProductsNavigationScreen::class) { ProductsNavigationScreen(this) }
-        registerScreenFactory(CartNavigationScreen::class) { CartNavigationScreen(this) }
-        registerScreenFactory(WidgetsScreen::class) { WidgetsScreen(sharedFactory, theme, AppTheme.PostsCollection) }
-        registerScreenFactory(ProductsScreen::class) { ProductsScreen(theme) }
-        registerScreenFactory(CartScreen::class) { CartScreen(theme) }
-        registerScreenFactory(ProductScreen::class) { ProductScreen(theme) }
+        val mainScreen = registerScreen(BottomNavigationScreen::class) {
+            val bottomRouter = Unit // createRouter()
 
-        registerScreenFactory(LoginScreen::class) { LoginScreen(loginTheme) { LoginViewModel(it) } }
+            val cartNavigation = registerScreen(NavigationScreen::class) {
+                val cartScreen = registerScreen(CartScreen::class) {
+                    CartScreen(theme)
+                }
+                NavigationScreen(
+                    initialScreen = cartScreen,
+                    router = createRouter()
+                )
+            }
 
-        registerScreenFactory(PlatformProfileScreen::class) { PlatformProfileScreen(screensPlatformDeps) }
+            val productsNavigation = registerScreen(NavigationScreen::class) {
+                val productScreen = registerScreen(ProductScreen::class) {
+                    ProductScreen(
+                        theme = theme,
+                        cartRoute = TODO() // bottomRouter.createChangeTabRoute(cartNavigation)
+                    )
+                }
+                val router = createRouter()
+                val productsScreen = registerScreen(ProductsScreen::class) {
+                    ProductsScreen(
+                        theme = theme,
+                        productRoute = router.createPushRoute(productScreen) {
+                            ProductScreen.Args(productId = it)
+                        }
+                    )
+                }
+                NavigationScreen(
+                    initialScreen = productsScreen,
+                    router = router
+                )
+            }
 
-        registerScreenFactory(MainNavigationScreen::class) { MainNavigationScreen(this) }
-    }
+            val widgetsScreen = registerScreen(WidgetsScreen::class) {
+                WidgetsScreen(sharedFactory, theme, AppTheme.PostsCollection)
+            }
 
-    override fun getRootScreen(): KClass<out Screen<Args.Empty>> {
-        return MainNavigationScreen::class
-    }
-}
+            BottomNavigationScreen {
+                tab(
+                    id = 1,
+                    title = "Products".desc(),
+                    icon = MR.images.home_black_18,
+                    screenDesc = productsNavigation
+                )
+                tab(
+                    id = 2,
+                    title = "Cart".desc(),
+                    icon = MR.images.cart_black_18,
+                    screenDesc = cartNavigation
+                )
+                tab(
+                    id = 3,
+                    title = "Widgets".desc(),
+                    icon = MR.images.stars_black_18,
+                    screenDesc = widgetsScreen
+                )
+            }
+        }
 
-class MainNavigationScreen(
-    screenFactory: ScreenFactory
-) : NavigationScreen(screenFactory), LoginScreen.Parent {
-    override val rootScreen: RootNavigationScreen = LoginScreen::class.rootNavigationScreen()
+        val profileScreen = registerScreen(PlatformProfileScreen::class) {
+            PlatformProfileScreen(screensPlatformDeps)
+        }
 
-    override fun routeToMain() {
-        routeToScreen(PlatformProfileScreen::class, ProfileScreen.Arg(userId = 9))
+        return registerScreen(NavigationScreen::class) {
+            val router = createRouter()
+
+            val loginScreen = registerScreen(LoginScreen::class) {
+                LoginScreen(
+                    theme = loginTheme,
+                    mainRoute = TODO() // router.createReplaceRoute(mainScreen)
+                ) { LoginViewModel(it) }
+            }
+
+            NavigationScreen(
+                initialScreen = loginScreen,
+                router = createRouter()
+            )
+        }
     }
 }

@@ -11,7 +11,7 @@ import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.Screen
 import dev.icerock.moko.widgets.screen.ScreenDesc
 
-expect abstract class BottomNavigationScreen(
+expect class BottomNavigationScreen(
     builder: BottomNavigationItem.Builder.() -> Unit
 ) : Screen<Args.Empty> {
     val items: List<BottomNavigationItem>
