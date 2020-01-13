@@ -13,23 +13,33 @@ import com.icerockdev.library.universal.ProductScreen
 import com.icerockdev.library.universal.ProductsScreen
 import com.icerockdev.library.universal.WidgetsScreen
 import dev.icerock.moko.graphics.Color
+import dev.icerock.moko.parcelize.Parcelable
+import dev.icerock.moko.parcelize.Parcelize
 import dev.icerock.moko.resources.desc.desc
+import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.InputWidget
+import dev.icerock.moko.widgets.button
+import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Theme
+import dev.icerock.moko.widgets.core.Value
 import dev.icerock.moko.widgets.flat.FlatInputViewFactory
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.BaseApplication
 import dev.icerock.moko.widgets.screen.ScreenDesc
 import dev.icerock.moko.widgets.screen.TypedScreenDesc
+import dev.icerock.moko.widgets.screen.WidgetScreen
 import dev.icerock.moko.widgets.screen.navigation.BottomNavigationItem
 import dev.icerock.moko.widgets.screen.navigation.BottomNavigationScreen
 import dev.icerock.moko.widgets.screen.navigation.NavigationBar
 import dev.icerock.moko.widgets.screen.navigation.NavigationItem
 import dev.icerock.moko.widgets.screen.navigation.NavigationScreen
+import dev.icerock.moko.widgets.screen.navigation.Resultable
+import dev.icerock.moko.widgets.screen.navigation.createPushResultRoute
 import dev.icerock.moko.widgets.screen.navigation.createPushRoute
 import dev.icerock.moko.widgets.screen.navigation.createReplaceRoute
 import dev.icerock.moko.widgets.screen.navigation.createRouter
 import dev.icerock.moko.widgets.style.view.TextStyle
+import dev.icerock.moko.widgets.style.view.WidgetSize
 
 interface WidgetsPlatformDeps : FlatInputViewFactory.PlatformDependency
 interface ScreensPlatformDeps : PlatformProfileScreen.Deps
@@ -123,10 +133,15 @@ class App(
         return registerScreen(NavigationScreen::class) {
             val router = createRouter()
 
+            val regScreen = registerScreen(RegisterScreen::class) {
+                RegisterScreen(theme)
+            }
+
             val loginScreen = registerScreen(LoginScreen::class) {
                 LoginScreen(
                     theme = loginTheme,
-                    mainRoute = router.createReplaceRoute(mainScreen)
+                    mainRoute = router.createReplaceRoute(mainScreen),
+                    registerRoute = router.createPushResultRoute(regScreen) { it.token }
                 ) { LoginViewModel(it) }
             }
 
@@ -136,6 +151,30 @@ class App(
             )
         }
     }
+}
+
+class RegisterScreen(
+    private val theme: Theme
+) : WidgetScreen<Args.Empty>(), Resultable<RegisterScreen.Result>, NavigationItem {
+    override val navigationBar: NavigationBar = NavigationBar.Normal(title = "Registration".desc())
+
+    override var screenResult: Result? = null
+
+    override fun createContentWidget() = with(theme) {
+        container(size = WidgetSize.AsParent) {
+            center {
+                button(
+                    size = WidgetSize.WrapContent,
+                    content = ButtonWidget.Content.Text(Value.data("set result".desc()))
+                ) {
+                    screenResult = Result("my result")
+                }
+            }
+        }
+    }
+
+    @Parcelize
+    data class Result(val token: String) : Parcelable
 }
 
 // TODO required for Android side... should be reworked if any ideas will be
