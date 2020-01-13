@@ -10,15 +10,20 @@ import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.Screen
 import dev.icerock.moko.widgets.screen.ScreenDesc
+import dev.icerock.moko.widgets.screen.ScreenFactory
 
-expect class BottomNavigationScreen(
+expect abstract class BottomNavigationScreen(
+    router: Router,
     builder: BottomNavigationItem.Builder.() -> Unit
 ) : Screen<Args.Empty> {
     val items: List<BottomNavigationItem>
 
-
     var selectedItemId: Int
     var bottomNavigationColor: Color?
+
+    class Router {
+        fun createChangeTabRoute(itemId: Int): Route<Unit>
+    }
 }
 
 data class BottomNavigationItem(

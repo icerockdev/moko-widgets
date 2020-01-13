@@ -22,12 +22,13 @@ import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.FragmentNavigation
 import dev.icerock.moko.widgets.screen.Screen
 import dev.icerock.moko.widgets.screen.TypedScreenDesc
+import dev.icerock.moko.widgets.screen.unsafeSetScreenArgument
 import dev.icerock.moko.widgets.utils.ThemeAttrs
 import dev.icerock.moko.widgets.utils.dp
 
-actual class NavigationScreen<S> actual constructor(
+actual abstract class NavigationScreen<S> actual constructor(
     private val initialScreen: TypedScreenDesc<Args.Empty, S>,
-    router: Router
+    private val router: Router
 ) : Screen<Args.Empty>() where S : Screen<Args.Empty>, S : NavigationItem {
     private val fragmentNavigation = FragmentNavigation(this)
 
@@ -53,6 +54,8 @@ actual class NavigationScreen<S> actual constructor(
             },
             false
         )
+
+        router.navigationScreen = this
     }
 
     override fun onCreateView(
@@ -129,15 +132,29 @@ actual class NavigationScreen<S> actual constructor(
         toolbar = null
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        router.navigationScreen = null
+    }
+
     actual class Router {
+        var navigationScreen: NavigationScreen<*>? = null
+
         internal actual fun <T, Arg : Args, S> createPushRouteInternal(
             destination: TypedScreenDesc<Arg, S>,
             inputMapper: (T) -> Arg
         ): Route<T> where S : Screen<Arg>, S : NavigationItem {
-            val screen = destination.instantiate()
-//            instance.setArgument(args)
-//            fragmentNavigation.routeToScreen(instance)
-            TODO()
+            return object : Route<T> {
+                override fun route(source: Screen<*>, arg: T) {
+                    val screen = destination.instantiate()
+                    val argument = inputMapper(arg)
+                    if (argument is Args.Parcel<*>) {
+                        unsafeSetScreenArgument(screen, argument.args)
+                    }
+                    navigationScreen!!.fragmentNavigation.routeToScreen(screen)
+                }
+            }
         }
 
         internal actual fun <IT, Arg : Args, OT, R : Parcelable, S> createPushResultRouteInternal(
@@ -145,20 +162,33 @@ actual class NavigationScreen<S> actual constructor(
             inputMapper: (IT) -> Arg,
             outputMapper: (R) -> OT
         ): RouteWithResult<IT, OT> where S : Screen<Arg>, S : Resultable<R>, S : NavigationItem {
-            val screen = destination.instantiate()
-//            instance.setArgument(args)
-//            fragmentNavigation.routeToScreen(instance)
-            TODO()
+            return object : RouteWithResult<IT, OT> {
+                override fun route(source: Screen<*>, arg: IT, handler: RouteHandler<OT>) {
+                    val screen = destination.instantiate()
+                    val argument = inputMapper(arg)
+                    if (argument is Args.Parcel<*>) {
+                        unsafeSetScreenArgument(screen, argument.args)
+                    }
+                    navigationScreen!!.fragmentNavigation.routeToScreen(screen)
+                    TODO()
+                }
+            }
         }
 
         internal actual fun <T, Arg : Args, S> createReplaceRouteInternal(
             destination: TypedScreenDesc<Arg, S>,
             inputMapper: (T) -> Arg
         ): Route<T> where S : Screen<Arg>, S : NavigationItem {
-            val screen = destination.instantiate()
-//            instance.setArgument(args)
-//            fragmentNavigation.setScreen(instance)
-            TODO()
+            return object : Route<T> {
+                override fun route(source: Screen<*>, arg: T) {
+                    val screen = destination.instantiate()
+                    val argument = inputMapper(arg)
+                    if (argument is Args.Parcel<*>) {
+                        unsafeSetScreenArgument(screen, argument.args)
+                    }
+                    navigationScreen!!.fragmentNavigation.setScreen(screen)
+                }
+            }
         }
     }
 

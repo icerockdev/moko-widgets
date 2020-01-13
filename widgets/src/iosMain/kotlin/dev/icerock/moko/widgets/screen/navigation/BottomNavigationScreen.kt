@@ -13,9 +13,15 @@ import platform.UIKit.UITabBarItem
 import platform.UIKit.UIViewController
 import platform.UIKit.tabBarItem
 
-actual class BottomNavigationScreen actual constructor(
+actual abstract class BottomNavigationScreen actual constructor(
+    router: Router,
     builder: BottomNavigationItem.Builder.() -> Unit
 ) : Screen<Args.Empty>() {
+
+    init {
+        router.bottomNavigationScreen = this
+    }
+
     actual val items: List<BottomNavigationItem> = BottomNavigationItem.Builder().apply(builder).build()
 
     private var tabBarController: UITabBarController? = null
@@ -55,4 +61,16 @@ actual class BottomNavigationScreen actual constructor(
                 it.tabBar.barTintColor = value?.toUIColor()
             }
         }
+
+    actual class Router {
+        var bottomNavigationScreen: BottomNavigationScreen? = null
+
+        actual fun createChangeTabRoute(itemId: Int): Route<Unit> {
+            return object : Route<Unit> {
+                override fun route(source: Screen<*>, arg: Unit) {
+                    bottomNavigationScreen!!.selectedItemId = itemId
+                }
+            }
+        }
+    }
 }

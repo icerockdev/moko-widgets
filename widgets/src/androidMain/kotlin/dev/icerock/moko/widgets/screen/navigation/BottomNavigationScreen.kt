@@ -17,16 +17,24 @@ import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.FragmentNavigation
 import dev.icerock.moko.widgets.screen.Screen
+import dev.icerock.moko.widgets.screen.ScreenFactory
 import dev.icerock.moko.widgets.utils.ThemeAttrs
 import dev.icerock.moko.widgets.utils.dp
 
-actual class BottomNavigationScreen actual constructor(
+actual abstract class BottomNavigationScreen actual constructor(
+    private val router: Router,
     builder: BottomNavigationItem.Builder.() -> Unit
 ) : Screen<Args.Empty>() {
     actual val items: List<BottomNavigationItem> = BottomNavigationItem.Builder().apply(builder).build()
 
     private val fragmentNavigation = FragmentNavigation(this)
     private var bottomNavigationView: BottomNavigationView? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        router.bottomNavigationScreen = this
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -112,6 +120,12 @@ actual class BottomNavigationScreen actual constructor(
         bottomNavigationView = null
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        router.bottomNavigationScreen = null
+    }
+
     actual var selectedItemId: Int
         get() = bottomNavigationView?.selectedItemId ?: -1
         set(value) {
@@ -129,4 +143,16 @@ actual class BottomNavigationScreen actual constructor(
                 }
             }
         }
+
+    actual class Router {
+        var bottomNavigationScreen: BottomNavigationScreen? = null
+
+        actual fun createChangeTabRoute(itemId: Int): Route<Unit> {
+            return object : Route<Unit> {
+                override fun route(source: Screen<*>, arg: Unit) {
+                    bottomNavigationScreen!!.selectedItemId = itemId
+                }
+            }
+        }
+    }
 }

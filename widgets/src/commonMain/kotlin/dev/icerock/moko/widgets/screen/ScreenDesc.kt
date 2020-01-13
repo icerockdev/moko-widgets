@@ -4,14 +4,11 @@
 
 package dev.icerock.moko.widgets.screen
 
-import kotlin.reflect.KClass
-
 interface ScreenDesc<Arg : Args> {
     fun instantiate(): Screen<Arg>
 }
 
 class TypedScreenDesc<Arg : Args, T : Screen<Arg>>(
-    private val kClass: KClass<T>,
     private val factory: ScreenFactory<Arg, T>.() -> T
 ) : ScreenDesc<Arg> {
     override fun instantiate(): T = factory.invoke(ScreenFactory())

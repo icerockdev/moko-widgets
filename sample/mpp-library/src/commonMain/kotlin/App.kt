@@ -20,9 +20,14 @@ import dev.icerock.moko.widgets.flat.FlatInputViewFactory
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.BaseApplication
 import dev.icerock.moko.widgets.screen.ScreenDesc
+import dev.icerock.moko.widgets.screen.TypedScreenDesc
+import dev.icerock.moko.widgets.screen.navigation.BottomNavigationItem
 import dev.icerock.moko.widgets.screen.navigation.BottomNavigationScreen
+import dev.icerock.moko.widgets.screen.navigation.NavigationBar
+import dev.icerock.moko.widgets.screen.navigation.NavigationItem
 import dev.icerock.moko.widgets.screen.navigation.NavigationScreen
 import dev.icerock.moko.widgets.screen.navigation.createPushRoute
+import dev.icerock.moko.widgets.screen.navigation.createReplaceRoute
 import dev.icerock.moko.widgets.screen.navigation.createRouter
 import dev.icerock.moko.widgets.style.view.TextStyle
 
@@ -49,38 +54,39 @@ class App(
             )
         }
 
-        val mainScreen = registerScreen(BottomNavigationScreen::class) {
-            val bottomRouter = Unit // createRouter()
+        val mainScreen = registerScreen(MainBottomNavigationScreen::class) {
+            val bottomRouter = createRouter()
 
             val cartNavigation = registerScreen(NavigationScreen::class) {
                 val cartScreen = registerScreen(CartScreen::class) {
                     CartScreen(theme)
                 }
-                NavigationScreen(
+                CartNavigationScreen(
                     initialScreen = cartScreen,
                     router = createRouter()
                 )
             }
 
             val productsNavigation = registerScreen(NavigationScreen::class) {
+                val navigationRouter = createRouter()
+
                 val productScreen = registerScreen(ProductScreen::class) {
                     ProductScreen(
                         theme = theme,
-                        cartRoute = TODO() // bottomRouter.createChangeTabRoute(cartNavigation)
+                        cartRoute = bottomRouter.createChangeTabRoute(2)
                     )
                 }
-                val router = createRouter()
                 val productsScreen = registerScreen(ProductsScreen::class) {
                     ProductsScreen(
                         theme = theme,
-                        productRoute = router.createPushRoute(productScreen) {
+                        productRoute = navigationRouter.createPushRoute(productScreen) {
                             ProductScreen.Args(productId = it)
                         }
                     )
                 }
-                NavigationScreen(
+                ProductsNavigationScreen(
                     initialScreen = productsScreen,
-                    router = router
+                    router = navigationRouter
                 )
             }
 
@@ -88,7 +94,7 @@ class App(
                 WidgetsScreen(sharedFactory, theme, AppTheme.PostsCollection)
             }
 
-            BottomNavigationScreen {
+            MainBottomNavigationScreen(bottomRouter) {
                 tab(
                     id = 1,
                     title = "Products".desc(),
@@ -120,14 +126,31 @@ class App(
             val loginScreen = registerScreen(LoginScreen::class) {
                 LoginScreen(
                     theme = loginTheme,
-                    mainRoute = TODO() // router.createReplaceRoute(mainScreen)
+                    mainRoute = router.createReplaceRoute(mainScreen)
                 ) { LoginViewModel(it) }
             }
 
-            NavigationScreen(
+            RootNavigationScreen(
                 initialScreen = loginScreen,
-                router = createRouter()
+                router = router
             )
         }
     }
 }
+
+class MainBottomNavigationScreen(
+    router: Router,
+    builder: BottomNavigationItem.Builder.() -> Unit
+) : BottomNavigationScreen(router, builder), NavigationItem {
+    override val navigationBar: NavigationBar = NavigationBar.None
+}
+
+class RootNavigationScreen(initialScreen: TypedScreenDesc<Args.Empty, LoginScreen>, router: Router) :
+    NavigationScreen<LoginScreen>(initialScreen, router)
+
+class ProductsNavigationScreen(initialScreen: TypedScreenDesc<Args.Empty, ProductsScreen>, router: Router) :
+    NavigationScreen<ProductsScreen>(initialScreen, router)
+
+class CartNavigationScreen(initialScreen: TypedScreenDesc<Args.Empty, CartScreen>, router: Router) :
+    NavigationScreen<CartScreen>(initialScreen, router)
+

@@ -9,6 +9,7 @@ import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.BaseApplication
 import dev.icerock.moko.widgets.screen.ScreenDesc
+import dev.icerock.moko.widgets.screen.TypedScreenDesc
 import dev.icerock.moko.widgets.screen.WidgetScreen
 import dev.icerock.moko.widgets.screen.navigation.NavigationBar
 import dev.icerock.moko.widgets.screen.navigation.NavigationItem
@@ -151,7 +152,7 @@ class NewApp : BaseApplication() {
                 )
             }
 
-            NavigationScreen(
+            SplashNavigationScreen(
                 initialScreen = splashScreen,
                 router = router
             )
@@ -159,4 +160,7 @@ class NewApp : BaseApplication() {
 
         return navigationScreen
     }
+
+    class SplashNavigationScreen(initialScreen: TypedScreenDesc<Args.Empty, SplashScreen>, router: Router) :
+        NavigationScreen<SplashScreen>(initialScreen, router)
 }

@@ -11,7 +11,7 @@ import dev.icerock.moko.widgets.screen.Screen
 import dev.icerock.moko.widgets.screen.ScreenFactory
 import dev.icerock.moko.widgets.screen.TypedScreenDesc
 
-expect class NavigationScreen<S>(
+expect abstract class NavigationScreen<S>(
     initialScreen: TypedScreenDesc<Args.Empty, S>,
     router: Router
 ) : Screen<Args.Empty> where S : Screen<Args.Empty>, S : NavigationItem {
@@ -87,13 +87,6 @@ fun <IT, P : Parcelable, OT, R : Parcelable, S> NavigationScreen.Router.createPu
         { Args.Parcel(inputMapper(it)) },
         outputMapper
     )
-
-// Router
-
-@Suppress("unused")
-fun ScreenFactory<Args.Empty, NavigationScreen<*>>.createRouter(): NavigationScreen.Router {
-    TODO()
-}
 
 // NavigationItem
 

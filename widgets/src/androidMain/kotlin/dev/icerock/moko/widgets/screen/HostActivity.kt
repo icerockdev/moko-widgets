@@ -17,9 +17,9 @@ abstract class HostActivity : AppCompatActivity() {
                 val kclass = Class.forName(className, true, classLoader).kotlin
                 val screenKlass = kclass as? KClass<out Screen<Args.Empty>>
                 return if (screenKlass != null) {
-                    TODO()
-//                    application
-//                    getScreenFactory().instantiateScreen(screenKlass)
+                    val screenDesc = application.registeredScreens[screenKlass]
+                        ?: error("screen not registered $screenKlass")
+                    screenDesc.instantiate()
                 } else {
                     super.instantiate(classLoader, className)
                 }

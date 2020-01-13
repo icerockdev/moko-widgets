@@ -122,10 +122,6 @@ class LoginScreen(
         object RegistrationButtonId : ButtonWidget.Id
     }
 
-    interface Parent {
-        fun routeToMain()
-    }
-
     override fun routeToMain() {
         mainRoute.route(this)
     }
