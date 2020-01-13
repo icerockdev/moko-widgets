@@ -138,6 +138,7 @@ class App(
     }
 }
 
+// TODO required for Android side... should be reworked if any ideas will be
 class MainBottomNavigationScreen(
     router: Router,
     builder: BottomNavigationItem.Builder.() -> Unit
