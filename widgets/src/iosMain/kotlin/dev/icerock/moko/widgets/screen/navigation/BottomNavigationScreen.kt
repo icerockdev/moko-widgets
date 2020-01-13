@@ -2,19 +2,21 @@
  * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
 
-package dev.icerock.moko.widgets.screen
+package dev.icerock.moko.widgets.screen.navigation
 
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.graphics.toUIColor
+import dev.icerock.moko.widgets.screen.Args
+import dev.icerock.moko.widgets.screen.Screen
 import platform.UIKit.UITabBarController
 import platform.UIKit.UITabBarItem
 import platform.UIKit.UIViewController
 import platform.UIKit.tabBarItem
 
 actual abstract class BottomNavigationScreen actual constructor(
-    private val screenFactory: ScreenFactory
+    builder: BottomNavigationItem.Builder.() -> Unit
 ) : Screen<Args.Empty>() {
-    actual abstract val items: List<BottomNavigationItem>
+    actual val items: List<BottomNavigationItem> = BottomNavigationItem.Builder().apply(builder).build()
 
     private var tabBarController: UITabBarController? = null
 
@@ -22,8 +24,7 @@ actual abstract class BottomNavigationScreen actual constructor(
         val controller = UITabBarController()
         val items = items
         val viewControllers = items.map { item ->
-            val childScreen = screenFactory.instantiateScreen(item.screen)
-            childScreen.parent = this
+            val childScreen = item.screenDesc.instantiate()
             childScreen.viewController.apply {
                 tabBarItem = UITabBarItem(
                     title = item.title.localized(),

@@ -6,23 +6,13 @@ package dev.icerock.moko.widgets.screen
 
 import kotlin.reflect.KClass
 
-abstract class BaseApplication : ScreenFactory {
-    private val screenFactoryMap = mutableMapOf<KClass<out Screen<*>>, () -> Screen<*>>()
+abstract class BaseApplication {
+    abstract fun setup(): ScreenDesc<Args.Empty>
 
-    fun <A : Args, T : Screen<A>> registerScreenFactory(screenClass: KClass<T>, screenFactory: () -> T) {
-        screenFactoryMap[screenClass] = screenFactory
-    }
+    val rootScreen: ScreenDesc<Args.Empty> = setup()
 
-    override fun <A : Args, T : Screen<A>> instantiateScreen(screenClass: KClass<T>): T {
-        // FIXME Caused by: java.lang.IllegalStateException: screen class com.bumptech.glide.manager.SupportRequestManagerFragment (Kotlin reflection is not available) not registered
-        val factory = screenFactoryMap[screenClass] ?: throw IllegalStateException("screen $screenClass not registered")
-        return factory.invoke() as T
-    }
-
-    abstract fun setup()
-    abstract fun getRootScreen(): KClass<out Screen<Args.Empty>>
-
-    fun createRootScreen(): Screen<Args.Empty> {
-        return instantiateScreen(getRootScreen())
-    }
+    fun <Arg : Args, T : Screen<Arg>> registerScreen(
+        kClass: KClass<T>,
+        factory: ScreenFactory<Arg, T>.() -> T
+    ): TypedScreenDesc<Arg, T> = TypedScreenDesc(kClass, factory)
 }

@@ -15,8 +15,6 @@ actual abstract class Screen<Arg : Args> {
     val viewModelStore = mutableMapOf<Any, ViewModel>()
     // TODO private?
     var arg: Arg? = null
-    // TODO private?
-    var parent: Screen<*>? = null
 
     actual inline fun <reified VM : ViewModel, Key : Any> getViewModel(
         key: Key,
@@ -48,8 +46,6 @@ actual abstract class Screen<Arg : Args> {
             _viewController = WeakReference(vc)
             return vc
         }
-
-    actual val parentScreen: Screen<*>? get() = parent
 }
 
 fun UIViewController.getAssociatedScreen(): Screen<*>? = getAssociatedObject(this) as? Screen<*>

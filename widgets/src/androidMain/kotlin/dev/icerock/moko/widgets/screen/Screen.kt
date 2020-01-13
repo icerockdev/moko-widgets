@@ -28,9 +28,4 @@ actual abstract class Screen<Arg : Args> : Fragment() {
         val mainExecutor = Executor { mainHandler.post(it) }
         return EventsDispatcher(mainExecutor)
     }
-
-    actual val parentScreen: Screen<*>?
-        get() {
-            return parentFragment as? Screen<*>
-        }
 }

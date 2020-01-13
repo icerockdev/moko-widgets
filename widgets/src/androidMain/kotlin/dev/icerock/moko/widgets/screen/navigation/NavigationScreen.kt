@@ -2,7 +2,7 @@
  * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
 
-package dev.icerock.moko.widgets.screen
+package dev.icerock.moko.widgets.screen.navigation
 
 import android.content.Context
 import android.os.Bundle
@@ -18,13 +18,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.widgets.core.View
+import dev.icerock.moko.widgets.screen.Args
+import dev.icerock.moko.widgets.screen.FragmentNavigation
+import dev.icerock.moko.widgets.screen.Screen
+import dev.icerock.moko.widgets.screen.TypedScreenDesc
 import dev.icerock.moko.widgets.utils.ThemeAttrs
 import dev.icerock.moko.widgets.utils.dp
-import kotlin.reflect.KClass
 
-actual abstract class NavigationScreen actual constructor(
-    private val screenFactory: ScreenFactory
-) : Screen<Args.Empty>() {
+actual class NavigationScreen<S> actual constructor(
+    private val initialScreen: TypedScreenDesc<Args.Empty, S>,
+    router: Router
+) : Screen<Args.Empty>() where S : Screen<Args.Empty>, S : NavigationItem {
     private val fragmentNavigation = FragmentNavigation(this)
 
     private var toolbar: Toolbar? = null
@@ -99,7 +103,7 @@ actual abstract class NavigationScreen actual constructor(
         super.onViewCreated(view, savedInstanceState)
 
         if (savedInstanceState == null) {
-            val instance = screenFactory.instantiateScreen(rootScreen.screenClass)
+            val instance = initialScreen.instantiate()
             fragmentNavigation.setScreen(instance)
         }
     }
@@ -125,36 +129,37 @@ actual abstract class NavigationScreen actual constructor(
         toolbar = null
     }
 
-    actual abstract val rootScreen: RootNavigationScreen
+    actual class Router {
+        internal actual fun <T, Arg : Args, S> createPushRouteInternal(
+            destination: TypedScreenDesc<Arg, S>,
+            inputMapper: (T) -> Arg
+        ): Route<T> where S : Screen<Arg>, S : NavigationItem {
+            val screen = destination.instantiate()
+//            instance.setArgument(args)
+//            fragmentNavigation.routeToScreen(instance)
+            TODO()
+        }
 
-    actual fun <S> routeToScreen(
-        screen: KClass<out S>
-    ) where S : Screen<Args.Empty>, S : NavigationItem {
-        val instance = screenFactory.instantiateScreen(screen)
-        fragmentNavigation.routeToScreen(instance)
-    }
+        internal actual fun <IT, Arg : Args, OT, R : Parcelable, S> createPushResultRouteInternal(
+            destination: TypedScreenDesc<Arg, S>,
+            inputMapper: (IT) -> Arg,
+            outputMapper: (R) -> OT
+        ): RouteWithResult<IT, OT> where S : Screen<Arg>, S : Resultable<R>, S : NavigationItem {
+            val screen = destination.instantiate()
+//            instance.setArgument(args)
+//            fragmentNavigation.routeToScreen(instance)
+            TODO()
+        }
 
-    actual fun <A : Parcelable, S> routeToScreen(
-        screen: KClass<out S>,
-        args: A
-    ) where S : Screen<Args.Parcel<A>>, S : NavigationItem {
-        val instance = screenFactory.instantiateScreen(screen)
-        instance.setArgument(args)
-        fragmentNavigation.routeToScreen(instance)
-    }
-
-    actual fun <S> setScreen(screen: KClass<out S>) where S : Screen<Args.Empty>, S : NavigationItem {
-        val instance = screenFactory.instantiateScreen(screen)
-        fragmentNavigation.setScreen(instance)
-    }
-
-    actual fun <A : Parcelable, S> setScreen(
-        screen: KClass<out S>,
-        args: A
-    ) where S : Screen<Args.Parcel<A>>, S : NavigationItem {
-        val instance = screenFactory.instantiateScreen(screen)
-        instance.setArgument(args)
-        fragmentNavigation.setScreen(instance)
+        internal actual fun <T, Arg : Args, S> createReplaceRouteInternal(
+            destination: TypedScreenDesc<Arg, S>,
+            inputMapper: (T) -> Arg
+        ): Route<T> where S : Screen<Arg>, S : NavigationItem {
+            val screen = destination.instantiate()
+//            instance.setArgument(args)
+//            fragmentNavigation.setScreen(instance)
+            TODO()
+        }
     }
 
     private fun updateNavigation(fragment: Fragment) {

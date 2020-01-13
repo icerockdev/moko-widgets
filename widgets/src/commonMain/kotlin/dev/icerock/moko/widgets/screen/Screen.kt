@@ -12,14 +12,6 @@ expect abstract class Screen<Arg : Args>() {
     inline fun <reified VM : ViewModel, Key : Any> getViewModel(key: Key, crossinline viewModelFactory: () -> VM): VM
 
     fun <T : Any> createEventsDispatcher(): EventsDispatcher<T>
-
-    val parentScreen: Screen<*>?
-}
-
-inline fun <reified S> Screen<*>.getParentScreen(): S {
-    require(parentScreen is S) { "parent not instance of ${S::class}" }
-    @Suppress("USELESS_CAST")
-    return parentScreen as S
 }
 
 inline fun <Arg : Args, reified VM : ViewModel> Screen<Arg>.getViewModel(crossinline viewModelFactory: () -> VM): VM {
