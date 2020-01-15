@@ -84,6 +84,8 @@ actual abstract class NavigationScreen<S> actual constructor(
                     }
                     TODO("output")
                 }
+
+                override val resultMapper: (Parcelable) -> OT = { outputMapper(it as R) }
             }
         }
 

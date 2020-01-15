@@ -33,9 +33,14 @@ actual abstract class NavigationScreen<S> actual constructor(
     private val fragmentNavigation = FragmentNavigation(this)
 
     private var toolbar: Toolbar? = null
+    private var currentChildId: Int = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (savedInstanceState != null) {
+            currentChildId = savedInstanceState.getInt(CURRENT_SCREEN_ID_KEY, currentChildId)
+        }
 
         childFragmentManager.addOnBackStackChangedListener {
             toolbar?.navigationIcon = if (childFragmentManager.backStackEntryCount > 0) {
@@ -46,10 +51,39 @@ actual abstract class NavigationScreen<S> actual constructor(
         }
         childFragmentManager.registerFragmentLifecycleCallbacks(
             object : FragmentManager.FragmentLifecycleCallbacks() {
+                private val detachHandlers = mutableMapOf<Fragment, Runnable>()
+
                 override fun onFragmentStarted(fm: FragmentManager, f: Fragment) {
                     super.onFragmentStarted(fm, f)
 
                     updateNavigation(f)
+                }
+
+                override fun onFragmentAttached(fm: FragmentManager, f: Fragment, context: Context) {
+                    super.onFragmentAttached(fm, f, context)
+
+                    if (f is Resultable<*> && f is Screen<*>) {
+                        val resultTarget = f.screenId
+
+                        if (resultTarget != null) {
+                            val target = fm.fragments
+                                .filterIsInstance<Screen<*>>()
+                                .firstOrNull { it.resultCode == resultTarget }
+
+                            detachHandlers[f] = Runnable {
+                                val code = f.requestCode
+                                val result = f.screenResult
+
+                                target!!.routeHandlers[code]!!.invoke(result)
+                            }
+                        }
+                    }
+                }
+
+                override fun onFragmentDetached(fm: FragmentManager, f: Fragment) {
+                    super.onFragmentDetached(fm, f)
+
+                    detachHandlers[f]?.run()
                 }
             },
             false
@@ -138,6 +172,12 @@ actual abstract class NavigationScreen<S> actual constructor(
         router.navigationScreen = null
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putInt(CURRENT_SCREEN_ID_KEY, currentChildId)
+    }
+
     actual class Router {
         var navigationScreen: NavigationScreen<*>? = null
 
@@ -162,15 +202,28 @@ actual abstract class NavigationScreen<S> actual constructor(
             inputMapper: (IT) -> Arg,
             outputMapper: (R) -> OT
         ): RouteWithResult<IT, OT> where S : Screen<Arg>, S : Resultable<R>, S : NavigationItem {
+
             return object : RouteWithResult<IT, OT> {
+                override val resultMapper: (Parcelable) -> OT = {
+                    @Suppress("UNCHECKED_CAST")
+                    outputMapper(it as R)
+                }
+
                 override fun route(source: Screen<*>, arg: IT, handler: RouteHandler<OT>) {
+                    val navigationScreen = navigationScreen!!
+
                     val screen = destination.instantiate()
+                    screen.requestCode = handler.requestCode
+                    screen.screenId = navigationScreen.currentChildId++
+
+                    source.resultCode = screen.screenId
+
                     val argument = inputMapper(arg)
                     if (argument is Args.Parcel<*>) {
                         unsafeSetScreenArgument(screen, argument.args)
                     }
-                    navigationScreen!!.fragmentNavigation.routeToScreen(screen)
-                    TODO()
+
+                    navigationScreen.fragmentNavigation.routeToScreen(screen)
                 }
             }
         }
@@ -204,5 +257,9 @@ actual abstract class NavigationScreen<S> actual constructor(
                 toolbar?.title = navBar.title.toString(requireContext())
             }
         }
+    }
+
+    private companion object {
+        const val CURRENT_SCREEN_ID_KEY = "navigation:screen:current_id"
     }
 }

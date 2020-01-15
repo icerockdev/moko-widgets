@@ -12,6 +12,8 @@ interface Resultable<R : Parcelable> {
 }
 
 interface RouteWithResult<Arg, T> {
+    val resultMapper: (Parcelable) -> T
+
     fun route(
         source: Screen<*>,
         arg: Arg,

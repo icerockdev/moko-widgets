@@ -7,10 +7,12 @@ package dev.icerock.moko.widgets.screen.navigation
 import dev.icerock.moko.widgets.screen.Screen
 import kotlin.properties.ReadOnlyProperty
 
-expect interface RouteHandler<T>
+actual interface RouteHandler<T>
 
-expect fun <T> Screen<*>.registerRouteHandler(
+actual fun <T> Screen<*>.registerRouteHandler(
     code: Int,
     route: RouteWithResult<*, T>,
     handler: (T?) -> Unit
-): ReadOnlyProperty<Screen<*>, RouteHandler<T>>
+): ReadOnlyProperty<Screen<*>, RouteHandler<T>> {
+    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+}

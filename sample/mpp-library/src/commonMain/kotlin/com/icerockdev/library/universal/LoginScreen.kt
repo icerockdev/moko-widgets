@@ -44,7 +44,7 @@ class LoginScreen(
     private val loginViewModelFactory: (EventsDispatcher<LoginViewModel.EventsListener>) -> LoginViewModel
 ) : WidgetScreen<Args.Empty>(), NavigationItem, LoginViewModel.EventsListener {
 
-    private val registerHandler by registerRouteHandler<String> {
+    private val registerHandler by registerRouteHandler(9, registerRoute) {
         println("registration respond with $it")
     }
 
