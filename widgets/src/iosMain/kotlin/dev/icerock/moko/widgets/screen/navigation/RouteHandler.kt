@@ -6,13 +6,25 @@ package dev.icerock.moko.widgets.screen.navigation
 
 import dev.icerock.moko.widgets.screen.Screen
 import kotlin.properties.ReadOnlyProperty
+import kotlin.reflect.KProperty
 
-actual interface RouteHandler<T>
+actual interface RouteHandler<T> {
+    fun handleResult(data: T?)
+}
 
 actual fun <T> Screen<*>.registerRouteHandler(
-    code: Int,
-    route: RouteWithResult<*, T>,
+    code: Int, // required for android
+    route: RouteWithResult<*, T>, // required for android
     handler: (T?) -> Unit
 ): ReadOnlyProperty<Screen<*>, RouteHandler<T>> {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    val routeHandler = object : RouteHandler<T> {
+        override fun handleResult(data: T?) {
+            handler(data)
+        }
+    }
+    return object : ReadOnlyProperty<Screen<*>, RouteHandler<T>> {
+        override fun getValue(thisRef: Screen<*>, property: KProperty<*>): RouteHandler<T> {
+            return routeHandler
+        }
+    }
 }

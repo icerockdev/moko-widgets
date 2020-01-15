@@ -83,7 +83,7 @@ actual abstract class NavigationScreen<S> actual constructor(
                 override fun onFragmentDetached(fm: FragmentManager, f: Fragment) {
                     super.onFragmentDetached(fm, f)
 
-                    detachHandlers[f]?.run()
+                    detachHandlers.remove(f)?.run()
                 }
             },
             false

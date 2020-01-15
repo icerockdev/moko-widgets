@@ -8,9 +8,14 @@ import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.Screen
 import dev.icerock.moko.widgets.screen.TypedScreenDesc
+import dev.icerock.moko.widgets.screen.getAssociatedScreen
+import kotlinx.coroutines.Runnable
 import platform.UIKit.UINavigationController
+import platform.UIKit.UINavigationControllerDelegateProtocol
 import platform.UIKit.UIViewController
 import platform.UIKit.navigationItem
+import platform.darwin.NSObject
+import kotlin.native.ref.WeakReference
 
 actual abstract class NavigationScreen<S> actual constructor(
     private val initialScreen: TypedScreenDesc<Args.Empty, S>,
@@ -22,14 +27,15 @@ actual abstract class NavigationScreen<S> actual constructor(
     }
 
     private var navigationController: UINavigationController? = null
+    private val controllerDelegate = ControllerDelegate(this)
 
     override fun createViewController(): UIViewController {
         val controller = UINavigationController().also {
             navigationController = it
+            it.delegate = controllerDelegate
         }
         val rootScreen = initialScreen.instantiate()
         val rootViewController = rootScreen.viewController
-        updateNavigation(rootScreen, rootViewController)
         controller.setViewControllers(listOf(rootViewController))
 
         return controller
@@ -61,7 +67,6 @@ actual abstract class NavigationScreen<S> actual constructor(
                     newScreen.arg = inputMapper(arg)
                     val screenViewController: UIViewController = newScreen.viewController
                     navigationScreen!!.run {
-                        updateNavigation(newScreen, screenViewController)
                         navigationController?.pushViewController(screenViewController, animated = true)
                     }
                 }
@@ -75,14 +80,21 @@ actual abstract class NavigationScreen<S> actual constructor(
         ): RouteWithResult<IT, OT> where S : Screen<Arg>, S : Resultable<R>, S : NavigationItem {
             return object : RouteWithResult<IT, OT> {
                 override fun route(source: Screen<*>, arg: IT, handler: RouteHandler<OT>) {
+                    val navigationScreen = navigationScreen!!
+
                     val newScreen = destination.instantiate()
                     newScreen.arg = inputMapper(arg)
                     val screenViewController: UIViewController = newScreen.viewController
-                    navigationScreen!!.run {
-                        updateNavigation(newScreen, screenViewController)
+
+                    navigationScreen.controllerDelegate.resultCallbacks[screenViewController] = Runnable {
+                        val result = newScreen.screenResult
+                        val mappedResult = result?.let(outputMapper)
+                        handler.handleResult(mappedResult)
+                    }
+
+                    navigationScreen.run {
                         navigationController?.pushViewController(screenViewController, animated = true)
                     }
-                    TODO("output")
                 }
 
                 override val resultMapper: (Parcelable) -> OT = { outputMapper(it as R) }
@@ -99,10 +111,34 @@ actual abstract class NavigationScreen<S> actual constructor(
                     newScreen.arg = inputMapper(arg)
                     val screenViewController: UIViewController = newScreen.viewController
                     navigationScreen!!.run {
-                        updateNavigation(newScreen, screenViewController)
                         navigationController?.setViewControllers(listOf(screenViewController), animated = true)
                     }
                 }
+            }
+        }
+    }
+
+    private class ControllerDelegate(navigationScreen: NavigationScreen<*>) : NSObject(),
+        UINavigationControllerDelegateProtocol {
+        private val navigationScreen = WeakReference(navigationScreen)
+        val resultCallbacks = mutableMapOf<UIViewController, Runnable>()
+
+        override fun navigationController(
+            navigationController: UINavigationController,
+            willShowViewController: UIViewController,
+            animated: Boolean
+        ) {
+            val stack = navigationController.viewControllers
+            resultCallbacks.filterKeys { stack.contains(it).not() }
+                .forEach { (vc, runnable) ->
+                    runnable.run()
+                    resultCallbacks.remove(vc)
+                }
+            val controller = willShowViewController
+            val screen = controller.getAssociatedScreen() ?: return
+
+            if (screen is NavigationItem) {
+                navigationScreen.get()?.updateNavigation(screen, controller)
             }
         }
     }
