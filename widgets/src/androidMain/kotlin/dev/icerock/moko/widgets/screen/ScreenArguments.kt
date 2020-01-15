@@ -16,7 +16,12 @@ actual fun <T : Parcelable> Screen<Args.Parcel<T>>.getArgument(): T {
 }
 
 fun <T : Parcelable> Screen<Args.Parcel<T>>.setArgument(arg: T) {
-    arguments = Bundle().apply {
+    unsafeSetScreenArgument(this, arg)
+}
+
+// required for NavigationScreen arguments in routing
+fun unsafeSetScreenArgument(screen: Screen<*>, arg: Parcelable) {
+    screen.arguments = Bundle().apply {
         putParcelable(sScreenArgsParameter, arg)
     }
 }

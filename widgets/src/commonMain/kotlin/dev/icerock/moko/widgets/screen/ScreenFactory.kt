@@ -4,8 +4,4 @@
 
 package dev.icerock.moko.widgets.screen
 
-import kotlin.reflect.KClass
-
-interface ScreenFactory {
-    fun <A : Args, T : Screen<A>> instantiateScreen(screenClass: KClass<T>): T
-}
+class ScreenFactory<Arg : Args, T : Screen<Arg>>

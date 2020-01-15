@@ -19,7 +19,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         )
         app.setup()
         
-        let screen = app.createRootScreen()
+        let screen = app.rootScreen.instantiate()
         let rootViewController = screen.createViewController()
         
         window = UIWindow(frame: UIScreen.main.bounds)

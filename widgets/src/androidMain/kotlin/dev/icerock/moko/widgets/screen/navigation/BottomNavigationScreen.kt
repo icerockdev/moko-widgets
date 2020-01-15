@@ -2,7 +2,7 @@
  * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
 
-package dev.icerock.moko.widgets.screen
+package dev.icerock.moko.widgets.screen.navigation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,14 +14,27 @@ import android.widget.LinearLayout
 import androidx.core.view.ViewCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dev.icerock.moko.graphics.Color
+import dev.icerock.moko.widgets.screen.Args
+import dev.icerock.moko.widgets.screen.FragmentNavigation
+import dev.icerock.moko.widgets.screen.Screen
+import dev.icerock.moko.widgets.screen.ScreenFactory
 import dev.icerock.moko.widgets.utils.ThemeAttrs
 import dev.icerock.moko.widgets.utils.dp
 
 actual abstract class BottomNavigationScreen actual constructor(
-    private val screenFactory: ScreenFactory
+    private val router: Router,
+    builder: BottomNavigationItem.Builder.() -> Unit
 ) : Screen<Args.Empty>() {
+    actual val items: List<BottomNavigationItem> = BottomNavigationItem.Builder().apply(builder).build()
+
     private val fragmentNavigation = FragmentNavigation(this)
     private var bottomNavigationView: BottomNavigationView? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        router.bottomNavigationScreen = this
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,7 +64,7 @@ actual abstract class BottomNavigationScreen actual constructor(
             item.icon?.also { menuItem.setIcon(it.drawableResId) }
 
             menuItemAction[menuItem] = {
-                val instance = screenFactory.instantiateScreen(item.screen)
+                val instance = item.screenDesc.instantiate()
                 fragmentNavigation.routeToScreen(instance)
             }
         }
@@ -95,7 +108,7 @@ actual abstract class BottomNavigationScreen actual constructor(
 
         if (savedInstanceState == null) {
             items.firstOrNull()?.let {
-                val instance = screenFactory.instantiateScreen(it.screen)
+                val instance = it.screenDesc.instantiate()
                 fragmentNavigation.setScreen(instance)
             }
         }
@@ -107,7 +120,11 @@ actual abstract class BottomNavigationScreen actual constructor(
         bottomNavigationView = null
     }
 
-    actual abstract val items: List<BottomNavigationItem>
+    override fun onDestroy() {
+        super.onDestroy()
+
+        router.bottomNavigationScreen = null
+    }
 
     actual var selectedItemId: Int
         get() = bottomNavigationView?.selectedItemId ?: -1
@@ -126,4 +143,16 @@ actual abstract class BottomNavigationScreen actual constructor(
                 }
             }
         }
+
+    actual class Router {
+        var bottomNavigationScreen: BottomNavigationScreen? = null
+
+        actual fun createChangeTabRoute(itemId: Int): Route<Unit> {
+            return object : Route<Unit> {
+                override fun route(source: Screen<*>, arg: Unit) {
+                    bottomNavigationScreen!!.selectedItemId = itemId
+                }
+            }
+        }
+    }
 }

@@ -23,12 +23,15 @@ import dev.icerock.moko.widgets.core.Value
 import dev.icerock.moko.widgets.image
 import dev.icerock.moko.widgets.input
 import dev.icerock.moko.widgets.screen.Args
-import dev.icerock.moko.widgets.screen.NavigationBar
-import dev.icerock.moko.widgets.screen.NavigationItem
 import dev.icerock.moko.widgets.screen.WidgetScreen
-import dev.icerock.moko.widgets.screen.getParentScreen
 import dev.icerock.moko.widgets.screen.getViewModel
 import dev.icerock.moko.widgets.screen.listen
+import dev.icerock.moko.widgets.screen.navigation.NavigationBar
+import dev.icerock.moko.widgets.screen.navigation.NavigationItem
+import dev.icerock.moko.widgets.screen.navigation.Route
+import dev.icerock.moko.widgets.screen.navigation.RouteWithResult
+import dev.icerock.moko.widgets.screen.navigation.registerRouteHandler
+import dev.icerock.moko.widgets.screen.navigation.route
 import dev.icerock.moko.widgets.style.input.InputType
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
@@ -36,8 +39,14 @@ import dev.icerock.moko.widgets.text
 
 class LoginScreen(
     private val theme: Theme,
+    private val mainRoute: Route<Unit>,
+    private val registerRoute: RouteWithResult<Unit, String>,
     private val loginViewModelFactory: (EventsDispatcher<LoginViewModel.EventsListener>) -> LoginViewModel
 ) : WidgetScreen<Args.Empty>(), NavigationItem, LoginViewModel.EventsListener {
+
+    private val registerHandler by registerRouteHandler(9, registerRoute) {
+        println("registration respond with $it")
+    }
 
     override val navigationBar: NavigationBar = NavigationBar.None
 
@@ -120,12 +129,12 @@ class LoginScreen(
         object RegistrationButtonId : ButtonWidget.Id
     }
 
-    interface Parent {
-        fun routeToMain()
+    override fun routeToMain() {
+        mainRoute.route(this)
     }
 
-    override fun routeToMain() {
-        getParentScreen<Parent>().routeToMain()
+    override fun routeToRegistration() {
+        registerRoute.route(this, registerHandler)
     }
 }
 
@@ -139,9 +148,12 @@ class LoginViewModel(
         eventsDispatcher.dispatchEvent { routeToMain() }
     }
 
-    fun onRegistrationPressed() {}
+    fun onRegistrationPressed() {
+        eventsDispatcher.dispatchEvent { routeToRegistration() }
+    }
 
     interface EventsListener {
         fun routeToMain()
+        fun routeToRegistration()
     }
 }
