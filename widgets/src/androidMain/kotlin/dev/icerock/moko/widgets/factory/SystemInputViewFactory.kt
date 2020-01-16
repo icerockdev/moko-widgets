@@ -147,6 +147,7 @@ actual class SystemInputViewFactory actual constructor(
                     FontStyle.BOLD -> Typeface.DEFAULT_BOLD
                     FontStyle.MEDIUM -> Typeface.DEFAULT
                 }
+                collapsingTextHelper.expandedTypeface = collapsingTextHelper.collapsedTypeface
             }
         }
 
