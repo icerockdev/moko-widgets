@@ -142,7 +142,7 @@ class LoginViewModel(
     override val eventsDispatcher: EventsDispatcher<EventsListener>
 ) : ViewModel(), EventsDispatcherOwner<LoginViewModel.EventsListener> {
     val emailField = FormField<String, StringDesc>("", liveBlock { null })
-    val passwordField = FormField<String, StringDesc>("", liveBlock { null })
+    val passwordField = FormField<String, StringDesc>("", liveBlock { "blahbags".desc() })
 
     fun onLoginPressed() {
         eventsDispatcher.dispatchEvent { routeToMain() }

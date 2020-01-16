@@ -54,7 +54,7 @@ class App(
         val theme = AppTheme.baseTheme
 
         val loginTheme = Theme(AppTheme.loginScreen) {
-            factory[InputWidget.DefaultCategory] = FlatInputViewFactory(
+            factory[LoginScreen.Id.EmailInputId] = FlatInputViewFactory(
                 platformDependency = widgetsPlatformDeps,
                 textStyle = TextStyle(
                     size = 16,

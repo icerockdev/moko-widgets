@@ -116,9 +116,19 @@ object AppTheme {
 
         factory[InputWidget.DefaultCategory] = SystemInputViewFactory(
             margins = MarginValues(bottom = 8f),
-            underLineColor = Color(0xe5e6eeFF),
+            underLineColor = Color(0x000000DD),
+            underLineFocusedColor = Color(0x3949ABFF),
             labelTextStyle = TextStyle(
-                color = Color(0x777889FF)
+                size = 12,
+                color = Color(0x3949ABFF)
+            ),
+            errorTextStyle = TextStyle(
+                size = 12,
+                color = Color(0xB00020FF)
+            ),
+            textStyle = TextStyle(
+                size = 16,
+                color = Color(0x000000FF)
             )
         )
 
