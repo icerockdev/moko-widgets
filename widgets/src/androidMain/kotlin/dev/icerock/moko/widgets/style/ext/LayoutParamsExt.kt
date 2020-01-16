@@ -17,10 +17,10 @@ fun ViewGroup.MarginLayoutParams.applyMargin(
     margin: MarginValues
 ) {
     setMargins(
-        margin.start.dp(context),
-        margin.top.dp(context),
-        margin.end.dp(context),
-        margin.bottom.dp(context)
+        margin.start.dp(context).toInt(),
+        margin.top.dp(context).toInt(),
+        margin.end.dp(context).toInt(),
+        margin.bottom.dp(context).toInt()
     )
 }
 
@@ -29,18 +29,18 @@ fun ViewGroup.MarginLayoutParams.applyMargin(
     margin: MarginValues
 ) {
     setMargins(
-        margin.start.dp(dm),
-        margin.top.dp(dm),
-        margin.end.dp(dm),
-        margin.bottom.dp(dm)
+        margin.start.dp(dm).toInt(),
+        margin.top.dp(dm).toInt(),
+        margin.end.dp(dm).toInt(),
+        margin.bottom.dp(dm).toInt()
     )
 }
 
 fun View.applyPadding(padding: PaddingValues) {
     setPadding(
-        padding.start.dp(context),
-        padding.top.dp(context),
-        padding.end.dp(context),
-        padding.bottom.dp(context)
+        padding.start.dp(context).toInt(),
+        padding.top.dp(context).toInt(),
+        padding.end.dp(context).toInt(),
+        padding.bottom.dp(context).toInt()
     )
 }
