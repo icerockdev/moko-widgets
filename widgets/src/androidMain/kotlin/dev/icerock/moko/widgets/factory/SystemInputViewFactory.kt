@@ -6,6 +6,7 @@ package dev.icerock.moko.widgets.factory
 
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
+import android.graphics.Typeface
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.ViewGroup
@@ -26,6 +27,7 @@ import dev.icerock.moko.widgets.style.applyInputType
 import dev.icerock.moko.widgets.style.applyPaddingIfNeeded
 import dev.icerock.moko.widgets.style.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.view.FontStyle
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.TextStyle
@@ -140,6 +142,12 @@ actual class SystemInputViewFactory actual constructor(
             if (it.size != null) {
                 collapsingTextHelper.collapsedTextSize = it.size.toFloat().sp(context)
             }
+            if(it.fontStyle != null) {
+                collapsingTextHelper.collapsedTypeface = when(it.fontStyle) {
+                    FontStyle.BOLD -> Typeface.DEFAULT_BOLD
+                    FontStyle.MEDIUM -> Typeface.DEFAULT
+                }
+            }
         }
 
         widget.field.data.bind(lifecycleOwner) { data ->
@@ -151,15 +159,9 @@ actual class SystemInputViewFactory actual constructor(
             textInputLayout.error = error?.toString(context)
             textInputLayout.isErrorEnabled = error != null
 
-            if (textInputLayout.isErrorEnabled && errorTextStyle != null) {
-                if (errorTextStyle.color != null) {
-                    val errorColor = ColorStateList.valueOf(errorTextStyle.color.argb.toInt())
-                    textInputLayout.setErrorTextColor(errorColor)
-                }
-                if (errorTextStyle.size != null) {
-                    val errorText = textInputLayout.findViewById<TextView>(R.id.textinput_error)
-                    errorText.textSize = errorTextStyle.size.toFloat()
-                }
+            if (textInputLayout.isErrorEnabled) {
+                val errorText = textInputLayout.findViewById<TextView>(R.id.textinput_error)
+                errorText.applyTextStyleIfNeeded(errorTextStyle)
             }
         }
 
