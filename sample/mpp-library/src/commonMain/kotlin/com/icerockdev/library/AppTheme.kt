@@ -131,7 +131,8 @@ object AppTheme {
             ),
             textStyle = TextStyle(
                 size = 16,
-                color = Color(0x000000FF)
+                color = Color(0x000000FF),
+                fontStyle = FontStyle.MEDIUM
             )
         )
 
