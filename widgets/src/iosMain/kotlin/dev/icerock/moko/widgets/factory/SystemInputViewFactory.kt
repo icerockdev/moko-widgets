@@ -100,6 +100,10 @@ actual class SystemInputViewFactory actual constructor(
                     widget.field.data.value = newValue
                 }
             }
+
+            onFocusLost = {
+                widget.field.validate()
+            }
         }
 
         widget.enabled?.bind { textField.enabled = it }
@@ -144,6 +148,7 @@ actual class SystemInputViewFactory actual constructor(
                 textField.enabled = value
             }
         var textChanged: ((text: String) -> Unit)? = null
+        var onFocusLost: (() -> Unit)? = null
 
         var selectedColor: UIColor = UIColor.blackColor
             set(value) {
@@ -288,6 +293,7 @@ actual class SystemInputViewFactory actual constructor(
                 underlineColor = deselectedColor,
                 isPlaceholderInTopState = textField.text.isNullOrEmpty().not()
             )
+            onFocusLost?.invoke()
         }
 
         override fun accessibilityIdentifier(): String? {

@@ -27,6 +27,7 @@ import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.background.Shape
 import dev.icerock.moko.widgets.style.background.StateBackground
 import dev.icerock.moko.widgets.style.view.Colors
+import dev.icerock.moko.widgets.style.view.FontStyle
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.TextAlignment
@@ -120,15 +121,18 @@ object AppTheme {
             underLineFocusedColor = Color(0x3949ABFF),
             labelTextStyle = TextStyle(
                 size = 12,
-                color = Color(0x3949ABFF)
+                color = Color(0x3949ABFF),
+                fontStyle = FontStyle.BOLD
             ),
             errorTextStyle = TextStyle(
                 size = 12,
-                color = Color(0xB00020FF)
+                color = Color(0xB00020FF),
+                fontStyle = FontStyle.BOLD
             ),
             textStyle = TextStyle(
                 size = 16,
-                color = Color(0x000000FF)
+                color = Color(0x000000FF),
+                fontStyle = FontStyle.MEDIUM
             )
         )
 
