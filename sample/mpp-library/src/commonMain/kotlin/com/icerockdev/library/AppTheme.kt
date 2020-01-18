@@ -161,28 +161,22 @@ object AppTheme {
         )
 
         factory[LoginScreen.Id.RegistrationButtonId] = SystemButtonViewFactory(
-            margins = MarginValues(top = 16f),
-            padding = platformSpecific(
-                ios = PaddingValues(start = 16f, end = 16f),
-                android = null
-            ),
             background = {
                 val bg: (Color) -> Background = {
                     Background(
                         fill = Fill.Solid(it),
-                        border = Border(
-                            color = Color(0xF2F2F8FF),
-                            width = 2f
-                        ),
-                        shape = Shape.Rectangle(cornerRadius = corners)
+                        shape = Shape.Rectangle(
+                            cornerRadius = corners
+                        )
                     )
                 }
                 StateBackground(
-                    normal = bg(Colors.white),
-                    pressed = bg(Color(0xEEEEEEFF)),
-                    disabled = bg(Color(0xBBBBBBFF))
+                    normal = bg(Color(0xFFFFFF00)),
+                    pressed = bg(Color(0xE7E7EEEE)),
+                    disabled = bg(Color(0x000000BB))
                 )
             }.invoke(),
+            margins = MarginValues(top = 16f),
             textStyle = TextStyle(
                 color = Color(0x777889FF)
             )
