@@ -4,6 +4,8 @@
 
 package dev.icerock.moko.widgets.factory
 
+import android.animation.StateListAnimator
+import android.os.Build
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
@@ -60,6 +62,9 @@ actual class SystemButtonViewFactory actual constructor(
 
         button.applyStateBackgroundIfNeeded(background)
         button.applyPaddingIfNeeded(padding)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            button.stateListAnimator = null
+        }
 
         widget.enabled?.bind(viewFactoryContext.lifecycleOwner) { enabled ->
             button.isEnabled = enabled == true
