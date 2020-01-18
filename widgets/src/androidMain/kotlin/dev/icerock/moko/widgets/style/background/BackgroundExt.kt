@@ -5,9 +5,13 @@
 package dev.icerock.moko.widgets.style.background
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.RippleDrawable
 import android.graphics.drawable.StateListDrawable
+import android.os.Build
 import dev.icerock.moko.widgets.style.ext.toPlatformOrientation
 import kotlin.math.ceil
 
@@ -16,14 +20,20 @@ fun StateBackground.buildBackground(context: Context) = StateListDrawable().also
         intArrayOf(-android.R.attr.state_enabled),
         disabled.buildBackground(context)
     )
-    // TODO Ripple?
-//    val rippleDrawable = RippleDrawable(
-//        ColorStateList.valueOf(Color.GRAY),
-//        it.buildBackground(ctx), null
-//    )
+    val pressedBg = pressed.buildBackground(context).let {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            RippleDrawable(
+                ColorStateList.valueOf(Color.GRAY),
+                it,
+                null
+            )
+        } else {
+            it
+        }
+    }
     selector.addState(
         intArrayOf(android.R.attr.state_pressed),
-        pressed.buildBackground(context)
+        pressedBg
     )
     selector.addState(
         intArrayOf(),
