@@ -179,7 +179,8 @@ object AppTheme {
             margins = MarginValues(top = 16f),
             textStyle = TextStyle(
                 color = Color(0x777889FF)
-            )
+            ),
+            androidElevationEnabled = false
         )
     }
 
