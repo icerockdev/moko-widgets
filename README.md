@@ -1,12 +1,12 @@
 ![moko-widgets](https://user-images.githubusercontent.com/5010169/70204294-93a45900-1752-11ea-9bb6-820d514ceef9.png)  
-[![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![Download](https://api.bintray.com/packages/icerockdev/moko/moko-widgets/images/download.svg) ](https://bintray.com/icerockdev/moko/moko-units/_latestVersion) ![kotlin-version](https://img.shields.io/badge/kotlin-1.3.60-orange)
+[![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![Download](https://api.bintray.com/packages/icerockdev/moko/moko-widgets/images/download.svg) ](https://bintray.com/icerockdev/moko/moko-widgets/_latestVersion) ![kotlin-version](https://img.shields.io/badge/kotlin-1.3.61-orange)
 
 # Mobile Kotlin widgets
 This is a Kotlin MultiPlatform library that provides declarative UI and application screens management
  in common code. You can implement full application for Android and iOS only from common code with it.  
 
 ## Current status
-Current version - `0.1.0-dev-5`. Dev version is not tested in production tasks yet, API can be changed and
+Current version - `0.1.0-dev-6`. Dev version is not tested in production tasks yet, API can be changed and
  bugs may be found. But dev version is chance to test limits of API and concepts to feedback and improve lib.
  We open for any feedback and ideas (go to issues or #moko at [kotlinlang.slack.com](https://kotlinlang.slack.com))!
 
@@ -210,6 +210,8 @@ val loginScreen = Theme(baseTheme) {
   - 0.1.0-dev-3
   - 0.1.0-dev-4
   - 0.1.0-dev-5
+- kotlin 1.3.61
+  - 0.1.0-dev-6
 
 ## Installation
 root build.gradle  
@@ -224,7 +226,7 @@ allprojects {
 project build.gradle
 ```groovy
 dependencies {
-    commonMainApi("dev.icerock.moko:widgets:0.1.0-dev-5")
+    commonMainApi("dev.icerock.moko:widgets:0.1.0-dev-6")
 }
 ```
 
@@ -242,7 +244,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "dev.icerock.moko.widgets:gradle-plugin:0.1.0-dev-5"
+        classpath "dev.icerock.moko.widgets:gradle-plugin:0.1.0-dev-6"
     }
 }
 
@@ -263,14 +265,10 @@ apply plugin: "dev.icerock.mobile.multiplatform-widgets-generator"
 Multiplatform application definition at `mpp-library/src/commonMain/kotlin/App.kt`:
 ```kotlin
 class App : BaseApplication() {
-    override fun setup() {
+    override fun setup(): ScreenDesc<Args.Empty> {
         val theme = Theme()
 
-        registerScreenFactory(HelloWorldScreen::class) { HelloWorldScreen(theme) }
-    }
-
-    override fun getRootScreen(): KClass<out Screen<Args.Empty>> {
-        return HelloWorldScreen::class
+        return registerScreen(HelloWorldScreen::class) { HelloWorldScreen(theme) }
     }
 }
 ```
@@ -304,14 +302,12 @@ Result:
 Setup theme config:
 ```kotlin
 val theme = Theme {
-    textFactory = DefaultTextWidgetViewFactory(
-        DefaultTextWidgetViewFactoryBase.Style(
-            textStyle = TextStyle(
-                size = 24,
-                color = Colors.black
-            ),
-            padding = PaddingValues(padding = 16f)
-        )
+    factory[TextWidget.DefaultCategory] = SystemTextViewFactory(
+        textStyle = TextStyle(
+            size = 24,
+            color = Colors.black
+        ),
+        padding = PaddingValues(padding = 16f)
     )
 }
 ```
