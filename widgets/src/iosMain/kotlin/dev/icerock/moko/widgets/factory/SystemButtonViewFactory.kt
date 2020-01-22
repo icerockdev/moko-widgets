@@ -31,7 +31,8 @@ actual class SystemButtonViewFactory actual constructor(
     private val textStyle: TextStyle?,
     private val isAllCaps: Boolean?,
     private val padding: PaddingValues?,
-    private val margins: MarginValues?
+    private val margins: MarginValues?,
+    androidElevationEnabled: Boolean?
 ) : ViewFactory<ButtonWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(

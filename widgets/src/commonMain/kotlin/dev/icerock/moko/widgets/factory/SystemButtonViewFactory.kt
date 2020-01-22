@@ -17,5 +17,6 @@ expect class SystemButtonViewFactory(
     textStyle: TextStyle? = null,
     isAllCaps: Boolean? = null,
     padding: PaddingValues? = null,
-    margins: MarginValues? = null
+    margins: MarginValues? = null,
+    androidElevationEnabled: Boolean? = null
 ) : ViewFactory<ButtonWidget<out WidgetSize>>
