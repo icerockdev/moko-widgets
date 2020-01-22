@@ -9,28 +9,33 @@ import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.parcelize.Parcelize
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
+import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Theme
+import dev.icerock.moko.widgets.core.Value
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.screen.Args
-import dev.icerock.moko.widgets.screen.NavigationItem
 import dev.icerock.moko.widgets.screen.WidgetScreen
 import dev.icerock.moko.widgets.screen.getArgument
-import dev.icerock.moko.widgets.screen.getParentScreen
 import dev.icerock.moko.widgets.screen.getViewModel
 import dev.icerock.moko.widgets.screen.listen
+import dev.icerock.moko.widgets.screen.navigation.NavigationBar
+import dev.icerock.moko.widgets.screen.navigation.NavigationItem
+import dev.icerock.moko.widgets.screen.navigation.Route
+import dev.icerock.moko.widgets.screen.navigation.route
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.text
 
 class ProductScreen(
-    private val theme: Theme
+    private val theme: Theme,
+    private val cartRoute: Route<Unit>
 ) : WidgetScreen<Args.Parcel<ProductScreen.Args>>(),
     ProductViewModel.EventsListener, NavigationItem {
-    override val navigationTitle: StringDesc
-        get() = getArgument().productId.let { "Product $it".desc() }
+    override val navigationBar
+        get() = NavigationBar.Normal(title = getArgument().productId.let { "Product $it".desc() })
 
     override fun createContentWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         val arg = getArgument()
@@ -52,7 +57,7 @@ class ProductScreen(
                         )
                         +button(
                             size = WidgetSize.WrapContent,
-                            text = const("Add to Cart"),
+                            content = ButtonWidget.Content.Text(Value.data("Add to cart".desc())),
                             onTap = viewModel::onCartPressed
                         )
                     }
@@ -62,15 +67,11 @@ class ProductScreen(
     }
 
     override fun routeToCart() {
-        getParentScreen<Parent>().routeToCart()
+        cartRoute.route(this)
     }
 
     @Parcelize
     data class Args(val productId: Int) : Parcelable
-
-    interface Parent {
-        fun routeToCart()
-    }
 }
 
 class ProductViewModel(

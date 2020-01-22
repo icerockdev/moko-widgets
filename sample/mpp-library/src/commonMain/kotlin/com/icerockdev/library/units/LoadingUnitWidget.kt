@@ -8,10 +8,7 @@ import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
-import dev.icerock.moko.widgets.factory.DefaultProgressBarWidgetViewFactory
-import dev.icerock.moko.widgets.factory.DefaultProgressBarWidgetViewFactoryBase
 import dev.icerock.moko.widgets.progressBar
-import dev.icerock.moko.widgets.style.view.Colors
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.units.UnitItemRoot
@@ -34,12 +31,12 @@ class LoadingUnitWidget(
                         size = WidgetSize.Const(
                             width = SizeSpec.Exact(24f),
                             height = SizeSpec.Exact(24f)
-                        ),
-                        factory = DefaultProgressBarWidgetViewFactory(
-                            DefaultProgressBarWidgetViewFactoryBase.Style(
-                                color = Colors.black
-                            )
-                        )
+                        )//,
+//                        factory = DefaultProgressBarWidgetViewFactory(
+//                            DefaultProgressBarWidgetViewFactoryBase.Style(
+//                                color = Colors.black
+//                            )
+//                        )
                     )
                 }
             }

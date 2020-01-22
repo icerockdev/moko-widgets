@@ -8,7 +8,7 @@ import android.widget.EditText
 import dev.icerock.moko.widgets.style.input.InputType
 import com.redmadrobot.inputmask.MaskedTextChangedListener
 
-internal fun EditText.applyInputType(
+fun EditText.applyInputType(
     type: InputType,
     maskFilledListener: ((String, Boolean) -> Unit) = { _, _ -> }
 ) {

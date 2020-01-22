@@ -16,21 +16,20 @@ import dev.icerock.moko.widgets.CollectionWidget
 import dev.icerock.moko.widgets.collection
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
-import dev.icerock.moko.widgets.factory.DefaultCollectionWidgetViewFactory
-import dev.icerock.moko.widgets.factory.DefaultCollectionWidgetViewFactoryBase
-import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
 class PostsScreen(
     private val theme: Theme,
-    private val viewModel: PostsViewModelContract
+    private val viewModel: PostsViewModelContract,
+    private val collectionCategory: CollectionWidget.Category
 ) {
     fun createWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         return with(theme) {
             collection(
                 size = WidgetSize.AsParent,
                 id = Id.Collection,
+                category = collectionCategory,
                 items = viewModel.posts.map { posts ->
                     posts.map { post ->
                         PostCollectionUnitItem(
@@ -39,12 +38,7 @@ class PostsScreen(
                             data = post
                         ) as CollectionUnitItem
                     }
-                },
-                factory = DefaultCollectionWidgetViewFactory(
-                    DefaultCollectionWidgetViewFactoryBase.Style(
-                        padding = PaddingValues(4f)
-                    )
-                )
+                }
             )
         }
     }

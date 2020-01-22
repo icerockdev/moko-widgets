@@ -11,13 +11,16 @@ import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
+import dev.icerock.moko.widgets.factory.LinearViewFactory
+import dev.icerock.moko.widgets.style.background.Orientation
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-@WidgetDef
+@WidgetDef(LinearViewFactory::class)
 class LinearWidget<WS : WidgetSize>(
     private val factory: ViewFactory<LinearWidget<out WidgetSize>>,
     override val size: WS,
     override val id: Id?,
+    val orientation: Orientation = Orientation.VERTICAL,
     @Suppress("RemoveRedundantQualifierName")
     builder: LinearWidget.ChildrenBuilder.() -> Unit
 ) : Widget<WS>(), OptionalId<LinearWidget.Id> {
@@ -44,5 +47,8 @@ class LinearWidget<WS : WidgetSize>(
         }
     }
 
-    interface Id : Theme.Id
+    interface Id : Theme.Id<LinearWidget<out WidgetSize>>
+    interface Category : Theme.Category<LinearWidget<out WidgetSize>>
+
+    object DefaultCategory : Category
 }

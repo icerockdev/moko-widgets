@@ -4,6 +4,8 @@
 
 package dev.icerock.moko.widgets.core
 
+import kotlin.reflect.KClass
+
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.SOURCE)
-annotation class WidgetDef
+annotation class WidgetDef(val defaultFactory: KClass<out ViewFactory<*>>)

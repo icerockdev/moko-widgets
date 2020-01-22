@@ -9,9 +9,6 @@ import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
-import dev.icerock.moko.widgets.factory.DefaultLinearWidgetViewFactory
-import dev.icerock.moko.widgets.factory.DefaultLinearWidgetViewFactoryBase
-import dev.icerock.moko.widgets.style.background.Orientation
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
@@ -24,12 +21,7 @@ fun Theme.switchLabeled(
 ): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.WrapContent>> {
     return linear(
         size = WidgetSize.WidthAsParentHeightWrapContent,
-        id = linearId,
-        factory = DefaultLinearWidgetViewFactory(
-            DefaultLinearWidgetViewFactoryBase.Style(
-                orientation = Orientation.HORIZONTAL
-            )
-        )
+        id = linearId
     ) {
         +switch(
             size = WidgetSize.WrapContent,

@@ -17,6 +17,7 @@ import dev.icerock.moko.widgets.ScrollWidget
 import dev.icerock.moko.widgets.TextWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.core.Theme
+import dev.icerock.moko.widgets.core.Value
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.input
 import dev.icerock.moko.widgets.linear
@@ -30,6 +31,7 @@ class CryptoProfileScreen(
     private val theme: Theme,
     private val viewModel: CryptoProfileContract
 ) {
+    @Suppress("LongMethod")
     fun createWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         return with(theme) {
             scroll(
@@ -73,7 +75,7 @@ class CryptoProfileScreen(
                     +button(
                         size = WidgetSize.WidthAsParentHeightWrapContent,
                         id = Id.JoinButton,
-                        text = const("Join"),
+                        content = ButtonWidget.Content.Text(Value.data("Join".desc())),
                         onTap = viewModel::onSavePressed
                     )
                     +text(
@@ -84,7 +86,7 @@ class CryptoProfileScreen(
                     +button(
                         size = WidgetSize.WidthAsParentHeightWrapContent,
                         id = Id.TryDemoButton,
-                        text = const("Try Demo"),
+                        content = ButtonWidget.Content.Text(Value.data("Try Demo".desc())),
                         onTap = viewModel::onSavePressed
                     )
                 }

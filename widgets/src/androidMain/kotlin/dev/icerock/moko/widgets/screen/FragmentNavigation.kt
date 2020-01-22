@@ -5,12 +5,11 @@
 package dev.icerock.moko.widgets.screen
 
 import androidx.fragment.app.Fragment
-import dev.icerock.moko.parcelize.Parcelable
 
 internal class FragmentNavigation(
     private val fragment: Fragment
 ) {
-    fun <S : Screen<Args.Empty>> routeToScreen(screen: S) {
+    fun <S : Screen<*>> routeToScreen(screen: S) {
         val fm = fragment.childFragmentManager
 
         fm.beginTransaction()
@@ -19,19 +18,13 @@ internal class FragmentNavigation(
             .commit()
     }
 
-    fun <Arg : Parcelable, S : Screen<Args.Parcel<Arg>>> routeToScreen(screen: S, argument: Arg) {
+    fun <S : Screen<*>> setScreen(screen: S) {
         val fm = fragment.childFragmentManager
 
-        screen.setArgument(argument)
-
-        fm.beginTransaction()
-            .replace(android.R.id.content, screen)
-            .addToBackStack(null)
-            .commit()
-    }
-
-    fun <S : Screen<Args.Empty>> setScreen(screen: S) {
-        val fm = fragment.childFragmentManager
+        val backStackCount = fm.backStackEntryCount
+        for(i in 0 until backStackCount) {
+            fm.popBackStack()
+        }
 
         fm.beginTransaction()
             .replace(android.R.id.content, screen)

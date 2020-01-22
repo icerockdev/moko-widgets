@@ -71,6 +71,9 @@ fun UIView.applySize(size: WidgetSize, parent: UIView, edges: Edges<CGFloat>) {
             is SizeSpec.Exact -> {
                 myAnchor.constraintEqualToConstant(constSize.points.toDouble()).active = true
             }
+            SizeSpec.MatchConstraint -> {
+                // nothing - constraints should set size
+            }
         }
     }
 

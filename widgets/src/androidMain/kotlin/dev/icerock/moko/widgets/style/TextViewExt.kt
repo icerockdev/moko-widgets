@@ -18,3 +18,17 @@ fun TextView.applyTextStyle(textStyle: TextStyle) {
         applyFontStyle(it)
     }
 }
+
+fun TextView.applyTextStyleIfNeeded(textStyle: TextStyle?) {
+    if(textStyle == null) return
+
+    textStyle.color?.also {
+        setTextColor(it.argb.toInt())
+    }
+    textStyle.size?.also {
+        textSize = it.toFloat()
+    }
+    textStyle.fontStyle?.also {
+        applyFontStyle(it)
+    }
+}

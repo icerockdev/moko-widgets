@@ -17,7 +17,9 @@ abstract class HostActivity : AppCompatActivity() {
                 val kclass = Class.forName(className, true, classLoader).kotlin
                 val screenKlass = kclass as? KClass<out Screen<Args.Empty>>
                 return if (screenKlass != null) {
-                    getScreenFactory().instantiateScreen(screenKlass)
+                    val screenDesc = application.registeredScreens[screenKlass]
+                        ?: error("screen not registered $screenKlass")
+                    screenDesc.instantiate()
                 } else {
                     super.instantiate(classLoader, className)
                 }
@@ -27,8 +29,8 @@ abstract class HostActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         if (savedInstanceState == null) {
-            val rootScreen = getRootScreen()
-            val screenInstance = getScreenFactory().instantiateScreen(rootScreen)
+            val rootScreen = application.rootScreen
+            val screenInstance = rootScreen.instantiate()
 
             supportFragmentManager.beginTransaction()
                 .replace(android.R.id.content, screenInstance)
@@ -44,10 +46,6 @@ abstract class HostActivity : AppCompatActivity() {
 //
 //        super.onBackPressed()
 //    }
-
-    private fun getRootScreen(): KClass<out Screen<Args.Empty>> = application.getRootScreen()
-
-    private fun getScreenFactory(): ScreenFactory = application
 
     abstract val application: BaseApplication
 }

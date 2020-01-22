@@ -8,32 +8,26 @@ import com.icerockdev.library.sample.CryptoProfileScreen
 import com.icerockdev.library.sample.UsersScreen
 import com.icerockdev.library.universal.LoginScreen
 import dev.icerock.moko.graphics.Color
-import dev.icerock.moko.widgets.buttonFactory
-import dev.icerock.moko.widgets.constraintFactory
+import dev.icerock.moko.widgets.ButtonWidget
+import dev.icerock.moko.widgets.CollectionWidget
+import dev.icerock.moko.widgets.ConstraintWidget
+import dev.icerock.moko.widgets.InputWidget
+import dev.icerock.moko.widgets.StatefulWidget
 import dev.icerock.moko.widgets.core.Theme
-import dev.icerock.moko.widgets.factory.DefaultButtonWidgetViewFactory
-import dev.icerock.moko.widgets.factory.DefaultButtonWidgetViewFactoryBase
-import dev.icerock.moko.widgets.factory.DefaultConstraintWidgetViewFactory
-import dev.icerock.moko.widgets.factory.DefaultConstraintWidgetViewFactoryBase
-import dev.icerock.moko.widgets.factory.DefaultImageWidgetViewFactory
-import dev.icerock.moko.widgets.factory.DefaultImageWidgetViewFactoryBase
-import dev.icerock.moko.widgets.factory.DefaultInputWidgetViewFactory
-import dev.icerock.moko.widgets.factory.DefaultInputWidgetViewFactoryBase
-import dev.icerock.moko.widgets.factory.DefaultListWidgetViewFactory
-import dev.icerock.moko.widgets.factory.DefaultListWidgetViewFactoryBase
-import dev.icerock.moko.widgets.factory.DefaultTextWidgetViewFactory
-import dev.icerock.moko.widgets.factory.DefaultTextWidgetViewFactoryBase
-import dev.icerock.moko.widgets.imageFactory
-import dev.icerock.moko.widgets.inputFactory
-import dev.icerock.moko.widgets.setButtonFactory
-import dev.icerock.moko.widgets.setListFactory
-import dev.icerock.moko.widgets.setTextFactory
+import dev.icerock.moko.widgets.factory.ConstraintViewFactory
+import dev.icerock.moko.widgets.factory.StatefulViewFactory
+import dev.icerock.moko.widgets.factory.SystemButtonViewFactory
+import dev.icerock.moko.widgets.factory.SystemCollectionViewFactory
+import dev.icerock.moko.widgets.factory.SystemInputViewFactory
+import dev.icerock.moko.widgets.factory.SystemListViewFactory
+import dev.icerock.moko.widgets.factory.SystemTextViewFactory
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Border
 import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.background.Shape
 import dev.icerock.moko.widgets.style.background.StateBackground
 import dev.icerock.moko.widgets.style.view.Colors
+import dev.icerock.moko.widgets.style.view.FontStyle
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.TextAlignment
@@ -42,6 +36,8 @@ import dev.icerock.moko.widgets.style.view.rgba
 import dev.icerock.moko.widgets.utils.platformSpecific
 
 object AppTheme {
+    object PostsCollection : CollectionWidget.Category
+
     object AppColor {
         val white = Color(0xFF, 0xFF, 0xFF, 0xFF)
         val redError = Color(0xFF, 0x66, 0x66, 0xFF)
@@ -53,106 +49,138 @@ object AppTheme {
     }
 
     val baseTheme = Theme {
-        setTextFactory(
-            DefaultTextWidgetViewFactory(
-                DefaultTextWidgetViewFactoryBase.Style(
-                    textAlignment = TextAlignment.CENTER
-                )
-            ), CryptoProfileScreen.Id.DelimiterText
+        factory[CryptoProfileScreen.Id.DelimiterText] = SystemTextViewFactory(
+            textAlignment = TextAlignment.CENTER
+        )
+        factory[UsersScreen.Id.List] = SystemListViewFactory(
+            padding = PaddingValues(8f)
         )
 
-        setListFactory(
-            DefaultListWidgetViewFactory(
-                DefaultListWidgetViewFactoryBase.Style(
-                    padding = PaddingValues(8f)
+        factory[StatefulWidget.DefaultCategory] = StatefulViewFactory(
+            padding = PaddingValues(16f)
+        )
+        factory[CryptoProfileScreen.Id.JoinButton] = SystemButtonViewFactory(
+            background = {
+                val normalBackground = Background(
+                    fill = Fill.Solid(color = Color(0x1375F8FF)),
+                    shape = Shape.Rectangle(cornerRadius = 22f)
                 )
-            ), UsersScreen.Id.List
+                val disabledBackground = normalBackground.copy(
+                    fill = Fill.Solid(color = Color(0x1375F880))
+                )
+                val pressedBackground = normalBackground.copy(
+                    fill = Fill.Solid(color = Color(0x1375F8BB))
+                )
+                StateBackground(
+                    normal = normalBackground,
+                    disabled = disabledBackground,
+                    pressed = pressedBackground
+                )
+            }()
+        )
+        factory[CryptoProfileScreen.Id.TryDemoButton] = SystemButtonViewFactory(
+            background = {
+                val normalBackground = Background(
+                    fill = Fill.Solid(color = Color(0x303030FF)),
+                    shape = Shape.Rectangle(cornerRadius = 22f),
+                    border = Border(
+                        color = Colors.white,
+                        width = 1f
+                    )
+                )
+                val disabledBackground = normalBackground.copy(
+                    fill = Fill.Solid(color = Color(0x30303080))
+                )
+                val pressedBackground = normalBackground.copy(
+                    fill = Fill.Solid(color = Color(0x303030BB))
+                )
+                StateBackground(
+                    normal = normalBackground,
+                    disabled = disabledBackground,
+                    pressed = pressedBackground
+                )
+            }()
+        )
+
+        factory[PostsCollection] = SystemCollectionViewFactory(
+            padding = PaddingValues(4f)
         )
     }
 
     val loginScreen = Theme(baseTheme) {
-        constraintFactory = DefaultConstraintWidgetViewFactory(
-            DefaultConstraintWidgetViewFactoryBase.Style(
-                padding = PaddingValues(16f),
-                background = Background(
-                    fill = Fill.Solid(Colors.white)
-                )
+        factory[ConstraintWidget.DefaultCategory] = ConstraintViewFactory(
+            padding = PaddingValues(16f),
+            background = Background(
+                fill = Fill.Solid(Colors.white)
             )
         )
 
-        imageFactory = DefaultImageWidgetViewFactory(
-            DefaultImageWidgetViewFactoryBase.Style(
-                scaleType = DefaultImageWidgetViewFactoryBase.ScaleType.FIT
-            )
-        )
-
-        inputFactory = DefaultInputWidgetViewFactory(
-            DefaultInputWidgetViewFactoryBase.Style(
-                margins = MarginValues(bottom = 8f),
-                underLineColor = Color(0xe5e6eeFF),
-                labelTextStyle = TextStyle(
-                    color = Color(0x777889FF)
-                )
+        factory[InputWidget.DefaultCategory] = SystemInputViewFactory(
+            margins = MarginValues(bottom = 8f),
+            underLineColor = Color(0x000000DD),
+            underLineFocusedColor = Color(0x3949ABFF),
+            labelTextStyle = TextStyle(
+                size = 12,
+                color = Color(0x3949ABFF),
+                fontStyle = FontStyle.BOLD
+            ),
+            errorTextStyle = TextStyle(
+                size = 12,
+                color = Color(0xB00020FF),
+                fontStyle = FontStyle.BOLD
+            ),
+            textStyle = TextStyle(
+                size = 16,
+                color = Color(0x000000FF),
+                fontStyle = FontStyle.MEDIUM
             )
         )
 
         val corners = platformSpecific(android = 8f, ios = 25f)
 
-        buttonFactory = DefaultButtonWidgetViewFactory(
-            DefaultButtonWidgetViewFactoryBase.Style(
-                margins = MarginValues(top = 32f),
-                background = {
-                    val bg: (Color) -> Background = {
-                        Background(
-                            fill = Fill.Solid(it),
-                            shape = Shape.Rectangle(
-                                cornerRadius = corners
-                            )
+        factory[ButtonWidget.DefaultCategory] = SystemButtonViewFactory(
+            margins = MarginValues(top = 32f),
+            background = {
+                val bg: (Color) -> Background = {
+                    Background(
+                        fill = Fill.Solid(it),
+                        shape = Shape.Rectangle(
+                            cornerRadius = corners
                         )
-                    }
-                    StateBackground(
-                        normal = bg(Color(0x6770e0FF)),
-                        pressed = bg(Color(0x6770e0EE)),
-                        disabled = bg(Color(0x6770e0BB))
                     )
-                }.invoke(),
-                textStyle = TextStyle(
-                    color = Colors.white
+                }
+                StateBackground(
+                    normal = bg(Color(0x6770e0FF)),
+                    pressed = bg(Color(0x6770e0EE)),
+                    disabled = bg(Color(0x6770e0BB))
                 )
+            }.invoke(),
+            textStyle = TextStyle(
+                color = Colors.white
             )
         )
 
-        setButtonFactory(
-            DefaultButtonWidgetViewFactory(
-                DefaultButtonWidgetViewFactoryBase.Style(
-                    margins = MarginValues(top = 16f),
-                    padding = platformSpecific(
-                        ios = PaddingValues(start = 16f, end = 16f),
-                        android = null
-                    ),
-                    background = {
-                        val bg: (Color) -> Background = {
-                            Background(
-                                fill = Fill.Solid(it),
-                                border = Border(
-                                    color = Color(0xF2F2F8FF),
-                                    width = 2f
-                                ),
-                                shape = Shape.Rectangle(cornerRadius = corners)
-                            )
-                        }
-                        StateBackground(
-                            normal = bg(Colors.white),
-                            pressed = bg(Color(0xEEEEEEFF)),
-                            disabled = bg(Color(0xBBBBBBFF))
+        factory[LoginScreen.Id.RegistrationButtonId] = SystemButtonViewFactory(
+            background = {
+                val bg: (Color) -> Background = {
+                    Background(
+                        fill = Fill.Solid(it),
+                        shape = Shape.Rectangle(
+                            cornerRadius = corners
                         )
-                    }.invoke(),
-                    textStyle = TextStyle(
-                        color = Color(0x777889FF)
                     )
+                }
+                StateBackground(
+                    normal = bg(Color(0xFFFFFF00)),
+                    pressed = bg(Color(0xE7E7EEEE)),
+                    disabled = bg(Color(0x000000BB))
                 )
+            }.invoke(),
+            margins = MarginValues(top = 16f),
+            textStyle = TextStyle(
+                color = Color(0x777889FF)
             ),
-            LoginScreen.Id.RegistrationButtonId
+            androidElevationEnabled = false
         )
     }
 
@@ -365,54 +393,6 @@ object AppTheme {
 //                color = Colors.white, // #ffffffff
 //                fontStyle = FontStyle.MEDIUM // Gotham Pro
 //            )
-//        )
-//        buttonStyle = Theme.buttonStyle.copy(
-//            size = WidgetSize.Const(
-//                width = SizeSpec.AsParent,
-//                height = SizeSpec.Exact(48.0f)
-//            ),
-//            background = {
-//                val normalBackground = Background(
-//                    fill = Fill.Solid(color = Color(0x13, 0x75, 0xF8, 0xFF)),
-//                    shape = Shape.Rectangle(cornerRadius = 22f)
-//                )
-//                val disabledBackground = normalBackground.copy(
-//                    fill = Fill.Solid(color = Color(0x13, 0x75, 0xF8, 0x80))
-//                )
-//                val pressedBackground = normalBackground.copy(
-//                    fill = Fill.Solid(color = Color(0x13, 0x75, 0xF8, 0xBB))
-//                )
-//                StateBackground(
-//                    normal = normalBackground,
-//                    disabled = disabledBackground,
-//                    pressed = pressedBackground
-//                )
-//            }()
-//        )
-//        setButtonStyle(
-//            buttonStyle.copy(
-//                background = {
-//                    val normalBackground = Background(
-//                        fill = Fill.Solid(color = Color(0x30, 0x30, 0x30, 0xFF)),
-//                        shape = Shape.Rectangle(cornerRadius = 22f),
-//                        border = Border(
-//                            color = Colors.white,
-//                            width = 1f
-//                        )
-//                    )
-//                    val disabledBackground = normalBackground.copy(
-//                        fill = Fill.Solid(color = Color(0x30, 0x30, 0x30, 0x80))
-//                    )
-//                    val pressedBackground = normalBackground.copy(
-//                        fill = Fill.Solid(color = Color(0x30, 0x30, 0x30, 0xBB))
-//                    )
-//                    StateBackground(
-//                        normal = normalBackground,
-//                        disabled = disabledBackground,
-//                        pressed = pressedBackground
-//                    )
-//                }()
-//            ), CryptoProfileScreen.Id.TryDemoButton
 //        )
 //        setTextStyle(
 //            textStyle.copy(

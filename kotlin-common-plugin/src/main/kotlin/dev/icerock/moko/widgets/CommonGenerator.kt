@@ -11,7 +11,9 @@ abstract class CommonGenerator<KtFile, KtFileStub> {
         val packageName: String,
         val className: String,
         val imports: List<String>,
-        val arguments: Map<String, ArgInfo>
+        val arguments: Map<String, ArgInfo>,
+        val factoryClass: String,
+        val genericTypes: List<String>
     ) {
         data class ArgInfo(
             val type: String,
@@ -57,7 +59,6 @@ abstract class CommonGenerator<KtFile, KtFileStub> {
 
         val importNames = input.imports
             .plus("dev.icerock.moko.widgets.core.Theme")
-            .plus("dev.icerock.moko.widgets.factory.Default${widgetName}ViewFactory")
             .distinct()
 
         val imports = importNames.joinToString("\n") { "import $it" }
@@ -87,66 +88,28 @@ abstract class CommonGenerator<KtFile, KtFileStub> {
         val paramsSet = customArgs.map {
             "    ${it.key} = ${it.key}"
         }.joinToString(",\n")
-        val shortNameUpper = shortName.capitalize()
-        val haveIdArg = customArgs.any { isIdType(it.value.type) }
 
-        val coreContent = """package ${input.packageName}
+        val generics = input.genericTypes
+            .filter { it != "WS" }
+            .let { listOf("WS: WidgetSize").plus(it) }
+            .joinToString(",")
+
+        return """package ${input.packageName}
 
 $imports
 
-private object ${widgetName}FactoryKey: Theme.Key<ViewFactory<$widgetName<out WidgetSize>>>
-
-val Theme.${shortName}Factory: ViewFactory<$widgetName<out WidgetSize>>
-        by Theme.readProperty(${widgetName}FactoryKey) { Default${widgetName}ViewFactory() }
-
-var Theme.Builder.${shortName}Factory: ViewFactory<$widgetName<out WidgetSize>>
-        by Theme.readWriteProperty(${widgetName}FactoryKey, Theme::${shortName}Factory)
-
-"""
-
-        val idContent = """
-
-fun <WS: WidgetSize> Theme.$shortName(
-    factory: ViewFactory<$widgetName<out WidgetSize>>,
+fun <$generics> Theme.$shortName(
+    category: $widgetName.Category? = null,
 $params
 ) = $widgetName(
-    factory = factory,
-$paramsSet
-)
-
-fun Theme.get${shortNameUpper}Factory(id: $widgetName.Id): ViewFactory<$widgetName<out WidgetSize>> {
-    return getIdProperty(id, ${widgetName}FactoryKey, ::${shortName}Factory)
-}
-
-fun Theme.Builder.set${shortNameUpper}Factory(
-    factory: ViewFactory<$widgetName<out WidgetSize>>, 
-    vararg ids: $widgetName.Id
-) {
-    ids.forEach { setIdProperty(it, ${widgetName}FactoryKey, factory) }
-}
-
-fun <WS: WidgetSize> Theme.$shortName(
-$params
-) = $widgetName(
-    factory = id?.let { this.get${shortNameUpper}Factory(it) } ?: this.${shortName}Factory,
-$paramsSet
-)"""
-
-        val noIdContent = """
-
-fun <WS: WidgetSize> Theme.$shortName(
-    factory: ViewFactory<$widgetName<out WidgetSize>> = this.${shortName}Factory,
-$params
-) = $widgetName(
-    factory = factory,
+    factory = this.factory.get(
+        id = id,
+        category = category,
+        defaultCategory = $widgetName.DefaultCategory,
+        fallback = { ${input.factoryClass}() }
+    ),
 $paramsSet
 )
 """
-
-        return if (haveIdArg) {
-            coreContent + idContent
-        } else {
-            coreContent + noIdContent
-        }
     }
 }

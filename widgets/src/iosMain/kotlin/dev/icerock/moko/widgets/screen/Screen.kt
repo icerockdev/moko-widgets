@@ -6,12 +6,15 @@ package dev.icerock.moko.widgets.screen
 
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcher
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import dev.icerock.moko.widgets.objc.getAssociatedObject
+import dev.icerock.moko.widgets.objc.setAssociatedObject
 import platform.UIKit.UIViewController
+import kotlin.native.ref.WeakReference
 
 actual abstract class Screen<Arg : Args> {
     val viewModelStore = mutableMapOf<Any, ViewModel>()
+    // TODO private?
     var arg: Arg? = null
-    var parent: Screen<*>? = null
 
     actual inline fun <reified VM : ViewModel, Key : Any> getViewModel(
         key: Key,
@@ -29,7 +32,20 @@ actual abstract class Screen<Arg : Args> {
         return EventsDispatcher()
     }
 
-    abstract fun createViewController(): UIViewController
+    protected abstract fun createViewController(): UIViewController
 
-    actual val parentScreen: Screen<*>? get() = parent
+    private var _viewController: WeakReference<UIViewController>? = null
+    val viewController: UIViewController
+        get() {
+            val current = _viewController?.get()
+            if (current != null) return current
+
+            val vc = createViewController().also {
+                setAssociatedObject(it, this)
+            }
+            _viewController = WeakReference(vc)
+            return vc
+        }
 }
+
+fun UIViewController.getAssociatedScreen(): Screen<*>? = getAssociatedObject(this) as? Screen<*>

@@ -7,10 +7,8 @@ package dev.icerock.moko.widgets.core
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
+import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.asLiveData
-import kotlin.properties.ReadOnlyProperty
-import kotlin.properties.ReadWriteProperty
-import kotlin.reflect.KProperty
 
 class Theme(
     private val properties: MutableMap<Any, Any>
@@ -33,45 +31,52 @@ class Theme(
         return value.asLiveData()
     }
 
-    interface Key<T>
+    interface Id<T : Widget<out WidgetSize>>
+    interface Category<T : Widget<out WidgetSize>>
 
-    interface Id
+    interface ReadFactory {
+        operator fun <T : Widget<out WidgetSize>> get(id: Id<T>): ViewFactory<T>?
+        operator fun <T : Widget<out WidgetSize>> get(clazz: Category<T>): ViewFactory<T>?
+
+        fun <T : Widget<out WidgetSize>> get(
+            id: Id<T>?,
+            category: Category<T>?,
+            defaultCategory: Category<T>,
+            fallback: () -> ViewFactory<T>
+        ): ViewFactory<T> {
+            return id?.let { get(it) } ?: category?.let { get(it) } ?: get(defaultCategory) ?: fallback()
+        }
+    }
+
+    interface ReadWriteFactory : ReadFactory {
+        operator fun <T : Widget<out WidgetSize>> set(id: Id<T>, factory: ViewFactory<T>)
+        operator fun <T : Widget<out WidgetSize>> set(clazz: Category<T>, factory: ViewFactory<T>)
+    }
+
+    private inner class ReadFactoryImpl : ReadFactory {
+        override operator fun <T : Widget<out WidgetSize>> get(id: Id<T>): ViewFactory<T>? {
+            return properties[id] as? ViewFactory<T>
+        }
+
+        override operator fun <T : Widget<out WidgetSize>> get(clazz: Category<T>): ViewFactory<T>? {
+            return properties[clazz] as? ViewFactory<T>
+        }
+    }
+
+    val factory: ReadFactory = ReadFactoryImpl()
 
     class Builder(val theme: Theme) {
-        internal fun <T : Any> setIdProperty(id: Id, key: Key<T>, value: T) {
-            theme.properties[id to key] = value
-        }
-    }
-
-    internal fun <T : Any> getIdProperty(id: Id, key: Key<T>, fallback: () -> T): T {
-        @Suppress("UNCHECKED_CAST")
-        return properties[id to key] as? T ?: fallback()
-    }
-
-    companion object {
-        internal inline fun <reified T : Any> readProperty(
-            key: Key<T>,
-            crossinline fallback: () -> T
-        ) =
-            object : ReadOnlyProperty<Theme, T> {
-                override fun getValue(thisRef: Theme, property: KProperty<*>): T {
-                    val factory = thisRef.properties[key] as? T
-                    return (factory ?: fallback())
-                }
+        private inner class ReadWriteFactoryImpl : ReadWriteFactory, ReadFactory by theme.factory {
+            override fun <T : Widget<out WidgetSize>> set(id: Id<T>, factory: ViewFactory<T>) {
+                theme.properties[id] = factory
             }
 
-        internal inline fun <reified T : Any> readWriteProperty(
-            key: Key<T>,
-            crossinline readProperty: Theme.() -> T
-        ) = object : ReadWriteProperty<Builder, T> {
-            override fun setValue(thisRef: Builder, property: KProperty<*>, value: T) {
-                thisRef.theme.properties[key] = value
-            }
-
-            override fun getValue(thisRef: Builder, property: KProperty<*>): T {
-                return thisRef.theme.readProperty()
+            override fun <T : Widget<out WidgetSize>> set(clazz: Category<T>, factory: ViewFactory<T>) {
+                theme.properties[clazz] = factory
             }
         }
+
+        val factory: ReadWriteFactory = ReadWriteFactoryImpl()
     }
 }
 

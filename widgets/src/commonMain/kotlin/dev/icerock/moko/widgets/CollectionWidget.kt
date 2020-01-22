@@ -13,9 +13,10 @@ import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
+import dev.icerock.moko.widgets.factory.SystemCollectionViewFactory
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-@WidgetDef
+@WidgetDef(SystemCollectionViewFactory::class)
 class CollectionWidget<WS : WidgetSize>(
     private val factory: ViewFactory<CollectionWidget<out WidgetSize>>,
     override val size: WS,
@@ -29,5 +30,8 @@ class CollectionWidget<WS : WidgetSize>(
         return factory.build(this, size, viewFactoryContext)
     }
 
-    interface Id : Theme.Id
+    interface Id : Theme.Id<CollectionWidget<out WidgetSize>>
+    interface Category : Theme.Category<CollectionWidget<out WidgetSize>>
+
+    object DefaultCategory : Category
 }

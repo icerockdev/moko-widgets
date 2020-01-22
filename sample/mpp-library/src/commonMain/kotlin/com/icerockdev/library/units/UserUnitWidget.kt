@@ -11,14 +11,9 @@ import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.clickable
 import dev.icerock.moko.widgets.core.Image
 import dev.icerock.moko.widgets.core.Theme
-import dev.icerock.moko.widgets.factory.DefaultImageWidgetViewFactory
-import dev.icerock.moko.widgets.factory.DefaultImageWidgetViewFactoryBase
-import dev.icerock.moko.widgets.factory.DefaultLinearWidgetViewFactory
-import dev.icerock.moko.widgets.factory.DefaultLinearWidgetViewFactoryBase
 import dev.icerock.moko.widgets.image
 import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.style.background.Orientation
-import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.text
@@ -34,19 +29,20 @@ class UserUnitWidget(
             clickable(
                 child = linear(
                     size = WidgetSize.WidthAsParentHeightWrapContent,
-                    factory = DefaultLinearWidgetViewFactory(
-                        DefaultLinearWidgetViewFactoryBase.Style(
-                            orientation = Orientation.HORIZONTAL,
-                            padding = PaddingValues(padding = 8f)
-                        )
-                    )
+                    orientation = Orientation.HORIZONTAL
+//                    factory = DefaultLinearWidgetViewFactory(
+//                        DefaultLinearWidgetViewFactoryBase.Style(
+//                            orientation = Orientation.HORIZONTAL,
+//                            padding = PaddingValues(padding = 8f)
+//                        )
+//                    )
                 ) {
                     +image(
-                        factory = DefaultImageWidgetViewFactory(
-                            DefaultImageWidgetViewFactoryBase.Style(
-                                scaleType = DefaultImageWidgetViewFactoryBase.ScaleType.FILL
-                            )
-                        ),
+//                        factory = DefaultImageWidgetViewFactory(
+//                            DefaultImageWidgetViewFactoryBase.Style(
+//                                scaleType = DefaultImageWidgetViewFactoryBase.ScaleType.FILL
+//                            )
+//                        ),
                         size = WidgetSize.Const(
                             width = SizeSpec.Exact(48f),
                             height = SizeSpec.Exact(48f)
@@ -54,13 +50,13 @@ class UserUnitWidget(
                         image = data.map { Image.network(it.avatarUrl) }
                     )
                     +linear(
-                        size = WidgetSize.WidthAsParentHeightWrapContent,
-                        factory = DefaultLinearWidgetViewFactory(
-                            DefaultLinearWidgetViewFactoryBase.Style(
-                                orientation = Orientation.VERTICAL,
-                                padding = PaddingValues(padding = 8f)
-                            )
-                        )
+                        size = WidgetSize.WidthAsParentHeightWrapContent//,
+//                        factory = DefaultLinearWidgetViewFactory(
+//                            DefaultLinearWidgetViewFactoryBase.Style(
+//                                orientation = Orientation.VERTICAL,
+//                                padding = PaddingValues(padding = 8f)
+//                            )
+//                        )
                     ) {
                         +text(
                             size = WidgetSize.Const(

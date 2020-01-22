@@ -4,6 +4,8 @@
 
 package dev.icerock.moko.widgets.core
 
-interface OptionalId<T : Theme.Id> {
+import dev.icerock.moko.widgets.style.view.WidgetSize
+
+interface OptionalId<T : Theme.Id<out Widget<out WidgetSize>>> {
     val id: T?
 }

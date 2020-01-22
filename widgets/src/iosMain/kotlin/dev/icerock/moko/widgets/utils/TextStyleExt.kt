@@ -7,13 +7,19 @@ package dev.icerock.moko.widgets.utils
 import dev.icerock.moko.graphics.toUIColor
 import dev.icerock.moko.widgets.style.view.FontStyle
 import dev.icerock.moko.widgets.style.view.TextStyle
+import platform.CoreText.CTFontCreateCopyWithSymbolicTraits
+import platform.CoreText.CTFontCreateUIFontForLanguage
+import platform.CoreText.kCTFontBoldTrait
+import platform.CoreText.kCTFontUIFontSystem
 import platform.QuartzCore.CATextLayer
 import platform.UIKit.UIFont
 import platform.UIKit.UILabel
 import platform.UIKit.UITextField
 import platform.UIKit.systemFontSize
 
-fun UILabel.applyTextStyle(textStyle: TextStyle) {
+fun UILabel.applyTextStyleIfNeeded(textStyle: TextStyle?) {
+    if (textStyle == null) return
+
     val currentFontSize = font.pointSize
     val styleSize = textStyle.size?.toDouble()
     val styleStyle = textStyle.fontStyle
@@ -27,7 +33,9 @@ fun UILabel.applyTextStyle(textStyle: TextStyle) {
     textStyle.color?.also { textColor = it.toUIColor() }
 }
 
-fun UITextField.applyTextStyle(textStyle: TextStyle) {
+fun UITextField.applyTextStyleIfNeeded(textStyle: TextStyle?) {
+    if (textStyle == null) return
+
     val currentFontSize = font?.pointSize ?: UIFont.systemFontSize
     val styleSize = textStyle.size?.toDouble()
     val styleStyle = textStyle.fontStyle
@@ -41,7 +49,9 @@ fun UITextField.applyTextStyle(textStyle: TextStyle) {
     textStyle.color?.also { textColor = it.toUIColor() }
 }
 
-fun CATextLayer.applyTextStyle(textStyle: TextStyle) {
+fun CATextLayer.applyTextStyleIfNeeded(textStyle: TextStyle?) {
+    if (textStyle == null) return
+
     textStyle.size?.let {
         fontSize = it.toDouble()
     }
@@ -51,6 +61,17 @@ fun CATextLayer.applyTextStyle(textStyle: TextStyle) {
     }
 
     textStyle.fontStyle?.let {
-        // TODO implement font styles support
+        val cfFont = CTFontCreateUIFontForLanguage(
+            uiType = kCTFontUIFontSystem,
+            size = fontSize,
+            language = null
+        )
+        font = CTFontCreateCopyWithSymbolicTraits(
+            font = cfFont,
+            size = fontSize,
+            matrix = null,
+            symTraitValue = if (it == FontStyle.BOLD) kCTFontBoldTrait else 0U,
+            symTraitMask = kCTFontBoldTrait
+        )
     }
 }

@@ -12,9 +12,10 @@ import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
+import dev.icerock.moko.widgets.factory.SystemSwitchViewFactory
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-@WidgetDef
+@WidgetDef(SystemSwitchViewFactory::class)
 class SwitchWidget<WS : WidgetSize>(
     private val factory: ViewFactory<SwitchWidget<out WidgetSize>>,
     override val size: WS,
@@ -26,5 +27,8 @@ class SwitchWidget<WS : WidgetSize>(
         return factory.build(this, size, viewFactoryContext)
     }
 
-    interface Id : Theme.Id
+    interface Id : Theme.Id<SwitchWidget<out WidgetSize>>
+    interface Category : Theme.Category<SwitchWidget<out WidgetSize>>
+
+    object DefaultCategory : Category
 }

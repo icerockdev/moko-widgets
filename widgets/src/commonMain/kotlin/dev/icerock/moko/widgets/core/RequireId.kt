@@ -4,6 +4,8 @@
 
 package dev.icerock.moko.widgets.core
 
-interface RequireId<T : Theme.Id> : OptionalId<T> {
+import dev.icerock.moko.widgets.style.view.WidgetSize
+
+interface RequireId<T : Theme.Id<out Widget<out WidgetSize>>> : OptionalId<T> {
     override val id: T
 }

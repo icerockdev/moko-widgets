@@ -15,7 +15,9 @@ actual abstract class WidgetScreen<Arg : Args> actual constructor() : Screen<Arg
     override fun createViewController(): UIViewController {
         return WidgetViewController().apply {
             widget = createContentWidget()
-            screen = this@WidgetScreen
         }
     }
+
+    actual open val isKeyboardResizeContent: Boolean = false
+    actual open val isDismissKeyboardOnTap: Boolean = false
 }

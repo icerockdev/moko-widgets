@@ -14,6 +14,7 @@ import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.extensions.CollectAdditionalSourcesExtension
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtTypeReference
+import org.jetbrains.kotlin.psi.KtValueArgument
 import org.jetbrains.kotlin.psi.stubs.KotlinAnnotationEntryStub
 import org.jetbrains.kotlin.psi.stubs.KotlinClassStub
 import org.jetbrains.kotlin.psi.stubs.KotlinFileStub
@@ -21,7 +22,10 @@ import org.jetbrains.kotlin.psi.stubs.KotlinImportDirectiveStub
 import org.jetbrains.kotlin.psi.stubs.KotlinModifierListStub
 import org.jetbrains.kotlin.psi.stubs.KotlinParameterStub
 import org.jetbrains.kotlin.psi.stubs.KotlinPlaceHolderStub
+import org.jetbrains.kotlin.psi.stubs.KotlinTypeParameterStub
+import org.jetbrains.kotlin.psi.stubs.KotlinValueArgumentStub
 import org.jetbrains.kotlin.psi.stubs.elements.KtStubElementTypes
+import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstance
 import java.io.File
 
 class GenerateSourcesExtension(private val collector: MessageCollector) : CollectAdditionalSourcesExtension {
@@ -48,9 +52,21 @@ class GenerateSourcesExtension(private val collector: MessageCollector) : Collec
                     classStub.childrenStubs.filterIsInstance<KotlinModifierListStub>().firstOrNull()
                         ?: return@mapNotNull null
                 val annotations = modifiersList.childrenStubs.filterIsInstance<KotlinAnnotationEntryStub>()
-                val containWidgetDefAnnotation = annotations.any { it.getShortName() == "WidgetDef" }
+                val widgetDefAnnotation = annotations
+                    .firstOrNull { it.getShortName() == "WidgetDef" } ?: return@mapNotNull null
 
-                if (!containWidgetDefAnnotation) return@mapNotNull null
+                val factoryClass = widgetDefAnnotation.childrenStubs
+                    .firstOrNull { it.stubType == KtStubElementTypes.VALUE_ARGUMENT_LIST }
+                    ?.childrenStubs.orEmpty()
+                    .firstIsInstance<KotlinValueArgumentStub<KtValueArgument>>()
+                    .psi.text.replace("::class", "")
+
+                val typeParams =
+                    classStub.childrenStubs.firstOrNull { it.stubType == KtStubElementTypes.TYPE_PARAMETER_LIST }
+                val genericTypes = typeParams?.childrenStubs
+                    ?.filterIsInstance<KotlinTypeParameterStub>()
+                    ?.mapNotNull { it.name }
+                    .orEmpty()
 
                 val constructor =
                     classStub.childrenStubs.firstOrNull { it.stubType == KtStubElementTypes.PRIMARY_CONSTRUCTOR }
@@ -83,7 +99,9 @@ class GenerateSourcesExtension(private val collector: MessageCollector) : Collec
                     packageName = ktFileStub.getPackageFqName().asString(),
                     className = classStub.name!!,
                     imports = imports,
-                    arguments = params
+                    arguments = params,
+                    factoryClass = factoryClass,
+                    genericTypes = genericTypes
                 )
             }
         }

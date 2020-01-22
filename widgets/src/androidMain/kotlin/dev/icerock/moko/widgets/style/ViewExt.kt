@@ -6,6 +6,8 @@ package dev.icerock.moko.widgets.style
 
 import android.view.View
 import android.view.ViewGroup
+import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.StateBackground
 import dev.icerock.moko.widgets.style.background.buildBackground
 import dev.icerock.moko.widgets.style.ext.applyMargin
 import dev.icerock.moko.widgets.style.ext.applyPadding
@@ -13,10 +15,29 @@ import dev.icerock.moko.widgets.style.ext.toPlatformSize
 import dev.icerock.moko.widgets.style.view.Backgrounded
 import dev.icerock.moko.widgets.style.view.Margined
 import dev.icerock.moko.widgets.style.view.Padded
+import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.StateBackgrounded
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.view.AspectRatioFrameLayout
+
+fun View.applyBackgroundIfNeeded(background: Background?) {
+    if(background == null) return
+
+    this.background = background.buildBackground(context)
+}
+
+fun View.applyStateBackgroundIfNeeded(stateBackground: StateBackground?) {
+    if(stateBackground == null) return
+
+    this.background = stateBackground.buildBackground(context)
+}
+
+fun View.applyPaddingIfNeeded(padding: PaddingValues?) {
+    if(padding == null) return
+
+    applyPadding(padding)
+}
 
 fun View.applyStyle(style: Any) {
     if (style is Margined) {

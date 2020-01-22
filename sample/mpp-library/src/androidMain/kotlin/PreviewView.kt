@@ -15,6 +15,7 @@ class PreviewView @JvmOverloads constructor(
 ) : BasePreviewView(context, attrs, defStyleAttr) {
 
     override fun createScreen(): Screen<*> {
-        return WidgetsScreen(sharedFactory = SharedFactory(), theme = Theme())
+        TODO()
+//        return WidgetsScreen(sharedFactory = SharedFactory(), theme = Theme())
     }
 }

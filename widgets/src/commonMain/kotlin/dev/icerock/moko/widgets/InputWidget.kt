@@ -14,10 +14,11 @@ import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
+import dev.icerock.moko.widgets.factory.SystemInputViewFactory
 import dev.icerock.moko.widgets.style.input.InputType
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-@WidgetDef
+@WidgetDef(SystemInputViewFactory::class)
 class InputWidget<WS : WidgetSize>(
     private val factory: ViewFactory<InputWidget<out WidgetSize>>,
     override val size: WS,
@@ -33,5 +34,8 @@ class InputWidget<WS : WidgetSize>(
         return factory.build(this, size, viewFactoryContext)
     }
 
-    interface Id : Theme.Id
+    interface Id : Theme.Id<InputWidget<out WidgetSize>>
+    interface Category : Theme.Category<InputWidget<out WidgetSize>>
+
+    object DefaultCategory : Category
 }

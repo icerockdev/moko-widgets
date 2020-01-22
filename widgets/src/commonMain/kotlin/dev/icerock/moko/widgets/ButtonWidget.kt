@@ -6,21 +6,25 @@ package dev.icerock.moko.widgets
 
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.resources.desc.StringDesc
+import dev.icerock.moko.widgets.core.Image
 import dev.icerock.moko.widgets.core.OptionalId
 import dev.icerock.moko.widgets.core.Theme
+import dev.icerock.moko.widgets.core.Value
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
+import dev.icerock.moko.widgets.factory.SystemButtonViewFactory
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-@WidgetDef
+@WidgetDef(SystemButtonViewFactory::class)
 class ButtonWidget<WS : WidgetSize>(
     private val factory: ViewFactory<ButtonWidget<out WidgetSize>>,
     override val size: WS,
     override val id: Id?,
-    val text: LiveData<StringDesc>,
+    @Suppress("RemoveRedundantQualifierName")
+    val content: ButtonWidget.Content,
     val enabled: LiveData<Boolean>?,
     val onTap: () -> Unit
 ) : Widget<WS>(), OptionalId<ButtonWidget.Id> {
@@ -29,5 +33,13 @@ class ButtonWidget<WS : WidgetSize>(
         return factory.build(this, size, viewFactoryContext)
     }
 
-    interface Id : Theme.Id
+    sealed class Content {
+        data class Text(val text: Value<StringDesc?>) : Content()
+        data class Icon(val image: Value<Image>) : Content()
+    }
+
+    interface Id : Theme.Id<ButtonWidget<out WidgetSize>>
+    interface Category : Theme.Category<ButtonWidget<out WidgetSize>>
+
+    object DefaultCategory : Category
 }

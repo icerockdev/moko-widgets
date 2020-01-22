@@ -11,10 +11,11 @@ import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
+import dev.icerock.moko.widgets.factory.ContainerViewFactory
 import dev.icerock.moko.widgets.style.view.Alignment
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-@WidgetDef
+@WidgetDef(ContainerViewFactory::class)
 class ContainerWidget<WS : WidgetSize>(
     private val factory: ViewFactory<ContainerWidget<out WidgetSize>>,
     override val size: WS,
@@ -35,6 +36,7 @@ class ContainerWidget<WS : WidgetSize>(
     class ChildrenBuilder {
         private val children: MutableMap<Widget<out WidgetSize>, Alignment> = mutableMapOf()
 
+        // TODO change from lambda to argument (required only one item)
         fun center(block: () -> Widget<out WidgetSize>) {
             children[block.invoke()] = Alignment.CENTER
         }
@@ -60,5 +62,8 @@ class ContainerWidget<WS : WidgetSize>(
         }
     }
 
-    interface Id : Theme.Id
+    interface Id : Theme.Id<ContainerWidget<out WidgetSize>>
+    interface Category : Theme.Category<ContainerWidget<out WidgetSize>>
+
+    object DefaultCategory : Category
 }

@@ -18,8 +18,10 @@ import platform.QuartzCore.CAGradientLayer
 import platform.QuartzCore.CALayer
 import platform.QuartzCore.CATransaction
 import platform.UIKit.UIButton
+import platform.UIKit.UIColor
 import platform.UIKit.UIControl
 import platform.UIKit.UIView
+import platform.UIKit.backgroundColor
 import kotlin.math.min
 
 fun Background.caLayer(): CALayer {
@@ -89,7 +91,7 @@ fun Background.caLayer(): CALayer {
     return backgroundLayer
 }
 
-fun UIButton.applyStateBackground(background: StateBackground?) {
+fun UIButton.applyStateBackgroundIfNeeded(background: StateBackground?) {
     if (background == null) return
 
     adjustsImageWhenDisabled = false
@@ -142,8 +144,10 @@ fun UIButton.applyStateBackground(background: StateBackground?) {
     }
 }
 
-fun UIView.applyBackground(background: Background?) {
+fun UIView.applyBackgroundIfNeeded(background: Background?) {
     if (background == null) return
+
+    this.backgroundColor = UIColor.clearColor
 
     val bgLayer = background.caLayer()
     layer.insertSublayer(bgLayer, 0)
@@ -161,10 +165,10 @@ fun UIView.applyBackground(background: Background?) {
     }
 }
 
-fun UIControl.applyBackground(stateBackground: StateBackground?) {
+fun UIControl.applyStateBackgroundIfNeeded(stateBackground: StateBackground?) {
     if (stateBackground == null) return
 
     // TODO complete it
-    applyBackground(stateBackground.normal)
+    applyBackgroundIfNeeded(stateBackground.normal)
 }
  

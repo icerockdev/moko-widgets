@@ -11,9 +11,10 @@ import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
+import dev.icerock.moko.widgets.factory.ConstraintViewFactory
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-@WidgetDef
+@WidgetDef(ConstraintViewFactory::class)
 class ConstraintWidget<WS : WidgetSize>(
     private val factory: ViewFactory<ConstraintWidget<out WidgetSize>>,
     override val size: WS,
@@ -38,7 +39,7 @@ class ConstraintWidget<WS : WidgetSize>(
     class ChildrenBuilder internal constructor() {
         private val children: MutableList<Widget<out WidgetSize>> = mutableListOf()
 
-        val root: ConstraintItem = ConstraintItem.Root
+        val root: ConstraintItem.Root = ConstraintItem.Root
 
         operator fun Widget<out WidgetSize>.unaryPlus(): ConstraintItem.Child {
             children.add(this)
@@ -54,18 +55,25 @@ class ConstraintWidget<WS : WidgetSize>(
         }
     }
 
-    interface Id : Theme.Id
+    interface Id : Theme.Id<ConstraintWidget<out WidgetSize>>
+    interface Category : Theme.Category<ConstraintWidget<out WidgetSize>>
+
+    object DefaultCategory : Category
 }
 
 sealed class ConstraintItem {
-    object Root : ConstraintItem()
+    object Root : ConstraintItem() {
+        val safeArea = SafeArea(from = this)
+    }
+
     data class Child(val widget: Widget<out WidgetSize>) : ConstraintItem()
+    data class SafeArea(val from: Root) : ConstraintItem()
 
-    val top = VerticalAnchor(item = this, edge = VerticalAnchor.Edge.TOP)
-    val bottom = VerticalAnchor(item = this, edge = VerticalAnchor.Edge.BOTTOM)
+    val top get() = VerticalAnchor(item = this, edge = VerticalAnchor.Edge.TOP)
+    val bottom get() = VerticalAnchor(item = this, edge = VerticalAnchor.Edge.BOTTOM)
 
-    val left = HorizontalAnchor(item = this, edge = HorizontalAnchor.Edge.LEFT)
-    val right = HorizontalAnchor(item = this, edge = HorizontalAnchor.Edge.RIGHT)
+    val left get() = HorizontalAnchor(item = this, edge = HorizontalAnchor.Edge.LEFT)
+    val right get() = HorizontalAnchor(item = this, edge = HorizontalAnchor.Edge.RIGHT)
 
     class VerticalAnchor(val item: ConstraintItem, val edge: Edge) {
         enum class Edge {
@@ -82,21 +90,34 @@ sealed class ConstraintItem {
     }
 }
 
+interface Constraint {
+    infix fun offset(points: Int)
+}
+
+// TODO rework for allow extension from outside
+@Suppress("TooManyFunctions")
 interface ConstraintsApi {
-    infix fun ConstraintItem.Child.leftToRight(to: ConstraintItem)
-    infix fun ConstraintItem.Child.leftToLeft(to: ConstraintItem)
-    infix fun ConstraintItem.Child.rightToRight(to: ConstraintItem)
-    infix fun ConstraintItem.Child.rightToLeft(to: ConstraintItem)
-    infix fun ConstraintItem.Child.topToTop(to: ConstraintItem)
-    infix fun ConstraintItem.Child.topToBottom(to: ConstraintItem)
+    infix fun ConstraintItem.Child.leftToRight(to: ConstraintItem): Constraint
+    infix fun ConstraintItem.Child.leftToLeft(to: ConstraintItem): Constraint
+    infix fun ConstraintItem.Child.rightToRight(to: ConstraintItem): Constraint
+    infix fun ConstraintItem.Child.rightToLeft(to: ConstraintItem): Constraint
+    infix fun ConstraintItem.Child.topToTop(to: ConstraintItem): Constraint
+    infix fun ConstraintItem.Child.topToBottom(to: ConstraintItem): Constraint
     infix fun ConstraintItem.Child.centerYToCenterY(to: ConstraintItem)
     infix fun ConstraintItem.Child.centerXToCenterX(to: ConstraintItem)
-    infix fun ConstraintItem.Child.bottomToBottom(to: ConstraintItem)
-    infix fun ConstraintItem.Child.bottomToTop(to: ConstraintItem)
+    infix fun ConstraintItem.Child.bottomToBottom(to: ConstraintItem): Constraint
+    infix fun ConstraintItem.Child.bottomToTop(to: ConstraintItem): Constraint
 
-    infix fun ConstraintItem.Child.leftRightToLeftRight(to: ConstraintItem) {
-        this leftToLeft to
-        this rightToRight to
+    infix fun ConstraintItem.Child.leftRightToLeftRight(to: ConstraintItem): Constraint {
+        val lc = this leftToLeft to
+        val rc = this rightToRight to
+
+        return object : Constraint {
+            override fun offset(points: Int) {
+                lc.offset(points)
+                rc.offset(points)
+            }
+        }
     }
 
     fun ConstraintItem.Child.verticalCenterBetween(
@@ -108,4 +129,7 @@ interface ConstraintsApi {
         left: ConstraintItem.HorizontalAnchor,
         right: ConstraintItem.HorizontalAnchor
     )
+
+    infix fun ConstraintItem.VerticalAnchor.pin(to: ConstraintItem.VerticalAnchor): Constraint
+    infix fun ConstraintItem.HorizontalAnchor.pin(to: ConstraintItem.HorizontalAnchor): Constraint
 }

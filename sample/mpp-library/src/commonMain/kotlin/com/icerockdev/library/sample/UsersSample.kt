@@ -31,31 +31,28 @@ class UsersScreen(
 ) {
     fun createWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         return with(theme) {
-            tabs(
-                size = WidgetSize.AsParent,
-                tabs = listOf(
-                    TabsWidget.Tab(
-                        title = const("list"),
-                        body = list(
-                            size = WidgetSize.AsParent,
-                            id = Id.List,
-                            items = viewModel.tableItems,
-                            onRefresh = viewModel::refresh,
-                            onReachEnd = viewModel::loadNextPage
-                        )
-                    ),
-                    TabsWidget.Tab(
-                        title = const("collection"),
-                        body = collection(
-                            size = WidgetSize.AsParent,
-                            id = Id.Collection,
-                            items = viewModel.collectionItems,
-                            onRefresh = viewModel::refresh,
-                            onReachEnd = viewModel::loadNextPage
-                        )
+            tabs(size = WidgetSize.AsParent) {
+                tab(
+                    title = const("list"),
+                    body = list(
+                        size = WidgetSize.AsParent,
+                        id = Id.List,
+                        items = viewModel.tableItems,
+                        onRefresh = viewModel::refresh,
+                        onReachEnd = viewModel::loadNextPage
                     )
                 )
-            )
+                tab(
+                    title = const("collection"),
+                    body = collection(
+                        size = WidgetSize.AsParent,
+                        id = Id.Collection,
+                        items = viewModel.collectionItems,
+                        onRefresh = viewModel::refresh,
+                        onReachEnd = viewModel::loadNextPage
+                    )
+                )
+            }
         }
     }
 
