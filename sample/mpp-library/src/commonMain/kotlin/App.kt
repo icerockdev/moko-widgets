@@ -61,12 +61,19 @@ class App() : BaseApplication() {
             val bottomRouter = createRouter()
 
             val cartNavigation = registerScreen(NavigationScreen::class) {
+                val navigationRouter = createRouter()
+                val profileScreen = registerScreen(ProfileScreen::class) {
+                    PlatformProfileScreen(navigationRouter.createPopRoute())
+                }
                 val cartScreen = registerScreen(CartScreen::class) {
-                    CartScreen(theme)
+                    CartScreen(
+                        theme = theme,
+                        profileRoute = navigationRouter.createPushRoute(profileScreen) { ProfileScreen.Arg(it) }
+                    )
                 }
                 CartNavigationScreen(
                     initialScreen = cartScreen,
-                    router = createRouter()
+                    router = navigationRouter
                 )
             }
 
@@ -119,10 +126,6 @@ class App() : BaseApplication() {
             }
         }
 
-        val profileScreen = registerScreen(ProfileScreen::class) {
-            PlatformProfileScreen()
-        }
-
         return registerScreen(NavigationScreen::class) {
             val router = createRouter()
 
@@ -133,7 +136,7 @@ class App() : BaseApplication() {
             val loginScreen = registerScreen(LoginScreen::class) {
                 LoginScreen(
                     theme = loginTheme,
-                    mainRoute = router.createReplaceRoute(profileScreen) { ProfileScreen.Arg(10) },
+                    mainRoute = router.createReplaceRoute(mainScreen),
                     registerRoute = router.createPushResultRoute(regScreen) { it.token }
                 ) { LoginViewModel(it) }
             }
