@@ -56,4 +56,5 @@ cocoaPods {
     podsProject = file("../ios-app/Pods/Pods.xcodeproj")
 
     pod("moko-widgets-flat", "mokoWidgetsFlat", onlyLink = true)
+    pod("mppLibraryIos")
 }

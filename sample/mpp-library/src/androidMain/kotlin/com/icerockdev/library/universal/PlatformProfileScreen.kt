@@ -10,9 +10,7 @@ import android.view.ViewGroup
 import com.icerockdev.library.databinding.FragmentProfileBinding
 
 // here we can work with ProfileScreen as any other Fragment
-actual class PlatformProfileScreen actual constructor(
-    deps: Deps
-) : ProfileScreen() {
+actual class PlatformProfileScreen actual constructor() : ProfileScreen() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,7 +22,4 @@ actual class PlatformProfileScreen actual constructor(
         binding.lifecycleOwner = this
         return binding.root
     }
-
-    // empty platform Deps - it's not required to android
-    actual interface Deps
 }

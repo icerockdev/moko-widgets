@@ -4,19 +4,22 @@
 
 package com.icerockdev.library.universal
 
+import cocoapods.mppLibraryIos.ProfileViewController
+import dev.icerock.moko.widgets.utils.bind
+import platform.Foundation.NSBundle
 import platform.UIKit.UIViewController
 
 // here we can setup own create UIViewController logic
-actual class PlatformProfileScreen actual constructor(
-    private val deps: Deps
-) : ProfileScreen() {
+actual class PlatformProfileScreen actual constructor() : ProfileScreen() {
 
     override fun createViewController(): UIViewController {
-        return deps.createViewController(this)
-    }
-
-    // creating of UIViewController will be on Swift side
-    actual interface Deps {
-        fun createViewController(platformProfileScreen: PlatformProfileScreen): UIViewController
+        val viewController = ProfileViewController(
+            bundle = NSBundle.bundleForClass(ProfileViewController.`class`()!!),
+            nibName = null
+        )
+        viewController.loadViewIfNeeded()
+        val textLabel = viewController.textLabel()!!
+        profileViewModel.text.bind { textLabel.text = it.localized() }
+        return viewController
     }
 }

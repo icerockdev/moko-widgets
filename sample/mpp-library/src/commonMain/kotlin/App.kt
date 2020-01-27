@@ -11,13 +11,13 @@ import com.icerockdev.library.universal.LoginViewModel
 import com.icerockdev.library.universal.PlatformProfileScreen
 import com.icerockdev.library.universal.ProductScreen
 import com.icerockdev.library.universal.ProductsScreen
+import com.icerockdev.library.universal.ProfileScreen
 import com.icerockdev.library.universal.WidgetsScreen
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.parcelize.Parcelize
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.ButtonWidget
-import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Theme
@@ -41,11 +41,7 @@ import dev.icerock.moko.widgets.screen.navigation.createRouter
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-interface ScreensPlatformDeps : PlatformProfileScreen.Deps
-
-class App(
-    private val screensPlatformDeps: ScreensPlatformDeps
-) : BaseApplication() {
+class App() : BaseApplication() {
 
     override fun setup(): ScreenDesc<Args.Empty> {
         val sharedFactory = SharedFactory()
@@ -123,8 +119,8 @@ class App(
             }
         }
 
-        val profileScreen = registerScreen(PlatformProfileScreen::class) {
-            PlatformProfileScreen(screensPlatformDeps)
+        val profileScreen = registerScreen(ProfileScreen::class) {
+            PlatformProfileScreen()
         }
 
         return registerScreen(NavigationScreen::class) {
@@ -137,7 +133,7 @@ class App(
             val loginScreen = registerScreen(LoginScreen::class) {
                 LoginScreen(
                     theme = loginTheme,
-                    mainRoute = router.createReplaceRoute(mainScreen),
+                    mainRoute = router.createReplaceRoute(profileScreen) { ProfileScreen.Arg(10) },
                     registerRoute = router.createPushResultRoute(regScreen) { it.token }
                 ) { LoginViewModel(it) }
             }

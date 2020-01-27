@@ -4,7 +4,6 @@
 
 import UIKit
 import MultiPlatformLibrary
-import mokoWidgetsFlat
 
 @UIApplicationMain
 class AppDelegate: NSObject, UIApplicationDelegate {
@@ -13,9 +12,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         
-        let app = App(
-            screensPlatformDeps: self
-        )
+        let app = App()
         app.setup()
         
         let screen = app.rootScreen.instantiate()
@@ -26,15 +23,5 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         
         return true
-    }
-}
-
-extension AppDelegate: ScreensPlatformDeps {
-    func createViewController(
-        platformProfileScreen: PlatformProfileScreen
-    ) -> UIViewController {
-        let vc = ProfileViewController(nibName: nil, bundle: nil)
-        vc.profileScreen = platformProfileScreen
-        return vc
     }
 }

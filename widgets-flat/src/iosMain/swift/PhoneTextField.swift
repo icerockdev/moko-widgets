@@ -38,46 +38,6 @@ import InputMask
     
     textField = PhoneTextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
-//
-//    if let color = style.textStyle?.color {
-//        field.textColor = color.toUIColor()
-//    }
-//    if let size = style.textStyle?.size {
-//        field.font = UIFont.systemFont(ofSize: CGFloat(size.intValue))
-//    }
-//
-//    field.bindTextTwoWay(liveData: widget.field.data)
-//    widget.label.addObserver { text in
-//        field.placeholder = text?.localized()
-//    }
-//
-//    if let inputType = widget.inputType {
-//        switch inputType {
-//        case .plainText:
-//            break
-//        case .password:
-//            field.isSecureTextEntry = true
-//            break
-//        case .email:
-//            field.keyboardType = .emailAddress
-//            break
-//        case .date:
-//            break
-//        case .phone:
-//            field.keyboardType = .phonePad
-//            break
-//        case .digits:
-//            field.keyboardType = .numberPad
-//            break
-//        default:
-//            fatalError("kotlin enum unknown \(inputType)")
-//        }
-//
-//        if let mask = inputType.mask {
-//            field.setFormat(mask, prefix: nil)
-//        }
-//    }
-//    backgroundColor = style.backgroundColor?.toUIColor()
 
     addSubview(textField)
     textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12).isActive = true

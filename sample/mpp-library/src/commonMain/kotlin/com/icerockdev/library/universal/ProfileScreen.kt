@@ -50,9 +50,7 @@ abstract class ProfileScreen : Screen<Args.Parcel<ProfileScreen.Arg>>(),
     ) : Parcelable
 }
 
-expect class PlatformProfileScreen(deps: Deps) : ProfileScreen {
-    interface Deps
-}
+expect class PlatformProfileScreen() : ProfileScreen
 
 class ProfileViewModel(
     override val eventsDispatcher: EventsDispatcher<EventsListener>,
