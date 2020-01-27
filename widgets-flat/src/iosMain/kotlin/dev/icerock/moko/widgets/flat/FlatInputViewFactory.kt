@@ -16,15 +16,14 @@ import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.bind
+import dev.icerock.moko.widgets.utils.setEventHandler
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGRectZero
+import platform.UIKit.UIControlEventEditingChanged
 import platform.UIKit.UIFont
-import platform.UIKit.UIKeyboardType
 import platform.UIKit.UIKeyboardTypeEmailAddress
 import platform.UIKit.UIKeyboardTypeNumberPad
 import platform.UIKit.UIKeyboardTypePhonePad
-import platform.UIKit.UIView
-import platform.UIKit.UIViewController
 import platform.UIKit.backgroundColor
 
 actual class FlatInputViewFactory actual constructor(
@@ -49,24 +48,28 @@ actual class FlatInputViewFactory actual constructor(
         }
 
         widget.field.data.bind {
-            if(textField.text == it) return@bind
+            if (textField.text == it) return@bind
             textField.text = it
         }
-        // FIXME !!!
-//        field.bindTextTwoWay(liveData: widget.field.data)
+        textField.setEventHandler(UIControlEventEditingChanged) {
+            textField.text?.also { widget.field.data.value = it }
+        }
 
         widget.label.bind {
             textField.placeholder = it.localized()
         }
 
-        when(widget.inputType) {
+        when (widget.inputType) {
             InputType.EMAIL -> textField.keyboardType = UIKeyboardTypeEmailAddress
-            InputType.PLAIN_TEXT -> {}
+            InputType.PLAIN_TEXT -> {
+            }
             InputType.PASSWORD -> textField.setSecureTextEntry(true)
-            InputType.DATE -> {}
+            InputType.DATE -> {
+            }
             InputType.PHONE -> textField.keyboardType = UIKeyboardTypePhonePad
             InputType.DIGITS -> textField.keyboardType = UIKeyboardTypeNumberPad
-            null -> {}
+            null -> {
+            }
         }
 
         widget.inputType?.mask?.also {
