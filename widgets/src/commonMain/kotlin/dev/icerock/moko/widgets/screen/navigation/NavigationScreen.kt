@@ -32,6 +32,8 @@ expect abstract class NavigationScreen<S>(
             destination: TypedScreenDesc<Arg, S>,
             inputMapper: (T) -> Arg
         ): Route<T> where S : Screen<Arg>, S : NavigationItem
+
+        fun createPopRoute(): Route<Unit>
     }
 }
 
