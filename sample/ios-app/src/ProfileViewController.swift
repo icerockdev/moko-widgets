@@ -4,6 +4,7 @@
 
 import UIKit
 import MultiPlatformLibrary
+import MultiPlatformLibraryMvvm
 
 class ProfileViewController: UIViewController {
     @IBOutlet var textLabel: UILabel!

@@ -41,11 +41,9 @@ import dev.icerock.moko.widgets.screen.navigation.createRouter
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-interface WidgetsPlatformDeps : FlatInputViewFactory.PlatformDependency
 interface ScreensPlatformDeps : PlatformProfileScreen.Deps
 
 class App(
-    private val widgetsPlatformDeps: WidgetsPlatformDeps,
     private val screensPlatformDeps: ScreensPlatformDeps
 ) : BaseApplication() {
 
@@ -55,7 +53,6 @@ class App(
 
         val loginTheme = Theme(AppTheme.loginScreen) {
             factory[LoginScreen.Id.EmailInputId] = FlatInputViewFactory(
-                platformDependency = widgetsPlatformDeps,
                 textStyle = TextStyle(
                     size = 16,
                     color = Color(0x16171AFF)

@@ -14,7 +14,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         
         let app = App(
-            widgetsPlatformDeps: self,
             screensPlatformDeps: self
         )
         app.setup()
@@ -27,20 +26,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         
         return true
-    }
-}
-
-extension AppDelegate: WidgetsPlatformDeps {
-    func createFlatInputWidgetView(
-        widget: InputWidget<WidgetSize>,
-        viewController: UIViewController,
-        style: FlatInputViewFactory.Style
-    ) -> UIView {
-        return FlatInputPlatformDeps().createFlatInputWidgetView(
-            widget: widget,
-            viewController: viewController,
-            style: style
-        )
     }
 }
 

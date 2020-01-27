@@ -5,8 +5,6 @@ PODS:
   - InputMask (5.0.0)
   - moko-widgets-flat (0.1.0):
     - InputMask (~> 5.0.0)
-    - MultiPlatformLibrary
-    - MultiPlatformLibraryMvvm
   - MultiPlatformLibrary (0.1.0)
   - MultiPlatformLibraryMvvm (0.3.0):
     - MultiPlatformLibrary
@@ -53,7 +51,7 @@ SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   AlamofireImage: be9963c6582d68b39e89191f64c82a7d7bf40fdd
   InputMask: 8a10dbc8ac3f94f0a5b4c380424bbe6795c69b16
-  moko-widgets-flat: 5c2b402c2ba05ea1db0e832360daefb57f7be320
+  moko-widgets-flat: 3d68acddc0469a1288ede5b5b63b6588de5aa5e1
   MultiPlatformLibrary: 176fb8ade516666cd47e93de1b71ba0441a541bb
   MultiPlatformLibraryMvvm: 999ac3896d8214fd65e0e0a376a2e553bf4515b3
   SkyFloatingLabelTextField: 4b46db0ab1ccde0919cded29c656e6b4805eda04

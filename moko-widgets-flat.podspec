@@ -9,10 +9,8 @@ Pod::Spec.new do |spec|
     spec.module_name              = "mokoWidgetsFlat"
 
     spec.source_files             = "widgets-flat/src/iosMain/swift/**/*.{h,m,swift}"
-    spec.resources                = "src/iosMain/xib/**/*"
+    spec.resources                = "widgets-flat/src/iosMain/resources/**/*"
 
-    spec.dependency 'MultiPlatformLibrary'
-    spec.dependency 'MultiPlatformLibraryMvvm'
     spec.dependency 'InputMask', '~> 5.0.0'
 
     spec.ios.deployment_target  = '11.0'
