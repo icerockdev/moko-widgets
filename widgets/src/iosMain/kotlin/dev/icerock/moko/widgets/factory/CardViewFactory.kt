@@ -14,7 +14,8 @@ import dev.icerock.moko.widgets.style.view.*
 actual class CardViewFactory actual constructor(
     private val padding: PaddingValues?,
     private val margins: MarginValues?,
-    private val background: Background?
+    private val background: Background?,
+    private val cornerRadius: CornerRadiusValue?
 ) : ViewFactory<CardWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(

@@ -21,8 +21,7 @@ class CardWidget<WS : WidgetSize>(
     private val factory: ViewFactory<CardWidget<out WidgetSize>>,
     override val size: WS,
     override val id: Id?,
-    val child: Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>,
-    val cornerRadiusValue: CornerRadiusValue? = null
+    val child: Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>
 ) : Widget<WS>(), OptionalId<CardWidget.Id> {
 
     override fun buildView(viewFactoryContext: ViewFactoryContext): ViewBundle<WS> {
