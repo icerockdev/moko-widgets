@@ -1,0 +1,24 @@
+name: KMP library publish
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: macOS-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Build pods-independent and publish local
+        run: |
+          ./gradlew -PpluginPublish publishPluginPublicationToBintrayRepository -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }}
+          ./gradlew -PlibraryPublish :widgets:publishAllPublicationsToBintrayRepository -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }}
+      - name: Cocoapods install
+        run: (cd sample/ios-app && pod install)
+      - name: Build pods-dependent and publish local
+        run: ./gradlew -PlibraryPublish :widgets-flat:publishAllPublicationsToBintrayRepository -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }}

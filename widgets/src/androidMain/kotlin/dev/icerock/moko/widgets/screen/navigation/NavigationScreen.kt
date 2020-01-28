@@ -243,6 +243,14 @@ actual abstract class NavigationScreen<S> actual constructor(
                 }
             }
         }
+
+        actual fun createPopRoute(): Route<Unit> {
+            return object: Route<Unit> {
+                override fun route(source: Screen<*>, arg: Unit) {
+                    navigationScreen!!.getChildFragmentManager().popBackStack()
+                }
+            }
+        }
     }
 
     private fun updateNavigation(fragment: Fragment) {

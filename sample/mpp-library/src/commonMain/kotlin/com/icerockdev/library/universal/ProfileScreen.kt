@@ -20,11 +20,15 @@ import dev.icerock.moko.widgets.screen.getViewModel
 import dev.icerock.moko.widgets.screen.listen
 import dev.icerock.moko.widgets.screen.navigation.NavigationBar
 import dev.icerock.moko.widgets.screen.navigation.NavigationItem
+import dev.icerock.moko.widgets.screen.navigation.Route
+import dev.icerock.moko.widgets.screen.navigation.route
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 abstract class ProfileScreen : Screen<Args.Parcel<ProfileScreen.Arg>>(),
     ProfileViewModel.EventsListener, NavigationItem {
+
+    protected abstract val backRoute: Route<Unit>
 
     override val navigationBar: NavigationBar = NavigationBar.Normal(title = "Profile".desc())
 
@@ -42,6 +46,7 @@ abstract class ProfileScreen : Screen<Args.Parcel<ProfileScreen.Arg>>(),
 
     override fun showTimedMessage(message: StringDesc) {
         println(message) // TODO should be done in #4
+        backRoute.route(this)
     }
 
     @Parcelize
@@ -50,9 +55,7 @@ abstract class ProfileScreen : Screen<Args.Parcel<ProfileScreen.Arg>>(),
     ) : Parcelable
 }
 
-expect class PlatformProfileScreen(deps: Deps) : ProfileScreen {
-    interface Deps
-}
+expect class PlatformProfileScreen(backRoute: Route<Unit>) : ProfileScreen
 
 class ProfileViewModel(
     override val eventsDispatcher: EventsDispatcher<EventsListener>,
