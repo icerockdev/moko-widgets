@@ -5,7 +5,6 @@
 package dev.icerock.moko.widgets.screen
 
 import kotlinx.cinterop.readValue
-import platform.CoreGraphics.CGRectMake
 import dev.icerock.moko.resources.desc.StringDesc
 import platform.CoreGraphics.CGRectZero
 import platform.UIKit.*
@@ -41,16 +40,16 @@ actual fun Screen<*>.showToast(message: StringDesc) {
 
     containerView.centerXAnchor.constraintEqualToAnchor(viewController.view.centerXAnchor).active =
         true
-    containerView.centerXAnchor.constraintEqualToAnchor(viewController.view.centerXAnchor).active =
-        true
-    containerView.bottomAnchor.constraintEqualToAnchor(viewController.view.bottomAnchor, -60.0)
+    containerView.bottomAnchor.constraintEqualToAnchor(viewController.view.safeAreaLayoutGuide.bottomAnchor, -60.0)
         .active = true
 
     UIView.animateWithDuration(
-        duration = 3.0,
+        duration = 1.0,
+        delay = 3.0,
         animations = {
             containerView.alpha = 0.0
         },
+        options = UIViewAnimationOptionTransitionNone,
         completion = {
             containerView.removeFromSuperview()
         }
