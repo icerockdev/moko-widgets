@@ -21,6 +21,7 @@ import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.setEventHandler
 import platform.UIKit.UIButton
 import platform.UIKit.UIButtonTypeSystem
+import platform.UIKit.UIButtonTypeCustom
 import platform.UIKit.UIControlEventTouchUpInside
 import platform.UIKit.UIControlStateNormal
 import platform.UIKit.UIEdgeInsetsMake
@@ -40,7 +41,14 @@ actual class SystemButtonViewFactory actual constructor(
         size: WS,
         viewFactoryContext: ViewFactoryContext
     ): ViewBundle<WS> {
-        val button = UIButton.buttonWithType(UIButtonTypeSystem).apply {
+
+        val buttonType = if (widget.content is ButtonWidget.Content.Icon) {
+            UIButtonTypeCustom
+        } else {
+            UIButtonTypeSystem
+        }
+
+        val button = UIButton.buttonWithType(buttonType).apply {
             translatesAutoresizingMaskIntoConstraints = false
 
             applyStateBackgroundIfNeeded(background)
