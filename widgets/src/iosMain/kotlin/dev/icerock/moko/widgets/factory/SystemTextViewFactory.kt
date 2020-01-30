@@ -34,7 +34,6 @@ actual class SystemTextViewFactory actual constructor(
     ): ViewBundle<WS> {
         val label = UILabel(frame = CGRectZero.readValue()).apply {
             translatesAutoresizingMaskIntoConstraints = false
-            applyBackgroundIfNeeded(background)
             applyTextStyleIfNeeded(textStyle)
 
             numberOfLines = 0
@@ -63,8 +62,21 @@ actual class SystemTextViewFactory actual constructor(
         } else {
             widget.text.bind { label.text = it.localized() }
         }
+
+        val wrapper = UIView(frame = CGRectZero.readValue()).apply {
+            translatesAutoresizingMaskIntoConstraints = false
+            backgroundColor = UIColor.clearColor
+            applyBackgroundIfNeeded(background)
+        }
+
+        wrapper.addSubview(label)
+        label.topAnchor.constraintEqualToAnchor(wrapper.topAnchor).active = true
+        label.leadingAnchor.constraintEqualToAnchor(wrapper.leadingAnchor).active = true
+        wrapper.trailingAnchor.constraintEqualToAnchor(label.trailingAnchor).active = true
+        wrapper.bottomAnchor.constraintEqualToAnchor(label.bottomAnchor).active = true
+        
         return ViewBundle(
-            view = label,
+            view = wrapper,
             size = size,
             margins = margins
         )

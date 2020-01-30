@@ -6,7 +6,7 @@ This is a Kotlin MultiPlatform library that provides declarative UI and applicat
  in common code. You can implement full application for Android and iOS only from common code with it.  
 
 ## Current status
-Current version - `0.1.0-dev-6`. Dev version is not tested in production tasks yet, API can be changed and
+Current version - `0.1.0-dev-8`. Dev version is not tested in production tasks yet, API can be changed and
  bugs may be found. But dev version is chance to test limits of API and concepts to feedback and improve lib.
  We open for any feedback and ideas (go to issues or #moko at [kotlinlang.slack.com](https://kotlinlang.slack.com))!
 
@@ -32,14 +32,16 @@ class LoginScreen(
         constraint(size = WidgetSize.AsParent) {
             val logoImage = +image(
                 size = WidgetSize.Const(SizeSpec.WrapContent, SizeSpec.WrapContent),
-                image = const(Image.resource(MR.images.logo))
+                image = const(Image.resource(MR.images.logo)),
+                scaleType = ImageWidget.ScaleType.FIT
             )
 
             val emailInput = +input(
                 size = WidgetSize.WidthAsParentHeightWrapContent,
                 id = Id.EmailInputId,
                 label = const("Email".desc() as StringDesc),
-                field = viewModel.emailField
+                field = viewModel.emailField,
+                inputType = InputType.PHONE
             )
             val passwordInput = +input(
                 size = WidgetSize.WidthAsParentHeightWrapContent,
@@ -49,23 +51,28 @@ class LoginScreen(
             )
             val loginButton = +button(
                 size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.Exact(50f)),
-                text = const("Login".desc() as StringDesc),
+                content = ButtonWidget.Content.Text(Value.data("Login".desc())),
                 onTap = viewModel::onLoginPressed
             )
 
             val registerButton = +button(
                 id = Id.RegistrationButtonId,
                 size = WidgetSize.Const(SizeSpec.WrapContent, SizeSpec.Exact(40f)),
-                text = const("Registration".desc() as StringDesc),
+                content = ButtonWidget.Content.Text(Value.data("Registration".desc())),
                 onTap = viewModel::onRegistrationPressed
+            )
+
+            val copyrightText = +text(
+                size = WidgetSize.WrapContent,
+                text = const("IceRock Development")
             )
 
             constraints {
                 passwordInput centerYToCenterY root
-                passwordInput leftRightToLeftRight root
+                passwordInput leftRightToLeftRight root offset 16
 
-                emailInput bottomToTop passwordInput
-                emailInput leftRightToLeftRight root
+                emailInput bottomToTop passwordInput offset 8
+                emailInput leftRightToLeftRight root offset 16
 
                 loginButton topToBottom passwordInput
                 loginButton leftRightToLeftRight root
@@ -79,6 +86,9 @@ class LoginScreen(
                     top = root.top,
                     bottom = emailInput.top
                 )
+
+                copyrightText centerXToCenterX root
+                copyrightText bottomToBottom root.safeArea offset 8
             }
         }
     }
@@ -94,88 +104,79 @@ class LoginScreen(
 Code of theme:
 ```kotlin
 val loginScreen = Theme(baseTheme) {
-    constraintFactory = DefaultConstraintWidgetViewFactory(
-        DefaultConstraintWidgetViewFactoryBase.Style(
-            padding = PaddingValues(16f),
-            background = Background(
-                fill = Fill.Solid(Colors.white)
-            )
+    factory[ConstraintWidget.DefaultCategory] = ConstraintViewFactory(
+        padding = PaddingValues(16f),
+        background = Background(
+            fill = Fill.Solid(Colors.white)
         )
     )
 
-    imageFactory = DefaultImageWidgetViewFactory(
-        DefaultImageWidgetViewFactoryBase.Style(
-            scaleType = DefaultImageWidgetViewFactoryBase.ScaleType.FIT
-        )
-    )
-
-    inputFactory = DefaultInputWidgetViewFactory(
-        DefaultInputWidgetViewFactoryBase.Style(
-            margins = MarginValues(bottom = 8f),
-            underLineColor = Color(0xe5e6eeFF),
-            labelTextStyle = TextStyle(
-                color = Color(0x777889FF)
-            )
+    factory[InputWidget.DefaultCategory] = SystemInputViewFactory(
+        margins = MarginValues(bottom = 8f),
+        underLineColor = Color(0x000000DD),
+        underLineFocusedColor = Color(0x3949ABFF),
+        labelTextStyle = TextStyle(
+            size = 12,
+            color = Color(0x3949ABFF),
+            fontStyle = FontStyle.BOLD
+        ),
+        errorTextStyle = TextStyle(
+            size = 12,
+            color = Color(0xB00020FF),
+            fontStyle = FontStyle.BOLD
+        ),
+        textStyle = TextStyle(
+            size = 16,
+            color = Color(0x000000FF),
+            fontStyle = FontStyle.MEDIUM
         )
     )
 
     val corners = platformSpecific(android = 8f, ios = 25f)
 
-    buttonFactory = DefaultButtonWidgetViewFactory(
-        DefaultButtonWidgetViewFactoryBase.Style(
-            margins = MarginValues(top = 32f),
-            background = {
-                val bg: (Color) -> Background = {
-                    Background(
-                        fill = Fill.Solid(it),
-                        shape = Shape.Rectangle(
-                            cornerRadius = corners
-                        )
+    factory[ButtonWidget.DefaultCategory] = SystemButtonViewFactory(
+        margins = MarginValues(top = 32f),
+        background = {
+            val bg: (Color) -> Background = {
+                Background(
+                    fill = Fill.Solid(it),
+                    shape = Shape.Rectangle(
+                        cornerRadius = corners
                     )
-                }
-                StateBackground(
-                    normal = bg(Color(0x6770e0FF)),
-                    pressed = bg(Color(0x6770e0EE)),
-                    disabled = bg(Color(0x6770e0BB))
                 )
-            }.invoke(),
-            textStyle = TextStyle(
-                color = Colors.white
+            }
+            StateBackground(
+                normal = bg(Color(0x6770e0FF)),
+                pressed = bg(Color(0x6770e0EE)),
+                disabled = bg(Color(0x6770e0BB))
             )
+        }.invoke(),
+        textStyle = TextStyle(
+            color = Colors.white
         )
     )
 
-    setButtonFactory(
-        DefaultButtonWidgetViewFactory(
-            DefaultButtonWidgetViewFactoryBase.Style(
-                margins = MarginValues(top = 16f),
-                padding = platformSpecific(
-                    ios = PaddingValues(start = 16f, end = 16f),
-                    android = null
-                ),
-                background = {
-                    val bg: (Color) -> Background = {
-                        Background(
-                            fill = Fill.Solid(it),
-                            border = Border(
-                                color = Color(0xF2F2F8FF),
-                                width = 2f
-                            ),
-                            shape = Shape.Rectangle(cornerRadius = corners)
-                        )
-                    }
-                    StateBackground(
-                        normal = bg(Colors.white),
-                        pressed = bg(Color(0xEEEEEEFF)),
-                        disabled = bg(Color(0xBBBBBBFF))
+    factory[LoginScreen.Id.RegistrationButtonId] = SystemButtonViewFactory(
+        background = {
+            val bg: (Color) -> Background = {
+                Background(
+                    fill = Fill.Solid(it),
+                    shape = Shape.Rectangle(
+                        cornerRadius = corners
                     )
-                }.invoke(),
-                textStyle = TextStyle(
-                    color = Color(0x777889FF)
                 )
+            }
+            StateBackground(
+                normal = bg(Color(0xFFFFFF00)),
+                pressed = bg(Color(0xE7E7EEEE)),
+                disabled = bg(Color(0x000000BB))
             )
+        }.invoke(),
+        margins = MarginValues(top = 16f),
+        textStyle = TextStyle(
+            color = Color(0x777889FF)
         ),
-        LoginScreen.Id.RegistrationButtonId
+        androidElevationEnabled = false
     )
 }
 ```
@@ -212,6 +213,8 @@ val loginScreen = Theme(baseTheme) {
   - 0.1.0-dev-5
 - kotlin 1.3.61
   - 0.1.0-dev-6
+  - 0.1.0-dev-7
+  - 0.1.0-dev-8
 
 ## Installation
 root build.gradle  
@@ -226,7 +229,7 @@ allprojects {
 project build.gradle
 ```groovy
 dependencies {
-    commonMainApi("dev.icerock.moko:widgets:0.1.0-dev-6")
+    commonMainApi("dev.icerock.moko:widgets:0.1.0-dev-8")
 }
 ```
 
@@ -244,7 +247,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "dev.icerock.moko.widgets:gradle-plugin:0.1.0-dev-6"
+        classpath "dev.icerock.moko.widgets:gradle-plugin:0.1.0-dev-8"
     }
 }
 
