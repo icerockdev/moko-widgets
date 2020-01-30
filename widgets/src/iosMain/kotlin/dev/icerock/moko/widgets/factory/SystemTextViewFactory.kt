@@ -18,14 +18,7 @@ import dev.icerock.moko.widgets.utils.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.utils.bind
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGRectZero
-import platform.UIKit.NSTextAlignmentCenter
-import platform.UIKit.NSTextAlignmentLeft
-import platform.UIKit.NSTextAlignmentRight
-import platform.UIKit.UILabel
-import platform.UIKit.UILayoutConstraintAxisHorizontal
-import platform.UIKit.UILayoutConstraintAxisVertical
-import platform.UIKit.setContentCompressionResistancePriority
-import platform.UIKit.translatesAutoresizingMaskIntoConstraints
+import platform.UIKit.*
 
 actual class SystemTextViewFactory actual constructor(
     private val background: Background?,
@@ -41,7 +34,6 @@ actual class SystemTextViewFactory actual constructor(
     ): ViewBundle<WS> {
         val label = UILabel(frame = CGRectZero.readValue()).apply {
             translatesAutoresizingMaskIntoConstraints = false
-            applyBackgroundIfNeeded(background)
             applyTextStyleIfNeeded(textStyle)
 
             numberOfLines = 0
@@ -60,8 +52,20 @@ actual class SystemTextViewFactory actual constructor(
 
         widget.text.bind { label.text = it.localized() }
 
+        val wrapper = UIView(frame = CGRectZero.readValue()).apply {
+            translatesAutoresizingMaskIntoConstraints = false
+            backgroundColor = UIColor.clearColor
+            applyBackgroundIfNeeded(background)
+        }
+
+        wrapper.addSubview(label)
+        label.topAnchor.constraintEqualToAnchor(wrapper.topAnchor).active = true
+        label.leadingAnchor.constraintEqualToAnchor(wrapper.leadingAnchor).active = true
+        wrapper.trailingAnchor.constraintEqualToAnchor(label.trailingAnchor).active = true
+        wrapper.bottomAnchor.constraintEqualToAnchor(label.bottomAnchor).active = true
+        
         return ViewBundle(
-            view = label,
+            view = wrapper,
             size = size,
             margins = margins
         )
