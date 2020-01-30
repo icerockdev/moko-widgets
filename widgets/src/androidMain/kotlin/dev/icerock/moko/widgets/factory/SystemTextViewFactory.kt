@@ -5,6 +5,8 @@
 package dev.icerock.moko.widgets.factory
 
 import android.annotation.SuppressLint
+import android.text.Html
+import android.text.method.LinkMovementMethod
 import android.view.Gravity
 import android.widget.TextView
 import dev.icerock.moko.widgets.TextWidget
@@ -24,7 +26,8 @@ actual class SystemTextViewFactory actual constructor(
     private val background: Background?,
     private val textStyle: TextStyle?,
     private val textAlignment: TextAlignment?,
-    private val margins: MarginValues?
+    private val margins: MarginValues?,
+    private val isHtmlConverted: Boolean
 ) : ViewFactory<TextWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
@@ -48,8 +51,23 @@ actual class SystemTextViewFactory actual constructor(
                 }
             }
         }
-
-        widget.text.bind(lifecycleOwner) { textView.text = it?.toString(context) }
+        if (!isHtmlConverted) {
+            widget.text.bind(lifecycleOwner) { textView.text = it?.toString(context) }
+        } else {
+            widget.text.bind(lifecycleOwner) {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                    textView.setText(
+                        Html.fromHtml(
+                            it?.toString(context),
+                            Html.FROM_HTML_MODE_LEGACY
+                        )
+                    )
+                } else {
+                    textView.setText(Html.fromHtml(it?.toString(context)))
+                }
+            }
+            textView.movementMethod = LinkMovementMethod.getInstance()
+        }
 
         return ViewBundle(
             view = textView,

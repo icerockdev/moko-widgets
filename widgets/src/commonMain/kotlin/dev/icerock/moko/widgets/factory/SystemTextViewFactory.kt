@@ -17,5 +17,6 @@ expect class SystemTextViewFactory(
     background: Background? = null,
     textStyle: TextStyle? = null,
     textAlignment: TextAlignment? = null,
-    margins: MarginValues? = null
+    margins: MarginValues? = null,
+    isHtmlConverted: Boolean = false
 ) : ViewFactory<TextWidget<out WidgetSize>>
