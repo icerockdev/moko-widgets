@@ -9,29 +9,22 @@ import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.background.Background
-import dev.icerock.moko.widgets.style.view.MarginValues
-import dev.icerock.moko.widgets.style.view.TextAlignment
-import dev.icerock.moko.widgets.style.view.TextStyle
-import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.style.view.*
 import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.utils.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.utils.bind
+import dev.icerock.moko.widgets.utils.setHandler
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGRectZero
-import platform.UIKit.NSTextAlignmentCenter
-import platform.UIKit.NSTextAlignmentLeft
-import platform.UIKit.NSTextAlignmentRight
-import platform.UIKit.UILabel
-import platform.UIKit.UILayoutConstraintAxisHorizontal
-import platform.UIKit.UILayoutConstraintAxisVertical
-import platform.UIKit.setContentCompressionResistancePriority
-import platform.UIKit.translatesAutoresizingMaskIntoConstraints
+import platform.UIKit.*
+import platform.Foundation.*
 
 actual class SystemTextViewFactory actual constructor(
     private val background: Background?,
     private val textStyle: TextStyle?,
     private val textAlignment: TextAlignment?,
-    private val margins: MarginValues?
+    private val margins: MarginValues?,
+    private val isHtmlConverted: Boolean
 ) : ViewFactory<TextWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
@@ -57,13 +50,55 @@ actual class SystemTextViewFactory actual constructor(
                 }
             }
         }
+        if (isHtmlConverted) {
+            widget.text.bind { label.attributedText = it.localized().stringFromHtml(
+                textStyle = textStyle
+            ) }
+            label.userInteractionEnabled = true
 
-        widget.text.bind { label.text = it.localized() }
-
+            val recognizer = UITapGestureRecognizer().apply {
+                setHandler { label.openUrl() }
+            }
+            label.addGestureRecognizer(recognizer)
+        } else {
+            widget.text.bind { label.text = it.localized() }
+        }
         return ViewBundle(
             view = label,
             size = size,
             margins = margins
         )
     }
+}
+
+fun String.stringFromHtml(textStyle: TextStyle?): NSAttributedString? {
+    val nsString = NSString.create(string = this)
+    val data: NSData? = nsString.dataUsingEncoding(NSUTF8StringEncoding)
+    if (data == null) {
+        return null
+    }
+    val attributed = NSMutableAttributedString.create(
+        data = data,
+        options = mapOf<Any?, Any?>(
+            NSDocumentTypeDocumentAttribute to NSHTMLTextDocumentType,
+            NSCharacterEncodingDocumentAttribute to NSUTF8StringEncoding
+        ),
+        documentAttributes = null,
+        error = null)
+    return attributed
+}
+
+fun UILabel.openUrl() {
+    val attributed = this.attributedText ?: return
+
+    attributed.enumerateAttribute(
+        attrName = NSLinkAttributeName,
+        inRange = NSMakeRange(0, attributed.string.length.toULong()),
+        options = NSAttributedStringEnumerationReverse,
+        usingBlock = { url, _, _ ->
+            val link = url as? NSURL ?: return@enumerateAttribute
+            UIApplication.sharedApplication.openURL(link)
+        }
+    )
+
 }
