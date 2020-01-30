@@ -1,7 +1,3 @@
-/*
- * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
- */
-
 package dev.icerock.moko.widgets.factory
 
 import dev.icerock.moko.graphics.Color
@@ -51,12 +47,15 @@ import platform.UIKit.topAnchor
 import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
-actual class SystemInputViewFactory actual constructor(
+actual class FloatingLabelInputViewFactory actual constructor(
     private val background: Background?,
     private val margins: MarginValues?,
     private val padding: PaddingValues?,
     private val textStyle: TextStyle?,
     private val labelTextStyle: TextStyle?,
+    private val errorTextStyle: TextStyle?,
+    private val underLineColor: Color?,
+    private val underLineFocusedColor: Color?,
     private val textAlignment: TextAlignment?
 ) : ViewFactory<InputWidget<out WidgetSize>> {
 
@@ -80,7 +79,14 @@ actual class SystemInputViewFactory actual constructor(
             applyBackgroundIfNeeded(background)
 
             applyTextStyleIfNeeded(textStyle)
+            applyErrorStyleIfNeeded(errorTextStyle)
             applyLabelStyleIfNeeded(labelTextStyle)
+            underLineColor?.let {
+                deselectedColor = it.toUIColor()
+            }
+            underLineFocusedColor?.let {
+                selectedColor = it.toUIColor()
+            }
 
             textChanged = { newValue ->
                 val currentValue = widget.field.data.value
@@ -325,4 +331,5 @@ actual class SystemInputViewFactory actual constructor(
             CATransaction.commit()
         }
     }
+
 }
