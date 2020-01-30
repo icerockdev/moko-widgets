@@ -56,8 +56,8 @@ actual class SystemInputViewFactory actual constructor(
     private val margins: MarginValues?,
     private val padding: PaddingValues?,
     private val textStyle: TextStyle?,
-    private val labelTextStyle: TextStyle?,
-    private val textAlignment: TextAlignment?
+    private val labelTextColor: Color?, // TODO: create applying hint text color
+    private val textAlignment: TextAlignment? // TODO: create applying text alignment
 ) : ViewFactory<InputWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
@@ -80,7 +80,8 @@ actual class SystemInputViewFactory actual constructor(
             applyBackgroundIfNeeded(background)
 
             applyTextStyleIfNeeded(textStyle)
-            applyLabelStyleIfNeeded(labelTextStyle)
+            // TODO: add [labelTextColor] applying
+            //applyLabelStyleIfNeeded(labelTextStyle)
 
             textChanged = { newValue ->
                 val currentValue = widget.field.data.value

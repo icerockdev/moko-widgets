@@ -5,14 +5,14 @@
 package dev.icerock.moko.widgets.factory
 
 import android.annotation.SuppressLint
-import android.content.res.ColorStateList
-import android.graphics.Typeface
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.core.view.MarginLayoutParamsCompat
+import dev.icerock.moko.graphics.Color
+import dev.icerock.moko.graphics.colorInt
 import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
@@ -33,7 +33,7 @@ actual class SystemInputViewFactory actual constructor(
     private val margins: MarginValues?,
     private val padding: PaddingValues?,
     private val textStyle: TextStyle?,
-    private val labelTextStyle: TextStyle?,
+    private val labelTextColor: Color?,
     private val textAlignment: TextAlignment?
 ) : ViewFactory<InputWidget<out WidgetSize>> {
 
@@ -89,22 +89,9 @@ actual class SystemInputViewFactory actual constructor(
                     widget.field.data.value = s.toString()
                 }
             })
-        }
 
-        labelTextStyle?.also {
-            if (it.color != null) {
-                val hintColor = ColorStateList.valueOf(it.color.argb.toInt())
-                editText.setHintTextColor(hintColor)
-            }
-            if (it.size != null) {
-                editText.textSize = it.size.toFloat().sp(context)
-            }
-            if(it.fontStyle != null) {
-                editText.typeface = when(it.fontStyle) {
-                    FontStyle.BOLD -> Typeface.DEFAULT_BOLD
-                    FontStyle.MEDIUM -> Typeface.DEFAULT
-                }
-            }
+            // setting hint text color
+            labelTextColor?.let { setHintTextColor(it.colorInt()) }
         }
 
         widget.field.data.bind(lifecycleOwner) { data ->
