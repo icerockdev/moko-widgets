@@ -48,6 +48,7 @@ import platform.UIKit.bottomAnchor
 import platform.UIKit.leadingAnchor
 import platform.UIKit.systemFontSize
 import platform.UIKit.systemGray3Color
+import platform.UIKit.systemGrayColor
 import platform.UIKit.systemRedColor
 import platform.UIKit.topAnchor
 import platform.UIKit.trailingAnchor
@@ -155,7 +156,7 @@ actual class SystemInputViewFactory actual constructor(
                 field = value
                 underlineLayer.fillColor = (if (textField.isFocused()) value else deselectedColor).CGColor
             }
-        var deselectedColor: UIColor = UIColor.systemGray3Color
+        var deselectedColor: UIColor = UIColor.systemGrayColor
             set(value) {
                 field = value
                 underlineLayer.fillColor = (if (textField.isFocused()) selectedColor else value).CGColor

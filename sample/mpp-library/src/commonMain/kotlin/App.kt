@@ -11,13 +11,13 @@ import com.icerockdev.library.universal.LoginViewModel
 import com.icerockdev.library.universal.PlatformProfileScreen
 import com.icerockdev.library.universal.ProductScreen
 import com.icerockdev.library.universal.ProductsScreen
+import com.icerockdev.library.universal.ProfileScreen
 import com.icerockdev.library.universal.WidgetsScreen
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.parcelize.Parcelize
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.ButtonWidget
-import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Theme
@@ -41,13 +41,7 @@ import dev.icerock.moko.widgets.screen.navigation.createRouter
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
-interface WidgetsPlatformDeps : FlatInputViewFactory.PlatformDependency
-interface ScreensPlatformDeps : PlatformProfileScreen.Deps
-
-class App(
-    private val widgetsPlatformDeps: WidgetsPlatformDeps,
-    private val screensPlatformDeps: ScreensPlatformDeps
-) : BaseApplication() {
+class App() : BaseApplication() {
 
     override fun setup(): ScreenDesc<Args.Empty> {
         val sharedFactory = SharedFactory()
@@ -55,7 +49,6 @@ class App(
 
         val loginTheme = Theme(AppTheme.loginScreen) {
             factory[LoginScreen.Id.EmailInputId] = FlatInputViewFactory(
-                platformDependency = widgetsPlatformDeps,
                 textStyle = TextStyle(
                     size = 16,
                     color = Color(0x16171AFF)
@@ -68,12 +61,19 @@ class App(
             val bottomRouter = createRouter()
 
             val cartNavigation = registerScreen(NavigationScreen::class) {
+                val navigationRouter = createRouter()
+                val profileScreen = registerScreen(ProfileScreen::class) {
+                    PlatformProfileScreen(navigationRouter.createPopRoute())
+                }
                 val cartScreen = registerScreen(CartScreen::class) {
-                    CartScreen(theme)
+                    CartScreen(
+                        theme = theme,
+                        profileRoute = navigationRouter.createPushRoute(profileScreen) { ProfileScreen.Arg(it) }
+                    )
                 }
                 CartNavigationScreen(
                     initialScreen = cartScreen,
-                    router = createRouter()
+                    router = navigationRouter
                 )
             }
 
@@ -124,10 +124,6 @@ class App(
                     screenDesc = widgetsScreen
                 )
             }
-        }
-
-        val profileScreen = registerScreen(PlatformProfileScreen::class) {
-            PlatformProfileScreen(screensPlatformDeps)
         }
 
         return registerScreen(NavigationScreen::class) {

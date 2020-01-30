@@ -20,7 +20,6 @@ import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.bind
 
 actual class FlatInputViewFactory actual constructor(
-    platformDependency: PlatformDependency,
     private val textStyle: TextStyle?,
     private val backgroundColor: Color?,
     private val margins: MarginValues?
@@ -96,7 +95,4 @@ actual class FlatInputViewFactory actual constructor(
             margins = margins
         )
     }
-
-    // nothing required from android side
-    actual interface PlatformDependency
 }

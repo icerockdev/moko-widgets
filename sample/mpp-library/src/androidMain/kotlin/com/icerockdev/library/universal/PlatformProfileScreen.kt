@@ -8,10 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.icerockdev.library.databinding.FragmentProfileBinding
+import dev.icerock.moko.widgets.screen.navigation.Route
 
 // here we can work with ProfileScreen as any other Fragment
 actual class PlatformProfileScreen actual constructor(
-    deps: Deps
+    override val backRoute: Route<Unit>
 ) : ProfileScreen() {
 
     override fun onCreateView(
@@ -24,7 +25,4 @@ actual class PlatformProfileScreen actual constructor(
         binding.lifecycleOwner = this
         return binding.root
     }
-
-    // empty platform Deps - it's not required to android
-    actual interface Deps
 }
