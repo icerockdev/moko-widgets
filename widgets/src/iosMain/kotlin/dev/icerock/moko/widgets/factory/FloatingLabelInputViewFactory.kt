@@ -44,7 +44,6 @@ import platform.UIKit.addSubview
 import platform.UIKit.bottomAnchor
 import platform.UIKit.leadingAnchor
 import platform.UIKit.systemFontSize
-import platform.UIKit.systemGray3Color
 import platform.UIKit.systemGrayColor
 import platform.UIKit.systemRedColor
 import platform.UIKit.topAnchor
@@ -60,7 +59,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
     private val errorTextStyle: TextStyle?,
     private val underLineColor: Color?,
     private val underLineFocusedColor: Color?,
-    private val textAlignment: TextAlignment?
+    private val textHorizontalAlignment: TextHorizontalAlignment?
 ) : ViewFactory<InputWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(

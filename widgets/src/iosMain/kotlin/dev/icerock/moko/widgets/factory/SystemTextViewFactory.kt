@@ -10,7 +10,7 @@ import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.view.MarginValues
-import dev.icerock.moko.widgets.style.view.TextAlignment
+import dev.icerock.moko.widgets.style.view.TextHorizontalAlignment
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
@@ -30,7 +30,7 @@ import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 actual class SystemTextViewFactory actual constructor(
     private val background: Background?,
     private val textStyle: TextStyle?,
-    private val textAlignment: TextAlignment?,
+    private val textHorizontalAlignment: TextHorizontalAlignment?,
     private val margins: MarginValues?
 ) : ViewFactory<TextWidget<out WidgetSize>> {
 
@@ -49,10 +49,10 @@ actual class SystemTextViewFactory actual constructor(
             setContentCompressionResistancePriority(749f, UILayoutConstraintAxisHorizontal)
             setContentCompressionResistancePriority(749f, UILayoutConstraintAxisVertical)
 
-            when (this@SystemTextViewFactory.textAlignment) {
-                TextAlignment.LEFT -> textAlignment = NSTextAlignmentLeft
-                TextAlignment.CENTER -> textAlignment = NSTextAlignmentCenter
-                TextAlignment.RIGHT -> textAlignment = NSTextAlignmentRight
+            when (this@SystemTextViewFactory.textHorizontalAlignment) {
+                TextHorizontalAlignment.LEFT -> textAlignment = NSTextAlignmentLeft
+                TextHorizontalAlignment.CENTER -> textAlignment = NSTextAlignmentCenter
+                TextHorizontalAlignment.RIGHT -> textAlignment = NSTextAlignmentRight
                 null -> {
                 }
             }

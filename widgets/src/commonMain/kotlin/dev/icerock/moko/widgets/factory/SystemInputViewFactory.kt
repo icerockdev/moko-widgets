@@ -16,5 +16,6 @@ expect class SystemInputViewFactory(
     padding: PaddingValues? = null,
     textStyle: TextStyle? = null,
     labelTextColor: Color? = null,
-    textAlignment: TextAlignment? = null
+    textHorizontalAlignment: TextHorizontalAlignment? = null,
+    textVerticalAlignment: TextVerticalAlignment? = null
 ) : ViewFactory<InputWidget<out WidgetSize>>

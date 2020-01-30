@@ -22,11 +22,10 @@ import dev.icerock.moko.widgets.style.applyInputType
 import dev.icerock.moko.widgets.style.applyPaddingIfNeeded
 import dev.icerock.moko.widgets.style.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.style.background.Background
-import dev.icerock.moko.widgets.style.ext.getGravity
+import dev.icerock.moko.widgets.style.ext.getGravityForTextAlignment
 import dev.icerock.moko.widgets.style.view.*
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.dp
-import dev.icerock.moko.widgets.utils.sp
 
 actual class SystemInputViewFactory actual constructor(
     private val background: Background?,
@@ -34,7 +33,8 @@ actual class SystemInputViewFactory actual constructor(
     private val padding: PaddingValues?,
     private val textStyle: TextStyle?,
     private val labelTextColor: Color?,
-    private val textAlignment: TextAlignment?
+    private val textHorizontalAlignment: TextHorizontalAlignment?,
+    private val textVerticalAlignment: TextVerticalAlignment?
 ) : ViewFactory<InputWidget<out WidgetSize>> {
 
     @SuppressLint("RestrictedApi")
@@ -66,9 +66,10 @@ actual class SystemInputViewFactory actual constructor(
             applyTextStyleIfNeeded(textStyle)
             widget.inputType?.also { applyInputType(it) }
 
-            this@SystemInputViewFactory.textAlignment?.let {
-                gravity = it.getGravity()
-            }
+            gravity = getGravityForTextAlignment(
+                this@SystemInputViewFactory.textHorizontalAlignment,
+                this@SystemInputViewFactory.textVerticalAlignment
+            )
 
             setOnFocusChangeListener { _, hasFocus ->
                 if (!hasFocus) widget.field.validate()

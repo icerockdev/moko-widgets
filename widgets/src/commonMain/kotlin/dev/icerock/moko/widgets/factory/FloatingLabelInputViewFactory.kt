@@ -19,5 +19,5 @@ expect class FloatingLabelInputViewFactory(
     errorTextStyle: TextStyle? = null,
     underLineColor: Color? = null,
     underLineFocusedColor: Color? = null,
-    textAlignment: TextAlignment? = null
+    textHorizontalAlignment: TextHorizontalAlignment? = null
 ) : ViewFactory<InputWidget<out WidgetSize>>

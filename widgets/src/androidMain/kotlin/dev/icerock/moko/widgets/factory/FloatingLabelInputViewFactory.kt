@@ -42,7 +42,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
     private val errorTextStyle: TextStyle?,
     private val underLineColor: Color?,
     private val underLineFocusedColor: Color?,
-    private val textAlignment: TextAlignment?
+    private val textHorizontalAlignment: TextHorizontalAlignment?
 ) : ViewFactory<InputWidget<out WidgetSize>> {
 
     @SuppressLint("RestrictedApi")
@@ -77,7 +77,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
             applyTextStyleIfNeeded(textStyle)
             widget.inputType?.also { applyInputType(it) }
 
-            this@FloatingLabelInputViewFactory.textAlignment?.let {
+            this@FloatingLabelInputViewFactory.textHorizontalAlignment?.let {
                 gravity = it.getGravity()
             }
 

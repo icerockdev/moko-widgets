@@ -5,7 +5,6 @@
 package dev.icerock.moko.widgets.factory
 
 import dev.icerock.moko.graphics.Color
-import dev.icerock.moko.graphics.toUIColor
 import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
@@ -44,7 +43,6 @@ import platform.UIKit.addSubview
 import platform.UIKit.bottomAnchor
 import platform.UIKit.leadingAnchor
 import platform.UIKit.systemFontSize
-import platform.UIKit.systemGray3Color
 import platform.UIKit.systemGrayColor
 import platform.UIKit.systemRedColor
 import platform.UIKit.topAnchor
@@ -57,7 +55,8 @@ actual class SystemInputViewFactory actual constructor(
     private val padding: PaddingValues?,
     private val textStyle: TextStyle?,
     private val labelTextColor: Color?, // TODO: create applying hint text color
-    private val textAlignment: TextAlignment? // TODO: create applying text alignment
+    private val textHorizontalAlignment: TextHorizontalAlignment?, // TODO: create applying text alignment
+    private val textVerticalAlignment: TextVerticalAlignment? // TODO: create applying text alignment
 ) : ViewFactory<InputWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
