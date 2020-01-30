@@ -4,7 +4,7 @@
 
 package dev.icerock.moko.widgets.style.view
 
-enum class TextAlignment {
+enum class TextHorizontalAlignment {
     LEFT,
     CENTER,
     RIGHT

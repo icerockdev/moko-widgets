@@ -15,7 +15,7 @@ import dev.icerock.moko.widgets.style.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.style.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.view.MarginValues
-import dev.icerock.moko.widgets.style.view.TextAlignment
+import dev.icerock.moko.widgets.style.view.TextHorizontalAlignment
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.bind
@@ -23,7 +23,7 @@ import dev.icerock.moko.widgets.utils.bind
 actual class SystemTextViewFactory actual constructor(
     private val background: Background?,
     private val textStyle: TextStyle?,
-    private val textAlignment: TextAlignment?,
+    private val textHorizontalAlignment: TextHorizontalAlignment?,
     private val margins: MarginValues?
 ) : ViewFactory<TextWidget<out WidgetSize>> {
 
@@ -40,10 +40,10 @@ actual class SystemTextViewFactory actual constructor(
             applyBackgroundIfNeeded(this@SystemTextViewFactory.background)
 
             @SuppressLint("RtlHardcoded")
-            when (this@SystemTextViewFactory.textAlignment) {
-                TextAlignment.LEFT -> gravity = Gravity.LEFT
-                TextAlignment.CENTER -> gravity = Gravity.CENTER
-                TextAlignment.RIGHT -> gravity = Gravity.RIGHT
+            when (this@SystemTextViewFactory.textHorizontalAlignment) {
+                TextHorizontalAlignment.LEFT -> gravity = Gravity.LEFT
+                TextHorizontalAlignment.CENTER -> gravity = Gravity.CENTER
+                TextHorizontalAlignment.RIGHT -> gravity = Gravity.RIGHT
                 null -> {
                 }
             }
