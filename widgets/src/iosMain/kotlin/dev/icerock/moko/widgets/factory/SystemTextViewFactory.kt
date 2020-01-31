@@ -4,6 +4,7 @@
 
 package dev.icerock.moko.widgets.factory
 
+import dev.icerock.moko.graphics.toUIColor
 import dev.icerock.moko.widgets.TextWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
@@ -27,16 +28,23 @@ import platform.Foundation.NSMutableAttributedString
 import platform.Foundation.NSString
 import platform.Foundation.NSURL
 import platform.Foundation.NSUTF8StringEncoding
+import platform.Foundation.addAttributes
 import platform.Foundation.create
 import platform.Foundation.dataUsingEncoding
 import platform.Foundation.enumerateAttribute
+import platform.Foundation.removeAttribute
+import platform.UIKit.NSAttachmentAttributeName
 import platform.UIKit.NSCharacterEncodingDocumentAttribute
 import platform.UIKit.NSDocumentTypeDocumentAttribute
+import platform.UIKit.NSForegroundColorAttributeName
 import platform.UIKit.NSHTMLTextDocumentType
 import platform.UIKit.NSLinkAttributeName
+import platform.UIKit.NSParagraphStyleAttributeName
+import platform.UIKit.NSStrokeColorAttributeName
 import platform.UIKit.NSTextAlignmentCenter
 import platform.UIKit.NSTextAlignmentLeft
 import platform.UIKit.NSTextAlignmentRight
+import platform.UIKit.NSUnderlineColorAttributeName
 import platform.UIKit.UIApplication
 import platform.UIKit.UIColor
 import platform.UIKit.UILabel
@@ -133,14 +141,40 @@ private fun String.stringFromHtml(textStyle: TextStyle?): NSAttributedString? {
         ),
         documentAttributes = null,
         error = null
-    )
+    )?.apply {
+        changeUrlColor(textStyle)
+    }
+}
+
+private fun NSMutableAttributedString.changeUrlColor(textStyle: TextStyle?) {
+    if (textStyle?.color == null) return
+
+    this.enumerateAttribute(attrName = NSLinkAttributeName,
+        inRange = NSMakeRange(0, this.string.length.toULong()),
+        options = 0,
+        usingBlock = { url, range, _ ->
+            if (url == null) return@enumerateAttribute
+
+            this.removeAttribute(name = NSLinkAttributeName, range = range)
+            this.addAttributes(
+                attrs = mapOf(
+                    NSForegroundColorAttributeName to textStyle.color.toUIColor(),
+                    NSUnderlineColorAttributeName to textStyle.color.toUIColor(),
+                    NSStrokeColorAttributeName to textStyle.color.toUIColor(),
+                    NSAttachmentAttributeName to url
+                ),
+                range = range
+            )
+
+            this.removeAttribute(name = NSParagraphStyleAttributeName, range = range)
+        })
 }
 
 private fun UILabel.openUrl() {
     val attributed = this.attributedText ?: return
 
     attributed.enumerateAttribute(
-        attrName = NSLinkAttributeName,
+        attrName = NSAttachmentAttributeName,
         inRange = NSMakeRange(0, attributed.string.length.toULong()),
         options = NSAttributedStringEnumerationReverse,
         usingBlock = { url, _, _ ->
