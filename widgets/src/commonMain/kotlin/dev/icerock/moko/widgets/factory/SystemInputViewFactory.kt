@@ -17,5 +17,6 @@ expect class SystemInputViewFactory(
     textStyle: TextStyle? = null,
     labelTextColor: Color? = null,
     textHorizontalAlignment: TextHorizontalAlignment? = null,
-    textVerticalAlignment: TextVerticalAlignment? = null
+    textVerticalAlignment: TextVerticalAlignment? = null,
+    iosFieldBorderStyle: IOSFieldBorderStyle? = null
 ) : ViewFactory<InputWidget<out WidgetSize>>
