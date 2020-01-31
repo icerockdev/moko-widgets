@@ -27,7 +27,7 @@ actual class SystemListViewFactory actual constructor(
     private val background: Background?,
     private val dividerEnabled: Boolean?,
     private val reversed: Boolean,
-    private val anchorToLastItem: Boolean,
+    private val autoScroll: Boolean,
     private val padding: PaddingValues?,
     private val margins: MarginValues?
 ) : ViewFactory<ListWidget<out WidgetSize>> {
@@ -85,7 +85,7 @@ actual class SystemListViewFactory actual constructor(
                 else -> list.observedEnd(widget.onReachEnd)
             }
 
-            if (anchorToLastItem && units?.size ?: 0 > 0) {
+            if (autoScroll && list.isNotEmpty()) {
                 recyclerView.smoothScrollToPosition(
                     unitsAdapter.itemCount - 1
                 )

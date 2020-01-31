@@ -15,7 +15,7 @@ expect class SystemListViewFactory(
     background: Background? = null,
     dividerEnabled: Boolean? = null,
     reversed: Boolean = false,
-    anchorToLastItem: Boolean = false,
+    autoScroll: Boolean = false,
     padding: PaddingValues? = null,
     margins: MarginValues? = null
 ) : ViewFactory<ListWidget<out WidgetSize>>

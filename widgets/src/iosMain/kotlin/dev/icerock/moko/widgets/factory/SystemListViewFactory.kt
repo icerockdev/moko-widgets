@@ -37,7 +37,7 @@ actual class SystemListViewFactory actual constructor(
     private val background: Background?,
     private val dividerEnabled: Boolean?,
     private val reversed: Boolean,
-    private val anchorToLastItem: Boolean,
+    private val autoScroll: Boolean,
     private val padding: PaddingValues?,
     private val margins: MarginValues?
 ) : ViewFactory<ListWidget<out WidgetSize>> {
