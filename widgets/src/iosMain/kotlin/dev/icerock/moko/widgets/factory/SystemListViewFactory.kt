@@ -37,6 +37,7 @@ actual class SystemListViewFactory actual constructor(
     private val background: Background?,
     private val dividerEnabled: Boolean?,
     private val reversed: Boolean,
+    private val anchorToLastItem: Boolean,
     private val padding: PaddingValues?,
     private val margins: MarginValues?
 ) : ViewFactory<ListWidget<out WidgetSize>> {
@@ -99,6 +100,7 @@ actual class SystemListViewFactory actual constructor(
             }
 
             // TODO reversed apply
+            // TODO anchor to bottom
         }
 
         widget.items.bind { items ->
