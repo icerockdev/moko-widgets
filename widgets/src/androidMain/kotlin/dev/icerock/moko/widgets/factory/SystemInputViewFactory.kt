@@ -5,20 +5,15 @@
 package dev.icerock.moko.widgets.factory
 
 import android.annotation.SuppressLint
-import android.content.res.ColorStateList
-import android.graphics.Typeface
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.core.view.MarginLayoutParamsCompat
-import com.google.android.material.internal.CollapsingTextHelper
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import dev.icerock.moko.graphics.Color
+import dev.icerock.moko.graphics.colorInt
 import dev.icerock.moko.widgets.InputWidget
-import dev.icerock.moko.widgets.R
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
@@ -27,24 +22,20 @@ import dev.icerock.moko.widgets.style.applyInputType
 import dev.icerock.moko.widgets.style.applyPaddingIfNeeded
 import dev.icerock.moko.widgets.style.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.style.background.Background
-import dev.icerock.moko.widgets.style.view.FontStyle
-import dev.icerock.moko.widgets.style.view.MarginValues
-import dev.icerock.moko.widgets.style.view.PaddingValues
-import dev.icerock.moko.widgets.style.view.TextStyle
-import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.style.ext.getGravityForTextAlignment
+import dev.icerock.moko.widgets.style.view.*
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.dp
-import dev.icerock.moko.widgets.utils.sp
 
 actual class SystemInputViewFactory actual constructor(
     private val background: Background?,
     private val margins: MarginValues?,
     private val padding: PaddingValues?,
     private val textStyle: TextStyle?,
-    private val labelTextStyle: TextStyle?,
-    private val errorTextStyle: TextStyle?,
-    private val underLineColor: Color?,
-    private val underLineFocusedColor: Color?
+    private val labelTextColor: Color?,
+    private val textHorizontalAlignment: TextHorizontalAlignment?,
+    private val textVerticalAlignment: TextVerticalAlignment?,
+    iosFieldBorderStyle: IOSFieldBorderStyle? // For ios only
 ) : ViewFactory<InputWidget<out WidgetSize>> {
 
     @SuppressLint("RestrictedApi")
@@ -56,13 +47,10 @@ actual class SystemInputViewFactory actual constructor(
         val context = viewFactoryContext.androidContext
         val lifecycleOwner = viewFactoryContext.lifecycleOwner
 
-        val textInputLayout = TextInputLayout(context)
-        val collapsingTextHelper = textInputLayout.getCollapsingTextHelper()
+        val editText = EditText(context).apply {
+            applyBackgroundIfNeeded(this@SystemInputViewFactory.background)
+            applyPaddingIfNeeded(padding)
 
-        textInputLayout.applyBackgroundIfNeeded(background)
-        textInputLayout.applyPaddingIfNeeded(padding)
-
-        val editText = TextInputEditText(context).apply {
             id = widget.id::javaClass.name.hashCode()
 
             layoutParams = LinearLayout.LayoutParams(
@@ -79,50 +67,27 @@ actual class SystemInputViewFactory actual constructor(
             applyTextStyleIfNeeded(textStyle)
             widget.inputType?.also { applyInputType(it) }
 
-            val focusedColor = underLineFocusedColor?.argb?.toInt()
-            val defaultColor = underLineColor?.argb?.toInt()
-
-            if (focusedColor != null && defaultColor != null) {
-                supportBackgroundTintList = ColorStateList(
-                    arrayOf(
-                        intArrayOf(-android.R.attr.state_focused, -android.R.attr.state_pressed),
-                        intArrayOf()
-                    ),
-                    intArrayOf(
-                        defaultColor,
-                        focusedColor
-                    )
-                )
-            } else if (defaultColor != null) {
-                supportBackgroundTintList = ColorStateList.valueOf(defaultColor)
-            } else if (focusedColor != null) {
-                supportBackgroundTintList = ColorStateList(
-                    arrayOf(
-                        intArrayOf(android.R.attr.state_focused, android.R.attr.state_activated)
-                    ),
-                    intArrayOf(
-                        focusedColor
-                    )
+            // If there is any nonnull text alignment argument, then set it to gravity
+            // otherwise gravity will be with default value.
+            if(textHorizontalAlignment != null || textVerticalAlignment != null) {
+                gravity = getGravityForTextAlignment(
+                    textHorizontalAlignment = textHorizontalAlignment,
+                    textVerticalAlignment = textVerticalAlignment
                 )
             }
-
 
             setOnFocusChangeListener { _, hasFocus ->
                 if (!hasFocus) widget.field.validate()
             }
             addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable?) {
-
-                }
+                override fun afterTextChanged(s: Editable?) {}
 
                 override fun beforeTextChanged(
                     s: CharSequence?,
                     start: Int,
                     count: Int,
                     after: Int
-                ) {
-
-                }
+                ) {}
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                     if (s == null) return
@@ -130,25 +95,9 @@ actual class SystemInputViewFactory actual constructor(
                     widget.field.data.value = s.toString()
                 }
             })
-        }
 
-        textInputLayout.addView(editText)
-
-        labelTextStyle?.also {
-            if (it.color != null) {
-                val hintColor = ColorStateList.valueOf(it.color.argb.toInt())
-                textInputLayout.defaultHintTextColor = hintColor
-            }
-            if (it.size != null) {
-                collapsingTextHelper.collapsedTextSize = it.size.toFloat().sp(context)
-            }
-            if(it.fontStyle != null) {
-                collapsingTextHelper.collapsedTypeface = when(it.fontStyle) {
-                    FontStyle.BOLD -> Typeface.DEFAULT_BOLD
-                    FontStyle.MEDIUM -> Typeface.DEFAULT
-                }
-                collapsingTextHelper.expandedTypeface = collapsingTextHelper.collapsedTypeface
-            }
+            // setting hint text color
+            labelTextColor?.let { setHintTextColor(it.colorInt()) }
         }
 
         widget.field.data.bind(lifecycleOwner) { data ->
@@ -156,17 +105,8 @@ actual class SystemInputViewFactory actual constructor(
 
             editText.setText(data)
         }
-        widget.field.error.bind(lifecycleOwner) { error ->
-            textInputLayout.error = error?.toString(context)
-            textInputLayout.isErrorEnabled = error != null
 
-            if (textInputLayout.isErrorEnabled) {
-                val errorText = textInputLayout.findViewById<TextView>(R.id.textinput_error)
-                errorText.applyTextStyleIfNeeded(errorTextStyle)
-            }
-        }
-
-        widget.label.bind(lifecycleOwner) { textInputLayout.hint = it?.toString(context) }
+        widget.label.bind(lifecycleOwner) { editText.hint = it?.toString(context) }
         widget.enabled?.bind(lifecycleOwner) { editText.isEnabled = it == true }
         widget.maxLines?.bind(lifecycleOwner) { maxLines ->
             when (maxLines) {
@@ -180,16 +120,9 @@ actual class SystemInputViewFactory actual constructor(
         }
 
         return ViewBundle(
-            view = textInputLayout,
+            view = editText,
             size = size,
             margins = margins
         )
-    }
-
-    private fun TextInputLayout.getCollapsingTextHelper(): CollapsingTextHelper {
-        val clazz = TextInputLayout::class.java
-        val field = clazz.getDeclaredField("collapsingTextHelper")
-        field.isAccessible = true
-        return field.get(this) as CollapsingTextHelper
     }
 }

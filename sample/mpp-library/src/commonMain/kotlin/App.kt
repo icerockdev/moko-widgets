@@ -18,10 +18,12 @@ import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.parcelize.Parcelize
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.ButtonWidget
+import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Value
+import dev.icerock.moko.widgets.factory.SystemInputViewFactory
 import dev.icerock.moko.widgets.flat.FlatInputViewFactory
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.BaseApplication
@@ -54,6 +56,15 @@ class App() : BaseApplication() {
                     color = Color(0x16171AFF)
                 ),
                 backgroundColor = Color(0xF5F5F5FF)
+            )
+        }
+
+        val widgetsTheme = Theme(theme) {
+            factory[InputWidget.DefaultCategory] = SystemInputViewFactory(
+                textStyle = TextStyle(
+                    size = 16,
+                    color = Color(0x16171AFF)
+                )
             )
         }
 
@@ -101,7 +112,7 @@ class App() : BaseApplication() {
             }
 
             val widgetsScreen = registerScreen(WidgetsScreen::class) {
-                WidgetsScreen(sharedFactory, theme, AppTheme.PostsCollection)
+                WidgetsScreen(sharedFactory, widgetsTheme, AppTheme.PostsCollection)
             }
 
             MainBottomNavigationScreen(bottomRouter) {
