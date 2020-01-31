@@ -67,11 +67,11 @@ internal fun <T> UIView.setupWidgetContent(
             constant = edges.top
         ).active = true
         view.leadingAnchor.constraintEqualToAnchor(
-            anchor = layoutMarginsGuide.leadingAnchor,
+            anchor = leadingAnchor,
             constant = edges.leading
         ).active = true
         view.trailingAnchor.constraintEqualToAnchor(
-            anchor = layoutMarginsGuide.trailingAnchor,
+            anchor = trailingAnchor,
             constant = -edges.trailing
         ).active = true
         bottomAnchor.constraintEqualToAnchor(
