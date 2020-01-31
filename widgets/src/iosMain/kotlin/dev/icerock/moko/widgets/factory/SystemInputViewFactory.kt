@@ -15,6 +15,7 @@ import dev.icerock.moko.widgets.style.view.*
 import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.utils.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.utils.bind
+import dev.icerock.moko.widgets.utils.setEventHandler
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGRectZero
 import platform.Foundation.NSMutableAttributedString
@@ -26,6 +27,7 @@ import platform.UIKit.NSTextAlignmentRight
 import platform.UIKit.UIControlContentVerticalAlignmentBottom
 import platform.UIKit.UIControlContentVerticalAlignmentCenter
 import platform.UIKit.UIControlContentVerticalAlignmentTop
+import platform.UIKit.UIControlEventEditingChanged
 import platform.UIKit.UITextBorderStyle
 import platform.UIKit.UITextField
 import platform.UIKit.clipsToBounds
@@ -92,6 +94,15 @@ actual class SystemInputViewFactory actual constructor(
             }
         }
 
+        textField.setEventHandler(UIControlEventEditingChanged) {
+            val currentValue = widget.field.data.value
+            val newValue = textField.text
+
+            if (currentValue != newValue) {
+                widget.field.data.value = newValue.orEmpty()
+            }
+        }
+        
         widget.enabled?.bind { textField.enabled = it }
         widget.label.bind { textField.placeholder = it.localized() }
         widget.field.data.bind { textField.text = it }
