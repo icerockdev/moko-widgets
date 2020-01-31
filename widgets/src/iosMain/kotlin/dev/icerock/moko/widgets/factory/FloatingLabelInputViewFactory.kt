@@ -30,7 +30,28 @@ import platform.QuartzCore.CAShapeLayer
 import platform.QuartzCore.CATextLayer
 import platform.QuartzCore.CATransaction
 import platform.QuartzCore.kCAAlignmentLeft
-import platform.UIKit.*
+import platform.UIKit.NSTextAlignmentCenter
+import platform.UIKit.NSTextAlignmentLeft
+import platform.UIKit.NSTextAlignmentRight
+import platform.UIKit.UIAccessibilityIdentificationProtocol
+import platform.UIKit.UIBezierPath
+import platform.UIKit.UIColor
+import platform.UIKit.UIControlEventEditingChanged
+import platform.UIKit.UIFont
+import platform.UIKit.UILabel
+import platform.UIKit.UIScreen
+import platform.UIKit.UITextField
+import platform.UIKit.UITextFieldDelegateProtocol
+import platform.UIKit.UIView
+import platform.UIKit.addSubview
+import platform.UIKit.bottomAnchor
+import platform.UIKit.leadingAnchor
+import platform.UIKit.systemFontSize
+import platform.UIKit.systemGrayColor
+import platform.UIKit.systemRedColor
+import platform.UIKit.topAnchor
+import platform.UIKit.trailingAnchor
+import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
 actual class FloatingLabelInputViewFactory actual constructor(
     private val background: Background?,
@@ -86,7 +107,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
             }
 
             if (textHorizontalAlignment != null) {
-                horizontalAlignment = horizontalAlignment
+                horizontalAlignment = textHorizontalAlignment
             }
         }
 

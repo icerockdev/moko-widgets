@@ -19,7 +19,17 @@ import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGRectZero
 import platform.Foundation.NSMutableAttributedString
 import platform.Foundation.create
-import platform.UIKit.*
+import platform.UIKit.NSForegroundColorAttributeName
+import platform.UIKit.NSTextAlignmentCenter
+import platform.UIKit.NSTextAlignmentLeft
+import platform.UIKit.NSTextAlignmentRight
+import platform.UIKit.UIControlContentVerticalAlignmentBottom
+import platform.UIKit.UIControlContentVerticalAlignmentCenter
+import platform.UIKit.UIControlContentVerticalAlignmentTop
+import platform.UIKit.UITextBorderStyle
+import platform.UIKit.UITextField
+import platform.UIKit.clipsToBounds
+import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
 actual class SystemInputViewFactory actual constructor(
     private val background: Background?,
