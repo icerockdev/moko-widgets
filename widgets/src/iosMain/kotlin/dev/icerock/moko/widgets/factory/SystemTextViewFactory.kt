@@ -4,6 +4,7 @@
 
 package dev.icerock.moko.widgets.factory
 
+import dev.icerock.moko.graphics.toUIColor
 import dev.icerock.moko.widgets.TextWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
@@ -97,14 +98,38 @@ fun String.stringFromHtml(textStyle: TextStyle?): NSAttributedString? {
         ),
         documentAttributes = null,
         error = null)
+    attributed?.changeUrlColor(textStyle)
     return attributed
+}
+
+fun NSMutableAttributedString.changeUrlColor(textStyle: TextStyle?) {
+    if (textStyle == null || textStyle.color == null ) return
+    this.enumerateAttribute(attrName = NSLinkAttributeName,
+        inRange = NSMakeRange(0, this.string.length.toULong()),
+        options = 0,
+        usingBlock = { url, range, _ ->
+            if (url == null) return@enumerateAttribute
+
+            this.removeAttribute(name = NSLinkAttributeName, range = range)
+            this.addAttributes(
+                attrs = mapOf(
+                    NSForegroundColorAttributeName to textStyle.color.toUIColor(),
+                    NSUnderlineColorAttributeName to textStyle.color.toUIColor(),
+                    NSStrokeColorAttributeName to textStyle.color.toUIColor(),
+                    NSAttachmentAttributeName to url
+                ),
+                range = range
+            )
+
+            this.removeAttribute(name = NSParagraphStyleAttributeName, range = range)
+        })
 }
 
 fun UILabel.openUrl() {
     val attributed = this.attributedText ?: return
 
     attributed.enumerateAttribute(
-        attrName = NSLinkAttributeName,
+        attrName = NSAttachmentAttributeName,
         inRange = NSMakeRange(0, attributed.string.length.toULong()),
         options = NSAttributedStringEnumerationReverse,
         usingBlock = { url, _, _ ->
