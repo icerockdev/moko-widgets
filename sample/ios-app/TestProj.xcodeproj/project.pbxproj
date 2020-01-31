@@ -257,6 +257,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = src/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.icerock.moko.sample.widgets;
 				PRODUCT_NAME = "moko-widgets";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -275,6 +276,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = src/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.icerock.moko.sample.widgets;
 				PRODUCT_NAME = "moko-widgets";
 				PROVISIONING_PROFILE_SPECIFIER = "";

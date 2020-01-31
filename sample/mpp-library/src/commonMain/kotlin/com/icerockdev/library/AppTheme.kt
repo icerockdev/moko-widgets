@@ -15,10 +15,10 @@ import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.StatefulWidget
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.factory.ConstraintViewFactory
+import dev.icerock.moko.widgets.factory.FloatingLabelInputViewFactory
 import dev.icerock.moko.widgets.factory.StatefulViewFactory
 import dev.icerock.moko.widgets.factory.SystemButtonViewFactory
 import dev.icerock.moko.widgets.factory.SystemCollectionViewFactory
-import dev.icerock.moko.widgets.factory.SystemInputViewFactory
 import dev.icerock.moko.widgets.factory.SystemListViewFactory
 import dev.icerock.moko.widgets.factory.SystemTextViewFactory
 import dev.icerock.moko.widgets.style.background.Background
@@ -30,7 +30,7 @@ import dev.icerock.moko.widgets.style.view.Colors
 import dev.icerock.moko.widgets.style.view.FontStyle
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
-import dev.icerock.moko.widgets.style.view.TextAlignment
+import dev.icerock.moko.widgets.style.view.TextHorizontalAlignment
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.rgba
 import dev.icerock.moko.widgets.utils.platformSpecific
@@ -50,7 +50,7 @@ object AppTheme {
 
     val baseTheme = Theme {
         factory[CryptoProfileScreen.Id.DelimiterText] = SystemTextViewFactory(
-            textAlignment = TextAlignment.CENTER
+            textHorizontalAlignment = TextHorizontalAlignment.CENTER
         )
         factory[UsersScreen.Id.List] = SystemListViewFactory(
             padding = PaddingValues(8f)
@@ -115,7 +115,7 @@ object AppTheme {
             )
         )
 
-        factory[InputWidget.DefaultCategory] = SystemInputViewFactory(
+        factory[InputWidget.DefaultCategory] = FloatingLabelInputViewFactory(
             margins = MarginValues(bottom = 8f),
             underLineColor = Color(0x000000DD),
             underLineFocusedColor = Color(0x3949ABFF),

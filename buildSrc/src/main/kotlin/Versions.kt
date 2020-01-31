@@ -10,8 +10,8 @@ object Versions {
     }
 
     const val kotlin = "1.3.61"
-    private const val mokoWidgets = "0.1.0-dev-7"
-    private const val mokoResources = "0.6.1"
+    private const val mokoWidgets = "0.1.0-dev-8"
+    private const val mokoResources = "0.7.0"
 
     object Plugins {
         const val mokoWidgets = Versions.mokoWidgets
@@ -31,13 +31,13 @@ object Versions {
         }
 
         object MultiPlatform {
-            const val coroutines = "1.3.2-1.3.60"
+            const val coroutines = "1.3.3"
 
             const val mokoWidgets = Versions.mokoWidgets
             const val mokoResources = Versions.mokoResources
             const val mokoMvvm = "0.4.0"
             const val mokoFields = "0.2.0"
-            const val mokoUnits = "0.2.1"
+            const val mokoUnits = "0.2.2"
             const val mokoMedia = "0.2.0"
             const val mokoGraphics = "0.2.0"
             const val mokoParcelize = "0.2.0"
