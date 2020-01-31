@@ -16,7 +16,6 @@ import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.utils.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.setEventHandler
-import kotlinx.cinterop.ObjCAction
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGRectZero
 import platform.Foundation.NSMutableAttributedString
