@@ -4,7 +4,6 @@
 
 package dev.icerock.moko.widgets.factory
 
-import android.R
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.graphics.Typeface
@@ -28,7 +27,12 @@ import dev.icerock.moko.widgets.style.applyPaddingIfNeeded
 import dev.icerock.moko.widgets.style.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.ext.getGravity
-import dev.icerock.moko.widgets.style.view.*
+import dev.icerock.moko.widgets.style.view.FontStyle
+import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.PaddingValues
+import dev.icerock.moko.widgets.style.view.TextHorizontalAlignment
+import dev.icerock.moko.widgets.style.view.TextStyle
+import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.dp
 import dev.icerock.moko.widgets.utils.sp
@@ -87,7 +91,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
             if (focusedColor != null && defaultColor != null) {
                 supportBackgroundTintList = ColorStateList(
                     arrayOf(
-                        intArrayOf(-R.attr.state_focused, -R.attr.state_pressed),
+                        intArrayOf(-android.R.attr.state_focused, -android.R.attr.state_pressed),
                         intArrayOf()
                     ),
                     intArrayOf(
@@ -100,7 +104,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
             } else if (focusedColor != null) {
                 supportBackgroundTintList = ColorStateList(
                     arrayOf(
-                        intArrayOf(R.attr.state_focused, R.attr.state_activated)
+                        intArrayOf(android.R.attr.state_focused, android.R.attr.state_activated)
                     ),
                     intArrayOf(
                         focusedColor
@@ -144,8 +148,8 @@ actual class FloatingLabelInputViewFactory actual constructor(
             if (it.size != null) {
                 collapsingTextHelper.collapsedTextSize = it.size.toFloat().sp(context)
             }
-            if(it.fontStyle != null) {
-                collapsingTextHelper.collapsedTypeface = when(it.fontStyle) {
+            if (it.fontStyle != null) {
+                collapsingTextHelper.collapsedTypeface = when (it.fontStyle) {
                     FontStyle.BOLD -> Typeface.DEFAULT_BOLD
                     FontStyle.MEDIUM -> Typeface.DEFAULT
                 }
