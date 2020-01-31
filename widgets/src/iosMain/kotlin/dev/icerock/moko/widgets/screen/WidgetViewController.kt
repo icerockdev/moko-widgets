@@ -7,6 +7,7 @@ package dev.icerock.moko.widgets.screen
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.utils.safeSystemBackgroundColor
 import kotlinx.cinterop.ExportObjCClass
 import kotlinx.cinterop.ObjCAction
 import kotlinx.cinterop.useContents
@@ -57,7 +58,7 @@ class WidgetViewController : UIViewController(nibName = null, bundle = null) {
         widgetView.translatesAutoresizingMaskIntoConstraints = false
 
         with(view) {
-            backgroundColor = UIColor.systemBackgroundColor
+            backgroundColor = UIColor.safeSystemBackgroundColor
 
             addSubview(widgetView)
 
