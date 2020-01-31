@@ -30,6 +30,9 @@ import platform.QuartzCore.CAShapeLayer
 import platform.QuartzCore.CATextLayer
 import platform.QuartzCore.CATransaction
 import platform.QuartzCore.kCAAlignmentLeft
+import platform.UIKit.NSTextAlignmentCenter
+import platform.UIKit.NSTextAlignmentLeft
+import platform.UIKit.NSTextAlignmentRight
 import platform.UIKit.UIAccessibilityIdentificationProtocol
 import platform.UIKit.UIBezierPath
 import platform.UIKit.UIColor
@@ -102,6 +105,10 @@ actual class FloatingLabelInputViewFactory actual constructor(
             onFocusLost = {
                 widget.field.validate()
             }
+
+            if (textHorizontalAlignment != null) {
+                horizontalAlignment = textHorizontalAlignment
+            }
         }
 
         widget.enabled?.bind { textField.enabled = it }
@@ -135,6 +142,19 @@ actual class FloatingLabelInputViewFactory actual constructor(
                     layoutPlaceholder()
                 }
             }
+
+        var horizontalAlignment: TextHorizontalAlignment = TextHorizontalAlignment.CENTER
+            set(value) {
+                field = value
+                when (value) {
+                    TextHorizontalAlignment.LEFT -> textField.textAlignment = NSTextAlignmentLeft
+                    TextHorizontalAlignment.CENTER -> textField.textAlignment = NSTextAlignmentCenter
+                    TextHorizontalAlignment.RIGHT -> textField.textAlignment = NSTextAlignmentRight
+                    null -> {
+                    }
+                }
+            }
+
         var error: String?
             get() = errorLabel.text
             set(value) {

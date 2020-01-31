@@ -34,7 +34,8 @@ actual class SystemInputViewFactory actual constructor(
     private val textStyle: TextStyle?,
     private val labelTextColor: Color?,
     private val textHorizontalAlignment: TextHorizontalAlignment?,
-    private val textVerticalAlignment: TextVerticalAlignment?
+    private val textVerticalAlignment: TextVerticalAlignment?,
+    iosFieldBorderStyle: IOSFieldBorderStyle? // For ios only
 ) : ViewFactory<InputWidget<out WidgetSize>> {
 
     @SuppressLint("RestrictedApi")
