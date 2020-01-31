@@ -72,13 +72,11 @@ actual class SystemInputViewFactory actual constructor(
                 }
             }
 
-            when (iosFieldBorderStyle) {
-                IOSFieldBorderStyle.NONE -> borderStyle = UITextBorderStyle.UITextBorderStyleNone
-                IOSFieldBorderStyle.LINE -> borderStyle = UITextBorderStyle.UITextBorderStyleLine
-                IOSFieldBorderStyle.BEZEL -> borderStyle = UITextBorderStyle.UITextBorderStyleBezel
-                IOSFieldBorderStyle.ROUNDED -> borderStyle = UITextBorderStyle.UITextBorderStyleRoundedRect
-                null -> {
-                }
+            borderStyle = when (iosFieldBorderStyle) {
+                IOSFieldBorderStyle.NONE -> UITextBorderStyle.UITextBorderStyleNone
+                IOSFieldBorderStyle.LINE -> UITextBorderStyle.UITextBorderStyleLine
+                IOSFieldBorderStyle.BEZEL -> UITextBorderStyle.UITextBorderStyleBezel
+                IOSFieldBorderStyle.ROUNDED, null -> UITextBorderStyle.UITextBorderStyleRoundedRect
             }
 
             if (labelTextColor != null) {
