@@ -66,8 +66,6 @@ actual class SystemInputViewFactory actual constructor(
             applyTextStyleIfNeeded(textStyle)
             widget.inputType?.also { applyInputType(it) }
 
-            val textHorizontalAlignment = this@SystemInputViewFactory.textHorizontalAlignment
-            val textVerticalAlignment = this@SystemInputViewFactory.textVerticalAlignment
             // If there is any nonnull text alignment argument, then set it to gravity
             // otherwise gravity will be with default value.
             if(textHorizontalAlignment != null || textVerticalAlignment != null) {
