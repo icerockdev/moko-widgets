@@ -67,10 +67,14 @@ actual class SystemInputViewFactory actual constructor(
             applyTextStyleIfNeeded(textStyle)
             widget.inputType?.also { applyInputType(it) }
 
-            gravity = getGravityForTextAlignment(
-                this@SystemInputViewFactory.textHorizontalAlignment,
-                this@SystemInputViewFactory.textVerticalAlignment
-            )
+            // If there is any nonnull text alignment argument, then set it to gravity
+            // otherwise gravity will be with default value.
+            if(textHorizontalAlignment != null || textVerticalAlignment != null) {
+                gravity = getGravityForTextAlignment(
+                    textHorizontalAlignment = textHorizontalAlignment,
+                    textVerticalAlignment = textVerticalAlignment
+                )
+            }
 
             setOnFocusChangeListener { _, hasFocus ->
                 if (!hasFocus) widget.field.validate()

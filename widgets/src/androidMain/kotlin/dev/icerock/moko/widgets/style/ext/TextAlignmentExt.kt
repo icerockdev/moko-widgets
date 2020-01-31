@@ -20,6 +20,10 @@ fun TextVerticalAlignment.getGravity() = when(this) {
     TextVerticalAlignment.BOTTOM -> Gravity.BOTTOM
 }
 
+/**
+ * Maps text alignment to [View] gravity position.
+ * At least one of the arguments must be nonnull otherwise will be thrown [IllegalArgumentException].
+ */
 fun getGravityForTextAlignment(
     textHorizontalAlignment: TextHorizontalAlignment?,
     textVerticalAlignment: TextVerticalAlignment?
