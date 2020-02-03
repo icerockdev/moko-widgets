@@ -12,7 +12,6 @@ import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
 expect class WebViewFactory(
-    padding: PaddingValues? = null,
     margins: MarginValues? = null,
     background: Background? = null
 ) : ViewFactory<WebViewWidget<out WidgetSize>>

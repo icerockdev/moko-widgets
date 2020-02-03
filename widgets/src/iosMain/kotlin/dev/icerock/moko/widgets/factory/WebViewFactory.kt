@@ -4,24 +4,15 @@
 
 package dev.icerock.moko.widgets.factory
 
-import dev.icerock.moko.widgets.ContainerWidget
+import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.widgets.WebViewWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.background.Background
-import dev.icerock.moko.widgets.style.view.Alignment
 import dev.icerock.moko.widgets.style.view.MarginValues
-import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
-import dev.icerock.moko.widgets.utils.Edges
-import dev.icerock.moko.widgets.utils.UIViewWithIdentifier
 import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
-import dev.icerock.moko.widgets.utils.identifier
-import dev.icerock.moko.widgets.utils.applySizeToChild
-import kotlinx.cinterop.ObjCClass
-import objcnames.classes.Protocol
-import platform.CoreGraphics.CGFloat
 import platform.UIKit.UIViewController
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 import platform.WebKit.WKWebView
@@ -29,13 +20,9 @@ import platform.WebKit.WKNavigationDelegateProtocol
 import platform.Foundation.NSURLRequest
 import platform.Foundation.NSURL
 import platform.WebKit.WKNavigation
-import platform.WebKit.WKNavigationAction
-import platform.WebKit.WKNavigationActionPolicy
-import platform.WebKit.WKNavigationType
 import platform.darwin.NSObject
 
 actual class WebViewFactory actual constructor(
-    private val padding: PaddingValues?,
     private val margins: MarginValues?,
     private val background: Background?
 ) : ViewFactory<WebViewWidget<out WidgetSize>> {
@@ -51,6 +38,13 @@ actual class WebViewFactory actual constructor(
             translatesAutoresizingMaskIntoConstraints = false
             applyBackgroundIfNeeded(background)
 
+            navigationDelegate = NavigationDelegate(
+                successRedirectUrl = widget.successRedirectUrl,
+                failureRedirectUrl = widget.failureRedirectUrl,
+                onSuccessBlock = widget.onSuccessBlock,
+                onFailureBlock = widget.onFailureBlock,
+                isPageLoading = widget._isWebPageLoading
+            )
             loadRequest(request = NSURLRequest(uRL = NSURL(string = widget.targetUrl)))
         }
 
@@ -61,32 +55,33 @@ actual class WebViewFactory actual constructor(
         )
     }
 
-    private inner class NavigationDelegate(
+    @Suppress("CONFLICTING_OVERLOADS")
+    private class NavigationDelegate(
         private val successRedirectUrl: String?,
         private val failureRedirectUrl: String?,
         private val onSuccessBlock: (() -> Unit)? = null,
         private val onFailureBlock: (() -> Unit)? = null,
-        private val onPageLoadingStarted: (() -> Unit)? = null,
-        private val onPageLoadingFinished: (() -> Unit)? = null
+        private val isPageLoading: MutableLiveData<Boolean>
     ) : NSObject(), WKNavigationDelegateProtocol {
 
-        override fun webView(webView: WKWebView, didFinishNavigation: WKNavigation?) {
-            onPageLoadingFinished?.invoke()
+        override fun webView(webView: WKWebView, didStartProvisionalNavigation: WKNavigation?) {
+            isPageLoading.value = true
         }
 
-        /*
+        override fun webView(webView: WKWebView, didFinishNavigation: WKNavigation?) {
+            isPageLoading.value = false
+        }
+
+
         override fun webView(
             webView: WKWebView,
             didReceiveServerRedirectForProvisionalNavigation: WKNavigation?
         ) {
-            onPageLoadingStarted?.invoke()
-            super.webView(
-                webView = webView,
-                didReceiveServerRedirectForProvisionalNavigation = didReceiveServerRedirectForProvisionalNavigation
-            )
+            isPageLoading.value = true
+            webView.URL?.absoluteString()?.let { handleUrlOpening(it) }
         }
-        */
 
+        /*
         override fun webView(
             webView: WKWebView,
             decidePolicyForNavigationAction: WKNavigationAction,
@@ -101,7 +96,9 @@ actual class WebViewFactory actual constructor(
                     }
                 } ?: decisionHandler(WKNavigationActionPolicy.WKNavigationActionPolicyCancel)
             } ?: decisionHandler(WKNavigationActionPolicy.WKNavigationActionPolicyCancel)
+
         }
+        */
 
         private fun handleUrlOpening(url: String): Boolean {
             return if(successRedirectUrl != null && url.contains(successRedirectUrl)) {

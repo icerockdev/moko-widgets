@@ -4,6 +4,9 @@
 
 package dev.icerock.moko.widgets
 
+import dev.icerock.moko.mvvm.livedata.LiveData
+import dev.icerock.moko.mvvm.livedata.MutableLiveData
+import dev.icerock.moko.mvvm.livedata.readOnly
 import dev.icerock.moko.widgets.core.OptionalId
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.ViewBundle
@@ -21,15 +24,20 @@ class WebViewWidget<WS : WidgetSize>(
     private val factory: ViewFactory<WebViewWidget<out WidgetSize>>,
     override val size: WS,
     override val id: Id?,
-    val isJavaScriptEnabled: Boolean = true,
     val targetUrl: String,
+    val isJavaScriptEnabled: Boolean = true,
     val successRedirectUrl: String? = null,
     val onSuccessBlock: (() -> Unit)? = null,
     val failureRedirectUrl: String? = null,
-    val onFailureBlock: (() -> Unit)? = null,
-    val onPageLoadingStarted: (() -> Unit)? = null,
-    val onPageLoadingFinished: (() -> Unit)? = null
+    val onFailureBlock: (() -> Unit)? = null
 ) : Widget<WS>(), OptionalId<WebViewWidget.Id> {
+
+    internal val _isWebPageLoading = MutableLiveData(false)
+
+    /**
+     * The state that describes a web page being loaded at the moment.
+     */
+    val isWebPageLoading: LiveData<Boolean> = _isWebPageLoading.readOnly()
 
     override fun buildView(viewFactoryContext: ViewFactoryContext): ViewBundle<WS> {
         return factory.build(this, size, viewFactoryContext)
