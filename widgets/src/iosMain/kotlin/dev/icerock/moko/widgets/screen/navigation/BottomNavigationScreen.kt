@@ -8,10 +8,7 @@ import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.graphics.toUIColor
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.Screen
-import platform.UIKit.UITabBarController
-import platform.UIKit.UITabBarItem
-import platform.UIKit.UIViewController
-import platform.UIKit.tabBarItem
+import platform.UIKit.*
 
 actual abstract class BottomNavigationScreen actual constructor(
     router: Router,
@@ -22,7 +19,8 @@ actual abstract class BottomNavigationScreen actual constructor(
         router.bottomNavigationScreen = this
     }
 
-    actual val items: List<BottomNavigationItem> = BottomNavigationItem.Builder().apply(builder).build()
+    actual val items: List<BottomNavigationItem> =
+        BottomNavigationItem.Builder().apply(builder).build()
 
     private var tabBarController: UITabBarController? = null
 
@@ -33,7 +31,7 @@ actual abstract class BottomNavigationScreen actual constructor(
             val childScreen = item.screenDesc.instantiate()
             childScreen.viewController.apply {
                 tabBarItem = UITabBarItem(
-                    title = item.title.localized(),
+                    title = if (titleMode != TitleVisibilityMode.UNLABELED) item.title.localized() else "",
                     image = item.icon?.toUIImage(),
                     tag = 0
                 )
@@ -41,7 +39,8 @@ actual abstract class BottomNavigationScreen actual constructor(
         }
         controller.setViewControllers(viewControllers = viewControllers)
         controller.tabBar.barTintColor = bottomNavigationColor?.toUIColor()
-
+        controller.tabBar.selectedImageTintColor = selectedItemColor?.toUIColor()
+        controller.tabBar.unselectedItemTintColor = unselectedItemColor?.toUIColor()
         tabBarController = controller
 
         return controller
@@ -61,6 +60,24 @@ actual abstract class BottomNavigationScreen actual constructor(
                 it.tabBar.barTintColor = value?.toUIColor()
             }
         }
+
+    actual var selectedItemColor: Color? = null
+        set(value) {
+            field = value
+            tabBarController?.also {
+                it.tabBar.selectedImageTintColor = value?.toUIColor()
+            }
+        }
+
+    actual var unselectedItemColor: Color? = null
+        set(value) {
+            field = value
+            tabBarController?.also {
+                it.tabBar.unselectedItemTintColor = value?.toUIColor()
+            }
+        }
+
+    actual var titleMode: TitleVisibilityMode? = null
 
     actual class Router {
         var bottomNavigationScreen: BottomNavigationScreen? = null

@@ -20,10 +20,17 @@ expect abstract class BottomNavigationScreen(
 
     var selectedItemId: Int
     var bottomNavigationColor: Color?
+    var unselectedItemColor: Color?
+    var selectedItemColor: Color?
+    var titleMode: TitleVisibilityMode?
 
     class Router {
         fun createChangeTabRoute(itemId: Int): Route<Unit>
     }
+}
+
+enum class TitleVisibilityMode {
+    LABELED, UNLABELED
 }
 
 data class BottomNavigationItem(
@@ -35,7 +42,12 @@ data class BottomNavigationItem(
     class Builder() {
         private val tabs = mutableListOf<BottomNavigationItem>()
 
-        fun tab(id: Int, title: StringDesc, icon: ImageResource? = null, screenDesc: ScreenDesc<Args.Empty>) {
+        fun tab(
+            id: Int,
+            title: StringDesc,
+            icon: ImageResource? = null,
+            screenDesc: ScreenDesc<Args.Empty>
+        ) {
             tabs.add(
                 BottomNavigationItem(
                     id = id,

@@ -4,6 +4,8 @@
 
 package dev.icerock.moko.widgets.screen.navigation
 
+import android.R
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -13,11 +15,12 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.core.view.ViewCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import dev.icerock.moko.graphics.Color
+import dev.icerock.moko.graphics.colorInt
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.FragmentNavigation
 import dev.icerock.moko.widgets.screen.Screen
-import dev.icerock.moko.widgets.screen.ScreenFactory
 import dev.icerock.moko.widgets.utils.ThemeAttrs
 import dev.icerock.moko.widgets.utils.dp
 
@@ -25,7 +28,8 @@ actual abstract class BottomNavigationScreen actual constructor(
     private val router: Router,
     builder: BottomNavigationItem.Builder.() -> Unit
 ) : Screen<Args.Empty>() {
-    actual val items: List<BottomNavigationItem> = BottomNavigationItem.Builder().apply(builder).build()
+    actual val items: List<BottomNavigationItem> =
+        BottomNavigationItem.Builder().apply(builder).build()
 
     private val fragmentNavigation = FragmentNavigation(this)
     private var bottomNavigationView: BottomNavigationView? = null
@@ -75,6 +79,8 @@ actual abstract class BottomNavigationScreen actual constructor(
         }
 
         bottomNavigationView = bottomNavigation
+        updateItemColors()
+        updateTitleMode()
 
         return LinearLayout(context).apply {
             layoutParams = ViewGroup.LayoutParams(
@@ -152,6 +158,50 @@ actual abstract class BottomNavigationScreen actual constructor(
                 override fun route(source: Screen<*>, arg: Unit) {
                     bottomNavigationScreen!!.selectedItemId = itemId
                 }
+            }
+        }
+    }
+
+    actual var unselectedItemColor: Color? = null
+        set(value) {
+            field = value
+            updateItemColors()
+        }
+
+    actual var selectedItemColor: Color? = null
+        set(value) {
+            field = value
+            updateItemColors()
+        }
+
+    actual var titleMode: TitleVisibilityMode? = null
+        set(value) {
+            field = value
+            updateTitleMode()
+        }
+
+    private fun updateItemColors() {
+        bottomNavigationView?.also { navView ->
+            val states = listOfNotNull(
+                intArrayOf(R.attr.state_selected).takeIf { selectedItemColor != null },
+                intArrayOf(-R.attr.state_selected).takeIf { unselectedItemColor != null }
+            ).toTypedArray()
+            val colors = listOfNotNull(
+                selectedItemColor?.colorInt(),
+                unselectedItemColor?.colorInt()
+            ).toIntArray()
+            navView.itemIconTintList = ColorStateList(states, colors)
+            navView.itemTextColor = ColorStateList(states, colors)
+        }
+    }
+
+    private fun updateTitleMode() {
+        bottomNavigationView?.also { navView ->
+            when (titleMode) {
+                TitleVisibilityMode.LABELED -> navView.labelVisibilityMode =
+                    LabelVisibilityMode.LABEL_VISIBILITY_LABELED
+                TitleVisibilityMode.UNLABELED -> navView.labelVisibilityMode =
+                    LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED
             }
         }
     }
