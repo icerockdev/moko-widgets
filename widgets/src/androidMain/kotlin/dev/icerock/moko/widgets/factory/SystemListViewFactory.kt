@@ -78,6 +78,8 @@ actual class SystemListViewFactory actual constructor(
             recyclerView
         }
 
+        var isAutoScrolled = false
+
         widget.items.bind(lifecycleOwner) { units ->
             val list = units.orEmpty()
             unitsAdapter.units = when (widget.onReachEnd) {
@@ -85,10 +87,12 @@ actual class SystemListViewFactory actual constructor(
                 else -> list.observedEnd(widget.onReachEnd)
             }
 
-            if (autoScroll && list.isNotEmpty()) {
+            if (autoScroll && !isAutoScrolled && list.isNotEmpty()) {
                 recyclerView.smoothScrollToPosition(
                     unitsAdapter.itemCount - 1
                 )
+
+                isAutoScrolled = true
             }
         }
 

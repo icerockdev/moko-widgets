@@ -100,7 +100,7 @@ actual class SystemListViewFactory actual constructor(
             }
 
             // TODO reversed apply
-            // TODO anchor to bottom
+            // TODO auto scroll
         }
 
         widget.items.bind { items ->
