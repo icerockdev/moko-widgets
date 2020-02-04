@@ -73,6 +73,7 @@ actual abstract class BottomNavigationScreen actual constructor(
             menuItemAction[menuItem]?.invoke()
             true
         }
+        
         bottomNavigationView = bottomNavigation
 
         return LinearLayout(context).apply {
