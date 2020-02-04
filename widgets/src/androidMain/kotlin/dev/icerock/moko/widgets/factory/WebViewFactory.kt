@@ -50,7 +50,6 @@ actual class WebViewFactory actual constructor(
 
         override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
             isPageLoading.value = true
-
             super.onPageStarted(view, url, favicon)
         }
 

@@ -17,6 +17,12 @@ import dev.icerock.moko.widgets.core.WidgetDef
 import dev.icerock.moko.widgets.factory.WebViewFactory
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
+/**
+ * Simple WebView widget implementation. After creation the inner WebView automatically starts
+ * loading web page by [targetUrl].
+ * It is possible to observe the state of the page loading process by [isWebPageLoading] LiveData.
+ * JavaScript for WebView is enabled by default.
+ */
 @WidgetDef(WebViewFactory::class)
 class WebViewWidget<WS : WidgetSize>(
     private val factory: ViewFactory<WebViewWidget<out WidgetSize>>,
