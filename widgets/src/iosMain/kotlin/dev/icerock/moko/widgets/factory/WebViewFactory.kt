@@ -9,6 +9,7 @@ import dev.icerock.moko.widgets.WebViewWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.objc.setAssociatedObject
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
@@ -26,8 +27,6 @@ actual class WebViewFactory actual constructor(
     private val background: Background?
 ) : ViewFactory<WebViewWidget<out WidgetSize>> {
 
-    private val webViewNavDelegate = NavigationDelegate()
-
     override fun <WS : WidgetSize> build(
         widget: WebViewWidget<out WidgetSize>,
         size: WS,
@@ -39,9 +38,11 @@ actual class WebViewFactory actual constructor(
 
             configuration.preferences.javaScriptEnabled = widget.isJavaScriptEnabled
 
+            val webViewNavDelegate = NavigationDelegate()
             webViewNavDelegate.isPageLoading = widget._isWebPageLoading
-            setNavigationDelegate(webViewNavDelegate)
+            setAssociatedObject(this, webViewNavDelegate)
 
+            setNavigationDelegate(webViewNavDelegate)
             loadRequest(request = NSURLRequest(uRL = NSURL(string = widget.targetUrl)))
         }
 
