@@ -31,6 +31,7 @@ import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.utils.androidId
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.dp
 
@@ -83,6 +84,8 @@ actual class SystemSingleChoiceViewFactory actual constructor(
             underlineColor?.also {
                 ViewCompat.setBackgroundTintList(this, ColorStateList.valueOf(it.argb.toInt()))
             }
+
+            id = widget.id.androidId
         }
 
         textInputLayout.addView(editText)

@@ -21,6 +21,7 @@ import dev.icerock.moko.widgets.style.ext.toStaggeredGridLayoutManager
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.utils.androidId
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.view.UnitItemDecorator
 
@@ -51,7 +52,7 @@ actual class SystemCollectionViewFactory actual constructor(
             )
             adapter = unitsAdapter
 
-            id = widget.id::javaClass.name.hashCode()
+            id = widget.id.androidId
 
             applyPaddingIfNeeded(padding)
             applyBackgroundIfNeeded(this@SystemCollectionViewFactory.background)
