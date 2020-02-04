@@ -45,6 +45,7 @@ actual abstract class BottomNavigationScreen actual constructor(
             id = android.R.id.content
         }
         val bottomNavigation = BottomNavigationView(context).apply {
+            id = android.R.id.tabs
             ViewCompat.setElevation(this, 8.dp(context).toFloat())
             val color = bottomNavigationColor
             if (color != null) {
@@ -64,7 +65,6 @@ actual abstract class BottomNavigationScreen actual constructor(
 
             menuItemAction[menuItem] = {
                 val instance = item.screenDesc.instantiate()
-                selectedItemId = item.id
                 fragmentNavigation.routeToScreen(instance)
             }
         }
@@ -73,9 +73,7 @@ actual abstract class BottomNavigationScreen actual constructor(
             menuItemAction[menuItem]?.invoke()
             true
         }
-
         bottomNavigationView = bottomNavigation
-        bottomNavigationView?.selectedItemId = selectedItemId
 
         return LinearLayout(context).apply {
             layoutParams = ViewGroup.LayoutParams(
@@ -127,7 +125,11 @@ actual abstract class BottomNavigationScreen actual constructor(
         router.bottomNavigationScreen = null
     }
 
-    actual var selectedItemId: Int = -1
+    actual var selectedItemId: Int
+        get() = bottomNavigationView?.selectedItemId ?: -1
+        set(value) {
+            bottomNavigationView?.selectedItemId = value
+        }
 
     actual var bottomNavigationColor: Color? = null
         set(value) {
