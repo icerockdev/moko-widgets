@@ -321,8 +321,6 @@ actual class FloatingLabelInputViewFactory actual constructor(
                 val nsString = NSString.create(string = textField.text ?: "")
                 val newText = nsString.stringByReplacingCharactersInRange(range = shouldChangeCharactersInRange, withString = replacementString)
                 val unformattedText = inputFormatter?.unformat(newText) ?: ""
-                println(replacementString)
-                println(newText)
 
                 textField.text = inputFormatter?.format(unformattedText)
                 textDidChanged()
