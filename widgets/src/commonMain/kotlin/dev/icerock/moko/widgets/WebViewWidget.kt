@@ -14,9 +14,7 @@ import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
-import dev.icerock.moko.widgets.factory.ContainerViewFactory
 import dev.icerock.moko.widgets.factory.WebViewFactory
-import dev.icerock.moko.widgets.style.view.Alignment
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
 @WidgetDef(WebViewFactory::class)
@@ -25,11 +23,7 @@ class WebViewWidget<WS : WidgetSize>(
     override val size: WS,
     override val id: Id?,
     val targetUrl: String,
-    val isJavaScriptEnabled: Boolean = true,
-    val successRedirectUrl: String? = null,
-    val onSuccessBlock: (() -> Unit)? = null,
-    val failureRedirectUrl: String? = null,
-    val onFailureBlock: (() -> Unit)? = null
+    val isJavaScriptEnabled: Boolean = true
 ) : Widget<WS>(), OptionalId<WebViewWidget.Id> {
 
     internal val _isWebPageLoading = MutableLiveData(false)

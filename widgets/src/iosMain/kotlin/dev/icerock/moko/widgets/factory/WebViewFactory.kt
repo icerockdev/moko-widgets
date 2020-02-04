@@ -13,7 +13,6 @@ import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
-import platform.UIKit.UIViewController
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 import platform.WebKit.WKWebView
 import platform.WebKit.WKNavigationDelegateProtocol
@@ -32,19 +31,13 @@ actual class WebViewFactory actual constructor(
         size: WS,
         viewFactoryContext: ViewFactoryContext
     ): ViewBundle<WS> {
-        val viewController: UIViewController = viewFactoryContext
-
         val root = WKWebView().apply {
             translatesAutoresizingMaskIntoConstraints = false
             applyBackgroundIfNeeded(background)
 
-            navigationDelegate = NavigationDelegate(
-                successRedirectUrl = widget.successRedirectUrl,
-                failureRedirectUrl = widget.failureRedirectUrl,
-                onSuccessBlock = widget.onSuccessBlock,
-                onFailureBlock = widget.onFailureBlock,
-                isPageLoading = widget._isWebPageLoading
-            )
+            configuration.preferences.javaScriptEnabled = widget.isJavaScriptEnabled
+
+            navigationDelegate = NavigationDelegate(widget._isWebPageLoading)
             loadRequest(request = NSURLRequest(uRL = NSURL(string = widget.targetUrl)))
         }
 
@@ -57,59 +50,15 @@ actual class WebViewFactory actual constructor(
 
     @Suppress("CONFLICTING_OVERLOADS")
     private class NavigationDelegate(
-        private val successRedirectUrl: String?,
-        private val failureRedirectUrl: String?,
-        private val onSuccessBlock: (() -> Unit)? = null,
-        private val onFailureBlock: (() -> Unit)? = null,
         private val isPageLoading: MutableLiveData<Boolean>
     ) : NSObject(), WKNavigationDelegateProtocol {
 
-        override fun webView(webView: WKWebView, didStartProvisionalNavigation: WKNavigation?) {
+        override fun webView(webView: WKWebView, didCommitNavigation: WKNavigation?) {
             isPageLoading.value = true
         }
 
         override fun webView(webView: WKWebView, didFinishNavigation: WKNavigation?) {
             isPageLoading.value = false
-        }
-
-
-        override fun webView(
-            webView: WKWebView,
-            didReceiveServerRedirectForProvisionalNavigation: WKNavigation?
-        ) {
-            isPageLoading.value = true
-            webView.URL?.absoluteString()?.let { handleUrlOpening(it) }
-        }
-
-        /*
-        override fun webView(
-            webView: WKWebView,
-            decidePolicyForNavigationAction: WKNavigationAction,
-            decisionHandler: (WKNavigationActionPolicy) -> Unit
-        ) {
-            decidePolicyForNavigationAction.request.URL?.let { nsurl ->
-                nsurl.absoluteString()?.let { strUrl ->
-                    if(handleUrlOpening(strUrl)) {
-                        decisionHandler(WKNavigationActionPolicy.WKNavigationActionPolicyCancel)
-                    } else {
-                        decisionHandler(WKNavigationActionPolicy.WKNavigationActionPolicyAllow)
-                    }
-                } ?: decisionHandler(WKNavigationActionPolicy.WKNavigationActionPolicyCancel)
-            } ?: decisionHandler(WKNavigationActionPolicy.WKNavigationActionPolicyCancel)
-
-        }
-        */
-
-        private fun handleUrlOpening(url: String): Boolean {
-            return if(successRedirectUrl != null && url.contains(successRedirectUrl)) {
-                onSuccessBlock?.invoke()
-                true
-            } else if(failureRedirectUrl != null && url.contains(failureRedirectUrl)) {
-                onFailureBlock?.invoke()
-                true
-            } else {
-                false
-            }
         }
 
     }
