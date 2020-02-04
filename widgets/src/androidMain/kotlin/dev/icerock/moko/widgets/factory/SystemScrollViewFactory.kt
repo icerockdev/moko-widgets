@@ -18,6 +18,7 @@ import dev.icerock.moko.widgets.style.ext.toPlatformSize
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.utils.androidId
 
 actual class SystemScrollViewFactory actual constructor(
     private val background: Background?,
@@ -38,7 +39,7 @@ actual class SystemScrollViewFactory actual constructor(
             applyBackgroundIfNeeded(this@SystemScrollViewFactory.background)
             applyPaddingIfNeeded(padding)
 
-            id = widget.id::javaClass.name.hashCode()
+            id = widget.id.androidId
         }
 
         val childBundle = widget.child.buildView(

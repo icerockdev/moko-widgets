@@ -33,6 +33,7 @@ import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.TextHorizontalAlignment
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.utils.androidId
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.dp
 import dev.icerock.moko.widgets.utils.sp
@@ -65,7 +66,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
         textInputLayout.applyPaddingIfNeeded(padding)
 
         val editText = TextInputEditText(context).apply {
-            id = widget.id::javaClass.name.hashCode()
+            id = widget.id.androidId
 
             layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
