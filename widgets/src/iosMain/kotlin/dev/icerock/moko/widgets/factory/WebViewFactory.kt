@@ -26,6 +26,8 @@ actual class WebViewFactory actual constructor(
     private val background: Background?
 ) : ViewFactory<WebViewWidget<out WidgetSize>> {
 
+    private val webViewNavDelegate = NavigationDelegate()
+
     override fun <WS : WidgetSize> build(
         widget: WebViewWidget<out WidgetSize>,
         size: WS,
@@ -37,7 +39,9 @@ actual class WebViewFactory actual constructor(
 
             configuration.preferences.javaScriptEnabled = widget.isJavaScriptEnabled
 
-            navigationDelegate = NavigationDelegate(widget._isWebPageLoading)
+            webViewNavDelegate.isPageLoading = widget._isWebPageLoading
+            setNavigationDelegate(webViewNavDelegate)
+
             loadRequest(request = NSURLRequest(uRL = NSURL(string = widget.targetUrl)))
         }
 
@@ -50,15 +54,15 @@ actual class WebViewFactory actual constructor(
 
     @Suppress("CONFLICTING_OVERLOADS")
     private class NavigationDelegate(
-        private val isPageLoading: MutableLiveData<Boolean>
+        var isPageLoading: MutableLiveData<Boolean>? = null
     ) : NSObject(), WKNavigationDelegateProtocol {
 
-        override fun webView(webView: WKWebView, didCommitNavigation: WKNavigation?) {
-            isPageLoading.value = true
+        override fun webView(webView: WKWebView, didStartProvisionalNavigation: WKNavigation?) {
+            isPageLoading?.value = true
         }
 
         override fun webView(webView: WKWebView, didFinishNavigation: WKNavigation?) {
-            isPageLoading.value = false
+            isPageLoading?.value = false
         }
 
     }
