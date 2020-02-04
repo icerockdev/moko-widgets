@@ -50,6 +50,7 @@ actual abstract class BottomNavigationScreen actual constructor(
             id = android.R.id.content
         }
         val bottomNavigation = BottomNavigationView(context).apply {
+            id = android.R.id.tabs
             ViewCompat.setElevation(this, 8.dp(context).toFloat())
             val color = bottomNavigationColor
             if (color != null) {
@@ -77,7 +78,7 @@ actual abstract class BottomNavigationScreen actual constructor(
             menuItemAction[menuItem]?.invoke()
             true
         }
-
+        
         bottomNavigationView = bottomNavigation
         updateItemColors()
         updateTitleMode()
