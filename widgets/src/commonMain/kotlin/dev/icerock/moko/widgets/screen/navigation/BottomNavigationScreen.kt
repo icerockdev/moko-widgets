@@ -22,15 +22,11 @@ expect abstract class BottomNavigationScreen(
     var bottomNavigationColor: Color?
     var unselectedItemColor: Color?
     var selectedItemColor: Color?
-    var titleMode: TitleVisibilityMode?
+    var isTitleVisible: Boolean
 
     class Router {
         fun createChangeTabRoute(itemId: Int): Route<Unit>
     }
-}
-
-enum class TitleVisibilityMode {
-    LABELED, UNLABELED
 }
 
 data class BottomNavigationItem(

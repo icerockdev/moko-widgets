@@ -4,7 +4,6 @@
 
 package dev.icerock.moko.widgets.screen.navigation
 
-import android.R
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,6 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.graphics.colorInt
+import dev.icerock.moko.widgets.R
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.FragmentNavigation
 import dev.icerock.moko.widgets.screen.Screen
@@ -150,18 +150,6 @@ actual abstract class BottomNavigationScreen actual constructor(
             }
         }
 
-    actual class Router {
-        var bottomNavigationScreen: BottomNavigationScreen? = null
-
-        actual fun createChangeTabRoute(itemId: Int): Route<Unit> {
-            return object : Route<Unit> {
-                override fun route(source: Screen<*>, arg: Unit) {
-                    bottomNavigationScreen!!.selectedItemId = itemId
-                }
-            }
-        }
-    }
-
     actual var unselectedItemColor: Color? = null
         set(value) {
             field = value
@@ -174,7 +162,7 @@ actual abstract class BottomNavigationScreen actual constructor(
             updateItemColors()
         }
 
-    actual var titleMode: TitleVisibilityMode? = null
+    actual var isTitleVisible: Boolean = true
         set(value) {
             field = value
             updateTitleMode()
@@ -183,8 +171,8 @@ actual abstract class BottomNavigationScreen actual constructor(
     private fun updateItemColors() {
         bottomNavigationView?.also { navView ->
             val states = listOfNotNull(
-                intArrayOf(R.attr.state_selected).takeIf { selectedItemColor != null },
-                intArrayOf(-R.attr.state_selected).takeIf { unselectedItemColor != null }
+                intArrayOf(android.R.attr.state_selected).takeIf { selectedItemColor != null },
+                intArrayOf(-android.R.attr.state_selected).takeIf { unselectedItemColor != null }
             ).toTypedArray()
             val colors = listOfNotNull(
                 selectedItemColor?.colorInt(),
@@ -197,11 +185,24 @@ actual abstract class BottomNavigationScreen actual constructor(
 
     private fun updateTitleMode() {
         bottomNavigationView?.also { navView ->
-            when (titleMode) {
-                TitleVisibilityMode.LABELED -> navView.labelVisibilityMode =
+            if (isTitleVisible) {
+                navView.labelVisibilityMode =
                     LabelVisibilityMode.LABEL_VISIBILITY_LABELED
-                TitleVisibilityMode.UNLABELED -> navView.labelVisibilityMode =
+            } else {
+                navView.labelVisibilityMode =
                     LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED
+            }
+        }
+    }
+
+    actual class Router {
+        var bottomNavigationScreen: BottomNavigationScreen? = null
+
+        actual fun createChangeTabRoute(itemId: Int): Route<Unit> {
+            return object : Route<Unit> {
+                override fun route(source: Screen<*>, arg: Unit) {
+                    bottomNavigationScreen!!.selectedItemId = itemId
+                }
             }
         }
     }
