@@ -17,7 +17,6 @@ import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.FragmentNavigation
 import dev.icerock.moko.widgets.screen.Screen
-import dev.icerock.moko.widgets.screen.ScreenFactory
 import dev.icerock.moko.widgets.utils.ThemeAttrs
 import dev.icerock.moko.widgets.utils.dp
 
@@ -65,6 +64,7 @@ actual abstract class BottomNavigationScreen actual constructor(
 
             menuItemAction[menuItem] = {
                 val instance = item.screenDesc.instantiate()
+                selectedItemId = item.id
                 fragmentNavigation.routeToScreen(instance)
             }
         }
@@ -75,6 +75,7 @@ actual abstract class BottomNavigationScreen actual constructor(
         }
 
         bottomNavigationView = bottomNavigation
+        bottomNavigationView?.selectedItemId = selectedItemId
 
         return LinearLayout(context).apply {
             layoutParams = ViewGroup.LayoutParams(
@@ -126,11 +127,7 @@ actual abstract class BottomNavigationScreen actual constructor(
         router.bottomNavigationScreen = null
     }
 
-    actual var selectedItemId: Int
-        get() = bottomNavigationView?.selectedItemId ?: -1
-        set(value) {
-            bottomNavigationView?.selectedItemId = value
-        }
+    actual var selectedItemId: Int = -1
 
     actual var bottomNavigationColor: Color? = null
         set(value) {
