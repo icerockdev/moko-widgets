@@ -10,7 +10,9 @@ import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.style.applyInputType
 import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.input.InputType
 import dev.icerock.moko.widgets.style.view.*
 import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.utils.applyTextStyleIfNeeded
@@ -56,6 +58,8 @@ actual class SystemInputViewFactory actual constructor(
             translatesAutoresizingMaskIntoConstraints = false
             applyBackgroundIfNeeded(backgroundConfig)
             applyTextStyleIfNeeded(textStyle)
+            widget.inputType.also { applyInputType(it ?: InputType.PLAIN_TEXT) }
+
             clipsToBounds = true
 
             when (textHorizontalAlignment) {

@@ -10,21 +10,17 @@ import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.style.applyInputType
 import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.input.InputType
 import dev.icerock.moko.widgets.style.view.*
-import dev.icerock.moko.widgets.utils.Edges
-import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
-import dev.icerock.moko.widgets.utils.applyTextStyleIfNeeded
-import dev.icerock.moko.widgets.utils.bind
-import dev.icerock.moko.widgets.utils.identifier
+import dev.icerock.moko.widgets.utils.*
+import kotlinx.cinterop.CValue
 import kotlinx.cinterop.ObjCAction
 import kotlinx.cinterop.readValue
 import kotlinx.cinterop.useContents
-import platform.CoreGraphics.CGFloat
-import platform.CoreGraphics.CGPointMake
-import platform.CoreGraphics.CGRectMake
-import platform.CoreGraphics.CGRectZero
-import platform.Foundation.NSSelectorFromString
+import platform.CoreGraphics.*
+import platform.Foundation.*
 import platform.QuartzCore.CALayer
 import platform.QuartzCore.CAShapeLayer
 import platform.QuartzCore.CATextLayer
@@ -87,6 +83,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
             applyTextStyleIfNeeded(textStyle)
             applyErrorStyleIfNeeded(errorTextStyle)
             applyLabelStyleIfNeeded(labelTextStyle)
+            applyInputTypeIfNeeded(inputType = widget.inputType)
             underLineColor?.let {
                 deselectedColor = it.toUIColor()
             }
@@ -194,6 +191,8 @@ actual class FloatingLabelInputViewFactory actual constructor(
 
         private var _accessibilityIdentifier: String? = null
 
+        private var inputFormatter: DefaultTextFormatter? = null
+
         init {
             translatesAutoresizingMaskIntoConstraints = false
 
@@ -218,7 +217,6 @@ actual class FloatingLabelInputViewFactory actual constructor(
                     UIControlEventEditingChanged
                 )
             }
-
             errorLabel = UILabel(frame = CGRectZero.readValue()).apply {
                 translatesAutoresizingMaskIntoConstraints = false
 
@@ -314,6 +312,25 @@ actual class FloatingLabelInputViewFactory actual constructor(
             onFocusLost?.invoke()
         }
 
+        override fun textField(
+            textField: UITextField,
+            shouldChangeCharactersInRange: CValue<NSRange>,
+            replacementString: String
+        ): Boolean {
+            if (inputFormatter != null) {
+                val nsString = NSString.create(string = textField.text ?: "")
+                val newText = nsString.stringByReplacingCharactersInRange(range = shouldChangeCharactersInRange, withString = replacementString)
+                val unformattedText = inputFormatter?.unformat(newText) ?: ""
+                println(replacementString)
+                println(newText)
+
+                textField.text = inputFormatter?.format(unformattedText)
+                textDidChanged()
+                return false
+            } else {
+                return true
+            }
+        }
         override fun accessibilityIdentifier(): String? {
             return _accessibilityIdentifier
         }
@@ -329,6 +346,22 @@ actual class FloatingLabelInputViewFactory actual constructor(
 
         fun applyTextStyleIfNeeded(textStyle: TextStyle?) {
             textField.applyTextStyleIfNeeded(textStyle)
+        }
+
+        fun applyInputTypeIfNeeded(inputType: InputType?) {
+            if (inputType != null) {
+                textField.applyInputType(inputType)
+                if (inputType.mask != null) {
+                    val newMask = inputType.mask
+                        .replace("0", "#")
+                        .replace("[","")
+                        .replace("]", "")
+                    inputFormatter = DefaultTextFormatter(
+                        textPattern = newMask,
+                        patternSymbol = '#'
+                    )
+                }
+            }
         }
 
         fun applyLabelStyleIfNeeded(textStyle: TextStyle?) {
