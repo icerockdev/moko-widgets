@@ -29,7 +29,11 @@ class WebViewWidget<WS : WidgetSize>(
     override val size: WS,
     override val id: Id?,
     val targetUrl: String,
-    val isJavaScriptEnabled: Boolean = true
+    val isJavaScriptEnabled: Boolean = true,
+    val successRedirectUrl: String? = null,
+    val onSuccessRedirectBlock: ((String) -> Unit)? = null,
+    val failureRedirectUrl: String? = null,
+    val onFailureRedirectBlock: ((String) -> Unit)? = null
 ) : Widget<WS>(), OptionalId<WebViewWidget.Id> {
 
     internal val _isWebPageLoading = MutableLiveData(false)

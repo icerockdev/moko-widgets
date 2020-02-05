@@ -4,7 +4,11 @@
 
 package dev.icerock.moko.widgets.factory
 
+import android.annotation.TargetApi
 import android.graphics.Bitmap
+import android.net.Uri
+import android.os.Build
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
@@ -16,6 +20,7 @@ import dev.icerock.moko.widgets.style.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.utils.WebViewRedirectUrlHandler
 
 actual class WebViewFactory actual constructor(
     private val margins: MarginValues?,
@@ -33,7 +38,13 @@ actual class WebViewFactory actual constructor(
             applyBackgroundIfNeeded(this@WebViewFactory.background)
             settings.javaScriptEnabled = widget.isJavaScriptEnabled
 
-            webViewClient = CustomWebViewClient(widget._isWebPageLoading)
+            webViewClient = CustomWebViewClient(
+                successRedirectUrl = widget.successRedirectUrl,
+                failureRedirectUrl = widget.failureRedirectUrl,
+                onSuccessBlock = widget.onSuccessRedirectBlock,
+                onFailureBlock = widget.onFailureRedirectBlock,
+                isPageLoading = widget._isWebPageLoading
+            )
             loadUrl(widget.targetUrl)
         }
 
@@ -45,17 +56,49 @@ actual class WebViewFactory actual constructor(
     }
 
     private class CustomWebViewClient(
+        successRedirectUrl: String?,
+        failureRedirectUrl: String?,
+        onSuccessBlock: ((String) -> Unit)? = null,
+        onFailureBlock: ((String) -> Unit)? = null,
         private val isPageLoading: MutableLiveData<Boolean>
     ) : WebViewClient() {
 
+        private val redirectUrlHandler = WebViewRedirectUrlHandler(
+            successRedirectUrl = successRedirectUrl,
+            failureRedirectUrl = failureRedirectUrl,
+            onSuccessBlock = onSuccessBlock,
+            onFailureBlock = onFailureBlock
+        )
+
         override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
             isPageLoading.value = true
+
             super.onPageStarted(view, url, favicon)
         }
 
         override fun onPageFinished(view: WebView?, url: String?) {
             isPageLoading.value = false
             super.onPageFinished(view, url)
+        }
+
+        @SuppressWarnings("deprecation")
+        override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+            if (url == null)
+                return true
+
+            return redirectUrlHandler.handleUrl(url)
+        }
+
+        @TargetApi(Build.VERSION_CODES.N)
+        override fun shouldOverrideUrlLoading(
+            view: WebView?,
+            request: WebResourceRequest?
+        ): Boolean {
+            if (request == null)
+                return true
+
+            val requestedUrl = Uri.parse(request.url.toString()).toString()
+            return redirectUrlHandler.handleUrl(requestedUrl)
         }
 
     }
