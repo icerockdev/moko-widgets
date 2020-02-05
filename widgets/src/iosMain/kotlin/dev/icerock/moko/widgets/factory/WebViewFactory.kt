@@ -42,10 +42,8 @@ actual class WebViewFactory actual constructor(
             configuration.preferences.javaScriptEnabled = widget.isJavaScriptEnabled
 
             val webViewNavDelegate = NavigationDelegate(
-                successRedirectUrl = widget.successRedirectUrl,
-                failureRedirectUrl = widget.failureRedirectUrl,
-                onSuccessBlock = widget.onSuccessRedirectBlock,
-                onFailureBlock = widget.onFailureRedirectBlock,
+                successRedirectConfig = widget.successRedirectConfig,
+                failureRedirectConfig = widget.failureRedirectConfig,
                 isPageLoading = widget._isWebPageLoading
             )
             setAssociatedObject(this, webViewNavDelegate)
@@ -63,18 +61,14 @@ actual class WebViewFactory actual constructor(
 
     @Suppress("CONFLICTING_OVERLOADS")
     private class NavigationDelegate(
-        successRedirectUrl: String?,
-        failureRedirectUrl: String?,
-        onSuccessBlock: ((String) -> Unit)? = null,
-        onFailureBlock: ((String) -> Unit)? = null,
+        successRedirectConfig: WebViewWidget.RedirectConfig?,
+        failureRedirectConfig: WebViewWidget.RedirectConfig?,
         private val isPageLoading: MutableLiveData<Boolean>
     ) : NSObject(), WKNavigationDelegateProtocol {
 
         private val redirectUrlHandler = WebViewRedirectUrlHandler(
-            successRedirectUrl = successRedirectUrl,
-            failureRedirectUrl = failureRedirectUrl,
-            onSuccessBlock = onSuccessBlock,
-            onFailureBlock = onFailureBlock
+            successRedirectConfig = successRedirectConfig,
+            failureRedirectConfig = failureRedirectConfig
         )
 
         override fun webView(webView: WKWebView, didStartProvisionalNavigation: WKNavigation?) {

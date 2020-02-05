@@ -39,10 +39,8 @@ actual class WebViewFactory actual constructor(
             settings.javaScriptEnabled = widget.isJavaScriptEnabled
 
             webViewClient = CustomWebViewClient(
-                successRedirectUrl = widget.successRedirectUrl,
-                failureRedirectUrl = widget.failureRedirectUrl,
-                onSuccessBlock = widget.onSuccessRedirectBlock,
-                onFailureBlock = widget.onFailureRedirectBlock,
+                successRedirectConfig = widget.successRedirectConfig,
+                failureRedirectConfig = widget.failureRedirectConfig,
                 isPageLoading = widget._isWebPageLoading
             )
             loadUrl(widget.targetUrl)
@@ -56,18 +54,14 @@ actual class WebViewFactory actual constructor(
     }
 
     private class CustomWebViewClient(
-        successRedirectUrl: String?,
-        failureRedirectUrl: String?,
-        onSuccessBlock: ((String) -> Unit)? = null,
-        onFailureBlock: ((String) -> Unit)? = null,
+        successRedirectConfig: WebViewWidget.RedirectConfig?,
+        failureRedirectConfig: WebViewWidget.RedirectConfig?,
         private val isPageLoading: MutableLiveData<Boolean>
     ) : WebViewClient() {
 
         private val redirectUrlHandler = WebViewRedirectUrlHandler(
-            successRedirectUrl = successRedirectUrl,
-            failureRedirectUrl = failureRedirectUrl,
-            onSuccessBlock = onSuccessBlock,
-            onFailureBlock = onFailureBlock
+            successRedirectConfig = successRedirectConfig,
+            failureRedirectConfig = failureRedirectConfig
         )
 
         override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
@@ -82,21 +76,15 @@ actual class WebViewFactory actual constructor(
         }
 
         @SuppressWarnings("deprecation")
-        override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-            if (url == null)
-                return true
-
+        override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
             return redirectUrlHandler.handleUrl(url)
         }
 
         @TargetApi(Build.VERSION_CODES.N)
         override fun shouldOverrideUrlLoading(
-            view: WebView?,
-            request: WebResourceRequest?
+            view: WebView,
+            request: WebResourceRequest
         ): Boolean {
-            if (request == null)
-                return true
-
             val requestedUrl = Uri.parse(request.url.toString()).toString()
             return redirectUrlHandler.handleUrl(requestedUrl)
         }

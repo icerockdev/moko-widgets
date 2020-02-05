@@ -30,10 +30,8 @@ class WebViewWidget<WS : WidgetSize>(
     override val id: Id?,
     val targetUrl: String,
     val isJavaScriptEnabled: Boolean = true,
-    val successRedirectUrl: String? = null,
-    val onSuccessRedirectBlock: ((String) -> Unit)? = null,
-    val failureRedirectUrl: String? = null,
-    val onFailureRedirectBlock: ((String) -> Unit)? = null
+    val successRedirectConfig: WebViewWidget.RedirectConfig?,
+    val failureRedirectConfig: WebViewWidget.RedirectConfig?
 ) : Widget<WS>(), OptionalId<WebViewWidget.Id> {
 
     internal val _isWebPageLoading = MutableLiveData(false)
@@ -51,4 +49,7 @@ class WebViewWidget<WS : WidgetSize>(
     interface Category : Theme.Category<WebViewWidget<out WidgetSize>>
 
     object DefaultCategory : Category
+
+    data class RedirectConfig(val url: String, val handler: (String) -> Unit)
+
 }

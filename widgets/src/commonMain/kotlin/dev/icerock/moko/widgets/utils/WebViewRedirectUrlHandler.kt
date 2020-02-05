@@ -4,11 +4,11 @@
 
 package dev.icerock.moko.widgets.utils
 
+import dev.icerock.moko.widgets.WebViewWidget
+
 internal class WebViewRedirectUrlHandler(
-    private val successRedirectUrl: String?,
-    private val failureRedirectUrl: String?,
-    private val onSuccessBlock: ((String) -> Unit)? = null,
-    private val onFailureBlock: ((String) -> Unit)? = null
+    private val successRedirectConfig: WebViewWidget.RedirectConfig?,
+    private val failureRedirectConfig: WebViewWidget.RedirectConfig?
 ) {
 
     /**
@@ -17,11 +17,11 @@ internal class WebViewRedirectUrlHandler(
      * and [onFailureBlock] will be called and the function will return true, otherwise false.
      */
     fun handleUrl(url: String): Boolean {
-        return if(successRedirectUrl != null && url.contains(successRedirectUrl)) {
-            onSuccessBlock?.invoke(url)
+        return if(successRedirectConfig != null && url.contains(successRedirectConfig.url)) {
+            successRedirectConfig.handler(url)
             true
-        } else if(failureRedirectUrl != null && url.contains(failureRedirectUrl)) {
-            onFailureBlock?.invoke(url)
+        } else if(failureRedirectConfig != null && url.contains(failureRedirectConfig.url)) {
+            failureRedirectConfig.handler(url)
             true
         } else {
             false
