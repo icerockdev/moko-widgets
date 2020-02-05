@@ -12,7 +12,6 @@ import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.ButtonWidget
-import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Theme
@@ -22,6 +21,7 @@ import dev.icerock.moko.widgets.flatAlert
 import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.progressBar
 import dev.icerock.moko.widgets.stateful
+import dev.icerock.moko.widgets.style.background.Orientation
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.tabs
@@ -35,11 +35,21 @@ open class StateScreen(
     fun createWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         return with(theme) {
             linear(size = WidgetSize.AsParent) {
-                +button(
-                    size = WidgetSize.WrapContent,
-                    content = ButtonWidget.Content.Text(Value.data("change state".desc())),
-                    onTap = viewModel::onChangeStatePressed
-                )
+                +linear(
+                    size = WidgetSize.WidthAsParentHeightWrapContent,
+                    orientation = Orientation.HORIZONTAL
+                ) {
+                    +button(
+                        size = WidgetSize.WrapContent,
+                        content = ButtonWidget.Content.Text(Value.data("change state".desc())),
+                        onTap = viewModel::onChangeStatePressed
+                    )
+                    +button(
+                        size = WidgetSize.WrapContent,
+                        content = ButtonWidget.Content.Text(Value.data("just log button".desc())),
+                        onTap = { println("pressed!") }
+                    )
+                }
                 +stateful(
                     size = WidgetSize.AsParent,
                     state = viewModel.state,

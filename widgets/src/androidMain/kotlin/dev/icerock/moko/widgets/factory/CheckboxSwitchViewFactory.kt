@@ -13,6 +13,7 @@ import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.utils.androidId
 import dev.icerock.moko.widgets.utils.bindNotNull
 
 actual class CheckboxSwitchViewFactory actual constructor(
@@ -27,7 +28,9 @@ actual class CheckboxSwitchViewFactory actual constructor(
         val context = viewFactoryContext.context
         val lifecycleOwner = viewFactoryContext.lifecycleOwner
 
-        val checkbox = CheckBox(context)
+        val checkbox = CheckBox(context).apply {
+            id = widget.id.androidId
+        }
 
         val drawable = StateListDrawable().apply {
             addState(

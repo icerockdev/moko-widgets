@@ -6,6 +6,7 @@ package dev.icerock.moko.widgets.factory
 
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.ViewCompat
 import dev.icerock.moko.widgets.Constraint
 import dev.icerock.moko.widgets.ConstraintItem
 import dev.icerock.moko.widgets.ConstraintWidget
@@ -52,10 +53,9 @@ actual class ConstraintViewFactory actual constructor(
                 constraintLayout.addView(viewBundle)
 
                 // check id and autoassign if needed
-                // TODO something can be wrong with autoassign?
                 viewBundle.view.run {
                     if (id == View.NO_ID) {
-                        id = childWidget.hashCode()
+                        id = ViewCompat.generateViewId()
                     }
                 }
 

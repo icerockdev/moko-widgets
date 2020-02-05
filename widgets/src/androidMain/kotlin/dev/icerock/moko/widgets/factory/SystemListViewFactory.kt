@@ -21,6 +21,7 @@ import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.utils.androidId
 import dev.icerock.moko.widgets.utils.bind
 
 actual class SystemListViewFactory actual constructor(
@@ -56,7 +57,7 @@ actual class SystemListViewFactory actual constructor(
 
             applyPaddingIfNeeded(padding)
 
-            id = widget.id::javaClass.name.hashCode()
+            id = widget.id.androidId
         }
 
         val resultView: View = if (haveSwipeRefreshListener) {

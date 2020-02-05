@@ -4,6 +4,7 @@
 
 package dev.icerock.moko.widgets.screen.navigation
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -13,11 +14,13 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.core.view.ViewCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import dev.icerock.moko.graphics.Color
+import dev.icerock.moko.graphics.colorInt
+import dev.icerock.moko.widgets.R
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.FragmentNavigation
 import dev.icerock.moko.widgets.screen.Screen
-import dev.icerock.moko.widgets.screen.ScreenFactory
 import dev.icerock.moko.widgets.utils.ThemeAttrs
 import dev.icerock.moko.widgets.utils.dp
 
@@ -25,7 +28,8 @@ actual abstract class BottomNavigationScreen actual constructor(
     private val router: Router,
     builder: BottomNavigationItem.Builder.() -> Unit
 ) : Screen<Args.Empty>() {
-    actual val items: List<BottomNavigationItem> = BottomNavigationItem.Builder().apply(builder).build()
+    actual val items: List<BottomNavigationItem> =
+        BottomNavigationItem.Builder().apply(builder).build()
 
     private val fragmentNavigation = FragmentNavigation(this)
     private var bottomNavigationView: BottomNavigationView? = null
@@ -46,6 +50,7 @@ actual abstract class BottomNavigationScreen actual constructor(
             id = android.R.id.content
         }
         val bottomNavigation = BottomNavigationView(context).apply {
+            id = android.R.id.tabs
             ViewCompat.setElevation(this, 8.dp(context).toFloat())
             val color = bottomNavigationColor
             if (color != null) {
@@ -73,8 +78,10 @@ actual abstract class BottomNavigationScreen actual constructor(
             menuItemAction[menuItem]?.invoke()
             true
         }
-
+        
         bottomNavigationView = bottomNavigation
+        updateItemColors()
+        updateTitleMode()
 
         return LinearLayout(context).apply {
             layoutParams = ViewGroup.LayoutParams(
@@ -143,6 +150,51 @@ actual abstract class BottomNavigationScreen actual constructor(
                 }
             }
         }
+
+    actual var unselectedItemColor: Color? = null
+        set(value) {
+            field = value
+            updateItemColors()
+        }
+
+    actual var selectedItemColor: Color? = null
+        set(value) {
+            field = value
+            updateItemColors()
+        }
+
+    actual var isTitleVisible: Boolean = true
+        set(value) {
+            field = value
+            updateTitleMode()
+        }
+
+    private fun updateItemColors() {
+        bottomNavigationView?.also { navView ->
+            val states = listOfNotNull(
+                intArrayOf(android.R.attr.state_selected).takeIf { selectedItemColor != null },
+                intArrayOf(-android.R.attr.state_selected).takeIf { unselectedItemColor != null }
+            ).toTypedArray()
+            val colors = listOfNotNull(
+                selectedItemColor?.colorInt(),
+                unselectedItemColor?.colorInt()
+            ).toIntArray()
+            navView.itemIconTintList = ColorStateList(states, colors)
+            navView.itemTextColor = ColorStateList(states, colors)
+        }
+    }
+
+    private fun updateTitleMode() {
+        bottomNavigationView?.also { navView ->
+            if (isTitleVisible) {
+                navView.labelVisibilityMode =
+                    LabelVisibilityMode.LABEL_VISIBILITY_LABELED
+            } else {
+                navView.labelVisibilityMode =
+                    LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED
+            }
+        }
+    }
 
     actual class Router {
         var bottomNavigationScreen: BottomNavigationScreen? = null
