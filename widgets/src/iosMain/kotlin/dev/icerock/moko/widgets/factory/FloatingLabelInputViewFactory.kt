@@ -10,17 +10,30 @@ import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.style.applyInputType
+import dev.icerock.moko.widgets.style.applyInputTypeIfNeeded
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.input.InputType
 import dev.icerock.moko.widgets.style.view.*
-import dev.icerock.moko.widgets.utils.*
+import dev.icerock.moko.widgets.utils.Edges
+import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
+import dev.icerock.moko.widgets.utils.bind
+import dev.icerock.moko.widgets.utils.identifier
+import dev.icerock.moko.widgets.utils.DefaultTextFormatter
+import dev.icerock.moko.widgets.utils.applyTextStyleIfNeeded
+import dev.icerock.moko.widgets.utils.toIosPattern
 import kotlinx.cinterop.CValue
 import kotlinx.cinterop.ObjCAction
 import kotlinx.cinterop.readValue
 import kotlinx.cinterop.useContents
-import platform.CoreGraphics.*
-import platform.Foundation.*
+import platform.Foundation.NSSelectorFromString
+import platform.Foundation.NSRange
+import platform.Foundation.NSString
+import platform.Foundation.create
+import platform.Foundation.stringByReplacingCharactersInRange
+import platform.CoreGraphics.CGFloat
+import platform.CoreGraphics.CGRectZero
+import platform.CoreGraphics.CGPointMake
+import platform.CoreGraphics.CGRectMake
 import platform.QuartzCore.CALayer
 import platform.QuartzCore.CAShapeLayer
 import platform.QuartzCore.CATextLayer
@@ -83,6 +96,8 @@ actual class FloatingLabelInputViewFactory actual constructor(
             applyTextStyleIfNeeded(textStyle)
             applyErrorStyleIfNeeded(errorTextStyle)
             applyLabelStyleIfNeeded(labelTextStyle)
+            applyInputTypeIfNeeded(widget.inputType)
+
             applyInputTypeIfNeeded(inputType = widget.inputType)
             underLineColor?.let {
                 deselectedColor = it.toUIColor()
@@ -145,7 +160,8 @@ actual class FloatingLabelInputViewFactory actual constructor(
                 field = value
                 when (value) {
                     TextHorizontalAlignment.LEFT -> textField.textAlignment = NSTextAlignmentLeft
-                    TextHorizontalAlignment.CENTER -> textField.textAlignment = NSTextAlignmentCenter
+                    TextHorizontalAlignment.CENTER -> textField.textAlignment =
+                        NSTextAlignmentCenter
                     TextHorizontalAlignment.RIGHT -> textField.textAlignment = NSTextAlignmentRight
                     null -> {
                     }
@@ -168,12 +184,14 @@ actual class FloatingLabelInputViewFactory actual constructor(
         var selectedColor: UIColor = UIColor.blackColor
             set(value) {
                 field = value
-                underlineLayer.fillColor = (if (textField.isFocused()) value else deselectedColor).CGColor
+                underlineLayer.fillColor =
+                    (if (textField.isFocused()) value else deselectedColor).CGColor
             }
         var deselectedColor: UIColor = UIColor.systemGrayColor
             set(value) {
                 field = value
-                underlineLayer.fillColor = (if (textField.isFocused()) selectedColor else value).CGColor
+                underlineLayer.fillColor =
+                    (if (textField.isFocused()) selectedColor else value).CGColor
             }
         private val textField: UITextField
 
@@ -203,10 +221,19 @@ actual class FloatingLabelInputViewFactory actual constructor(
 
                 container.addSubview(this)
 
-                topAnchor.constraintEqualToAnchor(container.topAnchor, constant = 18.0 + padding.top).active =
+                topAnchor.constraintEqualToAnchor(
+                    container.topAnchor,
+                    constant = 18.0 + padding.top
+                ).active =
                     true
-                leadingAnchor.constraintEqualToAnchor(container.leadingAnchor, constant = padding.leading).active = true
-                trailingAnchor.constraintEqualToAnchor(container.trailingAnchor, constant = -padding.trailing).active =
+                leadingAnchor.constraintEqualToAnchor(
+                    container.leadingAnchor,
+                    constant = padding.leading
+                ).active = true
+                trailingAnchor.constraintEqualToAnchor(
+                    container.trailingAnchor,
+                    constant = -padding.trailing
+                ).active =
                     true
 
                 delegate = this@InputWidgetView
@@ -224,10 +251,19 @@ actual class FloatingLabelInputViewFactory actual constructor(
 
                 topAnchor.constraintEqualToAnchor(textField.bottomAnchor, constant = 4.0).active =
                     true
-                leadingAnchor.constraintEqualToAnchor(container.leadingAnchor, constant = padding.leading).active = true
-                trailingAnchor.constraintEqualToAnchor(container.trailingAnchor, constant = -padding.trailing).active =
+                leadingAnchor.constraintEqualToAnchor(
+                    container.leadingAnchor,
+                    constant = padding.leading
+                ).active = true
+                trailingAnchor.constraintEqualToAnchor(
+                    container.trailingAnchor,
+                    constant = -padding.trailing
+                ).active =
                     true
-                bottomAnchor.constraintEqualToAnchor(container.bottomAnchor, constant = -padding.bottom).active = true
+                bottomAnchor.constraintEqualToAnchor(
+                    container.bottomAnchor,
+                    constant = -padding.bottom
+                ).active = true
 
                 font = UIFont.systemFontOfSize(11.0)
                 textColor = UIColor.systemRedColor
@@ -319,7 +355,10 @@ actual class FloatingLabelInputViewFactory actual constructor(
         ): Boolean {
             if (inputFormatter != null) {
                 val nsString = NSString.create(string = textField.text ?: "")
-                val newText = nsString.stringByReplacingCharactersInRange(range = shouldChangeCharactersInRange, withString = replacementString)
+                val newText = nsString.stringByReplacingCharactersInRange(
+                    range = shouldChangeCharactersInRange,
+                    withString = replacementString
+                )
                 val unformattedText = inputFormatter?.unformat(newText) ?: ""
 
                 textField.text = inputFormatter?.format(unformattedText)
@@ -329,6 +368,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
                 return true
             }
         }
+
         override fun accessibilityIdentifier(): String? {
             return _accessibilityIdentifier
         }
@@ -347,18 +387,12 @@ actual class FloatingLabelInputViewFactory actual constructor(
         }
 
         fun applyInputTypeIfNeeded(inputType: InputType?) {
-            if (inputType != null) {
-                textField.applyInputType(inputType)
-                if (inputType.mask != null) {
-                    val newMask = inputType.mask
-                        .replace("0", "#")
-                        .replace("[","")
-                        .replace("]", "")
-                    inputFormatter = DefaultTextFormatter(
-                        textPattern = newMask,
-                        patternSymbol = '#'
-                    )
-                }
+            textField.applyInputTypeIfNeeded(inputType)
+            if (inputType?.mask != null) {
+                inputFormatter = DefaultTextFormatter(
+                    textPattern = inputType.mask.toIosPattern(),
+                    patternSymbol = '#'
+                )
             }
         }
 

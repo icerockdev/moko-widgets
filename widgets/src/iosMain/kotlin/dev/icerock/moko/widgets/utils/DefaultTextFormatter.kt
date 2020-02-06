@@ -1,6 +1,10 @@
+/*
+ * Copyright 2020 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
+ */
+
 package dev.icerock.moko.widgets.utils
 
-class DefaultTextFormatter (val textPattern: String, val patternSymbol: Char = '#') {
+class DefaultTextFormatter(val textPattern: String, val patternSymbol: Char = '#') {
 
     fun format(unformattedText: String): String {
 
@@ -42,4 +46,10 @@ class DefaultTextFormatter (val textPattern: String, val patternSymbol: Char = '
         }
         return unformatted
     }
+}
+
+fun String.toIosPattern(): String {
+    return this.replace("0", "#")
+        .replace("[", "")
+        .replace("]", "")
 }

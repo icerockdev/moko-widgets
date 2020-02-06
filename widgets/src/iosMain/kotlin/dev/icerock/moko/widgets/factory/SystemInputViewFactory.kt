@@ -10,18 +10,23 @@ import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.style.applyInputType
+import dev.icerock.moko.widgets.style.applyInputTypeIfNeeded
 import dev.icerock.moko.widgets.style.background.Background
-import dev.icerock.moko.widgets.style.input.InputType
 import dev.icerock.moko.widgets.style.view.*
 import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.utils.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.setEventHandler
+import dev.icerock.moko.widgets.utils.DefaultTextFormatter
+import dev.icerock.moko.widgets.utils.toIosPattern
+import kotlinx.cinterop.CValue
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGRectZero
 import platform.Foundation.NSMutableAttributedString
 import platform.Foundation.create
+import platform.Foundation.NSRange
+import platform.Foundation.NSString
+import platform.Foundation.stringByReplacingCharactersInRange
 import platform.UIKit.NSForegroundColorAttributeName
 import platform.UIKit.NSTextAlignmentCenter
 import platform.UIKit.NSTextAlignmentLeft
@@ -34,6 +39,9 @@ import platform.UIKit.UITextBorderStyle
 import platform.UIKit.UITextField
 import platform.UIKit.clipsToBounds
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
+import platform.UIKit.addSubview
+import platform.UIKit.UIView
+import platform.UIKit.UITextFieldDelegateProtocol
 
 actual class SystemInputViewFactory actual constructor(
     private val background: Background?,
@@ -58,7 +66,7 @@ actual class SystemInputViewFactory actual constructor(
             translatesAutoresizingMaskIntoConstraints = false
             applyBackgroundIfNeeded(backgroundConfig)
             applyTextStyleIfNeeded(textStyle)
-            widget.inputType.also { applyInputType(it ?: InputType.PLAIN_TEXT) }
+            applyInputTypeIfNeeded(widget.inputType)
 
             clipsToBounds = true
 
@@ -71,9 +79,12 @@ actual class SystemInputViewFactory actual constructor(
             }
 
             when (textVerticalAlignment) {
-                TextVerticalAlignment.TOP -> contentVerticalAlignment = UIControlContentVerticalAlignmentTop
-                TextVerticalAlignment.MIDDLE -> contentVerticalAlignment = UIControlContentVerticalAlignmentCenter
-                TextVerticalAlignment.BOTTOM -> contentVerticalAlignment = UIControlContentVerticalAlignmentBottom
+                TextVerticalAlignment.TOP -> contentVerticalAlignment =
+                    UIControlContentVerticalAlignmentTop
+                TextVerticalAlignment.MIDDLE -> contentVerticalAlignment =
+                    UIControlContentVerticalAlignmentCenter
+                TextVerticalAlignment.BOTTOM -> contentVerticalAlignment =
+                    UIControlContentVerticalAlignmentBottom
                 null -> {
                 }
             }
@@ -98,15 +109,34 @@ actual class SystemInputViewFactory actual constructor(
             }
         }
 
-        textField.setEventHandler(UIControlEventEditingChanged) {
-            val currentValue = widget.field.data.value
-            val newValue = textField.text
+        if (widget.inputType?.mask != null) {
+            val delegate = SystemInputViewDelegate(
+                inputFormatter = DefaultTextFormatter(
+                    widget.inputType.mask.toIosPattern(),
+                    patternSymbol = '#'
+                )
+            ) {
+                val currentValue = widget.field.data.value
+                val newValue = textField.text
 
-            if (currentValue != newValue) {
-                widget.field.data.value = newValue.orEmpty()
+                if (currentValue != newValue) {
+                    widget.field.data.value = newValue.orEmpty()
+                }
+            }
+            textField.delegate = delegate
+            textField.addSubview(delegate) // to have strong reference to delegate (for prevent deiniting)
+
+        } else {
+            textField.setEventHandler(UIControlEventEditingChanged) {
+                val currentValue = widget.field.data.value
+                val newValue = textField.text
+
+                if (currentValue != newValue) {
+                    widget.field.data.value = newValue.orEmpty()
+                }
             }
         }
-        
+
         widget.enabled?.bind { textField.enabled = it }
         widget.label.bind { textField.placeholder = it.localized() }
         widget.field.data.bind { textField.text = it }
@@ -116,5 +146,28 @@ actual class SystemInputViewFactory actual constructor(
             size = size,
             margins = margins
         )
+    }
+}
+
+class SystemInputViewDelegate(
+    private val inputFormatter: DefaultTextFormatter,
+    private val textDidChanged: () -> Unit
+) : UIView(frame = CGRectZero.readValue()), UITextFieldDelegateProtocol {
+
+    override fun textField(
+        textField: UITextField,
+        shouldChangeCharactersInRange: CValue<NSRange>,
+        replacementString: String
+    ): Boolean {
+        val nsString = NSString.create(string = textField.text ?: "")
+        val newText = nsString.stringByReplacingCharactersInRange(
+            range = shouldChangeCharactersInRange,
+            withString = replacementString
+        )
+        val unformattedText = inputFormatter.unformat(newText)
+
+        textField.text = inputFormatter.format(unformattedText)
+        textDidChanged()
+        return false
     }
 }
