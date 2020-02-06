@@ -4,7 +4,7 @@
 
 package com.icerockdev.library.universal
 
-import dev.icerock.moko.mvvm.livedata.LiveData
+import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.parcelize.Parcelize
 import dev.icerock.moko.resources.desc.desc
@@ -31,38 +31,33 @@ class InfoWebViewScreen(
     override fun createContentWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         val inputArgs = getArgument()
 
-        var isWebViewPageLoading: LiveData<Boolean>
+        val isWebViewPageLoading = MutableLiveData(false)
 
         return with(theme) {
             constraint(
                 size = WidgetSize.AsParent
             ) {
-                val webViewConstraintItem = webView(
+                val webViewConstraintItem = +webView(
                     size = WidgetSize.AsParent,
                     isJavaScriptEnabled = true,
-                    targetUrl = inputArgs.targetUrl
-                ).let { webViewWidget ->
-                    isWebViewPageLoading = webViewWidget.isWebPageLoading
-                    +webViewWidget
-                }
+                    targetUrl = inputArgs.targetUrl,
+                    isWebPageLoading = isWebViewPageLoading
+                )
 
-                val progressVisibilityConstraintItem = progressBar(
-                    size = WidgetSize.WrapContent
-                ).let {
-                    +visibility(
-                        child = it,
-                        showed = isWebViewPageLoading
-                    )
-                }
+                val progressVisibilityConstraintItem = +visibility(
+                    child = progressBar(
+                        size = WidgetSize.WrapContent
+                    ),
+                    showed = isWebViewPageLoading
+                )
 
                 constraints {
                     webViewConstraintItem leftRightToLeftRight root
                     webViewConstraintItem topToTop root.safeArea
 
-                    progressVisibilityConstraintItem centerYToCenterY root
+                    progressVisibilityConstraintItem topToTop root
                     progressVisibilityConstraintItem centerXToCenterX root
                 }
-
             }
         }
     }

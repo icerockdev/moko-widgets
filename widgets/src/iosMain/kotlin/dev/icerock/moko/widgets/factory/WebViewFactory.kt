@@ -63,7 +63,7 @@ actual class WebViewFactory actual constructor(
     private class NavigationDelegate(
         successRedirectConfig: WebViewWidget.RedirectConfig?,
         failureRedirectConfig: WebViewWidget.RedirectConfig?,
-        private val isPageLoading: MutableLiveData<Boolean>
+        private val isPageLoading: MutableLiveData<Boolean>?
     ) : NSObject(), WKNavigationDelegateProtocol {
 
         private val redirectUrlHandler = WebViewRedirectUrlHandler(
@@ -72,11 +72,11 @@ actual class WebViewFactory actual constructor(
         )
 
         override fun webView(webView: WKWebView, didStartProvisionalNavigation: WKNavigation?) {
-            isPageLoading.value = true
+            isPageLoading?.value = true
         }
 
         override fun webView(webView: WKWebView, didFinishNavigation: WKNavigation?) {
-            isPageLoading.value = false
+            isPageLoading?.value = false
         }
 
         override fun webView(

@@ -29,8 +29,8 @@ class WebViewWidget<WS : WidgetSize>(
     override val size: WS,
     override val id: Id?,
     val targetUrl: String,
-    val isWebPageLoading: MutableLiveData<Boolean> = MutableLiveData(false),
     val isJavaScriptEnabled: Boolean = true,
+    val isWebPageLoading: MutableLiveData<Boolean>? = null,
     val successRedirectConfig: WebViewWidget.RedirectConfig? = null,
     val failureRedirectConfig: WebViewWidget.RedirectConfig? = null
 ) : Widget<WS>(), OptionalId<WebViewWidget.Id> {

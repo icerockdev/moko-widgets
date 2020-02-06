@@ -56,7 +56,7 @@ actual class WebViewFactory actual constructor(
     private class CustomWebViewClient(
         successRedirectConfig: WebViewWidget.RedirectConfig?,
         failureRedirectConfig: WebViewWidget.RedirectConfig?,
-        private val isPageLoading: MutableLiveData<Boolean>
+        private val isPageLoading: MutableLiveData<Boolean>?
     ) : WebViewClient() {
 
         private val redirectUrlHandler = WebViewRedirectUrlHandler(
@@ -65,13 +65,13 @@ actual class WebViewFactory actual constructor(
         )
 
         override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-            isPageLoading.value = true
+            isPageLoading?.value = true
 
             super.onPageStarted(view, url, favicon)
         }
 
         override fun onPageFinished(view: WebView?, url: String?) {
-            isPageLoading.value = false
+            isPageLoading?.value = false
             super.onPageFinished(view, url)
         }
 
