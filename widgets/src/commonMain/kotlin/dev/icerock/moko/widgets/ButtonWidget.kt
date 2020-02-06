@@ -36,6 +36,7 @@ class ButtonWidget<WS : WidgetSize>(
     sealed class Content {
         data class Text(val text: Value<StringDesc?>) : Content()
         data class Icon(val image: Value<Image>) : Content()
+        data class TextWithImage(val text: Value<StringDesc?>, val image: Value<Image>) : Content()
     }
 
     interface Id : Theme.Id<ButtonWidget<out WidgetSize>>

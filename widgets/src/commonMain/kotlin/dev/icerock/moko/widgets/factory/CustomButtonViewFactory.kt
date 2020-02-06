@@ -12,7 +12,7 @@ expect class CustomButtonViewFactory(
     padding: PaddingValues? = null,
     margins: MarginValues? = null,
     androidElevationEnabled: Boolean? = null,
-    textHorizontalAlignment: TextHorizontalAlignment? = null,
-    iconHorizontalAlignment: IconHorizontalAlignment? = null
+    textInset: Inset? = null,
+    iconInset: Inset? = null
 ) : ViewFactory<ButtonWidget<out WidgetSize>>
 

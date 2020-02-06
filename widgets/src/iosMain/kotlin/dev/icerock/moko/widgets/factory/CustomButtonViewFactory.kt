@@ -21,8 +21,8 @@ actual class CustomButtonViewFactory actual constructor(
     private val padding: PaddingValues?,
     private val margins: MarginValues?,
     androidElevationEnabled: Boolean?,
-    private val textHorizontalAlignment: TextHorizontalAlignment?,
-    private val iconHorizontalAlignment: IconHorizontalAlignment?
+    private val textInset: Inset?,
+    private val iconInset: Inset?
 ) : ViewFactory<ButtonWidget<out WidgetSize>> {
     override fun <WS : WidgetSize> build(
         widget: ButtonWidget<out WidgetSize>,
@@ -30,11 +30,7 @@ actual class CustomButtonViewFactory actual constructor(
         viewFactoryContext: ViewFactoryContext
     ): ViewBundle<WS> {
 
-        val buttonType = if (widget.content is ButtonWidget.Content.Icon) {
-            UIButtonTypeCustom
-        } else {
-            UIButtonTypeSystem
-        }
+        val buttonType = UIButtonTypeCustom
 
         val button = UIButton.buttonWithType(buttonType).apply {
             translatesAutoresizingMaskIntoConstraints = false
@@ -74,6 +70,40 @@ actual class CustomButtonViewFactory actual constructor(
                     }
                 }
             }
+            is ButtonWidget.Content.TextWithImage -> {
+                widget.content.text.bind { text ->
+                    val localizedText = text?.localized()
+                    val processedText = if (isAllCaps == true) {
+                        localizedText?.toUpperCase()
+                    } else {
+                        localizedText
+                    }
+                    button.setTitle(title = processedText, forState = UIControlStateNormal)
+                }
+                widget.content.image.bind { image ->
+                    image.apply(button) {
+                        button.setImage(it, forState = UIControlStateNormal)
+                    }
+                }
+            }
+        }
+
+        textInset?.let {
+            button.titleEdgeInsets = UIEdgeInsetsMake(
+                top = it.top.toDouble(),
+                bottom = it.bottom.toDouble(),
+                left = it.left.toDouble(),
+                right = it.right.toDouble()
+            )
+        }
+
+        iconInset?.let {
+            button.imageEdgeInsets = UIEdgeInsetsMake(
+                top = it.top.toDouble(),
+                bottom = it.bottom.toDouble(),
+                left = it.left.toDouble(),
+                right = it.right.toDouble()
+            )
         }
 
         widget.enabled?.apply {
