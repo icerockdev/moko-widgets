@@ -33,6 +33,7 @@ data class BottomNavigationItem(
     val id: Int,
     val title: StringDesc,
     val icon: ImageResource? = null,
+    val selectedIcon: ImageResource? = null,
     val screenDesc: ScreenDesc<Args.Empty>
 ) {
     class Builder() {
@@ -42,6 +43,7 @@ data class BottomNavigationItem(
             id: Int,
             title: StringDesc,
             icon: ImageResource? = null,
+            selectedIcon: ImageResource? = null,
             screenDesc: ScreenDesc<Args.Empty>
         ) {
             tabs.add(
@@ -49,6 +51,7 @@ data class BottomNavigationItem(
                     id = id,
                     title = title,
                     icon = icon,
+                    selectedIcon = selectedIcon,
                     screenDesc = screenDesc
                 )
             )

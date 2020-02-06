@@ -36,7 +36,7 @@ actual abstract class BottomNavigationScreen actual constructor(
                 tabBarItem = UITabBarItem(
                     title = if (isTitleVisible) item.title.localized() else null,
                     image = item.icon?.toUIImage(),
-                    tag = 0
+                    selectedImage = item.selectedIcon?.toUIImage()
                 )
             }
         }
