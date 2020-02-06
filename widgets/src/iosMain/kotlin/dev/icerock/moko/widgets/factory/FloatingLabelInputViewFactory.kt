@@ -21,15 +21,13 @@ import dev.icerock.moko.widgets.utils.identifier
 import dev.icerock.moko.widgets.utils.DefaultTextFormatter
 import dev.icerock.moko.widgets.utils.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.utils.toIosPattern
+import dev.icerock.moko.widgets.utils.DefaultFormatterUITextFieldDelegate
 import kotlinx.cinterop.CValue
 import kotlinx.cinterop.ObjCAction
 import kotlinx.cinterop.readValue
 import kotlinx.cinterop.useContents
 import platform.Foundation.NSSelectorFromString
 import platform.Foundation.NSRange
-import platform.Foundation.NSString
-import platform.Foundation.create
-import platform.Foundation.stringByReplacingCharactersInRange
 import platform.CoreGraphics.CGFloat
 import platform.CoreGraphics.CGRectZero
 import platform.CoreGraphics.CGPointMake
@@ -209,7 +207,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
 
         private var _accessibilityIdentifier: String? = null
 
-        private var inputFormatter: DefaultTextFormatter? = null
+        private var formatterDelegate: DefaultFormatterUITextFieldDelegate? = null
 
         init {
             translatesAutoresizingMaskIntoConstraints = false
@@ -353,16 +351,12 @@ actual class FloatingLabelInputViewFactory actual constructor(
             shouldChangeCharactersInRange: CValue<NSRange>,
             replacementString: String
         ): Boolean {
-            if (inputFormatter != null) {
-                val nsString = NSString.create(string = textField.text ?: "")
-                val newText = nsString.stringByReplacingCharactersInRange(
-                    range = shouldChangeCharactersInRange,
-                    withString = replacementString
+            if (formatterDelegate != null) {
+                formatterDelegate?.textField(
+                    textField = textField,
+                    shouldChangeCharactersInRange = shouldChangeCharactersInRange,
+                    replacementString = replacementString
                 )
-                val unformattedText = inputFormatter?.unformat(newText) ?: ""
-
-                textField.text = inputFormatter?.format(unformattedText)
-                textDidChanged()
                 return false
             } else {
                 return true
@@ -389,9 +383,11 @@ actual class FloatingLabelInputViewFactory actual constructor(
         fun applyInputTypeIfNeeded(inputType: InputType?) {
             textField.applyInputTypeIfNeeded(inputType)
             if (inputType?.mask != null) {
-                inputFormatter = DefaultTextFormatter(
-                    textPattern = inputType.mask.toIosPattern(),
-                    patternSymbol = '#'
+                formatterDelegate = DefaultFormatterUITextFieldDelegate(
+                    DefaultTextFormatter(
+                        textPattern = inputType.mask.toIosPattern(),
+                        patternSymbol = '#'
+                    )
                 )
             }
         }

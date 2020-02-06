@@ -19,14 +19,11 @@ import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.setEventHandler
 import dev.icerock.moko.widgets.utils.DefaultTextFormatter
 import dev.icerock.moko.widgets.utils.toIosPattern
-import kotlinx.cinterop.CValue
+import dev.icerock.moko.widgets.utils.DefaultFormatterUITextFieldDelegate
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGRectZero
 import platform.Foundation.NSMutableAttributedString
 import platform.Foundation.create
-import platform.Foundation.NSRange
-import platform.Foundation.NSString
-import platform.Foundation.stringByReplacingCharactersInRange
 import platform.UIKit.NSForegroundColorAttributeName
 import platform.UIKit.NSTextAlignmentCenter
 import platform.UIKit.NSTextAlignmentLeft
@@ -110,30 +107,23 @@ actual class SystemInputViewFactory actual constructor(
         }
 
         if (widget.inputType?.mask != null) {
-            val delegate = SystemInputViewDelegate(
+            val delegate = DefaultFormatterUITextFieldDelegate(
                 inputFormatter = DefaultTextFormatter(
                     widget.inputType.mask.toIosPattern(),
                     patternSymbol = '#'
                 )
-            ) {
-                val currentValue = widget.field.data.value
-                val newValue = textField.text
-
-                if (currentValue != newValue) {
-                    widget.field.data.value = newValue.orEmpty()
-                }
-            }
+            )
             textField.delegate = delegate
             textField.addSubview(delegate) // to have strong reference to delegate (for prevent deiniting)
 
-        } else {
-            textField.setEventHandler(UIControlEventEditingChanged) {
-                val currentValue = widget.field.data.value
-                val newValue = textField.text
+        }
 
-                if (currentValue != newValue) {
-                    widget.field.data.value = newValue.orEmpty()
-                }
+        textField.setEventHandler(UIControlEventEditingChanged) {
+            val currentValue = widget.field.data.value
+            val newValue = textField.text
+
+            if (currentValue != newValue) {
+                widget.field.data.value = newValue.orEmpty()
             }
         }
 
@@ -146,28 +136,5 @@ actual class SystemInputViewFactory actual constructor(
             size = size,
             margins = margins
         )
-    }
-}
-
-class SystemInputViewDelegate(
-    private val inputFormatter: DefaultTextFormatter,
-    private val textDidChanged: () -> Unit
-) : UIView(frame = CGRectZero.readValue()), UITextFieldDelegateProtocol {
-
-    override fun textField(
-        textField: UITextField,
-        shouldChangeCharactersInRange: CValue<NSRange>,
-        replacementString: String
-    ): Boolean {
-        val nsString = NSString.create(string = textField.text ?: "")
-        val newText = nsString.stringByReplacingCharactersInRange(
-            range = shouldChangeCharactersInRange,
-            withString = replacementString
-        )
-        val unformattedText = inputFormatter.unformat(newText)
-
-        textField.text = inputFormatter.format(unformattedText)
-        textDidChanged()
-        return false
     }
 }

@@ -4,6 +4,19 @@
 
 package dev.icerock.moko.widgets.utils
 
+import kotlinx.cinterop.CValue
+import kotlinx.cinterop.readValue
+import platform.Foundation.create
+import platform.Foundation.NSRange
+import platform.Foundation.NSString
+import platform.Foundation.stringByReplacingCharactersInRange
+import platform.CoreGraphics.CGRectZero
+import platform.UIKit.UIControlEventEditingChanged
+import platform.UIKit.UITextField
+import platform.UIKit.UIView
+import platform.UIKit.UITextFieldDelegateProtocol
+
+
 class DefaultTextFormatter(val textPattern: String, val patternSymbol: Char = '#') {
 
     fun format(unformattedText: String): String {
@@ -52,4 +65,26 @@ fun String.toIosPattern(): String {
     return this.replace("0", "#")
         .replace("[", "")
         .replace("]", "")
+}
+
+class DefaultFormatterUITextFieldDelegate(
+    private val inputFormatter: DefaultTextFormatter
+) : UIView(frame = CGRectZero.readValue()), UITextFieldDelegateProtocol {
+
+    override fun textField(
+        textField: UITextField,
+        shouldChangeCharactersInRange: CValue<NSRange>,
+        replacementString: String
+    ): Boolean {
+        val nsString = NSString.create(string = textField.text ?: "")
+        val newText = nsString.stringByReplacingCharactersInRange(
+            range = shouldChangeCharactersInRange,
+            withString = replacementString
+        )
+        val unformattedText = inputFormatter.unformat(newText)
+
+        textField.text = inputFormatter.format(unformattedText)
+        textField.sendActionsForControlEvents(UIControlEventEditingChanged)
+        return false
+    }
 }
