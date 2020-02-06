@@ -5,8 +5,12 @@
 package dev.icerock.moko.widgets.screen
 
 import dev.icerock.moko.resources.desc.StringDesc
-import platform.Foundation.*
-import platform.UIKit.*
+import platform.UIKit.UIAlertActionStyleDefault
+import platform.UIKit.UIAlertActionStyleDestructive
+import platform.UIKit.UIAlertController
+import platform.UIKit.UIAlertAction
+import platform.UIKit.UIAlertActionStyle
+import platform.UIKit.UIAlertControllerStyleAlert
 
 actual fun Screen<*>.showAlertDialog(factory: AlertDialogView.() -> Unit) {
     val alert = AlertDialogView(this)
@@ -35,23 +39,54 @@ actual class AlertDialogView(val screen: Screen<*>) {
         this.message = message.localized()
     }
 
-    actual fun positiveButton(title: String, action: () -> Unit){
-        actions = actions.plus(Action(title = title, style = UIAlertActionStyleDefault, action = action))
+    actual fun positiveButton(title: String, action: () -> Unit) {
+        actions =
+            actions.plus(Action(title = title, style = UIAlertActionStyleDefault, action = action))
     }
-    actual fun positiveButton(title: StringDesc, action: () -> Unit){
-        actions = actions.plus(Action(title = title.localized(), style = UIAlertActionStyleDefault, action = action))
+
+    actual fun positiveButton(title: StringDesc, action: () -> Unit) {
+        actions = actions.plus(
+            Action(
+                title = title.localized(),
+                style = UIAlertActionStyleDefault,
+                action = action
+            )
+        )
     }
+
     actual fun negativeButton(title: String, action: () -> Unit) {
-        actions = actions.plus(Action(title = title, style = UIAlertActionStyleDestructive, action = action))
+        actions = actions.plus(
+            Action(
+                title = title,
+                style = UIAlertActionStyleDestructive,
+                action = action
+            )
+        )
     }
+
     actual fun negativeButton(title: StringDesc, action: () -> Unit) {
-        actions = actions.plus(Action(title = title.localized(), style = UIAlertActionStyleDestructive, action = action))
+        actions = actions.plus(
+            Action(
+                title = title.localized(),
+                style = UIAlertActionStyleDestructive,
+                action = action
+            )
+        )
     }
+
     actual fun neutralButton(title: String, action: () -> Unit) {
-        actions = actions.plus(Action(title = title, style = UIAlertActionStyleDefault, action = action))
+        actions =
+            actions.plus(Action(title = title, style = UIAlertActionStyleDefault, action = action))
     }
+
     actual fun neutralButton(title: StringDesc, action: () -> Unit) {
-        actions = actions.plus(Action(title = title.localized(), style = UIAlertActionStyleDefault, action = action))
+        actions = actions.plus(
+            Action(
+                title = title.localized(),
+                style = UIAlertActionStyleDefault,
+                action = action
+            )
+        )
     }
 
     internal fun show() {

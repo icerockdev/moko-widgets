@@ -35,21 +35,27 @@ actual class AlertDialogView(val screen: Screen<*>) {
     actual fun message(message: StringDesc) {
         this.message = message.toString(screen.requireContext())
     }
-    actual fun positiveButton(title: String, action: () -> Unit){
+
+    actual fun positiveButton(title: String, action: () -> Unit) {
         positiveAction = Action(title = title, action = action)
     }
-    actual fun positiveButton(title: StringDesc, action: () -> Unit){
+
+    actual fun positiveButton(title: StringDesc, action: () -> Unit) {
         positiveAction = Action(title = title.toString(screen.requireContext()), action = action)
     }
+
     actual fun negativeButton(title: String, action: () -> Unit) {
         negativeAction = Action(title = title, action = action)
     }
+
     actual fun negativeButton(title: StringDesc, action: () -> Unit) {
         negativeAction = Action(title = title.toString(screen.requireContext()), action = action)
     }
+
     actual fun neutralButton(title: String, action: () -> Unit) {
         negativeAction = Action(title = title, action = action)
     }
+
     actual fun neutralButton(title: StringDesc, action: () -> Unit) {
         neutralAction = Action(title = title.toString(screen.requireContext()), action = action)
     }
@@ -58,17 +64,17 @@ actual class AlertDialogView(val screen: Screen<*>) {
         AlertDialog.Builder(screen.requireContext()).apply {
             setTitle(title)
             setMessage(message)
-            if (positiveAction != null)  {
+            if (positiveAction != null) {
                 setPositiveButton(positiveAction?.title) { _, _ ->
                     positiveAction?.action?.invoke()
                 }
             }
-            if (negativeAction != null)  {
+            if (negativeAction != null) {
                 setNegativeButton(negativeAction?.title) { _, _ ->
                     negativeAction?.action?.invoke()
                 }
             }
-            if (neutralAction != null)  {
+            if (neutralAction != null) {
                 setNeutralButton(neutralAction?.title) { _, _ ->
                     neutralAction?.action?.invoke()
                 }
