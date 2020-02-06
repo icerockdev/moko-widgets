@@ -41,7 +41,7 @@ actual class WebViewFactory actual constructor(
             webViewClient = CustomWebViewClient(
                 successRedirectConfig = widget.successRedirectConfig,
                 failureRedirectConfig = widget.failureRedirectConfig,
-                isPageLoading = widget._isWebPageLoading
+                isPageLoading = widget.isWebPageLoading
             )
             loadUrl(widget.targetUrl)
         }

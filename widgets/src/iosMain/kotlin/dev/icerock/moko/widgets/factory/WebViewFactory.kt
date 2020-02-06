@@ -44,7 +44,7 @@ actual class WebViewFactory actual constructor(
             val webViewNavDelegate = NavigationDelegate(
                 successRedirectConfig = widget.successRedirectConfig,
                 failureRedirectConfig = widget.failureRedirectConfig,
-                isPageLoading = widget._isWebPageLoading
+                isPageLoading = widget.isWebPageLoading
             )
             setAssociatedObject(this, webViewNavDelegate)
 
