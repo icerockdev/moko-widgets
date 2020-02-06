@@ -29,15 +29,11 @@ class WebViewWidget<WS : WidgetSize>(
     override val size: WS,
     override val id: Id?,
     val targetUrl: String,
-    val isJavaScriptEnabled: Boolean = true
+    val isJavaScriptEnabled: Boolean = true,
+    val isWebPageLoading: MutableLiveData<Boolean>? = null,
+    val successRedirectConfig: WebViewWidget.RedirectConfig? = null,
+    val failureRedirectConfig: WebViewWidget.RedirectConfig? = null
 ) : Widget<WS>(), OptionalId<WebViewWidget.Id> {
-
-    internal val _isWebPageLoading = MutableLiveData(false)
-
-    /**
-     * The state that describes a web page being loaded at the moment.
-     */
-    val isWebPageLoading: LiveData<Boolean> = _isWebPageLoading.readOnly()
 
     override fun buildView(viewFactoryContext: ViewFactoryContext): ViewBundle<WS> {
         return factory.build(this, size, viewFactoryContext)
@@ -47,4 +43,7 @@ class WebViewWidget<WS : WidgetSize>(
     interface Category : Theme.Category<WebViewWidget<out WidgetSize>>
 
     object DefaultCategory : Category
+
+    data class RedirectConfig(val url: String, val handler: (String) -> Unit)
+
 }

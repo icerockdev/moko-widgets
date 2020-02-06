@@ -41,6 +41,7 @@ class LoginScreen(
     private val theme: Theme,
     private val mainRoute: Route<Unit>,
     private val registerRoute: RouteWithResult<Unit, String>,
+    private val infoWebViewRoute: Route<String>,
     private val loginViewModelFactory: (EventsDispatcher<LoginViewModel.EventsListener>) -> LoginViewModel
 ) : WidgetScreen<Args.Empty>(), NavigationItem, LoginViewModel.EventsListener {
 
@@ -84,6 +85,11 @@ class LoginScreen(
                 content = ButtonWidget.Content.Text(Value.data("Login".desc())),
                 onTap = viewModel::onLoginPressed
             )
+            val showInfoButton = +button(
+                size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.Exact(50f)),
+                content = ButtonWidget.Content.Text(Value.data("Show info".desc())),
+                onTap = viewModel::onShowInfoPressed
+            )
 
             val registerButton = +button(
                 id = Id.RegistrationButtonId,
@@ -107,7 +113,10 @@ class LoginScreen(
                 loginButton topToBottom passwordInput
                 loginButton leftRightToLeftRight root
 
-                registerButton topToBottom loginButton
+                showInfoButton topToBottom loginButton
+                showInfoButton leftRightToLeftRight root
+
+                registerButton topToBottom showInfoButton
                 registerButton rightToRight root
 
                 // logo image height must be automatic ?
@@ -136,6 +145,11 @@ class LoginScreen(
     override fun routeToRegistration() {
         registerRoute.route(this, registerHandler)
     }
+
+    override fun routeToWebViewInfo() {
+        infoWebViewRoute.route(this, "https://icerockdev.com/")
+    }
+
 }
 
 class LoginViewModel(
@@ -148,6 +162,10 @@ class LoginViewModel(
         eventsDispatcher.dispatchEvent { routeToMain() }
     }
 
+    fun onShowInfoPressed() {
+        eventsDispatcher.dispatchEvent { routeToWebViewInfo() }
+    }
+
     fun onRegistrationPressed() {
         eventsDispatcher.dispatchEvent { routeToRegistration() }
     }
@@ -155,5 +173,6 @@ class LoginViewModel(
     interface EventsListener {
         fun routeToMain()
         fun routeToRegistration()
+        fun routeToWebViewInfo()
     }
 }

@@ -6,6 +6,7 @@ import com.icerockdev.library.AppTheme
 import com.icerockdev.library.MR
 import com.icerockdev.library.SharedFactory
 import com.icerockdev.library.universal.CartScreen
+import com.icerockdev.library.universal.InfoWebViewScreen
 import com.icerockdev.library.universal.LoginScreen
 import com.icerockdev.library.universal.LoginViewModel
 import com.icerockdev.library.universal.PlatformProfileScreen
@@ -144,11 +145,20 @@ class App() : BaseApplication() {
                 RegisterScreen(theme)
             }
 
+            val oauthScreen = registerScreen(InfoWebViewScreen::class) {
+                InfoWebViewScreen(
+                    theme = loginTheme
+                )
+            }
+
             val loginScreen = registerScreen(LoginScreen::class) {
                 LoginScreen(
                     theme = loginTheme,
                     mainRoute = router.createReplaceRoute(mainScreen),
-                    registerRoute = router.createPushResultRoute(regScreen) { it.token }
+                    registerRoute = router.createPushResultRoute(regScreen) { it.token },
+                    infoWebViewRoute = router.createPushRoute(oauthScreen) {
+                        InfoWebViewScreen.WebViewArgs(it)
+                    }
                 ) { LoginViewModel(it) }
             }
 
