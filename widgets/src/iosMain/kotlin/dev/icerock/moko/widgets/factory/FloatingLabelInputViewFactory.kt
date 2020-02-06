@@ -96,7 +96,6 @@ actual class FloatingLabelInputViewFactory actual constructor(
             applyLabelStyleIfNeeded(labelTextStyle)
             applyInputTypeIfNeeded(widget.inputType)
 
-            applyInputTypeIfNeeded(inputType = widget.inputType)
             underLineColor?.let {
                 deselectedColor = it.toUIColor()
             }
