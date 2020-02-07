@@ -10,6 +10,7 @@ import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.objc.setAssociatedObject
 import dev.icerock.moko.widgets.style.applyInputTypeIfNeeded
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.view.*
@@ -114,8 +115,7 @@ actual class SystemInputViewFactory actual constructor(
                 )
             )
             textField.delegate = delegate
-            textField.addSubview(delegate) // to have strong reference to delegate (for prevent deiniting)
-
+            setAssociatedObject(textField, delegate)
         }
 
         textField.setEventHandler(UIControlEventEditingChanged) {
