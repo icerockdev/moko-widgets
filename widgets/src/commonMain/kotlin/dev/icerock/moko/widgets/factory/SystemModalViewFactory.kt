@@ -1,10 +1,11 @@
-package dev.icerock.moko.widgets.factory
-
-import dev.icerock.moko.widgets.ContainerWidget
-import dev.icerock.moko.widgets.core.ViewFactory
-import dev.icerock.moko.widgets.style.background.Background
-import dev.icerock.moko.widgets.style.view.WidgetSize
-
-expect class SystemModalViewFactory(
-    background: Background? = null
-) : ViewFactory<ContainerWidget<out WidgetSize>>
+//package dev.icerock.moko.widgets.factory
+//
+//import dev.icerock.moko.widgets.core.Widget
+//import dev.icerock.moko.widgets.screen.Screen
+//import dev.icerock.moko.widgets.style.view.SizeSpec
+//import dev.icerock.moko.widgets.style.view.WidgetSize
+//
+//
+//expect fun Screen<*>.showBottomSheet(
+//    content: Widget<WidgetSize<SizeSpec.MatchParent, SizeSpec.WrapContent>>
+//)
