@@ -263,6 +263,12 @@ actual abstract class NavigationScreen<S> actual constructor(
             is NavigationBar.Normal -> {
                 toolbar?.visibility = View.VISIBLE
                 toolbar?.title = navBar.title.toString(requireContext())
+                if (navBar.styles?.backgroundColor != null) {
+                    toolbar?.setBackgroundColor(navBar.styles.backgroundColor.argb.toInt())
+                }
+                if (navBar.styles?.textStyle?.color != null) {
+                    toolbar?.setTitleTextColor(navBar.styles.textStyle.color.argb.toInt())
+                }
             }
         }
     }
