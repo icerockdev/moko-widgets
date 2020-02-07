@@ -29,36 +29,20 @@ actual class AutoScrollListViewFactory actual constructor(
     ): ViewBundle<WS> {
         val bundle = listViewFactory.build(widget, size, viewFactoryContext)
         val view = bundle.view
-        var tableView: UITableView? = null
 
-        if (view is UITableView) {
-            tableView = view
-        } else {
-            view.subviews.forEach {
-                val subview = it as View
-
-                if (subview is UITableView) {
-                    tableView = subview
-
-                    return@forEach
-                }
-            }
-        }
-
-        if (tableView == null) {
-            throw ClassCastException("UITableView was not found in the View hierarchy and could not be cast.")
-        }
+        val tableView: UITableView = findTableView(view)
+            ?: throw ClassCastException("UITableView was not found in the View hierarchy and could not be cast.")
 
         var isAutoScrolled = false
 
         widget.items.bind { units ->
             if ((!isAutoScrolled || isAlwaysAutoScroll) && units.isNotEmpty()) {
-                tableView!!.reloadData()
-                tableView!!.layoutIfNeeded()
+                tableView.reloadData()
+                view.layoutIfNeeded()
 
                 val indexPath = NSIndexPath.indexPathWithIndex((units.size - 1).toULong())
 
-                tableView!!.scrollToRowAtIndexPath(
+                tableView.scrollToRowAtIndexPath(
                     indexPath = indexPath,
                     atScrollPosition = UITableViewScrollPosition.UITableViewScrollPositionBottom,
                     animated = true
@@ -69,5 +53,24 @@ actual class AutoScrollListViewFactory actual constructor(
         }
 
         return bundle
+    }
+
+    private fun findTableView(view: View): UITableView? {
+        return when (view) {
+            is UITableView -> view
+            else -> {
+                var tableView: UITableView? = null
+
+                view.subviews.forEach {
+                    val subview = it as View
+
+                    if (subview is UITableView) {
+                        tableView = subview
+                    }
+                }
+
+                return tableView
+            }
+        }
     }
 }

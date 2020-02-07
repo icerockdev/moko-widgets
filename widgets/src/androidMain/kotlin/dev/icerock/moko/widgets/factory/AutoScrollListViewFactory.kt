@@ -7,6 +7,7 @@ package dev.icerock.moko.widgets.factory
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import dev.icerock.moko.widgets.ListWidget
+import dev.icerock.moko.widgets.core.View
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
@@ -24,26 +25,10 @@ actual class AutoScrollListViewFactory actual constructor(
         viewFactoryContext: ViewFactoryContext
     ): ViewBundle<WS> {
         val bundle = listViewFactory.build(widget, size, viewFactoryContext)
-        val viewGroup = bundle.view as ViewGroup
-        var recyclerView: RecyclerView? = null
+        val view = bundle.view
 
-        if (viewGroup is RecyclerView) {
-            recyclerView = viewGroup
-        } else {
-            for (i in 0 until viewGroup.childCount) {
-                val view = viewGroup.getChildAt(i)
-
-                if (view is RecyclerView) {
-                    recyclerView = view
-
-                    break
-                }
-            }
-        }
-
-        if (recyclerView == null) {
-            throw ClassCastException("RecyclerView was not found in the ViewGroup hierarchy and could not be cast.")
-        }
+        val recyclerView: RecyclerView = findRecyclerView(view)
+            ?: throw ClassCastException("RecyclerView was not found in the ViewGroup hierarchy and could not be cast.")
 
         val adapter = recyclerView.adapter
 
@@ -62,5 +47,23 @@ actual class AutoScrollListViewFactory actual constructor(
         }
 
         return bundle
+    }
+
+    private fun findRecyclerView(view: View): RecyclerView? {
+        return when (view) {
+            is RecyclerView -> view
+            is ViewGroup -> {
+                for (i in 0 until view.childCount) {
+                    val childView = view.getChildAt(i)
+
+                    if (childView is RecyclerView) {
+                        return childView
+                    }
+                }
+
+                null
+            }
+            else -> null
+        }
     }
 }
