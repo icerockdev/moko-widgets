@@ -58,15 +58,6 @@ actual class SystemButtonViewFactory actual constructor(
                     background = null
                 }
             }
-            is ButtonWidget.Content.TextWithImage -> {
-                // TODO: Implement button with image
-                ImageButton(ctx).apply {
-                    widget.content.image.bind(viewFactoryContext.lifecycleOwner) { image ->
-                        image.loadIn(this)
-                    }
-                    background = null
-                }
-            }
         }
 
         button.applyStateBackgroundIfNeeded(background)
