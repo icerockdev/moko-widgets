@@ -8,10 +8,10 @@ import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.graphics.toUIColor
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.Screen
+import platform.UIKit.UITabBarController
 import platform.UIKit.UITabBarItem
 import platform.UIKit.UIViewController
 import platform.UIKit.tabBarItem
-import platform.UIKit.UITabBarController
 
 actual abstract class BottomNavigationScreen actual constructor(
     router: Router,
@@ -35,7 +35,7 @@ actual abstract class BottomNavigationScreen actual constructor(
             childScreen.viewController.apply {
                 tabBarItem = UITabBarItem(
                     title = if (isTitleVisible) item.title.localized() else null,
-                    image = item.icon?.toUIImage(),
+                    image = item.unselectedIcon?.toUIImage(),
                     selectedImage = item.selectedIcon?.toUIImage()
                 )
             }

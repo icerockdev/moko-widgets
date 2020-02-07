@@ -10,7 +10,6 @@ import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.Screen
 import dev.icerock.moko.widgets.screen.ScreenDesc
-import dev.icerock.moko.widgets.screen.ScreenFactory
 
 expect abstract class BottomNavigationScreen(
     router: Router,
@@ -32,8 +31,8 @@ expect abstract class BottomNavigationScreen(
 data class BottomNavigationItem(
     val id: Int,
     val title: StringDesc,
-    val icon: ImageResource? = null,
     val selectedIcon: ImageResource? = null,
+    val unselectedIcon: ImageResource? = null,
     val screenDesc: ScreenDesc<Args.Empty>
 ) {
     class Builder() {
@@ -42,18 +41,33 @@ data class BottomNavigationItem(
         fun tab(
             id: Int,
             title: StringDesc,
-            icon: ImageResource? = null,
             selectedIcon: ImageResource? = null,
+            unselectedIcon: ImageResource? = null,
             screenDesc: ScreenDesc<Args.Empty>
         ) {
             tabs.add(
                 BottomNavigationItem(
                     id = id,
                     title = title,
-                    icon = icon,
                     selectedIcon = selectedIcon,
+                    unselectedIcon = unselectedIcon,
                     screenDesc = screenDesc
                 )
+            )
+        }
+
+        fun tab(
+            id: Int,
+            title: StringDesc,
+            icon: ImageResource? = null,
+            screenDesc: ScreenDesc<Args.Empty>
+        ) {
+            tab(
+                id = id,
+                title = title,
+                selectedIcon = icon,
+                unselectedIcon = icon,
+                screenDesc = screenDesc
             )
         }
 
