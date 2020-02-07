@@ -35,15 +35,15 @@ actual abstract class BottomNavigationScreen actual constructor(
             childScreen.viewController.apply {
                 tabBarItem = UITabBarItem(
                     title = if (isTitleVisible) item.title.localized() else null,
-                    image = item.unselectedIcon?.toUIImage(),
-                    selectedImage = item.selectedIcon?.toUIImage()
+                    image = item.stateIcons?.unselected?.toUIImage(),
+                    selectedImage = item.stateIcons?.selected?.toUIImage()
                 )
             }
         }
         controller.setViewControllers(viewControllers = viewControllers)
         controller.tabBar.barTintColor = bottomNavigationColor?.toUIColor()
-        controller.tabBar.selectedImageTintColor = selectedItemColor?.toUIColor()
-        controller.tabBar.unselectedItemTintColor = unselectedItemColor?.toUIColor()
+        controller.tabBar.selectedImageTintColor = itemStateColors?.selected?.toUIColor()
+        controller.tabBar.unselectedItemTintColor = itemStateColors?.unselected?.toUIColor()
         tabBarController = controller
 
         return controller
@@ -64,17 +64,12 @@ actual abstract class BottomNavigationScreen actual constructor(
             }
         }
 
-    actual var selectedItemColor: Color? = null
+    actual var itemStateColors: SelectStates<Color>? = null
         set(value) {
             field = value
-            tabBarController?.tabBar?.selectedImageTintColor = value?.toUIColor()
 
-        }
-
-    actual var unselectedItemColor: Color? = null
-        set(value) {
-            field = value
-            tabBarController?.tabBar?.unselectedItemTintColor = value?.toUIColor()
+            tabBarController?.tabBar?.unselectedItemTintColor = value?.unselected?.toUIColor()
+            tabBarController?.tabBar?.selectedImageTintColor = value?.selected?.toUIColor()
         }
 
     actual var isTitleVisible: Boolean = true

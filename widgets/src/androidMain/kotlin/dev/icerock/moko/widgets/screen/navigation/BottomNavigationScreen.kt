@@ -5,6 +5,7 @@
 package dev.icerock.moko.widgets.screen.navigation
 
 import android.content.res.ColorStateList
+import android.graphics.drawable.StateListDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -12,12 +13,12 @@ import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.graphics.colorInt
-import dev.icerock.moko.widgets.R
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.FragmentNavigation
 import dev.icerock.moko.widgets.screen.Screen
@@ -66,7 +67,19 @@ actual abstract class BottomNavigationScreen actual constructor(
             val menuItem = bottomNavigation.menu.add(
                 Menu.NONE, item.id, Menu.NONE, item.title.toString(context)
             )
-            item.icon?.also { menuItem.setIcon(it.drawableResId) }
+
+            if (item.stateIcons != null) {
+                val stateListDrawable = StateListDrawable()
+
+                ContextCompat.getDrawable(context, item.stateIcons.selected.drawableResId).also {
+                    stateListDrawable.addState(intArrayOf(android.R.attr.state_selected), it)
+                }
+                ContextCompat.getDrawable(context, item.stateIcons.unselected.drawableResId).also {
+                    stateListDrawable.addState(intArrayOf(-android.R.attr.state_selected), it)
+                }
+
+                menuItem.icon = stateListDrawable
+            }
 
             menuItemAction[menuItem] = {
                 val instance = item.screenDesc.instantiate()
@@ -78,7 +91,7 @@ actual abstract class BottomNavigationScreen actual constructor(
             menuItemAction[menuItem]?.invoke()
             true
         }
-        
+
         bottomNavigationView = bottomNavigation
         updateItemColors()
         updateTitleMode()
@@ -151,13 +164,7 @@ actual abstract class BottomNavigationScreen actual constructor(
             }
         }
 
-    actual var unselectedItemColor: Color? = null
-        set(value) {
-            field = value
-            updateItemColors()
-        }
-
-    actual var selectedItemColor: Color? = null
+    actual var itemStateColors: SelectStates<Color>? = null
         set(value) {
             field = value
             updateItemColors()
@@ -170,18 +177,20 @@ actual abstract class BottomNavigationScreen actual constructor(
         }
 
     private fun updateItemColors() {
-        bottomNavigationView?.also { navView ->
-            val states = listOfNotNull(
-                intArrayOf(android.R.attr.state_selected).takeIf { selectedItemColor != null },
-                intArrayOf(-android.R.attr.state_selected).takeIf { unselectedItemColor != null }
-            ).toTypedArray()
-            val colors = listOfNotNull(
-                selectedItemColor?.colorInt(),
-                unselectedItemColor?.colorInt()
-            ).toIntArray()
-            navView.itemIconTintList = ColorStateList(states, colors)
-            navView.itemTextColor = ColorStateList(states, colors)
-        }
+        val navView = bottomNavigationView ?: return
+        val stateColors = itemStateColors ?: return
+
+        val states = arrayOf(
+            intArrayOf(android.R.attr.state_selected),
+            intArrayOf(-android.R.attr.state_selected)
+        )
+        val colors = intArrayOf(
+            stateColors.selected.colorInt(),
+            stateColors.unselected.colorInt()
+        )
+
+        navView.itemIconTintList = ColorStateList(states, colors)
+        navView.itemTextColor = ColorStateList(states, colors)
     }
 
     private fun updateTitleMode() {

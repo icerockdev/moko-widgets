@@ -37,6 +37,7 @@ import dev.icerock.moko.widgets.screen.navigation.NavigationBar
 import dev.icerock.moko.widgets.screen.navigation.NavigationItem
 import dev.icerock.moko.widgets.screen.navigation.NavigationScreen
 import dev.icerock.moko.widgets.screen.navigation.Resultable
+import dev.icerock.moko.widgets.screen.navigation.SelectStates
 import dev.icerock.moko.widgets.screen.navigation.createPushResultRoute
 import dev.icerock.moko.widgets.screen.navigation.createPushRoute
 import dev.icerock.moko.widgets.screen.navigation.createReplaceRoute
@@ -120,7 +121,8 @@ class App() : BaseApplication() {
                 tab(
                     id = 1,
                     title = "Products".desc(),
-                    icon = MR.images.home_black_18,
+                    selectedIcon = MR.images.cart_black_18,
+                    unselectedIcon = MR.images.home_black_18,
                     screenDesc = productsNavigation
                 )
                 tab(
@@ -200,6 +202,13 @@ class MainBottomNavigationScreen(
     builder: BottomNavigationItem.Builder.() -> Unit
 ) : BottomNavigationScreen(router, builder), NavigationItem {
     override val navigationBar: NavigationBar = NavigationBar.None
+
+    init {
+        itemStateColors = SelectStates(
+            selected = Color(0xFF0000FF),
+            unselected = Color(0x00FF00FF)
+        )
+    }
 }
 
 class RootNavigationScreen(initialScreen: TypedScreenDesc<Args.Empty, LoginScreen>, router: Router) :

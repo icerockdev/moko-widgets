@@ -19,8 +19,7 @@ expect abstract class BottomNavigationScreen(
 
     var selectedItemId: Int
     var bottomNavigationColor: Color?
-    var unselectedItemColor: Color?
-    var selectedItemColor: Color?
+    var itemStateColors: SelectStates<Color>?
     var isTitleVisible: Boolean
 
     class Router {
@@ -28,31 +27,51 @@ expect abstract class BottomNavigationScreen(
     }
 }
 
+data class SelectStates<T>(
+    val selected: T,
+    val unselected: T
+)
+
 data class BottomNavigationItem(
     val id: Int,
     val title: StringDesc,
-    val selectedIcon: ImageResource? = null,
-    val unselectedIcon: ImageResource? = null,
+    val stateIcons: SelectStates<ImageResource>? = null,
     val screenDesc: ScreenDesc<Args.Empty>
 ) {
     class Builder() {
         private val tabs = mutableListOf<BottomNavigationItem>()
 
-        fun tab(
+        private fun tab(
             id: Int,
             title: StringDesc,
-            selectedIcon: ImageResource? = null,
-            unselectedIcon: ImageResource? = null,
+            stateIcons: SelectStates<ImageResource>? = null,
             screenDesc: ScreenDesc<Args.Empty>
         ) {
             tabs.add(
                 BottomNavigationItem(
                     id = id,
                     title = title,
-                    selectedIcon = selectedIcon,
-                    unselectedIcon = unselectedIcon,
+                    stateIcons = stateIcons,
                     screenDesc = screenDesc
                 )
+            )
+        }
+
+        fun tab(
+            id: Int,
+            title: StringDesc,
+            selectedIcon: ImageResource,
+            unselectedIcon: ImageResource,
+            screenDesc: ScreenDesc<Args.Empty>
+        ) {
+            tab(
+                id = id,
+                title = title,
+                stateIcons = SelectStates(
+                    selected = selectedIcon,
+                    unselected = unselectedIcon
+                ),
+                screenDesc = screenDesc
             )
         }
 
@@ -65,8 +84,7 @@ data class BottomNavigationItem(
             tab(
                 id = id,
                 title = title,
-                selectedIcon = icon,
-                unselectedIcon = icon,
+                stateIcons = icon?.let { SelectStates(selected = it, unselected = it) },
                 screenDesc = screenDesc
             )
         }
