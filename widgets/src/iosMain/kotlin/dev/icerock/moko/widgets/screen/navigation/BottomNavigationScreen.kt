@@ -8,10 +8,10 @@ import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.graphics.toUIColor
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.Screen
+import platform.UIKit.UITabBarController
 import platform.UIKit.UITabBarItem
 import platform.UIKit.UIViewController
 import platform.UIKit.tabBarItem
-import platform.UIKit.UITabBarController
 
 actual abstract class BottomNavigationScreen actual constructor(
     router: Router,
@@ -22,34 +22,21 @@ actual abstract class BottomNavigationScreen actual constructor(
         router.bottomNavigationScreen = this
     }
 
+    private var tabBarController: UITabBarController? = null
+
+    actual var itemStateColors: SelectStates<Color>? = null
+        set(value) {
+            field = value
+
+            tabBarController?.tabBar?.unselectedItemTintColor = value?.unselected?.toUIColor()
+            tabBarController?.tabBar?.selectedImageTintColor = value?.selected?.toUIColor()
+        }
+
     actual val items: List<BottomNavigationItem> =
         BottomNavigationItem.Builder().apply(builder).build()
 
-    private var tabBarController: UITabBarController? = null
-
-    override fun createViewController(): UIViewController {
-        val controller = UITabBarController()
-        val items = items
-        val viewControllers = items.map { item ->
-            val childScreen = item.screenDesc.instantiate()
-            childScreen.viewController.apply {
-                tabBarItem = UITabBarItem(
-                    title = if (isTitleVisible) item.title.localized() else null,
-                    image = item.icon?.toUIImage(),
-                    tag = 0
-                )
-            }
-        }
-        controller.setViewControllers(viewControllers = viewControllers)
-        controller.tabBar.barTintColor = bottomNavigationColor?.toUIColor()
-        controller.tabBar.selectedImageTintColor = selectedItemColor?.toUIColor()
-        controller.tabBar.unselectedItemTintColor = unselectedItemColor?.toUIColor()
-        tabBarController = controller
-
-        return controller
-    }
-
     actual var selectedItemId: Int
+        @ExperimentalUnsignedTypes
         get() = tabBarController?.selectedIndex?.let {
             items[it.toInt()].id
         } ?: -1
@@ -64,19 +51,6 @@ actual abstract class BottomNavigationScreen actual constructor(
             }
         }
 
-    actual var selectedItemColor: Color? = null
-        set(value) {
-            field = value
-            tabBarController?.tabBar?.selectedImageTintColor = value?.toUIColor()
-
-        }
-
-    actual var unselectedItemColor: Color? = null
-        set(value) {
-            field = value
-            tabBarController?.tabBar?.unselectedItemTintColor = value?.toUIColor()
-        }
-
     actual var isTitleVisible: Boolean = true
         set(value) {
             field = value
@@ -85,6 +59,28 @@ actual abstract class BottomNavigationScreen actual constructor(
                     if (isTitleVisible) items[index].title.localized() else null
             }
         }
+
+    override fun createViewController(): UIViewController {
+        val controller = UITabBarController()
+        val items = items
+        val viewControllers = items.map { item ->
+            val childScreen = item.screenDesc.instantiate()
+            childScreen.viewController.apply {
+                tabBarItem = UITabBarItem(
+                    title = if (isTitleVisible) item.title.localized() else null,
+                    image = item.stateIcons?.unselected?.toUIImage(),
+                    selectedImage = item.stateIcons?.selected?.toUIImage()
+                )
+            }
+        }
+        controller.setViewControllers(viewControllers = viewControllers)
+        controller.tabBar.barTintColor = bottomNavigationColor?.toUIColor()
+        controller.tabBar.selectedImageTintColor = itemStateColors?.selected?.toUIColor()
+        controller.tabBar.unselectedItemTintColor = itemStateColors?.unselected?.toUIColor()
+        tabBarController = controller
+
+        return controller
+    }
 
     actual class Router {
         var bottomNavigationScreen: BottomNavigationScreen? = null
