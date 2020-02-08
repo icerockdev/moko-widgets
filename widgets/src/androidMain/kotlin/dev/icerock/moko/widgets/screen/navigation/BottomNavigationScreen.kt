@@ -29,11 +29,41 @@ actual abstract class BottomNavigationScreen actual constructor(
     private val router: Router,
     builder: BottomNavigationItem.Builder.() -> Unit
 ) : Screen<Args.Empty>() {
+    private val fragmentNavigation = FragmentNavigation(this)
     actual val items: List<BottomNavigationItem> =
         BottomNavigationItem.Builder().apply(builder).build()
 
-    private val fragmentNavigation = FragmentNavigation(this)
     private var bottomNavigationView: BottomNavigationView? = null
+
+    actual var itemStateColors: SelectStates<Color>? = null
+        set(value) {
+            field = value
+            updateItemColors()
+        }
+
+    actual var selectedItemId: Int
+        get() = bottomNavigationView?.selectedItemId ?: -1
+        set(value) {
+            bottomNavigationView?.selectedItemId = value
+        }
+
+    actual var bottomNavigationColor: Color? = null
+        set(value) {
+            field = value
+            bottomNavigationView?.also { navView ->
+                if (value == null) {
+                    navView.setBackgroundResource(android.R.color.white)
+                } else {
+                    navView.setBackgroundColor(value.argb.toInt())
+                }
+            }
+        }
+
+    actual var isTitleVisible: Boolean = true
+        set(value) {
+            field = value
+            updateTitleMode()
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -145,36 +175,6 @@ actual abstract class BottomNavigationScreen actual constructor(
 
         router.bottomNavigationScreen = null
     }
-
-    actual var selectedItemId: Int
-        get() = bottomNavigationView?.selectedItemId ?: -1
-        set(value) {
-            bottomNavigationView?.selectedItemId = value
-        }
-
-    actual var bottomNavigationColor: Color? = null
-        set(value) {
-            field = value
-            bottomNavigationView?.also { navView ->
-                if (value == null) {
-                    navView.setBackgroundResource(android.R.color.white)
-                } else {
-                    navView.setBackgroundColor(value.argb.toInt())
-                }
-            }
-        }
-
-    actual var itemStateColors: SelectStates<Color>? = null
-        set(value) {
-            field = value
-            updateItemColors()
-        }
-
-    actual var isTitleVisible: Boolean = true
-        set(value) {
-            field = value
-            updateTitleMode()
-        }
 
     private fun updateItemColors() {
         val navView = bottomNavigationView ?: return

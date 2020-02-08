@@ -22,10 +22,43 @@ actual abstract class BottomNavigationScreen actual constructor(
         router.bottomNavigationScreen = this
     }
 
+    private var tabBarController: UITabBarController? = null
+
+    actual var itemStateColors: SelectStates<Color>? = null
+        set(value) {
+            field = value
+
+            tabBarController?.tabBar?.unselectedItemTintColor = value?.unselected?.toUIColor()
+            tabBarController?.tabBar?.selectedImageTintColor = value?.selected?.toUIColor()
+        }
+
     actual val items: List<BottomNavigationItem> =
         BottomNavigationItem.Builder().apply(builder).build()
 
-    private var tabBarController: UITabBarController? = null
+    actual var selectedItemId: Int
+        @ExperimentalUnsignedTypes
+        get() = tabBarController?.selectedIndex?.let {
+            items[it.toInt()].id
+        } ?: -1
+        set(value) {
+            tabBarController?.setSelectedIndex(items.indexOfFirst { it.id == value }.toULong())
+        }
+    actual var bottomNavigationColor: Color? = null
+        set(value) {
+            field = value
+            tabBarController?.also {
+                it.tabBar.barTintColor = value?.toUIColor()
+            }
+        }
+
+    actual var isTitleVisible: Boolean = true
+        set(value) {
+            field = value
+            tabBarController?.viewControllers?.forEachIndexed { index, controller ->
+                (controller as? UIViewController)?.tabBarItem?.title =
+                    if (isTitleVisible) items[index].title.localized() else null
+            }
+        }
 
     override fun createViewController(): UIViewController {
         val controller = UITabBarController()
@@ -48,38 +81,6 @@ actual abstract class BottomNavigationScreen actual constructor(
 
         return controller
     }
-
-    actual var selectedItemId: Int
-        get() = tabBarController?.selectedIndex?.let {
-            items[it.toInt()].id
-        } ?: -1
-        set(value) {
-            tabBarController?.setSelectedIndex(items.indexOfFirst { it.id == value }.toULong())
-        }
-    actual var bottomNavigationColor: Color? = null
-        set(value) {
-            field = value
-            tabBarController?.also {
-                it.tabBar.barTintColor = value?.toUIColor()
-            }
-        }
-
-    actual var itemStateColors: SelectStates<Color>? = null
-        set(value) {
-            field = value
-
-            tabBarController?.tabBar?.unselectedItemTintColor = value?.unselected?.toUIColor()
-            tabBarController?.tabBar?.selectedImageTintColor = value?.selected?.toUIColor()
-        }
-
-    actual var isTitleVisible: Boolean = true
-        set(value) {
-            field = value
-            tabBarController?.viewControllers?.forEachIndexed { index, controller ->
-                (controller as? UIViewController)?.tabBarItem?.title =
-                    if (isTitleVisible) items[index].title.localized() else null
-            }
-        }
 
     actual class Router {
         var bottomNavigationScreen: BottomNavigationScreen? = null

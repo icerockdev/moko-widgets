@@ -19,18 +19,13 @@ expect abstract class BottomNavigationScreen(
 
     var selectedItemId: Int
     var bottomNavigationColor: Color?
-    var itemStateColors: SelectStates<Color>?
     var isTitleVisible: Boolean
+    var itemStateColors: SelectStates<Color>?
 
     class Router {
         fun createChangeTabRoute(itemId: Int): Route<Unit>
     }
 }
-
-data class SelectStates<T>(
-    val selected: T,
-    val unselected: T
-)
 
 data class BottomNavigationItem(
     val id: Int,
@@ -92,3 +87,8 @@ data class BottomNavigationItem(
         fun build(): List<BottomNavigationItem> = tabs
     }
 }
+
+data class SelectStates<T>(
+    val selected: T,
+    val unselected: T
+)
