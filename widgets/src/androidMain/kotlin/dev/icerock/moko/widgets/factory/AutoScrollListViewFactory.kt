@@ -56,9 +56,8 @@ actual class AutoScrollListViewFactory actual constructor(
                 for (i in 0 until view.childCount) {
                     val childView = view.getChildAt(i)
 
-                    if (childView is RecyclerView) {
-                        return childView
-                    }
+                    val rv = findRecyclerView(childView)
+                    if (rv != null) return rv
                 }
 
                 null

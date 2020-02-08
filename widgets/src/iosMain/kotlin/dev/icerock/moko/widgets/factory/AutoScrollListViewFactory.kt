@@ -14,8 +14,9 @@ import dev.icerock.moko.widgets.utils.bind
 import platform.Foundation.NSIndexPath
 import platform.UIKit.UITableView
 import platform.UIKit.UITableViewScrollPosition
-import platform.UIKit.layoutIfNeeded
+import platform.UIKit.indexPathForRow
 import platform.UIKit.subviews
+import platform.darwin.NSInteger
 
 actual class AutoScrollListViewFactory actual constructor(
     private val listViewFactory: ViewFactory<ListWidget<out WidgetSize>>,
@@ -37,10 +38,10 @@ actual class AutoScrollListViewFactory actual constructor(
 
         widget.items.bind { units ->
             if ((!isAutoScrolled || isAlwaysAutoScroll) && units.isNotEmpty()) {
-                tableView.reloadData()
-                view.layoutIfNeeded()
-
-                val indexPath = NSIndexPath.indexPathWithIndex((units.size - 1).toULong())
+                val indexPath = NSIndexPath.indexPathForRow(
+                    row = (units.size - 1).toLong(),
+                    inSection = 0
+                )
 
                 tableView.scrollToRowAtIndexPath(
                     indexPath = indexPath,
@@ -59,17 +60,14 @@ actual class AutoScrollListViewFactory actual constructor(
         return when (view) {
             is UITableView -> view
             else -> {
-                var tableView: UITableView? = null
-
                 view.subviews.forEach {
                     val subview = it as View
 
-                    if (subview is UITableView) {
-                        tableView = subview
-                    }
+                    val tv = findTableView(subview)
+                    if (tv != null) return tv
                 }
 
-                return tableView
+                return null
             }
         }
     }
