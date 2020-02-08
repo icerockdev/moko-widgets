@@ -204,9 +204,11 @@ class MainBottomNavigationScreen(
     override val navigationBar: NavigationBar = NavigationBar.None
 
     init {
+        bottomNavigationColor = Color(0x6518f4FF)
+
         itemStateColors = SelectStates(
-            selected = Color(0xFF0000FF),
-            unselected = Color(0x00FF00FF)
+            selected = Color(0xfdfffdFF),
+            unselected = Color(0xc0a3f9FF)
         )
     }
 }
