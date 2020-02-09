@@ -24,6 +24,8 @@ import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Value
+import dev.icerock.moko.widgets.factory.ButtonWithIconViewFactory
+import dev.icerock.moko.widgets.factory.IconGravity
 import dev.icerock.moko.widgets.factory.SystemInputViewFactory
 import dev.icerock.moko.widgets.flat.FlatInputViewFactory
 import dev.icerock.moko.widgets.screen.Args
@@ -42,6 +44,10 @@ import dev.icerock.moko.widgets.screen.navigation.createPushResultRoute
 import dev.icerock.moko.widgets.screen.navigation.createPushRoute
 import dev.icerock.moko.widgets.screen.navigation.createReplaceRoute
 import dev.icerock.moko.widgets.screen.navigation.createRouter
+import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
+import dev.icerock.moko.widgets.style.background.StateBackground
+import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
@@ -58,6 +64,17 @@ class App() : BaseApplication() {
                     color = Color(0x16171AFF)
                 ),
                 backgroundColor = Color(0xF5F5F5FF)
+            )
+            factory[LoginScreen.Id.RegistrationButtonId] = ButtonWithIconViewFactory(
+                icon = MR.images.stars_black_18,
+                iconGravity = IconGravity.TEXT_END,
+                iconPadding = 8.0f,
+                padding = PaddingValues(padding = 16f),
+                background = StateBackground(
+                    normal = Background(fill = Fill.Solid(color = Color(0xAAFFFFFF))),
+                    pressed = Background(fill = Fill.Solid(color = Color(0x88FFFFFF))),
+                    disabled = Background(fill = Fill.Solid(color = Color(0x55FFFFFF)))
+                )
             )
         }
 
