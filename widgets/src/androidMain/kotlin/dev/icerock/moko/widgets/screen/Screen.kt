@@ -14,8 +14,18 @@ import dev.icerock.moko.mvvm.createViewModelFactory
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcher
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import java.util.concurrent.Executor
+import kotlin.properties.ReadOnlyProperty
+import kotlin.reflect.KProperty
 
 actual abstract class Screen<Arg : Args> : Fragment() {
+    private val attachFragmentHandlers = mutableListOf<(Fragment) -> Unit>()
+
+    val routeHandlers = mutableMapOf<Int, (Parcelable?) -> Unit>()
+
+    var requestCode: Int? = null
+    var resultCode: Int? = null
+    var screenId: Int? = null
+
     actual inline fun <reified VM : ViewModel, Key : Any> getViewModel(
         key: Key,
         crossinline viewModelFactory: () -> VM
@@ -30,12 +40,6 @@ actual abstract class Screen<Arg : Args> : Fragment() {
         val mainExecutor = Executor { mainHandler.post(it) }
         return EventsDispatcher(mainExecutor)
     }
-
-    val routeHandlers = mutableMapOf<Int, (Parcelable?) -> Unit>()
-
-    var requestCode: Int? = null
-    var resultCode: Int? = null
-    var screenId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,14 +59,33 @@ actual abstract class Screen<Arg : Args> : Fragment() {
         screenId?.let { outState.putInt(SCREEN_ID_KEY, it) }
     }
 
-    private companion object {
-        const val REQUEST_CODE_KEY = "screen:requestCode"
-        const val RESULT_CODE_KEY = "screen:resultCode"
-        const val SCREEN_ID_KEY = "screen:id"
+    override fun onAttachFragment(childFragment: Fragment) {
+        super.onAttachFragment(childFragment)
+
+        attachFragmentHandlers.forEach { it(childFragment) }
     }
 
     private fun Bundle.getIntNullable(key: String): Int? {
         return if (containsKey(key)) getInt(key)
         else null
+    }
+
+    fun <T> registerAttachFragmentHook(
+        value: T,
+        hook: (Fragment) -> Unit
+    ): ReadOnlyProperty<Screen<*>, T> {
+        attachFragmentHandlers.add(hook)
+
+        return object : ReadOnlyProperty<Screen<*>, T> {
+            override fun getValue(thisRef: Screen<*>, property: KProperty<*>): T {
+                return value
+            }
+        }
+    }
+
+    private companion object {
+        const val REQUEST_CODE_KEY = "screen:requestCode"
+        const val RESULT_CODE_KEY = "screen:resultCode"
+        const val SCREEN_ID_KEY = "screen:id"
     }
 }
