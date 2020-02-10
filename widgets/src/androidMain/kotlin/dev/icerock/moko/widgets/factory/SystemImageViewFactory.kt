@@ -9,12 +9,14 @@ import dev.icerock.moko.widgets.ImageWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.style.view.CornerRadiusValue
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.bind
 
 actual class SystemImageViewFactory actual constructor(
-    private val margins: MarginValues?
+    private val margins: MarginValues?,
+    private val cornerRadiusValue: CornerRadiusValue? // TODO: implement radius apply to image
 ) : ViewFactory<ImageWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
