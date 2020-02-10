@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import dev.icerock.moko.mvvm.createViewModelFactory
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcher
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import dev.icerock.moko.widgets.utils.getIntNullable
 import java.util.concurrent.Executor
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
@@ -73,11 +74,6 @@ actual abstract class Screen<Arg : Args> : Fragment() {
         activityResultHooks[requestCode]?.let { hook ->
             hook(resultCode, data)
         }
-    }
-
-    private fun Bundle.getIntNullable(key: String): Int? {
-        return if (containsKey(key)) getInt(key)
-        else null
     }
 
     fun <T> registerAttachFragmentHook(
