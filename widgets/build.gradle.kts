@@ -44,6 +44,7 @@ dependencies {
     androidLibrary(Deps.Libs.Android.constraintLayout)
     androidLibrary(Deps.Libs.Android.inputMask)
     androidLibrary(Deps.Libs.Android.glide)
+    androidLibrary(Deps.Libs.Android.roundedImageView)
 }
 
 publishing {
