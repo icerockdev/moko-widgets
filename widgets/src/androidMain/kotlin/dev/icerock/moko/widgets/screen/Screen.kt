@@ -4,6 +4,7 @@
 
 package dev.icerock.moko.widgets.screen
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -18,7 +19,8 @@ import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 actual abstract class Screen<Arg : Args> : Fragment() {
-    private val attachFragmentHandlers = mutableListOf<(Fragment) -> Unit>()
+    private val attachFragmentHooks = mutableListOf<(Fragment) -> Unit>()
+    private val activityResultHooks = mutableMapOf<Int, (result: Int, data: Intent?) -> Unit>()
 
     val routeHandlers = mutableMapOf<Int, (Parcelable?) -> Unit>()
 
@@ -62,7 +64,15 @@ actual abstract class Screen<Arg : Args> : Fragment() {
     override fun onAttachFragment(childFragment: Fragment) {
         super.onAttachFragment(childFragment)
 
-        attachFragmentHandlers.forEach { it(childFragment) }
+        attachFragmentHooks.forEach { it(childFragment) }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        activityResultHooks[requestCode]?.let { hook ->
+            hook(resultCode, data)
+        }
     }
 
     private fun Bundle.getIntNullable(key: String): Int? {
@@ -74,7 +84,16 @@ actual abstract class Screen<Arg : Args> : Fragment() {
         value: T,
         hook: (Fragment) -> Unit
     ): ReadOnlyProperty<Screen<*>, T> {
-        attachFragmentHandlers.add(hook)
+        attachFragmentHooks.add(hook)
+        return createConstReadOnlyProperty(value)
+    }
+
+    fun <T> registerActivityResultHook(
+        requestCode: Int,
+        value: T,
+        hook: (result: Int, data: Intent?) -> Unit
+    ): ReadOnlyProperty<Screen<*>, T> {
+        activityResultHooks[requestCode] = hook
         return createConstReadOnlyProperty(value)
     }
 
