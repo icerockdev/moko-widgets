@@ -16,6 +16,8 @@ import android.widget.LinearLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import dev.icerock.moko.graphics.Color
@@ -25,6 +27,7 @@ import dev.icerock.moko.widgets.screen.FragmentNavigation
 import dev.icerock.moko.widgets.screen.Screen
 import dev.icerock.moko.widgets.utils.ThemeAttrs
 import dev.icerock.moko.widgets.utils.dp
+import dev.icerock.moko.widgets.utils.getIntNullable
 
 actual abstract class BottomNavigationScreen actual constructor(
     private val router: Router,
@@ -80,6 +83,19 @@ actual abstract class BottomNavigationScreen actual constructor(
         childFragmentManager.addOnBackStackChangedListener {
             backPressedCallback.isEnabled = childFragmentManager.backStackEntryCount > 0
         }
+        childFragmentManager.registerFragmentLifecycleCallbacks(
+            object : FragmentManager.FragmentLifecycleCallbacks() {
+                override fun onFragmentStarted(fm: FragmentManager, f: Fragment) {
+                    super.onFragmentStarted(fm, f)
+
+                    val id = f.arguments?.getIntNullable(ARG_ITEM_ID_KEY) ?: return
+                    if (bottomNavigationView?.selectedItemId != id) {
+                        bottomNavigationView?.selectedItemId = id
+                    }
+                }
+            },
+            false
+        )
 
         requireActivity()
             .onBackPressedDispatcher
@@ -128,12 +144,17 @@ actual abstract class BottomNavigationScreen actual constructor(
 
             menuItemAction[menuItem] = {
                 val instance = item.screenDesc.instantiate()
+                instance.arguments = Bundle().apply { putInt(ARG_ITEM_ID_KEY, item.id) }
                 fragmentNavigation.routeToScreen(instance)
             }
         }
 
         bottomNavigation.setOnNavigationItemSelectedListener { menuItem ->
-            menuItemAction[menuItem]?.invoke()
+            val current = childFragmentManager.findFragmentById(android.R.id.content)
+            val currentItemId = current?.arguments?.getIntNullable(ARG_ITEM_ID_KEY)
+            if (currentItemId != menuItem.itemId) {
+                menuItemAction[menuItem]?.invoke()
+            }
             true
         }
 
@@ -174,6 +195,7 @@ actual abstract class BottomNavigationScreen actual constructor(
         if (savedInstanceState == null) {
             items.firstOrNull()?.let {
                 val instance = it.screenDesc.instantiate()
+                instance.arguments = Bundle().apply { putInt(ARG_ITEM_ID_KEY, it.id) }
                 fragmentNavigation.setScreen(instance)
             }
         }
@@ -230,5 +252,9 @@ actual abstract class BottomNavigationScreen actual constructor(
                 }
             }
         }
+    }
+
+    private companion object {
+        const val ARG_ITEM_ID_KEY = "itemId"
     }
 }

@@ -9,11 +9,14 @@ import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.Screen
 import dev.icerock.moko.widgets.screen.TypedScreenDesc
 import dev.icerock.moko.widgets.screen.getAssociatedScreen
+import dev.icerock.moko.widgets.style.applyNavigationBarStyle
+import dev.icerock.moko.widgets.utils.toUIBarButtonItem
 import kotlinx.coroutines.Runnable
 import platform.UIKit.UINavigationController
 import platform.UIKit.UINavigationControllerDelegateProtocol
 import platform.UIKit.UIViewController
 import platform.UIKit.navigationItem
+import platform.UIKit.UIBarButtonItem
 import platform.darwin.NSObject
 import kotlin.native.ref.WeakReference
 
@@ -50,6 +53,16 @@ actual abstract class NavigationScreen<S> actual constructor(
             is NavigationBar.Normal -> {
                 navigationController?.navigationBarHidden = false
                 viewController.navigationItem.title = navBar.title.localized()
+                navigationController?.navigationBar?.applyNavigationBarStyle(navBar.styles)
+
+                if (navBar.backButton != null) {
+                    viewController.navigationItem.leftBarButtonItem = navBar.backButton.toUIBarButtonItem()
+                }
+
+                val rightButtons: List<UIBarButtonItem>? = navBar.actions?.map {
+                    it.toUIBarButtonItem()
+                }?.reversed()
+                viewController.navigationItem.rightBarButtonItems = rightButtons
             }
         }
     }
@@ -67,7 +80,10 @@ actual abstract class NavigationScreen<S> actual constructor(
                     newScreen.arg = inputMapper(arg)
                     val screenViewController: UIViewController = newScreen.viewController
                     navigationScreen!!.run {
-                        navigationController?.pushViewController(screenViewController, animated = true)
+                        navigationController?.pushViewController(
+                            screenViewController,
+                            animated = true
+                        )
                     }
                 }
             }
@@ -86,14 +102,18 @@ actual abstract class NavigationScreen<S> actual constructor(
                     newScreen.arg = inputMapper(arg)
                     val screenViewController: UIViewController = newScreen.viewController
 
-                    navigationScreen.controllerDelegate.resultCallbacks[screenViewController] = Runnable {
-                        val result = newScreen.screenResult
-                        val mappedResult = result?.let(outputMapper)
-                        handler.handleResult(mappedResult)
-                    }
+                    navigationScreen.controllerDelegate.resultCallbacks[screenViewController] =
+                        Runnable {
+                            val result = newScreen.screenResult
+                            val mappedResult = result?.let(outputMapper)
+                            handler.handleResult(mappedResult)
+                        }
 
                     navigationScreen.run {
-                        navigationController?.pushViewController(screenViewController, animated = true)
+                        navigationController?.pushViewController(
+                            screenViewController,
+                            animated = true
+                        )
                     }
                 }
 
@@ -111,7 +131,10 @@ actual abstract class NavigationScreen<S> actual constructor(
                     newScreen.arg = inputMapper(arg)
                     val screenViewController: UIViewController = newScreen.viewController
                     navigationScreen!!.run {
-                        navigationController?.setViewControllers(listOf(screenViewController), animated = true)
+                        navigationController?.setViewControllers(
+                            listOf(screenViewController),
+                            animated = true
+                        )
                     }
                 }
             }

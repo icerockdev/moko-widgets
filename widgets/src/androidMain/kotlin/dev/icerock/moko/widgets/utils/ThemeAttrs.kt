@@ -25,6 +25,14 @@ object ThemeAttrs {
         return result
     }
 
+    fun getControlNormalColor(context: Context): Int {
+        val attrs = intArrayOf(R.attr.colorControlNormal)
+        val ta = context.obtainStyledAttributes(attrs)
+        val result = ta.getColor(0, -1)
+        ta.recycle()
+        return result
+    }
+
     fun getPrimaryDarkColor(context: Context): Int {
         val attrs = intArrayOf(R.attr.colorPrimaryDark)
         val ta = context.obtainStyledAttributes(attrs)
