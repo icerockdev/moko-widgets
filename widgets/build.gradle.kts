@@ -6,6 +6,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.multiplatform")
     id("kotlin-kapt")
+    id("kotlin-android-extensions")
     id("dev.icerock.mobile.multiplatform")
     id("maven-publish")
     id("dev.icerock.mobile.multiplatform-widgets-generator")

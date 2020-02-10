@@ -157,7 +157,7 @@ class App() : BaseApplication() {
             }
         }
 
-        return registerScreen(NavigationScreen::class) {
+        return registerScreen(RootNavigationScreen::class) {
             val router = createRouter()
 
             val regScreen = registerScreen(RegisterScreen::class) {
