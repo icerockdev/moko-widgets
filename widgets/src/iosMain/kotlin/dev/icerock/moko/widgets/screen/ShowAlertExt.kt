@@ -10,17 +10,45 @@ import platform.UIKit.UIAlertActionStyleDefault
 import platform.UIKit.UIAlertActionStyleDestructive
 import platform.UIKit.UIAlertController
 import platform.UIKit.UIAlertControllerStyleAlert
+import kotlin.properties.ReadOnlyProperty
+import kotlin.reflect.KProperty
 
-actual fun Screen<*>.showAlertDialog(factory: AlertDialogBuilder.() -> Unit) {
-    val alert = AlertDialogBuilder(this)
+actual fun Screen<*>.showAlertDialog(dialogId: Int, factory: AlertDialogBuilder.() -> Unit) {
+    val alert = AlertDialogBuilder(dialogId, this)
     factory(alert)
     alert.show()
 }
 
-actual class AlertDialogBuilder(val screen: Screen<*>) {
+actual class AlertDialogHandler(
+    val positive: ((dialogId: Int) -> Unit)?,
+    val neutral: ((dialogId: Int) -> Unit)?,
+    val negative: ((dialogId: Int) -> Unit)?
+)
+
+actual fun Screen<*>.registerAlertDialogHandler(
+    positive: ((dialogId: Int) -> Unit)?,
+    neutral: ((dialogId: Int) -> Unit)?,
+    negative: ((dialogId: Int) -> Unit)?
+): ReadOnlyProperty<Screen<*>, AlertDialogHandler> {
+    val handler = AlertDialogHandler(
+        positive = positive,
+        neutral = neutral,
+        negative = negative
+    )
+    return object : ReadOnlyProperty<Screen<*>, AlertDialogHandler> {
+        override fun getValue(thisRef: Screen<*>, property: KProperty<*>): AlertDialogHandler {
+            return handler
+        }
+    }
+}
+
+actual class AlertDialogBuilder(val dialogId: Int, val screen: Screen<*>) {
     private var title: String? = null
     private var message: String? = null
-    private val actions: MutableList<UIAlertAction> = mutableListOf()
+    private var positiveBtn: String? = null
+    private var neutralBtn: String? = null
+    private var negativeBtn: String? = null
+    private var handler: AlertDialogHandler? = null
 
     actual fun title(title: StringDesc) {
         this.title = title.localized()
@@ -30,34 +58,20 @@ actual class AlertDialogBuilder(val screen: Screen<*>) {
         this.message = message.localized()
     }
 
-    actual fun positiveButton(title: StringDesc, action: () -> Unit) {
-        actions.add(
-            UIAlertAction.actionWithTitle(
-                title = title.localized(),
-                style = UIAlertActionStyleDefault,
-                handler = { action() }
-            )
-        )
+    actual fun positiveButton(title: StringDesc) {
+        this.positiveBtn = title.localized()
     }
 
-    actual fun negativeButton(title: StringDesc, action: () -> Unit) {
-        actions.add(
-            UIAlertAction.actionWithTitle(
-                title = title.localized(),
-                style = UIAlertActionStyleDestructive,
-                handler = { action() }
-            )
-        )
+    actual fun neutralButton(title: StringDesc) {
+        this.neutralBtn = title.localized()
     }
 
-    actual fun neutralButton(title: StringDesc, action: () -> Unit) {
-        actions.add(
-            UIAlertAction.actionWithTitle(
-                title = title.localized(),
-                style = UIAlertActionStyleDefault,
-                handler = { action() }
-            )
-        )
+    actual fun negativeButton(title: StringDesc) {
+        this.negativeBtn = title.localized()
+    }
+
+    actual fun handler(handler: AlertDialogHandler) {
+        this.handler = handler
     }
 
     internal fun show() {
@@ -67,7 +81,40 @@ actual class AlertDialogBuilder(val screen: Screen<*>) {
             preferredStyle = UIAlertControllerStyleAlert
         )
 
-        actions.forEach { alert.addAction(it) }
+        positiveBtn?.also { title ->
+            alert.addAction(
+                UIAlertAction.actionWithTitle(
+                    title = title,
+                    style = UIAlertActionStyleDefault,
+                    handler = {
+                        handler?.positive?.invoke(dialogId)
+                    }
+                )
+            )
+        }
+        neutralBtn?.also { title ->
+            alert.addAction(
+                UIAlertAction.actionWithTitle(
+                    title = title,
+                    style = UIAlertActionStyleDefault,
+                    handler = {
+                        handler?.neutral?.invoke(dialogId)
+                    }
+                )
+            )
+        }
+        negativeBtn?.also { title ->
+            alert.addAction(
+                UIAlertAction.actionWithTitle(
+                    title = title,
+                    style = UIAlertActionStyleDestructive,
+                    handler = {
+                        handler?.negative?.invoke(dialogId)
+                    }
+                )
+            )
+        }
+
         screen.viewController.presentModalViewController(alert, true)
     }
 }

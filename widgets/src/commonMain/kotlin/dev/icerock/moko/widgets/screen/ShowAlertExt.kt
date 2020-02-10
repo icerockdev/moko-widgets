@@ -5,13 +5,25 @@
 package dev.icerock.moko.widgets.screen
 
 import dev.icerock.moko.resources.desc.StringDesc
+import kotlin.properties.ReadOnlyProperty
 
-expect fun Screen<*>.showAlertDialog(factory: AlertDialogBuilder.() -> Unit)
+expect fun Screen<*>.showAlertDialog(dialogId: Int, factory: AlertDialogBuilder.() -> Unit)
+
+expect class AlertDialogHandler
+
+expect fun Screen<*>.registerAlertDialogHandler(
+    positive: ((dialogId: Int) -> Unit)? = null,
+    neutral: ((dialogId: Int) -> Unit)? = null,
+    negative: ((dialogId: Int) -> Unit)? = null
+): ReadOnlyProperty<Screen<*>, AlertDialogHandler>
 
 expect class AlertDialogBuilder {
     fun title(title: StringDesc)
     fun message(message: StringDesc)
-    fun positiveButton(title: StringDesc, action: () -> Unit)
-    fun neutralButton(title: StringDesc, action: () -> Unit)
-    fun negativeButton(title: StringDesc, action: () -> Unit)
+
+    fun positiveButton(title: StringDesc)
+    fun neutralButton(title: StringDesc)
+    fun negativeButton(title: StringDesc)
+
+    fun handler(handler: AlertDialogHandler)
 }
