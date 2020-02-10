@@ -61,7 +61,7 @@ actual abstract class NavigationScreen<S> actual constructor(
 
                 val rightButtons: List<UIBarButtonItem>? = navBar.actions?.map {
                     it.toUIBarButtonItem()
-                }
+                }?.reversed()
                 viewController.navigationItem.rightBarButtonItems = rightButtons
             }
         }
