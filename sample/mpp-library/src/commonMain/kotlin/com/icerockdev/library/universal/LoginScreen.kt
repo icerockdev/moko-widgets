@@ -93,7 +93,7 @@ class LoginScreen(
 
             val registerButton = +button(
                 id = Id.RegistrationButtonId,
-                size = WidgetSize.Const(SizeSpec.WrapContent, SizeSpec.Exact(40f)),
+                size = WidgetSize.Const(SizeSpec.Exact(300f), SizeSpec.WrapContent),
                 content = ButtonWidget.Content.Text(Value.data("Registration".desc())),
                 onTap = viewModel::onRegistrationPressed
             )
