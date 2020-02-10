@@ -4,6 +4,9 @@
 
 package dev.icerock.moko.widgets.factory
 
+import android.annotation.SuppressLint
+import android.content.res.ColorStateList
+import android.graphics.PorterDuff
 import android.os.Build
 import android.view.ContextThemeWrapper
 import android.view.Gravity
@@ -21,6 +24,7 @@ import dev.icerock.moko.widgets.style.applyPaddingIfNeeded
 import dev.icerock.moko.widgets.style.applyStateBackgroundIfNeeded
 import dev.icerock.moko.widgets.style.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.style.background.StateBackground
+import dev.icerock.moko.widgets.style.background.buildBackground
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
@@ -39,6 +43,7 @@ actual class ButtonWithIconViewFactory actual constructor(
     private val icon: ImageResource
 ) : ViewFactory<ButtonWidget<out WidgetSize>> {
 
+    @SuppressLint("RestrictedApi")
     override fun <WS : WidgetSize> build(
         widget: ButtonWidget<out WidgetSize>,
         size: WS,
@@ -56,7 +61,7 @@ actual class ButtonWithIconViewFactory actual constructor(
         val icPadding = iconPadding ?: 0.0f
         val materialThemeWrapper = ContextThemeWrapper(ctx, R.style.Theme_MaterialComponents_NoActionBar)
 
-        val button: View = when (widget.content) {
+        val button: MaterialButton = when (widget.content) {
             is ButtonWidget.Content.Text -> {
                 MaterialButton(materialThemeWrapper).apply {
                     widget.content.text.bind(viewFactoryContext.lifecycleOwner) { text ->
@@ -79,6 +84,8 @@ actual class ButtonWithIconViewFactory actual constructor(
         }
 
         button.applyStateBackgroundIfNeeded(background)
+        button.supportBackgroundTintList = null
+        button.supportBackgroundTintMode = null
         button.applyPaddingIfNeeded(padding)
 
         if (androidElevationEnabled == false && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
