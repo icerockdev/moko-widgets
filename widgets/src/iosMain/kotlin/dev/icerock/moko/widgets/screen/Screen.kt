@@ -10,6 +10,8 @@ import dev.icerock.moko.widgets.objc.getAssociatedObject
 import dev.icerock.moko.widgets.objc.setAssociatedObject
 import platform.UIKit.UIViewController
 import kotlin.native.ref.WeakReference
+import kotlin.properties.ReadOnlyProperty
+import kotlin.reflect.KProperty
 
 actual abstract class Screen<Arg : Args> {
     val viewModelStore = mutableMapOf<Any, ViewModel>()
@@ -46,6 +48,14 @@ actual abstract class Screen<Arg : Args> {
             _viewController = WeakReference(vc)
             return vc
         }
+
+    fun <T> createConstReadOnlyProperty(value: T): ReadOnlyProperty<Screen<*>, T> {
+        return object : ReadOnlyProperty<Screen<*>, T> {
+            override fun getValue(thisRef: Screen<*>, property: KProperty<*>): T {
+                return value
+            }
+        }
+    }
 }
 
 fun UIViewController.getAssociatedScreen(): Screen<*>? = getAssociatedObject(this) as? Screen<*>

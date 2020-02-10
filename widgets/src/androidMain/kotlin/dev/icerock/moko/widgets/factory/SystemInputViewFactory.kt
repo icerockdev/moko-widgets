@@ -24,6 +24,7 @@ import dev.icerock.moko.widgets.style.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.ext.getGravityForTextAlignment
 import dev.icerock.moko.widgets.style.view.*
+import dev.icerock.moko.widgets.utils.androidId
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.dp
 
@@ -51,7 +52,7 @@ actual class SystemInputViewFactory actual constructor(
             applyBackgroundIfNeeded(this@SystemInputViewFactory.background)
             applyPaddingIfNeeded(padding)
 
-            id = widget.id::javaClass.name.hashCode()
+            id = widget.id.androidId
 
             layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,

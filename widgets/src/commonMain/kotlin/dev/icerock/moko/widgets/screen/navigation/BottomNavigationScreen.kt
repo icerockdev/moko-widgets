@@ -10,7 +10,6 @@ import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.Screen
 import dev.icerock.moko.widgets.screen.ScreenDesc
-import dev.icerock.moko.widgets.screen.ScreenFactory
 
 expect abstract class BottomNavigationScreen(
     router: Router,
@@ -20,9 +19,8 @@ expect abstract class BottomNavigationScreen(
 
     var selectedItemId: Int
     var bottomNavigationColor: Color?
-    var unselectedItemColor: Color?
-    var selectedItemColor: Color?
     var isTitleVisible: Boolean
+    var itemStateColors: SelectStates<Color>?
 
     class Router {
         fun createChangeTabRoute(itemId: Int): Route<Unit>
@@ -32,11 +30,45 @@ expect abstract class BottomNavigationScreen(
 data class BottomNavigationItem(
     val id: Int,
     val title: StringDesc,
-    val icon: ImageResource? = null,
+    val stateIcons: SelectStates<ImageResource>? = null,
     val screenDesc: ScreenDesc<Args.Empty>
 ) {
     class Builder() {
         private val tabs = mutableListOf<BottomNavigationItem>()
+
+        private fun tab(
+            id: Int,
+            title: StringDesc,
+            stateIcons: SelectStates<ImageResource>? = null,
+            screenDesc: ScreenDesc<Args.Empty>
+        ) {
+            tabs.add(
+                BottomNavigationItem(
+                    id = id,
+                    title = title,
+                    stateIcons = stateIcons,
+                    screenDesc = screenDesc
+                )
+            )
+        }
+
+        fun tab(
+            id: Int,
+            title: StringDesc,
+            selectedIcon: ImageResource,
+            unselectedIcon: ImageResource,
+            screenDesc: ScreenDesc<Args.Empty>
+        ) {
+            tab(
+                id = id,
+                title = title,
+                stateIcons = SelectStates(
+                    selected = selectedIcon,
+                    unselected = unselectedIcon
+                ),
+                screenDesc = screenDesc
+            )
+        }
 
         fun tab(
             id: Int,
@@ -44,16 +76,19 @@ data class BottomNavigationItem(
             icon: ImageResource? = null,
             screenDesc: ScreenDesc<Args.Empty>
         ) {
-            tabs.add(
-                BottomNavigationItem(
-                    id = id,
-                    title = title,
-                    icon = icon,
-                    screenDesc = screenDesc
-                )
+            tab(
+                id = id,
+                title = title,
+                stateIcons = icon?.let { SelectStates(selected = it, unselected = it) },
+                screenDesc = screenDesc
             )
         }
 
         fun build(): List<BottomNavigationItem> = tabs
     }
 }
+
+data class SelectStates<T>(
+    val selected: T,
+    val unselected: T
+)

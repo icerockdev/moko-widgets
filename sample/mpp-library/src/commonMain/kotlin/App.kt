@@ -6,6 +6,7 @@ import com.icerockdev.library.AppTheme
 import com.icerockdev.library.MR
 import com.icerockdev.library.SharedFactory
 import com.icerockdev.library.universal.CartScreen
+import com.icerockdev.library.universal.InfoWebViewScreen
 import com.icerockdev.library.universal.LoginScreen
 import com.icerockdev.library.universal.LoginViewModel
 import com.icerockdev.library.universal.PlatformProfileScreen
@@ -18,11 +19,15 @@ import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.parcelize.Parcelize
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.ButtonWidget
+import dev.icerock.moko.widgets.ImageWidget
 import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Value
+import dev.icerock.moko.widgets.factory.ButtonWithIconViewFactory
+import dev.icerock.moko.widgets.factory.IconGravity
+import dev.icerock.moko.widgets.factory.SystemImageViewFactory
 import dev.icerock.moko.widgets.factory.SystemInputViewFactory
 import dev.icerock.moko.widgets.flat.FlatInputViewFactory
 import dev.icerock.moko.widgets.screen.Args
@@ -36,10 +41,16 @@ import dev.icerock.moko.widgets.screen.navigation.NavigationBar
 import dev.icerock.moko.widgets.screen.navigation.NavigationItem
 import dev.icerock.moko.widgets.screen.navigation.NavigationScreen
 import dev.icerock.moko.widgets.screen.navigation.Resultable
+import dev.icerock.moko.widgets.screen.navigation.SelectStates
 import dev.icerock.moko.widgets.screen.navigation.createPushResultRoute
 import dev.icerock.moko.widgets.screen.navigation.createPushRoute
 import dev.icerock.moko.widgets.screen.navigation.createReplaceRoute
 import dev.icerock.moko.widgets.screen.navigation.createRouter
+import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
+import dev.icerock.moko.widgets.style.background.StateBackground
+import dev.icerock.moko.widgets.style.view.CornerRadiusValue
+import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
@@ -56,6 +67,20 @@ class App() : BaseApplication() {
                     color = Color(0x16171AFF)
                 ),
                 backgroundColor = Color(0xF5F5F5FF)
+            )
+            factory[LoginScreen.Id.RegistrationButtonId] = ButtonWithIconViewFactory(
+                icon = MR.images.stars_black_18,
+                iconGravity = IconGravity.TEXT_END,
+                iconPadding = 8.0f,
+                padding = PaddingValues(padding = 16f),
+                background = StateBackground(
+                    normal = Background(fill = Fill.Solid(color = Color(0xAAFFFFFF))),
+                    pressed = Background(fill = Fill.Solid(color = Color(0x88FFFFFF))),
+                    disabled = Background(fill = Fill.Solid(color = Color(0x55FFFFFF)))
+                )
+            )
+            factory[ImageWidget.DefaultCategory] = SystemImageViewFactory(
+                cornerRadiusValue = CornerRadiusValue(16.0f)
             )
         }
 
@@ -119,7 +144,8 @@ class App() : BaseApplication() {
                 tab(
                     id = 1,
                     title = "Products".desc(),
-                    icon = MR.images.home_black_18,
+                    selectedIcon = MR.images.cart_black_18,
+                    unselectedIcon = MR.images.home_black_18,
                     screenDesc = productsNavigation
                 )
                 tab(
@@ -137,18 +163,27 @@ class App() : BaseApplication() {
             }
         }
 
-        return registerScreen(NavigationScreen::class) {
+        return registerScreen(RootNavigationScreen::class) {
             val router = createRouter()
 
             val regScreen = registerScreen(RegisterScreen::class) {
                 RegisterScreen(theme)
             }
 
+            val oauthScreen = registerScreen(InfoWebViewScreen::class) {
+                InfoWebViewScreen(
+                    theme = loginTheme
+                )
+            }
+
             val loginScreen = registerScreen(LoginScreen::class) {
                 LoginScreen(
                     theme = loginTheme,
                     mainRoute = router.createReplaceRoute(mainScreen),
-                    registerRoute = router.createPushResultRoute(regScreen) { it.token }
+                    registerRoute = router.createPushResultRoute(regScreen) { it.token },
+                    infoWebViewRoute = router.createPushRoute(oauthScreen) {
+                        InfoWebViewScreen.WebViewArgs(it)
+                    }
                 ) { LoginViewModel(it) }
             }
 
@@ -190,6 +225,15 @@ class MainBottomNavigationScreen(
     builder: BottomNavigationItem.Builder.() -> Unit
 ) : BottomNavigationScreen(router, builder), NavigationItem {
     override val navigationBar: NavigationBar = NavigationBar.None
+
+    init {
+        bottomNavigationColor = Color(0x6518f4FF)
+
+        itemStateColors = SelectStates(
+            selected = Color(0xfdfffdFF),
+            unselected = Color(0xc0a3f9FF)
+        )
+    }
 }
 
 class RootNavigationScreen(initialScreen: TypedScreenDesc<Args.Empty, LoginScreen>, router: Router) :

@@ -16,6 +16,7 @@ import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.buildBackground
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.utils.androidId
 import dev.icerock.moko.widgets.utils.bindNotNull
 
 actual class SystemSwitchViewFactory actual constructor(
@@ -32,6 +33,8 @@ actual class SystemSwitchViewFactory actual constructor(
         val context = viewFactoryContext.androidContext
 
         val switch = Switch(context).apply {
+            id = widget.id.androidId
+
             switchColor?.also { colorStyle ->
                 val thumbStates = ColorStateList(
                     arrayOf(

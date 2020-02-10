@@ -16,6 +16,21 @@ import platform.UIKit.UIFont
 import platform.UIKit.UILabel
 import platform.UIKit.UITextField
 import platform.UIKit.systemFontSize
+import platform.UIKit.UIFontWeightMedium
+
+fun TextStyle.toUIFont(defautlFontSize: Double = 17.0): UIFont? { // If this is ok, can be applied to other methods
+    val styleSize = size?.toDouble()
+    val styleStyle = fontStyle
+    if (styleStyle != null || styleSize != null) {
+        val fontSize = styleSize ?: defautlFontSize
+        return when (styleStyle) {
+            FontStyle.BOLD -> UIFont.boldSystemFontOfSize(fontSize = fontSize)
+            FontStyle.MEDIUM -> UIFont.systemFontOfSize(fontSize = fontSize, weight = UIFontWeightMedium)
+            else -> UIFont.systemFontOfSize(fontSize = fontSize)
+        }
+    }
+    return null
+}
 
 fun UILabel.applyTextStyleIfNeeded(textStyle: TextStyle?) {
     if (textStyle == null) return

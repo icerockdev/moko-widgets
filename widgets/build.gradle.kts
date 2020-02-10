@@ -6,6 +6,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.multiplatform")
     id("kotlin-kapt")
+    id("kotlin-android-extensions")
     id("dev.icerock.mobile.multiplatform")
     id("maven-publish")
     id("dev.icerock.mobile.multiplatform-widgets-generator")
@@ -43,6 +44,7 @@ dependencies {
     androidLibrary(Deps.Libs.Android.constraintLayout)
     androidLibrary(Deps.Libs.Android.inputMask)
     androidLibrary(Deps.Libs.Android.glide)
+    androidLibrary(Deps.Libs.Android.roundedImageView)
 }
 
 publishing {
