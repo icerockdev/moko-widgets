@@ -20,7 +20,6 @@ abstract class HostActivity : AppCompatActivity() {
                 return screenDesc?.instantiate() ?: super.instantiate(classLoader, className)
             }
         }
-
         super.onCreate(savedInstanceState)
 
         if (savedInstanceState == null) {
@@ -32,15 +31,6 @@ abstract class HostActivity : AppCompatActivity() {
                 .commit()
         }
     }
-
-//    override fun onBackPressed() {
-//        val rootScreen = supportFragmentManager.findFragmentById(android.R.id.content)
-//        if (rootScreen is Screen<*>) {
-//            if (rootScreen.onBackPressed()) return
-//        }
-//
-//        super.onBackPressed()
-//    }
 
     abstract val application: BaseApplication
 }
