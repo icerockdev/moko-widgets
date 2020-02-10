@@ -7,9 +7,14 @@ package dev.icerock.moko.widgets.screen
 import kotlin.reflect.KClass
 
 abstract class BaseApplication {
-    abstract fun setup(): ScreenDesc<Args.Empty>
+    protected abstract fun setup(): ScreenDesc<Args.Empty>
 
-    val rootScreen: ScreenDesc<Args.Empty> by lazy { setup() }
+    fun initialize() {
+        rootScreen = setup()
+    }
+
+    lateinit var rootScreen: ScreenDesc<Args.Empty>
+        private set
 
     fun <Arg : Args, T : Screen<Arg>> registerScreen(
         kClass: KClass<T>,
