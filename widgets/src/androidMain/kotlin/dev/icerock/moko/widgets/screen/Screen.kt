@@ -75,7 +75,10 @@ actual abstract class Screen<Arg : Args> : Fragment() {
         hook: (Fragment) -> Unit
     ): ReadOnlyProperty<Screen<*>, T> {
         attachFragmentHandlers.add(hook)
+        return createConstReadOnlyProperty(value)
+    }
 
+    fun <T> createConstReadOnlyProperty(value: T): ReadOnlyProperty<Screen<*>, T> {
         return object : ReadOnlyProperty<Screen<*>, T> {
             override fun getValue(thisRef: Screen<*>, property: KProperty<*>): T {
                 return value

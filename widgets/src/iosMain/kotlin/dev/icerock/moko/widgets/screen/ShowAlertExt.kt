@@ -11,7 +11,6 @@ import platform.UIKit.UIAlertActionStyleDestructive
 import platform.UIKit.UIAlertController
 import platform.UIKit.UIAlertControllerStyleAlert
 import kotlin.properties.ReadOnlyProperty
-import kotlin.reflect.KProperty
 
 actual fun Screen<*>.showAlertDialog(dialogId: Int, factory: AlertDialogBuilder.() -> Unit) {
     val alert = AlertDialogBuilder(dialogId, this)
@@ -35,14 +34,10 @@ actual fun Screen<*>.registerAlertDialogHandler(
         neutral = neutral,
         negative = negative
     )
-    return object : ReadOnlyProperty<Screen<*>, AlertDialogHandler> {
-        override fun getValue(thisRef: Screen<*>, property: KProperty<*>): AlertDialogHandler {
-            return handler
-        }
-    }
+    return createConstReadOnlyProperty(handler)
 }
 
-actual class AlertDialogBuilder(val dialogId: Int, val screen: Screen<*>) {
+actual class AlertDialogBuilder(private val dialogId: Int, val screen: Screen<*>) {
     private var title: String? = null
     private var message: String? = null
     private var positiveBtn: String? = null
