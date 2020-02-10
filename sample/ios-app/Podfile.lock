@@ -33,13 +33,13 @@ DEPENDENCIES:
   - MultiPlatformLibraryMvvm (from `https://github.com/icerockdev/moko-mvvm.git`, tag `release/0.4.0-dev-2`)
 
 SPEC REPOS:
-  https://cdn.cocoapods.org/:
-    - FloatingPanel
   https://github.com/CocoaPods/Specs.git:
     - Alamofire
     - AlamofireImage
     - InputMask
     - SkyFloatingLabelTextField
+  trunk:
+    - FloatingPanel
 
 EXTERNAL SOURCES:
   moko-widgets-bottom-sheet:
