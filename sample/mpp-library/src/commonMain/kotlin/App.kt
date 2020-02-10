@@ -19,6 +19,7 @@ import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.parcelize.Parcelize
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.ButtonWidget
+import dev.icerock.moko.widgets.ImageWidget
 import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.container
@@ -26,6 +27,7 @@ import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Value
 import dev.icerock.moko.widgets.factory.ButtonWithIconViewFactory
 import dev.icerock.moko.widgets.factory.IconGravity
+import dev.icerock.moko.widgets.factory.SystemImageViewFactory
 import dev.icerock.moko.widgets.factory.SystemInputViewFactory
 import dev.icerock.moko.widgets.flat.FlatInputViewFactory
 import dev.icerock.moko.widgets.screen.Args
@@ -47,6 +49,7 @@ import dev.icerock.moko.widgets.screen.navigation.createRouter
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.background.StateBackground
+import dev.icerock.moko.widgets.style.view.CornerRadiusValue
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
@@ -75,6 +78,9 @@ class App() : BaseApplication() {
                     pressed = Background(fill = Fill.Solid(color = Color(0x88FFFFFF))),
                     disabled = Background(fill = Fill.Solid(color = Color(0x55FFFFFF)))
                 )
+            )
+            factory[ImageWidget.DefaultCategory] = SystemImageViewFactory(
+                cornerRadiusValue = CornerRadiusValue(16.0f)
             )
         }
 

@@ -62,8 +62,8 @@ class LoginScreen(
 
         constraint(size = WidgetSize.AsParent) {
             val logoImage = +image(
-                size = WidgetSize.Const(SizeSpec.WrapContent, SizeSpec.WrapContent),
-                image = const(Image.resource(MR.images.logo)),
+                size = WidgetSize.AspectByWidth(width = SizeSpec.Exact(300f), aspectRatio = 1.49f),
+                image = const(Image.network("https://html5box.com/html5lightbox/images/mountain.jpg")),
                 scaleType = ImageWidget.ScaleType.FIT
             )
 

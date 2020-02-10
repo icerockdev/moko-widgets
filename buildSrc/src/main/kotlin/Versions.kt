@@ -28,6 +28,7 @@ object Versions {
             const val recyclerView = "1.0.0"
             const val inputMask = "5.0.0"
             const val glide = "4.10.0"
+            const val roundedImageView = "2.3.0"
         }
 
         object MultiPlatform {
