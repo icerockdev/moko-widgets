@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
@@ -35,6 +34,12 @@ actual abstract class NavigationScreen<S> actual constructor(
     private var toolbar: Toolbar? = null
     private var currentChildId: Int = 1
 
+    private val backPressedCallback = object : OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() {
+            childFragmentManager.popBackStack()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -43,7 +48,9 @@ actual abstract class NavigationScreen<S> actual constructor(
         }
 
         childFragmentManager.addOnBackStackChangedListener {
-            toolbar?.navigationIcon = if (childFragmentManager.backStackEntryCount > 0) {
+            val haveBack = childFragmentManager.backStackEntryCount > 0
+            backPressedCallback.isEnabled = haveBack
+            toolbar?.navigationIcon = if (haveBack) {
                 ThemeAttrs.getToolBarUpIndicator(requireContext())
             } else {
                 null
@@ -90,6 +97,10 @@ actual abstract class NavigationScreen<S> actual constructor(
         )
 
         router.navigationScreen = this
+
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(this, backPressedCallback)
     }
 
     override fun onCreateView(
@@ -142,21 +153,6 @@ actual abstract class NavigationScreen<S> actual constructor(
         if (savedInstanceState == null) {
             val instance = initialScreen.instantiate()
             fragmentNavigation.setScreen(instance)
-        }
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        if (context is ComponentActivity) {
-            context.onBackPressedDispatcher.addCallback(
-                this,
-                object : OnBackPressedCallback(true) {
-                    override fun handleOnBackPressed() {
-                        fragmentManager!!.popBackStackImmediate()
-                    }
-                }
-            )
         }
     }
 
@@ -245,7 +241,7 @@ actual abstract class NavigationScreen<S> actual constructor(
         }
 
         actual fun createPopRoute(): Route<Unit> {
-            return object: Route<Unit> {
+            return object : Route<Unit> {
                 override fun route(source: Screen<*>, arg: Unit) {
                     navigationScreen!!.getChildFragmentManager().popBackStack()
                 }

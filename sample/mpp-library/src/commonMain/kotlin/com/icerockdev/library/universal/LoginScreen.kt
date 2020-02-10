@@ -32,8 +32,6 @@ import dev.icerock.moko.widgets.screen.navigation.Route
 import dev.icerock.moko.widgets.screen.navigation.RouteWithResult
 import dev.icerock.moko.widgets.screen.navigation.registerRouteHandler
 import dev.icerock.moko.widgets.screen.navigation.route
-import dev.icerock.moko.widgets.screen.registerAlertDialogHandler
-import dev.icerock.moko.widgets.screen.showAlertDialog
 import dev.icerock.moko.widgets.style.input.InputType
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
@@ -50,14 +48,6 @@ class LoginScreen(
     private val registerHandler by registerRouteHandler(9, registerRoute) {
         println("registration respond with $it")
     }
-    private val alertHandler by registerAlertDialogHandler(
-        positive = {
-            println("positive from $it dialog")
-        },
-        negative = {
-            println("negative from $it dialog")
-        }
-    )
 
     override val navigationBar: NavigationBar = NavigationBar.None
 
@@ -149,27 +139,11 @@ class LoginScreen(
     }
 
     override fun routeToMain() {
-        showAlertDialog(10) {
-            title("hello".desc())
-            message("close me 2".desc())
-
-            positiveButton("close".desc())
-            negativeButton("close negative!".desc())
-
-            handler(alertHandler)
-        }
+        mainRoute.route(this)
     }
 
     override fun routeToRegistration() {
-        showAlertDialog(9) {
-            title("hello".desc())
-            message("close me".desc())
-
-            positiveButton("close".desc())
-
-            handler(alertHandler)
-        }
-//        registerRoute.route(this, registerHandler)
+        registerRoute.route(this, registerHandler)
     }
 
     override fun routeToWebViewInfo() {

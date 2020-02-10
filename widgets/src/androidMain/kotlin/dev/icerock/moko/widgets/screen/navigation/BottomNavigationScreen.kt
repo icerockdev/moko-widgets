@@ -13,6 +13,7 @@ import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -65,10 +66,24 @@ actual abstract class BottomNavigationScreen actual constructor(
             updateTitleMode()
         }
 
+    private val backPressedCallback = object : OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() {
+            childFragmentManager.popBackStack()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         router.bottomNavigationScreen = this
+
+        childFragmentManager.addOnBackStackChangedListener {
+            backPressedCallback.isEnabled = childFragmentManager.backStackEntryCount > 0
+        }
+
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(this, backPressedCallback)
     }
 
     override fun onCreateView(
