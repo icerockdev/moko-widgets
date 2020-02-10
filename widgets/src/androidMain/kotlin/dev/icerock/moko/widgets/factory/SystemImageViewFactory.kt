@@ -4,17 +4,7 @@
 
 package dev.icerock.moko.widgets.factory
 
-import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Path
-import android.graphics.RectF
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.LayerDrawable
-import android.graphics.drawable.ShapeDrawable
-import android.util.AttributeSet
 import android.widget.ImageView
-import androidx.core.graphics.drawable.RoundedBitmapDrawable
-import com.google.android.material.shape.MaterialShapeDrawable
 import com.makeramen.roundedimageview.RoundedImageView
 import dev.icerock.moko.widgets.ImageWidget
 import dev.icerock.moko.widgets.core.ViewBundle
@@ -29,7 +19,7 @@ import dev.icerock.moko.widgets.utils.dp
 
 actual class SystemImageViewFactory actual constructor(
     private val margins: MarginValues?,
-    private val cornerRadiusValue: CornerRadiusValue? // TODO: implement radius apply to image
+    private val cornerRadiusValue: CornerRadiusValue?
 ) : ViewFactory<ImageWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
