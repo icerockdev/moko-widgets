@@ -12,7 +12,6 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.StyleSpan
-import android.text.style.TypefaceSpan
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.ViewGroup
@@ -195,14 +194,14 @@ actual abstract class NavigationScreen<S> actual constructor(
                 val title = navBar.title.toString(context)
                 toolbar.title = SpannableString(title).apply {
                     val size = navBar.styles?.textStyle?.size?.toFloat()?.sp(context)
-                    if(size != null) {
+                    if (size != null) {
                         val sizeSpan = AbsoluteSizeSpan(size.toInt())
                         setSpan(sizeSpan, 0, title.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                     }
 
                     val fontStyle = navBar.styles?.textStyle?.fontStyle
-                    if(fontStyle != null) {
-                        val style = when(fontStyle) {
+                    if (fontStyle != null) {
+                        val style = when (fontStyle) {
                             FontStyle.BOLD -> Typeface.BOLD
                             FontStyle.MEDIUM -> Typeface.NORMAL
                         }
