@@ -286,7 +286,7 @@ actual abstract class NavigationScreen<S> actual constructor(
             inputMapper: (T) -> Arg
         ): Route<T> where S : Screen<Arg>, S : NavigationItem {
             return object : Route<T> {
-                override fun route(source: Screen<*>, arg: T) {
+                override fun route(arg: T) {
                     val screen = destination.instantiate()
                     val argument = inputMapper(arg)
                     if (argument is Args.Parcel<*>) {
@@ -333,7 +333,7 @@ actual abstract class NavigationScreen<S> actual constructor(
             inputMapper: (T) -> Arg
         ): Route<T> where S : Screen<Arg>, S : NavigationItem {
             return object : Route<T> {
-                override fun route(source: Screen<*>, arg: T) {
+                override fun route(arg: T) {
                     val screen = destination.instantiate()
                     val argument = inputMapper(arg)
                     if (argument is Args.Parcel<*>) {
@@ -346,7 +346,7 @@ actual abstract class NavigationScreen<S> actual constructor(
 
         actual fun createPopRoute(): Route<Unit> {
             return object : Route<Unit> {
-                override fun route(source: Screen<*>, arg: Unit) {
+                override fun route(arg: Unit) {
                     navigationScreen!!.getChildFragmentManager().popBackStack()
                 }
             }

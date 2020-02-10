@@ -94,7 +94,7 @@ class ProductScreen(
     }
 
     override fun routeToCart() {
-        cartRoute.route(this)
+        cartRoute.route()
     }
 
     @Parcelize

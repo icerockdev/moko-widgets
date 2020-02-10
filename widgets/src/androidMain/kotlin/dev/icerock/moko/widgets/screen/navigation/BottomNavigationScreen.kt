@@ -247,7 +247,7 @@ actual abstract class BottomNavigationScreen actual constructor(
 
         actual fun createChangeTabRoute(itemId: Int): Route<Unit> {
             return object : Route<Unit> {
-                override fun route(source: Screen<*>, arg: Unit) {
+                override fun route(arg: Unit) {
                     bottomNavigationScreen!!.selectedItemId = itemId
                 }
             }
