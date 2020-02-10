@@ -40,6 +40,7 @@ include(":gradle-plugin")
 if (!pluginPublish) {
     include(":widgets")
     include(":widgets-flat")
+    include(":widgets-bottomSheet")
 
     if (!libraryPublish) {
         include(":sample:android-app")

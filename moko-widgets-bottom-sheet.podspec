@@ -8,8 +8,8 @@ Pod::Spec.new do |spec|
     spec.summary                  = 'Swift additions to moko-widgets Kotlin/Native library'
     spec.module_name              = "mokoWidgetsBottomSheet"
 
-    spec.source_files             = "widgets-bottom-sheet/src/iosMain/swift/**/*.{h,m,swift}"
-    spec.resources                = "widgets-bottom-sheet/src/iosMain/resources/**/*"
+    spec.source_files             = "widgets-bottomSheet/src/iosMain/swift/**/*.{h,m,swift}"
+    spec.resources                = "widgets-bottomSheet/src/iosMain/resources/**/*"
 
     spec.dependency 'FloatingPanel'
 

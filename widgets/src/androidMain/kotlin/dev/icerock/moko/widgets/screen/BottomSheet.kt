@@ -1,4 +1,4 @@
-package dev.icerock.moko.widgets.screen
+package dev.icerock.moko.widgets.bottom-sheet
 
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.style.view.SizeSpec

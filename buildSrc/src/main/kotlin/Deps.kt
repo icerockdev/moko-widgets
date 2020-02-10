@@ -57,9 +57,9 @@ object Deps {
                 iosArm64 = "dev.icerock.moko:widgets-flat-iosarm64:${Versions.Libs.MultiPlatform.mokoWidgets}"
             )
             val mokoWidgetsBottomSheet = MultiPlatformLibrary(
-                common = "dev.icerock.moko:widgets-bottom-sheet:${Versions.Libs.MultiPlatform.mokoWidgets}",
-                iosX64 = "dev.icerock.moko:widgets-bottom-sheet-iosx64:${Versions.Libs.MultiPlatform.mokoWidgets}",
-                iosArm64 = "dev.icerock.moko:widgets-bottom-sheet-iosarm64:${Versions.Libs.MultiPlatform.mokoWidgets}"
+                common = "dev.icerock.moko:widgets-bottoSheet:${Versions.Libs.MultiPlatform.mokoWidgets}",
+                iosX64 = "dev.icerock.moko:widgets-bottoSheet-iosx64:${Versions.Libs.MultiPlatform.mokoWidgets}",
+                iosArm64 = "dev.icerock.moko:widgets-bottoSheet-iosarm64:${Versions.Libs.MultiPlatform.mokoWidgets}"
             )
             val mokoResources = MultiPlatformLibrary(
                 common = "dev.icerock.moko:resources:${Versions.Libs.MultiPlatform.mokoResources}",

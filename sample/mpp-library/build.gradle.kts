@@ -30,8 +30,8 @@ val deps = listOf(
     Deps.Libs.MultiPlatform.mokoUnits,
     Deps.Libs.MultiPlatform.mokoGraphics,
     Deps.Libs.MultiPlatform.mokoWidgets,
-    Deps.Libs.MultiPlatform.mokoWidgetsFlat,
-    Deps.Libs.MultiPlatform.mokoWidgetsBottomSheet
+    Deps.Libs.MultiPlatform.mokoWidgetsFlat
+    //Deps.Libs.MultiPlatform.mokoWidgetsBottomSheet
 )
 
 setupFramework(
