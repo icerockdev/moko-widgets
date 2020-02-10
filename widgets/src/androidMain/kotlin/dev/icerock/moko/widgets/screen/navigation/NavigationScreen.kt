@@ -174,6 +174,26 @@ actual abstract class NavigationScreen<S> actual constructor(
         outState.putInt(CURRENT_SCREEN_ID_KEY, currentChildId)
     }
 
+    private fun updateNavigation(fragment: Fragment) {
+        fragment as NavigationItem
+
+        when (val navBar = fragment.navigationBar) {
+            NavigationBar.None -> {
+                toolbar?.visibility = View.GONE
+            }
+            is NavigationBar.Normal -> {
+                toolbar?.visibility = View.VISIBLE
+                toolbar?.title = navBar.title.toString(requireContext())
+                if (navBar.styles?.backgroundColor != null) {
+                    toolbar?.setBackgroundColor(navBar.styles.backgroundColor.argb.toInt())
+                }
+                if (navBar.styles?.textStyle?.color != null) {
+                    toolbar?.setTitleTextColor(navBar.styles.textStyle.color.argb.toInt())
+                }
+            }
+        }
+    }
+
     actual class Router {
         var navigationScreen: NavigationScreen<*>? = null
 
@@ -244,26 +264,6 @@ actual abstract class NavigationScreen<S> actual constructor(
             return object : Route<Unit> {
                 override fun route(source: Screen<*>, arg: Unit) {
                     navigationScreen!!.getChildFragmentManager().popBackStack()
-                }
-            }
-        }
-    }
-
-    private fun updateNavigation(fragment: Fragment) {
-        fragment as NavigationItem
-
-        when (val navBar = fragment.navigationBar) {
-            NavigationBar.None -> {
-                toolbar?.visibility = View.GONE
-            }
-            is NavigationBar.Normal -> {
-                toolbar?.visibility = View.VISIBLE
-                toolbar?.title = navBar.title.toString(requireContext())
-                if (navBar.styles?.backgroundColor != null) {
-                    toolbar?.setBackgroundColor(navBar.styles.backgroundColor.argb.toInt())
-                }
-                if (navBar.styles?.textStyle?.color != null) {
-                    toolbar?.setTitleTextColor(navBar.styles.textStyle.color.argb.toInt())
                 }
             }
         }
