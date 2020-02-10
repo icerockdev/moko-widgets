@@ -6,18 +6,12 @@ package dev.icerock.moko.widgets.screen
 
 import dev.icerock.moko.resources.desc.StringDesc
 
-expect fun Screen<*>.showAlertDialog(factory: AlertDialogView.() -> Unit)
+expect fun Screen<*>.showAlertDialog(factory: AlertDialogBuilder.() -> Unit)
 
-expect class AlertDialogView {
-    fun title(title: String)
-    fun message(message: String)
+expect class AlertDialogBuilder {
     fun title(title: StringDesc)
     fun message(message: StringDesc)
-    fun positiveButton(title: String, action: () -> Unit)
     fun positiveButton(title: StringDesc, action: () -> Unit)
-    fun negativeButton(title: String, action: () -> Unit)
-    fun negativeButton(title: StringDesc, action: () -> Unit)
-    fun neutralButton(title: String, action: () -> Unit)
     fun neutralButton(title: StringDesc, action: () -> Unit)
+    fun negativeButton(title: StringDesc, action: () -> Unit)
 }
-
