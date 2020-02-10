@@ -4,7 +4,6 @@
 
 package com.icerockdev.library.universal
 
-import com.icerockdev.library.MR
 import dev.icerock.moko.fields.FormField
 import dev.icerock.moko.fields.liveBlock
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcher
@@ -139,7 +138,7 @@ class LoginScreen(
     }
 
     override fun routeToMain() {
-        mainRoute.route(this)
+        mainRoute.route()
     }
 
     override fun routeToRegistration() {
@@ -147,7 +146,7 @@ class LoginScreen(
     }
 
     override fun routeToWebViewInfo() {
-        infoWebViewRoute.route(this, "https://icerockdev.com/")
+        infoWebViewRoute.route("https://icerockdev.com/")
     }
 
 }

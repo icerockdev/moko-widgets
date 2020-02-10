@@ -33,7 +33,7 @@ class CartScreen(
                         size = WidgetSize.WrapContent,
                         content = ButtonWidget.Content.Text(Value.data("profile".desc()))
                     ) {
-                        profileRoute.route(this@CartScreen, 10)
+                        profileRoute.route(10)
                     }
                 }
             }

@@ -12,11 +12,11 @@ import dev.icerock.moko.widgets.screen.getAssociatedScreen
 import dev.icerock.moko.widgets.style.applyNavigationBarStyle
 import dev.icerock.moko.widgets.utils.toUIBarButtonItem
 import kotlinx.coroutines.Runnable
+import platform.UIKit.UIBarButtonItem
 import platform.UIKit.UINavigationController
 import platform.UIKit.UINavigationControllerDelegateProtocol
 import platform.UIKit.UIViewController
 import platform.UIKit.navigationItem
-import platform.UIKit.UIBarButtonItem
 import platform.darwin.NSObject
 import kotlin.native.ref.WeakReference
 
@@ -75,7 +75,7 @@ actual abstract class NavigationScreen<S> actual constructor(
             inputMapper: (T) -> Arg
         ): Route<T> where S : Screen<Arg>, S : NavigationItem {
             return object : Route<T> {
-                override fun route(source: Screen<*>, arg: T) {
+                override fun route(arg: T) {
                     val newScreen = destination.instantiate()
                     newScreen.arg = inputMapper(arg)
                     val screenViewController: UIViewController = newScreen.viewController
@@ -126,7 +126,7 @@ actual abstract class NavigationScreen<S> actual constructor(
             inputMapper: (T) -> Arg
         ): Route<T> where S : Screen<Arg>, S : NavigationItem {
             return object : Route<T> {
-                override fun route(source: Screen<*>, arg: T) {
+                override fun route(arg: T) {
                     val newScreen = destination.instantiate()
                     newScreen.arg = inputMapper(arg)
                     val screenViewController: UIViewController = newScreen.viewController
@@ -142,7 +142,7 @@ actual abstract class NavigationScreen<S> actual constructor(
 
         actual fun createPopRoute(): Route<Unit> {
             return object : Route<Unit> {
-                override fun route(source: Screen<*>, arg: Unit) {
+                override fun route(arg: Unit) {
                     navigationScreen!!.navigationController!!.popViewControllerAnimated(true)
                 }
             }
