@@ -42,6 +42,12 @@ object Deps {
             val roundedImageView = AndroidLibrary(
                 name = "com.makeramen:roundedimageview:${Versions.Libs.Android.roundedImageView}"
             )
+            val playServiceAuth = AndroidLibrary(
+                name = "com.google.android.gms:play-services-auth:${Versions.Libs.Android.playServiceAuth}"
+            )
+            val playServiceAuthSms = AndroidLibrary(
+                name = "com.google.android.gms:play-services-auth-api-phone:${Versions.Libs.Android.playServiceAuthPhone}"
+            )
         }
 
         object MultiPlatform {
