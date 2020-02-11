@@ -10,19 +10,22 @@ import FloatingPanel
   private var floatLoayout: FloatingPanelLayout?
   
   @objc public func show(onViewController vc: UIViewController, withContent view: UIView) {
+
+    view.updateConstraints()
+    view.layoutSubviews()
+  
+    let maxSize = CGSize(width: UIScreen.main.bounds.width, height: UIView.layoutFittingCompressedSize.height)
+    view.frame = UIScreen.main.bounds
+
+    
+    floatLoayout = BottomSheetLayout(preferredHeight:    view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize, withHorizontalFittingPriority: UILayoutPriority.required, verticalFittingPriority: .defaultLow).height)
+    
     let contentVC = UIViewController()
     contentVC.view = view
     let fpc = FloatingPanelController()
     fpc.set(contentViewController: contentVC)
     fpc.delegate = self
     fpc.isRemovalInteractionEnabled = true
-    view.frame = UIScreen.main.bounds
-    view.setNeedsLayout()
-    view.layoutIfNeeded()
-    let maxSize = CGSize(width: UIScreen.main.bounds.width, height: UIView.layoutFittingCompressedSize.height)
-    
-    floatLoayout = BottomSheetLayout(preferredHeight: view.sizeThatFits(maxSize).height)
-    
     vc.present(fpc, animated: true, completion: nil)
   }
   
