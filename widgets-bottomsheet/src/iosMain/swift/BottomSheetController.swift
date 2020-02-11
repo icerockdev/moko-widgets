@@ -16,7 +16,12 @@ import FloatingPanel
     fpc.set(contentViewController: contentVC)
     fpc.delegate = self
     fpc.isRemovalInteractionEnabled = true
-    floatLoayout = BottomSheetLayout(preferredHeight: view.sizeThatFits(UIScreen.main.bounds.size).height)
+    view.frame = UIScreen.main.bounds
+    view.setNeedsLayout()
+    view.layoutIfNeeded()
+    let maxSize = CGSize(width: UIScreen.main.bounds.width, height: UIView.layoutFittingCompressedSize.height)
+    
+    floatLoayout = BottomSheetLayout(preferredHeight: view.sizeThatFits(maxSize).height)
     
     vc.present(fpc, animated: true, completion: nil)
   }
