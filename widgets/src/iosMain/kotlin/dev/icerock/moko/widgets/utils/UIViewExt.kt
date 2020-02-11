@@ -9,17 +9,11 @@ import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import kotlinx.cinterop.CValue
-import platform.CoreGraphics.CGFloat
-import platform.UIKit.NSLayoutDimension
-import platform.UIKit.UIEdgeInsets
-import platform.UIKit.UIEdgeInsetsMake
-import platform.UIKit.UIView
-import platform.UIKit.bottomAnchor
-import platform.UIKit.heightAnchor
-import platform.UIKit.leadingAnchor
-import platform.UIKit.topAnchor
-import platform.UIKit.trailingAnchor
-import platform.UIKit.widthAnchor
+import kotlinx.cinterop.copy
+import kotlinx.cinterop.readValue
+import kotlinx.cinterop.useContents
+import platform.CoreGraphics.*
+import platform.UIKit.*
 
 fun applySizeToChild(
     rootView: UIView,
@@ -142,4 +136,23 @@ fun PaddingValues.toEdgeInsets(): CValue<UIEdgeInsets> {
         bottom = bottom.toDouble(),
         right = end.toDouble()
     )
+}
+
+fun UIView.wrapContentHeight(width: CGFloat? = null): CGFloat {
+    val oldFrame = frame()
+    val expandedFrame = CGRectMake(
+        0.0,
+        0.0,
+        width ?: UIScreen.mainScreen.bounds.useContents { this.size.width },
+        UIScreen.mainScreen.bounds.useContents { this.size.height }
+        )
+    setFrame(expandedFrame)
+    updateConstraints()
+    layoutSubviews()
+    val result = systemLayoutSizeFittingSize(
+        UILayoutFittingCompressedSize.readValue(),
+        withHorizontalFittingPriority = UILayoutPriorityRequired,
+        verticalFittingPriority = UILayoutPriorityDefaultLow).useContents { this.height }
+    setFrame(oldFrame)
+    return result
 }
