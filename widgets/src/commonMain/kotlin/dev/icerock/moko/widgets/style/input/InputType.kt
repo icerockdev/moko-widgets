@@ -10,5 +10,6 @@ enum class InputType(val mask: String?) {
     PASSWORD(null),
     DATE("[00]{.}[00]{.}[0000]"),
     PHONE("+7 ([000]) [000] [00] [00]"),
-    DIGITS(null)
+    DIGITS(null),
+    SMS_CODE(null)
 }
