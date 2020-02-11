@@ -30,7 +30,7 @@ object Versions {
             const val glide = "4.10.0"
             const val roundedImageView = "2.3.0"
             const val playServiceAuth = "17.0.0"
-            const val playServiceAuthPhone = "17.1.0"
+            const val playServiceAuthSms = "17.1.0"
         }
 
         object MultiPlatform {
