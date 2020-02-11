@@ -4,7 +4,6 @@
 
 package com.icerockdev.library.universal
 
-import com.icerockdev.library.MR
 import dev.icerock.moko.fields.FormField
 import dev.icerock.moko.fields.liveBlock
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcher
@@ -41,6 +40,7 @@ class LoginScreen(
     private val theme: Theme,
     private val mainRoute: Route<Unit>,
     private val registerRoute: RouteWithResult<Unit, String>,
+    private val infoWebViewRoute: Route<String>,
     private val loginViewModelFactory: (EventsDispatcher<LoginViewModel.EventsListener>) -> LoginViewModel
 ) : WidgetScreen<Args.Empty>(), NavigationItem, LoginViewModel.EventsListener {
 
@@ -61,8 +61,8 @@ class LoginScreen(
 
         constraint(size = WidgetSize.AsParent) {
             val logoImage = +image(
-                size = WidgetSize.Const(SizeSpec.WrapContent, SizeSpec.WrapContent),
-                image = const(Image.resource(MR.images.logo)),
+                size = WidgetSize.AspectByWidth(width = SizeSpec.Exact(300f), aspectRatio = 1.49f),
+                image = const(Image.network("https://html5box.com/html5lightbox/images/mountain.jpg")),
                 scaleType = ImageWidget.ScaleType.FIT
             )
 
@@ -84,10 +84,15 @@ class LoginScreen(
                 content = ButtonWidget.Content.Text(Value.data("Login".desc())),
                 onTap = viewModel::onLoginPressed
             )
+            val showInfoButton = +button(
+                size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.Exact(50f)),
+                content = ButtonWidget.Content.Text(Value.data("Show info".desc())),
+                onTap = viewModel::onShowInfoPressed
+            )
 
             val registerButton = +button(
                 id = Id.RegistrationButtonId,
-                size = WidgetSize.Const(SizeSpec.WrapContent, SizeSpec.Exact(40f)),
+                size = WidgetSize.Const(SizeSpec.Exact(300f), SizeSpec.WrapContent),
                 content = ButtonWidget.Content.Text(Value.data("Registration".desc())),
                 onTap = viewModel::onRegistrationPressed
             )
@@ -107,7 +112,10 @@ class LoginScreen(
                 loginButton topToBottom passwordInput
                 loginButton leftRightToLeftRight root
 
-                registerButton topToBottom loginButton
+                showInfoButton topToBottom loginButton
+                showInfoButton leftRightToLeftRight root
+
+                registerButton topToBottom showInfoButton
                 registerButton rightToRight root
 
                 // logo image height must be automatic ?
@@ -130,12 +138,17 @@ class LoginScreen(
     }
 
     override fun routeToMain() {
-        mainRoute.route(this)
+        mainRoute.route()
     }
 
     override fun routeToRegistration() {
         registerRoute.route(this, registerHandler)
     }
+
+    override fun routeToWebViewInfo() {
+        infoWebViewRoute.route("https://icerockdev.com/")
+    }
+
 }
 
 class LoginViewModel(
@@ -148,6 +161,10 @@ class LoginViewModel(
         eventsDispatcher.dispatchEvent { routeToMain() }
     }
 
+    fun onShowInfoPressed() {
+        eventsDispatcher.dispatchEvent { routeToWebViewInfo() }
+    }
+
     fun onRegistrationPressed() {
         eventsDispatcher.dispatchEvent { routeToRegistration() }
     }
@@ -155,5 +172,6 @@ class LoginViewModel(
     interface EventsListener {
         fun routeToMain()
         fun routeToRegistration()
+        fun routeToWebViewInfo()
     }
 }

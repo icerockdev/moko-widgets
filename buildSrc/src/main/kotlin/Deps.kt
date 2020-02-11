@@ -39,6 +39,9 @@ object Deps {
             val glide = AndroidLibrary(
                 name = "com.github.bumptech.glide:glide:${Versions.Libs.Android.glide}"
             )
+            val roundedImageView = AndroidLibrary(
+                name = "com.makeramen:roundedimageview:${Versions.Libs.Android.roundedImageView}"
+            )
         }
 
         object MultiPlatform {
