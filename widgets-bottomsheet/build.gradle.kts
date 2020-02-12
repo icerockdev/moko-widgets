@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
+ * Copyright 2020 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
 
 plugins {
@@ -48,5 +48,5 @@ publishing {
 cocoaPods {
     podsProject = file("../sample/ios-app/Pods/Pods.xcodeproj")
 
-    pod("moko-widgets-bottom-sheet", "mokoWidgetsBottomSheet")
+    pod("moko-widgets-bottomsheet", "mokoWidgetsBottomSheet")
 }

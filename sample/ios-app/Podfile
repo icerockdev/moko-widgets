@@ -16,7 +16,7 @@ target 'TestProj' do
 
   pod 'mppLibraryIos', :path => '../mpp-library'
   pod 'moko-widgets-flat', :path => '../../'
-  pod 'moko-widgets-bottom-sheet', :path => '../../'
+  pod 'moko-widgets-bottomsheet', :path => '../../'
 
   pod 'MultiPlatformLibraryMvvm', :git => 'https://github.com/icerockdev/moko-mvvm.git', :tag => 'release/0.4.0-dev-2'
 end
