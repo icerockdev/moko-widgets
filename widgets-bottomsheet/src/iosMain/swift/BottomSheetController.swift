@@ -25,12 +25,17 @@ import FloatingPanel
     let fpc = FloatingPanelController()
     fpc.set(contentViewController: contentVC)
     fpc.delegate = self
+    fpc.backdropView.backgroundColor = UIColor(white: 0.0, alpha: 1.0)
     fpc.isRemovalInteractionEnabled = true
     vc.present(fpc, animated: true, completion: nil)
   }
   
   public func floatingPanel(_ vc: FloatingPanelController, layoutFor newCollection: UITraitCollection) -> FloatingPanelLayout? {
     return floatLoayout
+  }
+  
+  public func floatingPanelDidEndRemove(_ vc: FloatingPanelController) {
+    print("dismissed?")
   }
 }
 
@@ -51,4 +56,8 @@ class BottomSheetLayout: FloatingPanelLayout {
   }
   
   var supportedPositions: Set<FloatingPanelPosition> = [.half, .hidden, .tip]
+  
+  func backdropAlphaFor(position: FloatingPanelPosition) -> CGFloat {
+    return 0.3
+  }
 }
