@@ -5,43 +5,70 @@
 import UIKit
 import FloatingPanel
 
+private var AssociatedDelegateHandle: UInt8 = 0
+
 @objc public class BottomSheetController: NSObject, FloatingPanelControllerDelegate {
   
-  private var floatLoayout: FloatingPanelLayout?
-  
-  @objc public func show(onViewController vc: UIViewController, withContent view: UIView) {
-
+  @objc public func show(
+    onViewController vc: UIViewController,
+    withContent view: UIView,
+    onDismiss: @escaping () -> Void
+  ) {
     view.updateConstraints()
     view.layoutSubviews()
   
     let maxSize = CGSize(width: UIScreen.main.bounds.width, height: UIView.layoutFittingCompressedSize.height)
     view.frame = UIScreen.main.bounds
 
+    let floatLayout = BottomSheetLayout(
+      preferredHeight: view.systemLayoutSizeFitting(
+        UIView.layoutFittingCompressedSize,
+        withHorizontalFittingPriority: UILayoutPriority.required,
+        verticalFittingPriority: .defaultLow).height
+    )
     
-    floatLoayout = BottomSheetLayout(preferredHeight:    view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize, withHorizontalFittingPriority: UILayoutPriority.required, verticalFittingPriority: .defaultLow).height)
+    let delegate = FloatingDelegate(
+      floatingLayout: floatLayout,
+      onDismiss: onDismiss
+    )
     
     let contentVC = UIViewController()
     contentVC.view = view
     let fpc = FloatingPanelController()
     fpc.set(contentViewController: contentVC)
-    fpc.delegate = self
-    fpc.backdropView.backgroundColor = UIColor(white: 0.0, alpha: 1.0)
+    fpc.delegate = delegate
+    fpc.backdropView.backgroundColor = UIColor.black
     fpc.isRemovalInteractionEnabled = true
+    
+    objc_setAssociatedObject(fpc, &AssociatedDelegateHandle, delegate, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
+    
     vc.present(fpc, animated: true, completion: nil)
   }
+}
+
+class FloatingDelegate: FloatingPanelControllerDelegate {
+  private let floatingLayout: FloatingPanelLayout
+  private let onDismiss: () -> Void
   
-  public func floatingPanel(_ vc: FloatingPanelController, layoutFor newCollection: UITraitCollection) -> FloatingPanelLayout? {
-    return floatLoayout
+  init(floatingLayout: FloatingPanelLayout, onDismiss: @escaping () -> Void) {
+    self.floatingLayout = floatingLayout
+    self.onDismiss = onDismiss
   }
   
-  public func floatingPanelDidEndRemove(_ vc: FloatingPanelController) {
-    print("dismissed?")
+  func floatingPanel(_ vc: FloatingPanelController, layoutFor newCollection: UITraitCollection) -> FloatingPanelLayout? {
+    return floatingLayout
+  }
+  
+  func floatingPanelDidEndRemove(_ vc: FloatingPanelController) {
+    onDismiss()
   }
 }
 
 class BottomSheetLayout: FloatingPanelLayout {
   var initialPosition: FloatingPanelPosition = .half
-  private var preferredHeight: CGFloat
+  
+  private let preferredHeight: CGFloat
+  
   init(preferredHeight: CGFloat) {
     self.preferredHeight = preferredHeight
   }
@@ -55,7 +82,7 @@ class BottomSheetLayout: FloatingPanelLayout {
     }
   }
   
-  var supportedPositions: Set<FloatingPanelPosition> = [.half, .hidden, .tip]
+  var supportedPositions: Set<FloatingPanelPosition> = [.half, .tip]
   
   func backdropAlphaFor(position: FloatingPanelPosition) -> CGFloat {
     return 0.3

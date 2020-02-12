@@ -15,5 +15,9 @@ actual fun Screen<*>.showBottomSheet(
     onDismiss: () -> Unit
 ) {
     val view = content.buildView(viewController).view
-    BottomSheetController().showOnViewController(this.viewController, view)
+    BottomSheetController().showOnViewController(
+        vc = this.viewController,
+        withContent = view,
+        onDismiss = onDismiss
+    )
 }
