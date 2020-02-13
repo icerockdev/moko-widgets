@@ -4,16 +4,9 @@
 
 package dev.icerock.moko.widgets.style
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.widget.EditText
-import com.google.android.gms.auth.api.phone.SmsRetriever
-import com.google.android.gms.common.api.CommonStatusCodes
-import com.google.android.gms.common.api.Status
-import com.redmadrobot.inputmask.MaskedTextChangedListener
 import dev.icerock.moko.widgets.style.input.InputType
+import com.redmadrobot.inputmask.MaskedTextChangedListener
 
 fun EditText.applyInputType(
     type: InputType,
@@ -34,30 +27,6 @@ fun EditText.applyInputType(
             })
 
         addTextChangedListener(maskedInputListener)
-    }
-
-    if (type == InputType.SMS_CODE) {
-        val client = SmsRetriever.getClient(context)
-        val task = client.startSmsRetriever()
-        task.addOnSuccessListener {
-            val smsReceiver = object : BroadcastReceiver() {
-                override fun onReceive(context: Context?, intent: Intent?) {
-                    if (!SmsRetriever.SMS_RETRIEVED_ACTION.equals(intent?.action)) return
-                    val extras = intent?.extras
-                    val status = extras?.get(SmsRetriever.EXTRA_SMS_MESSAGE) as Status
-                    when (status.statusCode) {
-                        CommonStatusCodes.SUCCESS -> {
-                            val message =
-                                (extras.get(SmsRetriever.EXTRA_SMS_MESSAGE) as String).split(" ")
-                            val code = message.findLast { it.toIntOrNull() != null }
-                            setText(code)
-                        }
-                    }
-                }
-            }
-            val intentFilter = IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION)
-            context.registerReceiver(smsReceiver, intentFilter)
-        }
     }
 }
 
