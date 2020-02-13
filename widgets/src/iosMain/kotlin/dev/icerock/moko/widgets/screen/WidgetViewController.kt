@@ -110,7 +110,7 @@ class WidgetViewController : UIViewController(nibName = null, bundle = null) {
         val endFrameValue = info[UIKeyboardFrameEndUserInfoKey] as NSValue
         val durationNumber = info[UIKeyboardAnimationDurationUserInfoKey] as NSNumber
 
-        val screenHeight = view.window?.bounds?.useContents { size.height } ?: 0.0
+        val screenHeight = view.bounds.useContents { size.height }
         val startY = startFrameValue.CGRectValue.useContents { origin.y }
         val endY = endFrameValue.CGRectValue.useContents { origin.y }
         val duration = durationNumber.doubleValue
