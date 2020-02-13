@@ -12,7 +12,6 @@ import platform.UIKit.UIKeyboardTypeDefault
 import platform.UIKit.UIKeyboardTypeDecimalPad
 import platform.UIKit.UIKeyboardTypePhonePad
 import platform.UIKit.UIKeyboardTypeNumberPad
-import platform.UIKit.UITextContentTypeOneTimeCode
 
 
 fun UITextField.applyInputTypeIfNeeded(
@@ -21,10 +20,6 @@ fun UITextField.applyInputTypeIfNeeded(
     if (type == null) return
     this.keyboardType = type.toPlatformInputType()
     this.secureTextEntry = type == InputType.PASSWORD
-
-    if (type == InputType.SMS_CODE) {
-        textContentType = UITextContentTypeOneTimeCode
-    }
 }
 
 private fun InputType.toPlatformInputType(): UIKeyboardType {
@@ -35,6 +30,5 @@ private fun InputType.toPlatformInputType(): UIKeyboardType {
         InputType.DATE -> UIKeyboardTypeDecimalPad
         InputType.PHONE -> UIKeyboardTypePhonePad
         InputType.DIGITS -> UIKeyboardTypeNumberPad
-        InputType.SMS_CODE -> UIKeyboardTypeNumberPad
     }
 }

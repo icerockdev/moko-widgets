@@ -38,6 +38,5 @@ private fun InputType.toPlatformInputType(): Int {
         InputType.DATE -> android.text.InputType.TYPE_CLASS_DATETIME + android.text.InputType.TYPE_DATETIME_VARIATION_DATE
         InputType.PHONE -> android.text.InputType.TYPE_CLASS_PHONE
         InputType.DIGITS -> android.text.InputType.TYPE_CLASS_NUMBER
-        InputType.SMS_CODE -> android.text.InputType.TYPE_CLASS_NUMBER
     }
 }
