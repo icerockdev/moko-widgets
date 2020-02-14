@@ -29,6 +29,8 @@ object Versions {
             const val inputMask = "5.0.0"
             const val glide = "4.10.0"
             const val roundedImageView = "2.3.0"
+            const val playServiceAuth = "17.0.0"
+            const val playServiceAuthSms = "17.1.0"
         }
 
         object MultiPlatform {
