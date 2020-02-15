@@ -40,6 +40,7 @@ include(":gradle-plugin")
 if (!pluginPublish) {
     include(":widgets")
     include(":widgets-flat")
+    include(":widgets-sms")
     include(":widgets-bottomsheet")
 
     if (!libraryPublish) {
