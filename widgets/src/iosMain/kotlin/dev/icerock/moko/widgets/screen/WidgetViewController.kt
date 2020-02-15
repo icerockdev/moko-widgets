@@ -42,6 +42,7 @@ import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 import platform.UIKit.UIApplication
 import platform.UIKit.convertRect
+import kotlin.math.max
 
 @ExportObjCClass
 class WidgetViewController : UIViewController(nibName = null, bundle = null) {
@@ -120,17 +121,9 @@ class WidgetViewController : UIViewController(nibName = null, bundle = null) {
         val screenHeight = view.bounds.useContents { size.height }
         val duration = durationNumber.doubleValue
 
-        val startConstant = if (screenHeight > startY) {
-            (screenHeight - startY)
-        } else {
-            0.0
-        }
+        val startConstant = max(screenHeight - startY, 0.0)
 
-        val endConstant = if (screenHeight > endY) {
-            (screenHeight - endY)
-        } else {
-            0.0
-        }
+        val endConstant = max(screenHeight - endY, 0.0)
 
         bottomConstraint.constant = startConstant
         view.layoutIfNeeded()
