@@ -40,7 +40,9 @@ import platform.UIKit.systemBackgroundColor
 import platform.UIKit.topAnchor
 import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
-import platform.UIKit.window
+import platform.UIKit.UIApplication
+import platform.UIKit.convertRect
+import kotlin.math.max
 
 @ExportObjCClass
 class WidgetViewController : UIViewController(nibName = null, bundle = null) {
@@ -110,15 +112,23 @@ class WidgetViewController : UIViewController(nibName = null, bundle = null) {
         val endFrameValue = info[UIKeyboardFrameEndUserInfoKey] as NSValue
         val durationNumber = info[UIKeyboardAnimationDurationUserInfoKey] as NSNumber
 
-        val screenHeight = view.window?.bounds?.useContents { size.height } ?: 0.0
-        val startY = startFrameValue.CGRectValue.useContents { origin.y }
-        val endY = endFrameValue.CGRectValue.useContents { origin.y }
+        val rootView = UIApplication.sharedApplication.keyWindow?.rootViewController?.view ?: view
+
+        val startY = rootView.convertRect(rect = startFrameValue.CGRectValue, toView = view)
+            .useContents { origin.y }
+        val endY = rootView.convertRect(rect = endFrameValue.CGRectValue, toView = view)
+            .useContents { origin.y }
+        val screenHeight = view.bounds.useContents { size.height }
         val duration = durationNumber.doubleValue
 
-        bottomConstraint.constant = (screenHeight - startY)
+        val startConstant = max(screenHeight - startY, 0.0)
+
+        val endConstant = max(screenHeight - endY, 0.0)
+
+        bottomConstraint.constant = startConstant
         view.layoutIfNeeded()
         UIView.animateWithDuration(duration = duration) {
-            bottomConstraint.constant = (screenHeight - endY)
+            bottomConstraint.constant = endConstant
             view.layoutIfNeeded()
         }
     }
