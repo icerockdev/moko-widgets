@@ -216,7 +216,6 @@ actual abstract class NavigationScreen<S> actual constructor(
                     ThemeAttrs.getPrimaryColor(context)
                 }
                 toolbar.setBackgroundColor(bgColor)
-                setStatusBarColor(bgColor)
 
                 val fallbackTintColor = ThemeAttrs.getControlNormalColor(context)
 
