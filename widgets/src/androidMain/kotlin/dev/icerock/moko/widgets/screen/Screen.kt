@@ -11,6 +11,7 @@ import android.os.Looper
 import android.os.Parcelable
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.mvvm.createViewModelFactory
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcher
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
@@ -28,6 +29,8 @@ actual abstract class Screen<Arg : Args> : Fragment() {
     var requestCode: Int? = null
     var resultCode: Int? = null
     var screenId: Int? = null
+
+    actual open val androidStatusBarColor: Color? = null
 
     actual inline fun <reified VM : ViewModel, Key : Any> getViewModel(
         key: Key,

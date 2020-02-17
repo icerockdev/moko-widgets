@@ -4,6 +4,7 @@
 
 package dev.icerock.moko.widgets.screen
 
+import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcher
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.widgets.objc.getAssociatedObject
@@ -17,6 +18,8 @@ actual abstract class Screen<Arg : Args> {
     val viewModelStore = mutableMapOf<Any, ViewModel>()
     // TODO private?
     var arg: Arg? = null
+
+    actual open val androidStatusBarColor: Color? = null
 
     actual inline fun <reified VM : ViewModel, Key : Any> getViewModel(
         key: Key,
