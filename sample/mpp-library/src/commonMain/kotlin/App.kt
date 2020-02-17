@@ -26,12 +26,18 @@ import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Value
 import dev.icerock.moko.widgets.factory.ButtonWithIconViewFactory
+import dev.icerock.moko.widgets.factory.FloatingLabelInputViewFactory
 import dev.icerock.moko.widgets.factory.IconGravity
+import dev.icerock.moko.widgets.factory.LinearViewFactory
 import dev.icerock.moko.widgets.factory.SystemImageViewFactory
 import dev.icerock.moko.widgets.factory.SystemInputViewFactory
 import dev.icerock.moko.widgets.flat.FlatInputViewFactory
+import dev.icerock.moko.widgets.sample.InputWidgetGalleryScreen
+import dev.icerock.moko.widgets.sample.ScrollContentScreen
+import dev.icerock.moko.widgets.sample.SelectGalleryScreen
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.BaseApplication
+import dev.icerock.moko.widgets.screen.Screen
 import dev.icerock.moko.widgets.screen.ScreenDesc
 import dev.icerock.moko.widgets.screen.TypedScreenDesc
 import dev.icerock.moko.widgets.screen.WidgetScreen
@@ -50,13 +56,87 @@ import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.background.StateBackground
 import dev.icerock.moko.widgets.style.view.CornerRadiusValue
+import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
 class App() : BaseApplication() {
 
+    object SystemInputId : InputWidget.Id
+    object FloatingLabelInputId : InputWidget.Id
+    object FlatInputId : InputWidget.Id
+
     override fun setup(): ScreenDesc<Args.Empty> {
+        val theme = Theme {
+            factory[ScrollContentScreen.Ids.ScrollContent] = LinearViewFactory(
+                padding = PaddingValues(padding = 16.0f)
+            )
+            factory[SystemInputId] = SystemInputViewFactory(margins = MarginValues(bottom = 16.0f))
+            factory[FloatingLabelInputId] = FloatingLabelInputViewFactory(margins = MarginValues(bottom = 16.0f))
+            factory[FlatInputId] = FlatInputViewFactory(margins = MarginValues(bottom = 16.0f))
+        }
+
+        return registerScreen(RootNavigationScreen::class) {
+            val router = createRouter()
+
+            RootNavigationScreen(
+                initialScreen = registerGalleryScreen(theme, router),
+                router = router
+            )
+        }
+    }
+
+    private fun registerGalleryScreen(
+        theme: Theme,
+        router: NavigationScreen.Router
+    ): TypedScreenDesc<Args.Empty, SelectGalleryScreen> {
+        return registerScreen(SelectGalleryScreen::class) {
+            SelectGalleryScreen(
+                theme = theme,
+                routes = listOf(
+                    buildInputGalleryRouteInfo(theme, router),
+                    SelectGalleryScreen.RouteInfo(
+                        name = "Old Demo".desc(),
+                        route = router.createPushRoute(oldDemo(router))
+                    )
+                )
+            )
+        }
+    }
+
+    private fun buildInputGalleryRouteInfo(
+        theme: Theme,
+        router: NavigationScreen.Router
+    ): SelectGalleryScreen.RouteInfo {
+        val inputScreen = registerScreen(InputWidgetGalleryScreen::class) {
+            InputWidgetGalleryScreen(
+                theme = theme,
+                inputs = listOf(
+                    InputWidgetGalleryScreen.InputInfo(
+                        id = SystemInputId,
+                        label = "SystemInputViewFactory".desc()
+                    ),
+                    InputWidgetGalleryScreen.InputInfo(
+                        id = FloatingLabelInputId,
+                        label = "FloatingLabelInputViewFactory".desc()
+                    ),
+                    InputWidgetGalleryScreen.InputInfo(
+                        id = FlatInputId,
+                        label = "FlatInputViewFactory".desc()
+                    )
+                )
+            )
+        }
+        return SelectGalleryScreen.RouteInfo(
+            name = "InputWidget".desc(),
+            route = router.createPushRoute(inputScreen)
+        )
+    }
+
+    fun oldDemo(
+        router: NavigationScreen.Router
+    ): TypedScreenDesc<Args.Empty, LoginScreen> {
         val sharedFactory = SharedFactory()
         val theme = AppTheme.baseTheme
 
@@ -163,34 +243,25 @@ class App() : BaseApplication() {
             }
         }
 
-        return registerScreen(RootNavigationScreen::class) {
-            val router = createRouter()
+        val regScreen = registerScreen(RegisterScreen::class) {
+            RegisterScreen(theme)
+        }
 
-            val regScreen = registerScreen(RegisterScreen::class) {
-                RegisterScreen(theme)
-            }
-
-            val oauthScreen = registerScreen(InfoWebViewScreen::class) {
-                InfoWebViewScreen(
-                    theme = loginTheme
-                )
-            }
-
-            val loginScreen = registerScreen(LoginScreen::class) {
-                LoginScreen(
-                    theme = loginTheme,
-                    mainRoute = router.createReplaceRoute(mainScreen),
-                    registerRoute = router.createPushResultRoute(regScreen) { it.token },
-                    infoWebViewRoute = router.createPushRoute(oauthScreen) {
-                        InfoWebViewScreen.WebViewArgs(it)
-                    }
-                ) { LoginViewModel(it) }
-            }
-
-            RootNavigationScreen(
-                initialScreen = loginScreen,
-                router = router
+        val oauthScreen = registerScreen(InfoWebViewScreen::class) {
+            InfoWebViewScreen(
+                theme = loginTheme
             )
+        }
+
+        return registerScreen(LoginScreen::class) {
+            LoginScreen(
+                theme = loginTheme,
+                mainRoute = router.createReplaceRoute(mainScreen),
+                registerRoute = router.createPushResultRoute(regScreen) { it.token },
+                infoWebViewRoute = router.createPushRoute(oauthScreen) {
+                    InfoWebViewScreen.WebViewArgs(it)
+                }
+            ) { LoginViewModel(it) }
         }
     }
 }
@@ -236,8 +307,8 @@ class MainBottomNavigationScreen(
     }
 }
 
-class RootNavigationScreen(initialScreen: TypedScreenDesc<Args.Empty, LoginScreen>, router: Router) :
-    NavigationScreen<LoginScreen>(initialScreen, router)
+class RootNavigationScreen<T>(initialScreen: TypedScreenDesc<Args.Empty, T>, router: Router) :
+    NavigationScreen<T>(initialScreen, router) where T : Screen<Args.Empty>, T : NavigationItem
 
 class ProductsNavigationScreen(initialScreen: TypedScreenDesc<Args.Empty, ProductsScreen>, router: Router) :
     NavigationScreen<ProductsScreen>(initialScreen, router)

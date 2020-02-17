@@ -14,6 +14,7 @@ import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.ImageWidget
 import dev.icerock.moko.widgets.InputWidget
+import dev.icerock.moko.widgets.bottomsheet.showBottomSheet
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.constraint
 import dev.icerock.moko.widgets.core.Image
@@ -21,6 +22,7 @@ import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Value
 import dev.icerock.moko.widgets.image
 import dev.icerock.moko.widgets.input
+import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.WidgetScreen
 import dev.icerock.moko.widgets.screen.getViewModel
@@ -31,6 +33,7 @@ import dev.icerock.moko.widgets.screen.navigation.Route
 import dev.icerock.moko.widgets.screen.navigation.RouteWithResult
 import dev.icerock.moko.widgets.screen.navigation.registerRouteHandler
 import dev.icerock.moko.widgets.screen.navigation.route
+import dev.icerock.moko.widgets.screen.showToast
 import dev.icerock.moko.widgets.style.input.InputType
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
@@ -142,7 +145,25 @@ class LoginScreen(
     }
 
     override fun routeToRegistration() {
-        registerRoute.route(this, registerHandler)
+//        registerRoute.route(this, registerHandler)
+        showBottomSheet(
+            content = with(theme) {
+                linear(size = WidgetSize.WidthAsParentHeightWrapContent) {
+                    +text(
+                        size = WidgetSize.WidthAsParentHeightWrapContent,
+                        text = const("hello world")
+                    )
+                    +button(
+                        size = WidgetSize.WidthAsParentHeightWrapContent,
+                        content = ButtonWidget.Content.Text(Value.data("hi!".desc()))
+                    ) {
+                        showToast("hi".desc())
+                    }
+                }
+            }
+        ) {
+            showToast("dismissed".desc())
+        }
     }
 
     override fun routeToWebViewInfo() {
