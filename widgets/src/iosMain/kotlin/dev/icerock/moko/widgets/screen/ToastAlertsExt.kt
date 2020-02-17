@@ -17,7 +17,7 @@ actual fun Screen<*>.showToast(message: StringDesc) {
 
         layer.cornerRadius = 10.0
         clipsToBounds = true
-        backgroundColor = UIColor(red = 0.0, green = 0.0, blue = 0.0, alpha = 0.4)
+        backgroundColor = UIColor(red = 0.8, green = 0.8, blue = 0.8, alpha = 0.8)
     }
 
 
@@ -42,6 +42,8 @@ actual fun Screen<*>.showToast(message: StringDesc) {
         true
     containerView.bottomAnchor.constraintEqualToAnchor(viewController.view.safeAreaLayoutGuide.bottomAnchor, -60.0)
         .active = true
+    containerView.leadingAnchor.constraintGreaterThanOrEqualToAnchor(viewController.view.leadingAnchor, 24.0).active = true
+    viewController.view.trailingAnchor.constraintGreaterThanOrEqualToAnchor(containerView.trailingAnchor, 24.0).active = true
 
     UIView.animateWithDuration(
         duration = 1.0,
