@@ -71,7 +71,7 @@ class LoginScreen(
                 id = Id.EmailInputId,
                 label = const("Email".desc() as StringDesc),
                 field = viewModel.emailField,
-                inputType = InputType.PHONE
+                inputType = InputType.Phone()
             )
             val passwordInput = +input(
                 size = WidgetSize.WidthAsParentHeightWrapContent,

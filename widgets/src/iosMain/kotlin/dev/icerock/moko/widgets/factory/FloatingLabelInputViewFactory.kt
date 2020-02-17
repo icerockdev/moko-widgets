@@ -384,7 +384,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
             if (inputType?.mask != null) {
                 formatterDelegate = DefaultFormatterUITextFieldDelegate(
                     DefaultTextFormatter(
-                        textPattern = inputType.mask.toIosPattern(),
+                        textPattern = inputType.mask?.toIosPattern() ?: "",
                         patternSymbol = '#'
                     )
                 )

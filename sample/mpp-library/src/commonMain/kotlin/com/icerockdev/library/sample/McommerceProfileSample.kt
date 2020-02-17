@@ -45,14 +45,14 @@ class McommerceProfileScreen(
                         id = Id.BirthdayInput,
                         label = const("Дата рождения"),
                         field = viewModel.birthdayField,
-                        inputType = InputType.DATE
+                        inputType = InputType.Date()
                     )
                     +input(
                         size = WidgetSize.WidthAsParentHeightWrapContent,
                         id = Id.PhoneInput,
                         label = const("Телефон"),
                         field = viewModel.phoneField,
-                        inputType = InputType.PHONE
+                        inputType = InputType.Phone()
                     )
                     +button(
                         size = WidgetSize.WidthAsParentHeightWrapContent,

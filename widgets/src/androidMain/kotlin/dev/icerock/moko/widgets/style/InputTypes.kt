@@ -32,11 +32,11 @@ fun EditText.applyInputType(
 
 private fun InputType.toPlatformInputType(): Int {
     return when (this) {
-        InputType.EMAIL -> android.text.InputType.TYPE_CLASS_TEXT + android.text.InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
-        InputType.PLAIN_TEXT -> android.text.InputType.TYPE_CLASS_TEXT + android.text.InputType.TYPE_TEXT_VARIATION_NORMAL
-        InputType.PASSWORD -> android.text.InputType.TYPE_CLASS_TEXT + android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
-        InputType.DATE -> android.text.InputType.TYPE_CLASS_DATETIME + android.text.InputType.TYPE_DATETIME_VARIATION_DATE
-        InputType.PHONE -> android.text.InputType.TYPE_CLASS_PHONE
-        InputType.DIGITS -> android.text.InputType.TYPE_CLASS_NUMBER
+        is InputType.Email -> android.text.InputType.TYPE_CLASS_TEXT + android.text.InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+        is InputType.Plain -> android.text.InputType.TYPE_CLASS_TEXT + android.text.InputType.TYPE_TEXT_VARIATION_NORMAL
+        is InputType.Password -> android.text.InputType.TYPE_CLASS_TEXT + android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
+        is InputType.Date -> android.text.InputType.TYPE_CLASS_DATETIME + android.text.InputType.TYPE_DATETIME_VARIATION_DATE
+        is InputType.Phone -> android.text.InputType.TYPE_CLASS_PHONE
+        is InputType.Digits -> android.text.InputType.TYPE_CLASS_NUMBER
     }
 }

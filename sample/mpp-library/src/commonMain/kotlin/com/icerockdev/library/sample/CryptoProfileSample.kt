@@ -49,28 +49,28 @@ class CryptoProfileScreen(
                         id = Id.PhoneInput,
                         label = const("Phone number"),
                         field = viewModel.phoneField,
-                        inputType = InputType.PHONE
+                        inputType = InputType.Phone()
                     )
                     +input(
                         size = WidgetSize.WidthAsParentHeightWrapContent,
                         id = Id.EmailInput,
                         label = const("Email"),
                         field = viewModel.emailField,
-                        inputType = InputType.EMAIL
+                        inputType = InputType.Phone()
                     )
                     +input(
                         size = WidgetSize.WidthAsParentHeightWrapContent,
                         id = Id.PasswordInput,
                         label = const("Password"),
                         field = viewModel.passwordField,
-                        inputType = InputType.PASSWORD
+                        inputType = InputType.Password()
                     )
                     +input(
                         size = WidgetSize.WidthAsParentHeightWrapContent,
                         id = Id.RepeatPasswordInput,
                         label = const("Repeat password"),
                         field = viewModel.repeatPasswordField,
-                        inputType = InputType.PASSWORD
+                        inputType = InputType.Password()
                     )
                     +button(
                         size = WidgetSize.WidthAsParentHeightWrapContent,
