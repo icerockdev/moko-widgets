@@ -19,16 +19,16 @@ fun UITextField.applyInputTypeIfNeeded(
 ) {
     if (type == null) return
     this.keyboardType = type.toPlatformInputType()
-    this.secureTextEntry = type == InputType.PASSWORD
+    this.secureTextEntry = type == InputType.Password()
 }
 
 private fun InputType.toPlatformInputType(): UIKeyboardType {
     return when (this) {
-        InputType.EMAIL -> UIKeyboardTypeEmailAddress
-        InputType.PLAIN_TEXT -> UIKeyboardTypeDefault
-        InputType.PASSWORD -> UIKeyboardTypeDefault
-        InputType.DATE -> UIKeyboardTypeDecimalPad
-        InputType.PHONE -> UIKeyboardTypePhonePad
-        InputType.DIGITS -> UIKeyboardTypeNumberPad
+        is InputType.Email -> UIKeyboardTypeEmailAddress
+        is InputType.Plain -> UIKeyboardTypeDefault
+        is InputType.Password -> UIKeyboardTypeDefault
+        is InputType.Date -> UIKeyboardTypeDecimalPad
+        is InputType.Phone -> UIKeyboardTypePhonePad
+        is InputType.Digits -> UIKeyboardTypeNumberPad
     }
 }
