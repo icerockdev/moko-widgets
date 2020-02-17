@@ -12,8 +12,8 @@ import platform.UIKit.UIViewController
 actual abstract class WidgetScreen<Arg : Args> actual constructor() : Screen<Arg>() {
     actual abstract fun createContentWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>
 
-    override fun createViewController(): UIViewController {
-        return WidgetViewController().apply {
+    override fun createViewController(isLightStatusBar: Boolean?): UIViewController {
+        return WidgetViewController(isLightStatusBar).apply {
             widget = createContentWidget()
         }
     }

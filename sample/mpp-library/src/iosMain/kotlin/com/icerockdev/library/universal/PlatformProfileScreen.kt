@@ -15,7 +15,7 @@ actual class PlatformProfileScreen actual constructor(
     override val backRoute: Route<Unit>
 ) : ProfileScreen() {
 
-    override fun createViewController(): UIViewController {
+    override fun createViewController(isLightStatusBar: Boolean?): UIViewController {
         val viewController = ProfileViewController(
             bundle = NSBundle.bundleForClass(ProfileViewController.`class`()!!),
             nibName = null

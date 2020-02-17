@@ -38,7 +38,7 @@ actual abstract class Screen<Arg : Args> {
         return EventsDispatcher()
     }
 
-    protected abstract fun createViewController(): UIViewController
+    protected abstract fun createViewController(isLightStatusBar: Boolean?): UIViewController
 
     private var _viewController: WeakReference<UIViewController>? = null
     val viewController: UIViewController
@@ -46,7 +46,7 @@ actual abstract class Screen<Arg : Args> {
             val current = _viewController?.get()
             if (current != null) return current
 
-            val vc = createViewController().also {
+            val vc = createViewController(isLightStatusBar).also {
                 setAssociatedObject(it, this)
             }
             _viewController = WeakReference(vc)

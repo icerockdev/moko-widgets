@@ -26,7 +26,12 @@ class SelectGalleryScreen(
     override val androidStatusBarColor: Color? = Color(0x0000FFFF)
     override val isLightStatusBar: Boolean? = false
 
-    override val navigationBar: NavigationBar = NavigationBar.Normal(title = "Select gallery".desc())
+    override val navigationBar: NavigationBar = NavigationBar.Normal(
+        title = "Select gallery".desc(),
+        styles = NavigationBar.Normal.Styles(
+            backgroundColor = Color(0x4444EEFF)
+        )
+    )
 
     override fun LinearWidget.ChildrenBuilder.fillLinear(theme: Theme) {
         with(theme) {

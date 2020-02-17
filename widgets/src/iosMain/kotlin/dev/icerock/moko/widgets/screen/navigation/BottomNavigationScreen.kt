@@ -8,6 +8,8 @@ import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.graphics.toUIColor
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.Screen
+import dev.icerock.moko.widgets.utils.getStatusBarStyle
+import platform.UIKit.UIStatusBarStyle
 import platform.UIKit.UITabBarController
 import platform.UIKit.UITabBarItem
 import platform.UIKit.UIViewController
@@ -60,8 +62,8 @@ actual abstract class BottomNavigationScreen actual constructor(
             }
         }
 
-    override fun createViewController(): UIViewController {
-        val controller = UITabBarController()
+    override fun createViewController(isLightStatusBar: Boolean?): UIViewController {
+        val controller = TabBarController(isLightStatusBar)
         val items = items
         val viewControllers = items.map { item ->
             val childScreen = item.screenDesc.instantiate()
@@ -92,5 +94,14 @@ actual abstract class BottomNavigationScreen actual constructor(
                 }
             }
         }
+    }
+}
+
+private class TabBarController(
+    private val isLightStatusBar: Boolean?
+) : UITabBarController(nibName = null, bundle = null) {
+
+    override fun preferredStatusBarStyle(): UIStatusBarStyle {
+        return getStatusBarStyle(isLightStatusBar) ?: super.preferredStatusBarStyle()
     }
 }

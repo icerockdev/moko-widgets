@@ -16,8 +16,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         app.initialize()
         
         let screen = app.rootScreen.instantiate()
-        let rootViewController = screen.createViewController()
-        
+        let rootViewController = screen.viewController
+
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = rootViewController
         window?.makeKeyAndVisible()
