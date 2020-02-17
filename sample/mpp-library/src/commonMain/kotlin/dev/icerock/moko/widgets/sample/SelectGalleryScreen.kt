@@ -23,7 +23,8 @@ class SelectGalleryScreen(
     theme: Theme,
     private val routes: List<RouteInfo>
 ) : ScrollContentScreen<Args.Empty>(theme), NavigationItem {
-    override val androidStatusBarColor: Color? = Color(0xFF0000FF)
+    override val androidStatusBarColor: Color? = Color(0x0000FFFF)
+    override val isLightStatusBar: Boolean? = false
 
     override val navigationBar: NavigationBar = NavigationBar.Normal(title = "Select gallery".desc())
 

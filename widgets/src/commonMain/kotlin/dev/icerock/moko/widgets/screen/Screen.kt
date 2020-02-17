@@ -15,6 +15,7 @@ expect abstract class Screen<Arg : Args>() {
     fun <T : Any> createEventsDispatcher(): EventsDispatcher<T>
 
     open val androidStatusBarColor: Color?
+    open val isLightStatusBar: Boolean?
 }
 
 inline fun <Arg : Args, reified VM : ViewModel> Screen<Arg>.getViewModel(crossinline viewModelFactory: () -> VM): VM {

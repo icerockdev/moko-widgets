@@ -15,6 +15,7 @@ abstract class BaseApplication {
         private set
 
     open val androidStatusBarColor: Color? = null
+    open val isLightStatusBar: Boolean? = null
 
     protected abstract fun setup(): ScreenDesc<Args.Empty>
 

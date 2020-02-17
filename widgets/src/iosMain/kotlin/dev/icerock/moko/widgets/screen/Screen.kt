@@ -20,6 +20,7 @@ actual abstract class Screen<Arg : Args> {
     var arg: Arg? = null
 
     actual open val androidStatusBarColor: Color? = null
+    actual open val isLightStatusBar: Boolean? = null
 
     actual inline fun <reified VM : ViewModel, Key : Any> getViewModel(
         key: Key,
