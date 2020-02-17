@@ -48,15 +48,15 @@ import platform.UIKit.window
 import platform.darwin.NSObject
 import platform.UIKit.UIApplication
 import platform.UIKit.convertRect
+import platform.UIKit.isDescendantOfView
 import kotlin.math.max
 
 @ExportObjCClass
-class WidgetViewController : UIViewController(nibName = null, bundle = null) {
+class WidgetViewController : UIViewController(nibName = null, bundle = null), UIGestureRecognizerDelegateProtocol {
 
     lateinit var widget: Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>
 
     lateinit var bottomConstraint: NSLayoutConstraint
-    private val tapDelegate = RecognizerDelegate()
 
     override fun viewDidLoad() {
         super.viewDidLoad()
@@ -107,10 +107,22 @@ class WidgetViewController : UIViewController(nibName = null, bundle = null) {
                 action = NSSelectorFromString("onContentViewTap")
             )
             tapGesture.cancelsTouchesInView = false
-            tapGesture.delegate = tapDelegate
+            tapGesture.delegate = this
             view.userInteractionEnabled = true
             view.addGestureRecognizer(tapGesture)
         }
+    }
+
+    override fun gestureRecognizer(
+        gestureRecognizer: UIGestureRecognizer,
+        shouldReceiveTouch: UITouch
+    ): Boolean {
+        shouldReceiveTouch.view?.let { touchView ->
+            if (touchView.isKindOfClass(UIControl.`class`()) && touchView.isDescendantOfView(view)) {
+                return false
+            }
+        }
+        return true
     }
 
     @ObjCAction
@@ -144,17 +156,5 @@ class WidgetViewController : UIViewController(nibName = null, bundle = null) {
     @ObjCAction
     fun onContentViewTap() {
         view.endEditing(true)
-    }
-}
-
-private class RecognizerDelegate : NSObject(), UIGestureRecognizerDelegateProtocol {
-    override fun gestureRecognizer(
-        gestureRecognizer: UIGestureRecognizer,
-        shouldReceiveTouch: UITouch
-    ): Boolean {
-        if (shouldReceiveTouch.view?.isKindOfClass(UIControl.`class`()) == true) {
-            return false
-        }
-        return true
     }
 }
