@@ -8,13 +8,16 @@ import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.Screen
 import dev.icerock.moko.widgets.screen.TypedScreenDesc
+import dev.icerock.moko.widgets.screen.application
 import dev.icerock.moko.widgets.screen.getAssociatedScreen
 import dev.icerock.moko.widgets.style.applyNavigationBarStyle
+import dev.icerock.moko.widgets.utils.getStatusBarStyle
 import dev.icerock.moko.widgets.utils.toUIBarButtonItem
 import kotlinx.coroutines.Runnable
 import platform.UIKit.UIBarButtonItem
 import platform.UIKit.UINavigationController
 import platform.UIKit.UINavigationControllerDelegateProtocol
+import platform.UIKit.UIStatusBarStyle
 import platform.UIKit.UIViewController
 import platform.UIKit.navigationItem
 import platform.darwin.NSObject
@@ -32,8 +35,8 @@ actual abstract class NavigationScreen<S> actual constructor(
     private var navigationController: UINavigationController? = null
     private val controllerDelegate = ControllerDelegate(this)
 
-    override fun createViewController(): UIViewController {
-        val controller = UINavigationController().also {
+    override fun createViewController(isLightStatusBar: Boolean?): UIViewController {
+        val controller = NavigationController(isLightStatusBar).also {
             navigationController = it
             it.delegate = controllerDelegate
         }
@@ -172,5 +175,16 @@ actual abstract class NavigationScreen<S> actual constructor(
                 navigationScreen.get()?.updateNavigation(screen, controller)
             }
         }
+    }
+}
+
+private class NavigationController(
+    private val isLightStatusBar: Boolean?
+) : UINavigationController(nibName = null, bundle = null) {
+
+    override fun preferredStatusBarStyle(): UIStatusBarStyle {
+        val topScreen = topViewController?.getAssociatedScreen()
+        val isLight = topScreen?.isLightStatusBar ?: isLightStatusBar ?: application.isLightStatusBar
+        return getStatusBarStyle(isLight) ?: super.preferredStatusBarStyle()
     }
 }
