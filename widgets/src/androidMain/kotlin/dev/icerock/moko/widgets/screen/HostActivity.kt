@@ -4,13 +4,10 @@
 
 package dev.icerock.moko.widgets.screen
 
-import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
-import androidx.fragment.app.FragmentManager
-import dev.icerock.moko.widgets.utils.ThemeAttrs
 import kotlin.reflect.KClass
 
 abstract class HostActivity : AppCompatActivity() {
@@ -23,18 +20,6 @@ abstract class HostActivity : AppCompatActivity() {
                 return screenDesc?.instantiate() ?: super.instantiate(classLoader, className)
             }
         }
-        supportFragmentManager.registerFragmentLifecycleCallbacks(object :
-            FragmentManager.FragmentLifecycleCallbacks() {
-            override fun onFragmentResumed(fm: FragmentManager, f: Fragment) {
-                super.onFragmentResumed(fm, f)
-
-                if (f !is Screen<*>) return
-
-                val color = f.androidStatusBarColor ?: application.androidStatusBarColor
-                val argb = color?.argb?.toInt() ?: ThemeAttrs.getPrimaryDarkColor(this@HostActivity)
-                setStatusBarColor(argb)
-            }
-        }, true)
         super.onCreate(savedInstanceState)
 
         if (savedInstanceState == null) {
@@ -45,12 +30,6 @@ abstract class HostActivity : AppCompatActivity() {
                 .replace(android.R.id.content, screenInstance)
                 .commit()
         }
-    }
-
-    private fun setStatusBarColor(color: Int) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return
-
-        window.statusBarColor = color
     }
 
     abstract val application: BaseApplication

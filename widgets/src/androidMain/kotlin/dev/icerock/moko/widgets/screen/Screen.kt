@@ -5,6 +5,7 @@
 package dev.icerock.moko.widgets.screen
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -15,6 +16,7 @@ import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.mvvm.createViewModelFactory
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcher
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import dev.icerock.moko.widgets.utils.ThemeAttrs
 import dev.icerock.moko.widgets.utils.getIntNullable
 import java.util.concurrent.Executor
 import kotlin.properties.ReadOnlyProperty
@@ -55,6 +57,37 @@ actual abstract class Screen<Arg : Args> : Fragment() {
             resultCode = getIntNullable(RESULT_CODE_KEY)
             screenId = getIntNullable(SCREEN_ID_KEY)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val color = resolveStatusBarColor()
+        setStatusBarColor(color)
+    }
+
+    private fun resolveStatusBarColor(): Int {
+        if(androidStatusBarColor != null) return androidStatusBarColor!!.argb.toInt()
+
+        var parent = parentFragment
+        while(parent != null) {
+            if(parent is Screen<*> && parent.androidStatusBarColor != null) {
+                return parent.androidStatusBarColor!!.argb.toInt()
+            }
+            parent = parent.parentFragment
+        }
+
+        val hostActivity = activity as? HostActivity
+        val appColor = hostActivity?.application?.androidStatusBarColor
+        if(appColor != null) return appColor.argb.toInt()
+
+        return ThemeAttrs.getPrimaryDarkColor(requireContext())
+    }
+
+    private fun setStatusBarColor(color: Int) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return
+
+        requireActivity().window.statusBarColor = color
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
