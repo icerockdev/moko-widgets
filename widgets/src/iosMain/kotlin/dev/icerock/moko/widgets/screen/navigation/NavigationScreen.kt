@@ -8,6 +8,7 @@ import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.Screen
 import dev.icerock.moko.widgets.screen.TypedScreenDesc
+import dev.icerock.moko.widgets.screen.application
 import dev.icerock.moko.widgets.screen.getAssociatedScreen
 import dev.icerock.moko.widgets.style.applyNavigationBarStyle
 import dev.icerock.moko.widgets.utils.getStatusBarStyle
@@ -183,7 +184,7 @@ private class NavigationController(
 
     override fun preferredStatusBarStyle(): UIStatusBarStyle {
         val topScreen = topViewController?.getAssociatedScreen()
-        val isLight = topScreen?.isLightStatusBar ?: isLightStatusBar
+        val isLight = topScreen?.isLightStatusBar ?: isLightStatusBar ?: application.isLightStatusBar
         return getStatusBarStyle(isLight) ?: super.preferredStatusBarStyle()
     }
 }

@@ -14,6 +14,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         
         let app = App()
         app.initialize()
+        ApplicationHolderKt.application = app
         
         let screen = app.rootScreen.instantiate()
         let rootViewController = screen.viewController

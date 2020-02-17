@@ -8,6 +8,7 @@ import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.graphics.toUIColor
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.Screen
+import dev.icerock.moko.widgets.screen.application
 import dev.icerock.moko.widgets.utils.getStatusBarStyle
 import platform.UIKit.UIStatusBarStyle
 import platform.UIKit.UITabBarController
@@ -102,6 +103,7 @@ private class TabBarController(
 ) : UITabBarController(nibName = null, bundle = null) {
 
     override fun preferredStatusBarStyle(): UIStatusBarStyle {
-        return getStatusBarStyle(isLightStatusBar) ?: super.preferredStatusBarStyle()
+        val light = isLightStatusBar ?: application.isLightStatusBar
+        return getStatusBarStyle(light) ?: super.preferredStatusBarStyle()
     }
 }

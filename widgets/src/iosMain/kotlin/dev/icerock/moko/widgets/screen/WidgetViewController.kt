@@ -142,6 +142,7 @@ class WidgetViewController(
     }
 
     override fun preferredStatusBarStyle(): UIStatusBarStyle {
-        return getStatusBarStyle(isLightStatusBar) ?: super.preferredStatusBarStyle()
+        val light = isLightStatusBar ?: application.isLightStatusBar
+        return getStatusBarStyle(light) ?: super.preferredStatusBarStyle()
     }
 }
