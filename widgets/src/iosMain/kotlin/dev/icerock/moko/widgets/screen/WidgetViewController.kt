@@ -19,6 +19,9 @@ import platform.Foundation.NSValue
 import platform.UIKit.CGRectValue
 import platform.UIKit.NSLayoutConstraint
 import platform.UIKit.UIColor
+import platform.UIKit.UIControl
+import platform.UIKit.UIGestureRecognizer
+import platform.UIKit.UIGestureRecognizerDelegateProtocol
 import platform.UIKit.UIKeyboardAnimationDurationUserInfoKey
 import platform.UIKit.UIKeyboardFrameBeginUserInfoKey
 import platform.UIKit.UIKeyboardFrameEndUserInfoKey
@@ -26,6 +29,7 @@ import platform.UIKit.UIKeyboardWillChangeFrameNotification
 import platform.UIKit.UIKeyboardWillHideNotification
 import platform.UIKit.UIKeyboardWillShowNotification
 import platform.UIKit.UITapGestureRecognizer
+import platform.UIKit.UITouch
 import platform.UIKit.UIView
 import platform.UIKit.UIViewController
 import platform.UIKit.addGestureRecognizer
@@ -41,6 +45,7 @@ import platform.UIKit.topAnchor
 import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 import platform.UIKit.window
+import platform.darwin.NSObject
 
 @ExportObjCClass
 class WidgetViewController : UIViewController(nibName = null, bundle = null) {
@@ -48,6 +53,7 @@ class WidgetViewController : UIViewController(nibName = null, bundle = null) {
     lateinit var widget: Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>
 
     lateinit var bottomConstraint: NSLayoutConstraint
+    private val tapDelegate = RecognizerDelegate()
 
     override fun viewDidLoad() {
         super.viewDidLoad()
@@ -98,6 +104,7 @@ class WidgetViewController : UIViewController(nibName = null, bundle = null) {
                 action = NSSelectorFromString("onContentViewTap")
             )
             tapGesture.cancelsTouchesInView = false
+            tapGesture.delegate = tapDelegate
             view.userInteractionEnabled = true
             view.addGestureRecognizer(tapGesture)
         }
@@ -126,5 +133,17 @@ class WidgetViewController : UIViewController(nibName = null, bundle = null) {
     @ObjCAction
     fun onContentViewTap() {
         view.endEditing(true)
+    }
+}
+
+private class RecognizerDelegate : NSObject(), UIGestureRecognizerDelegateProtocol {
+    override fun gestureRecognizer(
+        gestureRecognizer: UIGestureRecognizer,
+        shouldReceiveTouch: UITouch
+    ): Boolean {
+        if (shouldReceiveTouch.view?.isKindOfClass(UIControl.`class`()) == true) {
+            return false
+        }
+        return true
     }
 }
