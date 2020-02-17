@@ -4,6 +4,7 @@
 
 package dev.icerock.moko.widgets.sample
 
+import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.ButtonWidget
@@ -22,6 +23,8 @@ class SelectGalleryScreen(
     theme: Theme,
     private val routes: List<RouteInfo>
 ) : ScrollContentScreen<Args.Empty>(theme), NavigationItem {
+    override val androidStatusBarColor: Color? = Color(0xFF0000FF)
+
     override val navigationBar: NavigationBar = NavigationBar.Normal(title = "Select gallery".desc())
 
     override fun LinearWidget.ChildrenBuilder.fillLinear(theme: Theme) {
