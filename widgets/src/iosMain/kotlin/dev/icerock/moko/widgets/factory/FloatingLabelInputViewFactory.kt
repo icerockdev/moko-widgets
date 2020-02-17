@@ -10,6 +10,7 @@ import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.objc.setAssociatedObject
 import dev.icerock.moko.widgets.style.applyInputTypeIfNeeded
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.input.InputType
@@ -381,13 +382,16 @@ actual class FloatingLabelInputViewFactory actual constructor(
 
         fun applyInputTypeIfNeeded(inputType: InputType?) {
             textField.applyInputTypeIfNeeded(inputType)
-            if (inputType?.mask != null) {
-                formatterDelegate = DefaultFormatterUITextFieldDelegate(
-                    DefaultTextFormatter(
-                        textPattern = inputType.mask?.toIosPattern() ?: "",
+
+            inputType?.mask?.let { mask ->
+                val delegate = DefaultFormatterUITextFieldDelegate(
+                    inputFormatter = DefaultTextFormatter(
+                        mask.toIosPattern(),
                         patternSymbol = '#'
                     )
                 )
+                textField.delegate = delegate
+                setAssociatedObject(textField, delegate)
             }
         }
 

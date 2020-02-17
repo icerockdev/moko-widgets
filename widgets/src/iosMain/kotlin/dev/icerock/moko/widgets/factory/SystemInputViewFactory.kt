@@ -107,10 +107,10 @@ actual class SystemInputViewFactory actual constructor(
             }
         }
 
-        if (widget.inputType?.mask != null) {
+        widget.inputType?.mask?.let { mask ->
             val delegate = DefaultFormatterUITextFieldDelegate(
                 inputFormatter = DefaultTextFormatter(
-                    widget.inputType.mask?.toIosPattern() ?: "",
+                    mask.toIosPattern(),
                     patternSymbol = '#'
                 )
             )

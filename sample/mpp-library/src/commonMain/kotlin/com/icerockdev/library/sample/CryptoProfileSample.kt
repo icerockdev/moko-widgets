@@ -56,7 +56,7 @@ class CryptoProfileScreen(
                         id = Id.EmailInput,
                         label = const("Email"),
                         field = viewModel.emailField,
-                        inputType = InputType.Phone()
+                        inputType = InputType.Email()
                     )
                     +input(
                         size = WidgetSize.WidthAsParentHeightWrapContent,
