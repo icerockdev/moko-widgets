@@ -15,7 +15,7 @@ actual fun Screen<*>.showBottomSheet(
     content: Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.WrapContent>>,
     onDismiss: () -> Unit
 ) {
-    val context = requireContext()
+    val context = context ?: return
     val dialog = BottomSheetDialog(context)
     dialog.setContentView(
         content.buildView(
