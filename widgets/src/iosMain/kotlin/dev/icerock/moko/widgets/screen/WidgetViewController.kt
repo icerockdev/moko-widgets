@@ -7,6 +7,7 @@ package dev.icerock.moko.widgets.screen
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.utils.getStatusBarStyle
 import dev.icerock.moko.widgets.utils.safeSystemBackgroundColor
 import kotlinx.cinterop.ExportObjCClass
 import kotlinx.cinterop.ObjCAction
@@ -18,14 +19,20 @@ import platform.Foundation.NSSelectorFromString
 import platform.Foundation.NSValue
 import platform.UIKit.CGRectValue
 import platform.UIKit.NSLayoutConstraint
+import platform.UIKit.UIApplication
 import platform.UIKit.UIColor
+import platform.UIKit.UIControl
+import platform.UIKit.UIGestureRecognizer
+import platform.UIKit.UIGestureRecognizerDelegateProtocol
 import platform.UIKit.UIKeyboardAnimationDurationUserInfoKey
 import platform.UIKit.UIKeyboardFrameBeginUserInfoKey
 import platform.UIKit.UIKeyboardFrameEndUserInfoKey
 import platform.UIKit.UIKeyboardWillChangeFrameNotification
 import platform.UIKit.UIKeyboardWillHideNotification
 import platform.UIKit.UIKeyboardWillShowNotification
+import platform.UIKit.UIStatusBarStyle
 import platform.UIKit.UITapGestureRecognizer
+import platform.UIKit.UITouch
 import platform.UIKit.UIView
 import platform.UIKit.UIViewController
 import platform.UIKit.addGestureRecognizer
@@ -33,17 +40,20 @@ import platform.UIKit.addSubview
 import platform.UIKit.animateWithDuration
 import platform.UIKit.backgroundColor
 import platform.UIKit.bottomAnchor
+import platform.UIKit.convertRect
 import platform.UIKit.endEditing
 import platform.UIKit.layoutIfNeeded
 import platform.UIKit.leadingAnchor
-import platform.UIKit.systemBackgroundColor
 import platform.UIKit.topAnchor
 import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
-import platform.UIKit.window
+import platform.UIKit.isDescendantOfView
+import kotlin.math.max
 
 @ExportObjCClass
-class WidgetViewController : UIViewController(nibName = null, bundle = null) {
+class WidgetViewController(
+    private val isLightStatusBar: Boolean?
+) : UIViewController(nibName = null, bundle = null), UIGestureRecognizerDelegateProtocol {
 
     lateinit var widget: Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>
 
@@ -98,9 +108,22 @@ class WidgetViewController : UIViewController(nibName = null, bundle = null) {
                 action = NSSelectorFromString("onContentViewTap")
             )
             tapGesture.cancelsTouchesInView = false
+            tapGesture.delegate = this
             view.userInteractionEnabled = true
             view.addGestureRecognizer(tapGesture)
         }
+    }
+
+    override fun gestureRecognizer(
+        gestureRecognizer: UIGestureRecognizer,
+        shouldReceiveTouch: UITouch
+    ): Boolean {
+        shouldReceiveTouch.view?.let { touchView ->
+            if (touchView.isKindOfClass(UIControl.`class`()) && touchView.isDescendantOfView(view)) {
+                return false
+            }
+        }
+        return true
     }
 
     @ObjCAction
@@ -110,15 +133,23 @@ class WidgetViewController : UIViewController(nibName = null, bundle = null) {
         val endFrameValue = info[UIKeyboardFrameEndUserInfoKey] as NSValue
         val durationNumber = info[UIKeyboardAnimationDurationUserInfoKey] as NSNumber
 
-        val screenHeight = view.window?.bounds?.useContents { size.height } ?: 0.0
-        val startY = startFrameValue.CGRectValue.useContents { origin.y }
-        val endY = endFrameValue.CGRectValue.useContents { origin.y }
+        val rootView = UIApplication.sharedApplication.keyWindow?.rootViewController?.view ?: view
+
+        val startY = rootView.convertRect(rect = startFrameValue.CGRectValue, toView = view)
+            .useContents { origin.y }
+        val endY = rootView.convertRect(rect = endFrameValue.CGRectValue, toView = view)
+            .useContents { origin.y }
+        val screenHeight = view.bounds.useContents { size.height }
         val duration = durationNumber.doubleValue
 
-        bottomConstraint.constant = (screenHeight - startY)
+        val startConstant = max(screenHeight - startY, 0.0)
+
+        val endConstant = max(screenHeight - endY, 0.0)
+
+        bottomConstraint.constant = startConstant
         view.layoutIfNeeded()
         UIView.animateWithDuration(duration = duration) {
-            bottomConstraint.constant = (screenHeight - endY)
+            bottomConstraint.constant = endConstant
             view.layoutIfNeeded()
         }
     }
@@ -126,5 +157,10 @@ class WidgetViewController : UIViewController(nibName = null, bundle = null) {
     @ObjCAction
     fun onContentViewTap() {
         view.endEditing(true)
+    }
+
+    override fun preferredStatusBarStyle(): UIStatusBarStyle {
+        val light = isLightStatusBar ?: application.isLightStatusBar
+        return getStatusBarStyle(light) ?: super.preferredStatusBarStyle()
     }
 }

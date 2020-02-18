@@ -6,7 +6,6 @@ package dev.icerock.moko.widgets.screen.navigation
 
 import android.content.Context
 import android.graphics.Typeface
-import android.os.Build
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -15,7 +14,6 @@ import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.activity.OnBackPressedCallback
@@ -216,7 +214,6 @@ actual abstract class NavigationScreen<S> actual constructor(
                     ThemeAttrs.getPrimaryColor(context)
                 }
                 toolbar.setBackgroundColor(bgColor)
-                setStatusBarColor(bgColor)
 
                 val fallbackTintColor = ThemeAttrs.getControlNormalColor(context)
 
@@ -265,16 +262,6 @@ actual abstract class NavigationScreen<S> actual constructor(
                     toolbar.menu.clear()
                 }
             }
-        }
-    }
-
-    private fun setStatusBarColor(bgColor: Int) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return
-
-        with(requireActivity().window) {
-            addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            statusBarColor = bgColor
         }
     }
 
@@ -348,6 +335,17 @@ actual abstract class NavigationScreen<S> actual constructor(
             return object : Route<Unit> {
                 override fun route(arg: Unit) {
                     navigationScreen!!.getChildFragmentManager().popBackStack()
+                }
+            }
+        }
+
+        actual fun createPopToRootRoute(): Route<Unit> {
+            return object : Route<Unit> {
+                override fun route(arg: Unit) {
+                    val fragmentManager = navigationScreen!!.getChildFragmentManager()
+                    for(i in 0 until fragmentManager.backStackEntryCount) {
+                        fragmentManager.popBackStack()
+                    }
                 }
             }
         }

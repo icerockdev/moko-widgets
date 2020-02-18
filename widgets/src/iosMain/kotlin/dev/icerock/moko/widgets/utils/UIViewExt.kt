@@ -9,17 +9,32 @@ import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import kotlinx.cinterop.CValue
+import kotlinx.cinterop.readValue
+import kotlinx.cinterop.useContents
 import platform.CoreGraphics.CGFloat
+import platform.CoreGraphics.CGRectMake
 import platform.UIKit.NSLayoutDimension
 import platform.UIKit.UIEdgeInsets
 import platform.UIKit.UIEdgeInsetsMake
+import platform.UIKit.UILayoutFittingCompressedSize
+import platform.UIKit.UILayoutPriorityDefaultLow
+import platform.UIKit.UILayoutPriorityRequired
+import platform.UIKit.UIScreen
 import platform.UIKit.UIView
 import platform.UIKit.bottomAnchor
 import platform.UIKit.heightAnchor
+import platform.UIKit.layoutSubviews
 import platform.UIKit.leadingAnchor
+import platform.UIKit.setFrame
+import platform.UIKit.systemLayoutSizeFittingSize
 import platform.UIKit.topAnchor
 import platform.UIKit.trailingAnchor
+import platform.UIKit.updateConstraints
 import platform.UIKit.widthAnchor
+import platform.UIKit.UILayoutConstraintAxis
+import platform.UIKit.setContentCompressionResistancePriority
+import platform.UIKit.UILayoutConstraintAxisHorizontal
+import platform.UIKit.UILayoutConstraintAxisVertical
 
 fun applySizeToChild(
     rootView: UIView,
@@ -59,14 +74,15 @@ fun UIView.applySize(size: WidgetSize, parent: UIView, edges: Edges<CGFloat>) {
         myAnchor: NSLayoutDimension,
         parentAnchor: NSLayoutDimension,
         constSize: SizeSpec,
-        edgeSum: CGFloat
+        edgeSum: CGFloat,
+        axis: UILayoutConstraintAxis
     ) {
         when (constSize) {
             SizeSpec.AsParent -> {
                 myAnchor.constraintEqualToAnchor(parentAnchor, constant = -edgeSum).active = true
             }
             SizeSpec.WrapContent -> {
-                // nothing (intristic size by default)
+                this.setContentCompressionResistancePriority(priority = 999f, forAxis = axis)
             }
             is SizeSpec.Exact -> {
                 myAnchor.constraintEqualToConstant(constSize.points.toDouble()).active = true
@@ -83,13 +99,15 @@ fun UIView.applySize(size: WidgetSize, parent: UIView, edges: Edges<CGFloat>) {
                 widthAnchor,
                 parent.widthAnchor,
                 size.width,
-                edgeSum = edges.trailing + edges.leading
+                edgeSum = edges.trailing + edges.leading,
+                axis = UILayoutConstraintAxisHorizontal
             )
             applyToDimension(
                 heightAnchor,
                 parent.heightAnchor,
                 size.height,
-                edgeSum = edges.top + edges.bottom
+                edgeSum = edges.top + edges.bottom,
+                axis = UILayoutConstraintAxisVertical
             )
         }
         is WidgetSize.AspectByWidth<out SizeSpec> -> {
@@ -97,7 +115,8 @@ fun UIView.applySize(size: WidgetSize, parent: UIView, edges: Edges<CGFloat>) {
                 widthAnchor,
                 parent.widthAnchor,
                 size.width,
-                edgeSum = edges.trailing + edges.leading
+                edgeSum = edges.trailing + edges.leading,
+                axis = UILayoutConstraintAxisHorizontal
             )
             heightAnchor.constraintEqualToAnchor(widthAnchor, 1 / size.aspectRatio.toDouble())
                 .active = true
@@ -107,7 +126,8 @@ fun UIView.applySize(size: WidgetSize, parent: UIView, edges: Edges<CGFloat>) {
                 heightAnchor,
                 parent.heightAnchor,
                 size.height,
-                edgeSum = edges.top + edges.bottom
+                edgeSum = edges.top + edges.bottom,
+                axis = UILayoutConstraintAxisVertical
             )
             widthAnchor.constraintEqualToAnchor(heightAnchor, size.aspectRatio.toDouble()).active =
                 true
@@ -142,4 +162,24 @@ fun PaddingValues.toEdgeInsets(): CValue<UIEdgeInsets> {
         bottom = bottom.toDouble(),
         right = end.toDouble()
     )
+}
+
+fun UIView.wrapContentHeight(width: CGFloat? = null): CGFloat {
+    val oldFrame = frame()
+    val expandedFrame = CGRectMake(
+        0.0,
+        0.0,
+        width ?: UIScreen.mainScreen.bounds.useContents { this.size.width },
+        UIScreen.mainScreen.bounds.useContents { this.size.height }
+    )
+    setFrame(expandedFrame)
+    updateConstraints()
+    layoutSubviews()
+    val result = systemLayoutSizeFittingSize(
+        UILayoutFittingCompressedSize.readValue(),
+        withHorizontalFittingPriority = UILayoutPriorityRequired,
+        verticalFittingPriority = UILayoutPriorityDefaultLow
+    ).useContents { this.height }
+    setFrame(oldFrame)
+    return result
 }
