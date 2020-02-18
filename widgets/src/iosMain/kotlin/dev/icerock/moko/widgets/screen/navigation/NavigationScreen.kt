@@ -150,6 +150,14 @@ actual abstract class NavigationScreen<S> actual constructor(
                 }
             }
         }
+
+        actual fun createPopToRootRoute(): Route<Unit> {
+            return object : Route<Unit> {
+                override fun route(arg: Unit) {
+                    navigationScreen!!.navigationController!!.popToRootViewControllerAnimated(true)
+                }
+            }
+        }
     }
 
     private class ControllerDelegate(navigationScreen: NavigationScreen<*>) : NSObject(),

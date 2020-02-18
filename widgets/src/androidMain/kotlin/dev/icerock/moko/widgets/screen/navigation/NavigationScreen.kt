@@ -338,6 +338,17 @@ actual abstract class NavigationScreen<S> actual constructor(
                 }
             }
         }
+
+        actual fun createPopToRootRoute(): Route<Unit> {
+            return object : Route<Unit> {
+                override fun route(arg: Unit) {
+                    val fragmentManager = navigationScreen!!.getChildFragmentManager()
+                    for(i in 0 until fragmentManager.backStackEntryCount) {
+                        fragmentManager.popBackStack()
+                    }
+                }
+            }
+        }
     }
 
     private companion object {
