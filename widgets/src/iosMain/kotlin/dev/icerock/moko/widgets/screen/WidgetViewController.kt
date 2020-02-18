@@ -21,6 +21,9 @@ import platform.UIKit.CGRectValue
 import platform.UIKit.NSLayoutConstraint
 import platform.UIKit.UIApplication
 import platform.UIKit.UIColor
+import platform.UIKit.UIControl
+import platform.UIKit.UIGestureRecognizer
+import platform.UIKit.UIGestureRecognizerDelegateProtocol
 import platform.UIKit.UIKeyboardAnimationDurationUserInfoKey
 import platform.UIKit.UIKeyboardFrameBeginUserInfoKey
 import platform.UIKit.UIKeyboardFrameEndUserInfoKey
@@ -29,6 +32,7 @@ import platform.UIKit.UIKeyboardWillHideNotification
 import platform.UIKit.UIKeyboardWillShowNotification
 import platform.UIKit.UIStatusBarStyle
 import platform.UIKit.UITapGestureRecognizer
+import platform.UIKit.UITouch
 import platform.UIKit.UIView
 import platform.UIKit.UIViewController
 import platform.UIKit.addGestureRecognizer
@@ -43,12 +47,13 @@ import platform.UIKit.leadingAnchor
 import platform.UIKit.topAnchor
 import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
+import platform.UIKit.isDescendantOfView
 import kotlin.math.max
 
 @ExportObjCClass
 class WidgetViewController(
     private val isLightStatusBar: Boolean?
-) : UIViewController(nibName = null, bundle = null) {
+) : UIViewController(nibName = null, bundle = null), UIGestureRecognizerDelegateProtocol {
 
     lateinit var widget: Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>
 
@@ -103,9 +108,22 @@ class WidgetViewController(
                 action = NSSelectorFromString("onContentViewTap")
             )
             tapGesture.cancelsTouchesInView = false
+            tapGesture.delegate = this
             view.userInteractionEnabled = true
             view.addGestureRecognizer(tapGesture)
         }
+    }
+
+    override fun gestureRecognizer(
+        gestureRecognizer: UIGestureRecognizer,
+        shouldReceiveTouch: UITouch
+    ): Boolean {
+        shouldReceiveTouch.view?.let { touchView ->
+            if (touchView.isKindOfClass(UIControl.`class`()) && touchView.isDescendantOfView(view)) {
+                return false
+            }
+        }
+        return true
     }
 
     @ObjCAction
