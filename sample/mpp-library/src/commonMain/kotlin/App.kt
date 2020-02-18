@@ -188,7 +188,7 @@ class App() : BaseApplication() {
                 val cartScreen = registerScreen(CartScreen::class) {
                     CartScreen(
                         theme = theme,
-                        profileRoute = navigationRouter.createPushRoute(profileScreen) { ProfileScreen.Arg(it) }
+                        profileRoute = router.createPushRoute(profileScreen) { ProfileScreen.Arg(it) }
                     )
                 }
                 CartNavigationScreen(
