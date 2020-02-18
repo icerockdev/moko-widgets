@@ -34,13 +34,15 @@ actual abstract class WidgetScreen<Arg : Args> actual constructor() : Screen<Arg
         // TODO support margins?
 
         if (isDismissKeyboardOnTap) {
-            view.setOnClickListener {
+            view.setOnTouchListener { _, _ ->
                 val activity = requireActivity()
                 val imm = activity
                     .getSystemService(Service.INPUT_METHOD_SERVICE) as InputMethodManager
                 activity.currentFocus?.let {
                     imm.hideSoftInputFromWindow(it.windowToken, 0)
                 }
+
+                false
             }
         }
 
