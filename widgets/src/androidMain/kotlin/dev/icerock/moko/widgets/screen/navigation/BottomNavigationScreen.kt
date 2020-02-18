@@ -39,6 +39,8 @@ actual abstract class BottomNavigationScreen actual constructor(
 
     private var bottomNavigationView: BottomNavigationView? = null
 
+    private var lastSelectedItemId = 0
+
     actual var itemStateColors: SelectStates<Color>? = null
         set(value) {
             field = value
@@ -124,7 +126,7 @@ actual abstract class BottomNavigationScreen actual constructor(
 
         val menuItemAction = mutableMapOf<MenuItem, () -> Unit>()
 
-        items.forEach { item ->
+        items.forEachIndexed { index, item ->
             val menuItem = bottomNavigation.menu.add(
                 Menu.NONE, item.id, Menu.NONE, item.title.toString(context)
             )
@@ -145,6 +147,7 @@ actual abstract class BottomNavigationScreen actual constructor(
             menuItemAction[menuItem] = {
                 val instance = item.screenDesc.instantiate()
                 instance.arguments = Bundle().apply { putInt(ARG_ITEM_ID_KEY, item.id) }
+                lastSelectedItemId = index
                 fragmentNavigation.routeToScreen(instance)
             }
         }
@@ -193,7 +196,7 @@ actual abstract class BottomNavigationScreen actual constructor(
         super.onViewCreated(view, savedInstanceState)
 
         if (savedInstanceState == null) {
-            items.firstOrNull()?.let {
+            items[lastSelectedItemId].let {
                 val instance = it.screenDesc.instantiate()
                 instance.arguments = Bundle().apply { putInt(ARG_ITEM_ID_KEY, it.id) }
                 fragmentNavigation.setScreen(instance)
