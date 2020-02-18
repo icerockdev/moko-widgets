@@ -40,6 +40,7 @@ actual abstract class WidgetScreen<Arg : Args> actual constructor() : Screen<Arg
                     .getSystemService(Service.INPUT_METHOD_SERVICE) as InputMethodManager
                 activity.currentFocus?.let {
                     imm.hideSoftInputFromWindow(it.windowToken, 0)
+                    it.clearFocus()
                 }
 
                 false
