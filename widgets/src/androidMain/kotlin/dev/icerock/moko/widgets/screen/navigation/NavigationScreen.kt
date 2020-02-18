@@ -152,7 +152,7 @@ actual abstract class NavigationScreen<S> actual constructor(
     override fun onViewCreated(view: android.view.View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null && childFragmentManager.fragments.isEmpty()) {
             val instance = initialScreen.instantiate()
             fragmentNavigation.setScreen(instance)
         }

@@ -192,7 +192,7 @@ actual abstract class BottomNavigationScreen actual constructor(
     override fun onViewCreated(view: android.view.View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null && childFragmentManager.fragments.isEmpty()) {
             items.firstOrNull()?.let {
                 val instance = it.screenDesc.instantiate()
                 instance.arguments = Bundle().apply { putInt(ARG_ITEM_ID_KEY, it.id) }
