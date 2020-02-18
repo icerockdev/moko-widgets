@@ -9,7 +9,7 @@ import dev.icerock.moko.resources.desc.StringDesc
 
 
 actual fun Screen<*>.showToast(message: StringDesc) {
-    val context = requireContext()
+    val context = context ?: return
     val text = message.toString(context)
     Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
 }
