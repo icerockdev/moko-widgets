@@ -180,9 +180,9 @@ class App() : BaseApplication() {
         val mainScreen = registerScreen(MainBottomNavigationScreen::class) {
             val bottomRouter = createRouter()
 
-            val cartNavigation = registerScreen(NavigationScreen::class) {
+            val cartNavigation = registerScreen(CartNavigationScreen::class) {
                 val navigationRouter = createRouter()
-                val profileScreen = registerScreen(ProfileScreen::class) {
+                val profileScreen = registerScreen(PlatformProfileScreen::class) {
                     PlatformProfileScreen(navigationRouter.createPopRoute())
                 }
                 val cartScreen = registerScreen(CartScreen::class) {
@@ -197,7 +197,7 @@ class App() : BaseApplication() {
                 )
             }
 
-            val productsNavigation = registerScreen(NavigationScreen::class) {
+            val productsNavigation = registerScreen(ProductsNavigationScreen::class) {
                 val navigationRouter = createRouter()
 
                 val productScreen = registerScreen(ProductScreen::class) {
