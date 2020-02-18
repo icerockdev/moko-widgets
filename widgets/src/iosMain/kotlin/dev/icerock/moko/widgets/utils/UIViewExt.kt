@@ -83,8 +83,6 @@ fun UIView.applySize(size: WidgetSize, parent: UIView, edges: Edges<CGFloat>) {
             }
             SizeSpec.WrapContent -> {
                 this.setContentCompressionResistancePriority(priority = 999f, forAxis = axis)
-                println("setContentCompressionResistancePriority")
-                println("999")
             }
             is SizeSpec.Exact -> {
                 myAnchor.constraintEqualToConstant(constSize.points.toDouble()).active = true
