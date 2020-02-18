@@ -37,6 +37,7 @@ expect abstract class NavigationScreen<S>(
         ): Route<T> where S : Screen<Arg>, S : NavigationItem
 
         fun createPopRoute(): Route<Unit>
+        fun createPopToRootRoute(): Route<Unit>
     }
 }
 
