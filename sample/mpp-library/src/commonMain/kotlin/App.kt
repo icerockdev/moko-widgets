@@ -47,15 +47,16 @@ import dev.icerock.moko.widgets.screen.navigation.NavigationBar
 import dev.icerock.moko.widgets.screen.navigation.NavigationItem
 import dev.icerock.moko.widgets.screen.navigation.NavigationScreen
 import dev.icerock.moko.widgets.screen.navigation.Resultable
+import dev.icerock.moko.widgets.screen.navigation.Route
 import dev.icerock.moko.widgets.screen.navigation.SelectStates
 import dev.icerock.moko.widgets.screen.navigation.createPushResultRoute
 import dev.icerock.moko.widgets.screen.navigation.createPushRoute
 import dev.icerock.moko.widgets.screen.navigation.createReplaceRoute
 import dev.icerock.moko.widgets.screen.navigation.createRouter
+import dev.icerock.moko.widgets.screen.navigation.route
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.background.StateBackground
-import dev.icerock.moko.widgets.style.view.Colors
 import dev.icerock.moko.widgets.style.view.CornerRadiusValue
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
@@ -223,6 +224,13 @@ class App() : BaseApplication() {
                 WidgetsScreen(sharedFactory, widgetsTheme, AppTheme.PostsCollection)
             }
 
+            val logoutScreen = registerScreen(LogoutScreen::class) {
+                LogoutScreen(
+                    theme = theme,
+                    logoutRoute = router.createPopToRootRoute()
+                )
+            }
+
             MainBottomNavigationScreen(bottomRouter) {
                 tab(
                     id = 1,
@@ -243,6 +251,11 @@ class App() : BaseApplication() {
                     icon = MR.images.stars_black_18,
                     screenDesc = widgetsScreen
                 )
+                tab(
+                    id = 4,
+                    title = "Logout".desc(),
+                    screenDesc = logoutScreen
+                )
             }
         }
 
@@ -259,7 +272,7 @@ class App() : BaseApplication() {
         return registerScreen(LoginScreen::class) {
             LoginScreen(
                 theme = loginTheme,
-                mainRoute = router.createReplaceRoute(mainScreen),
+                mainRoute = router.createPushRoute(mainScreen),
                 registerRoute = router.createPushResultRoute(regScreen) { it.token },
                 infoWebViewRoute = router.createPushRoute(oauthScreen) {
                     InfoWebViewScreen.WebViewArgs(it)
@@ -291,6 +304,24 @@ class RegisterScreen(
 
     @Parcelize
     data class Result(val token: String) : Parcelable
+}
+
+class LogoutScreen(
+    private val theme: Theme,
+    private val logoutRoute: Route<Unit>
+) : WidgetScreen<Args.Empty>() {
+    override fun createContentWidget() = with(theme) {
+        container(size = WidgetSize.AsParent) {
+            center {
+                button(
+                    size = WidgetSize.WrapContent,
+                    content = ButtonWidget.Content.Text(Value.data("logout".desc()))
+                ) {
+                    logoutRoute.route()
+                }
+            }
+        }
+    }
 }
 
 // TODO required for Android side... should be reworked if any ideas will be
