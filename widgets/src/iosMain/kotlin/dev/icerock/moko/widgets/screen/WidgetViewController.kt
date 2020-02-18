@@ -7,6 +7,7 @@ package dev.icerock.moko.widgets.screen
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.utils.getStatusBarStyle
 import dev.icerock.moko.widgets.utils.safeSystemBackgroundColor
 import kotlinx.cinterop.ExportObjCClass
 import kotlinx.cinterop.ObjCAction
@@ -18,6 +19,7 @@ import platform.Foundation.NSSelectorFromString
 import platform.Foundation.NSValue
 import platform.UIKit.CGRectValue
 import platform.UIKit.NSLayoutConstraint
+import platform.UIKit.UIApplication
 import platform.UIKit.UIColor
 import platform.UIKit.UIControl
 import platform.UIKit.UIGestureRecognizer
@@ -28,6 +30,7 @@ import platform.UIKit.UIKeyboardFrameEndUserInfoKey
 import platform.UIKit.UIKeyboardWillChangeFrameNotification
 import platform.UIKit.UIKeyboardWillHideNotification
 import platform.UIKit.UIKeyboardWillShowNotification
+import platform.UIKit.UIStatusBarStyle
 import platform.UIKit.UITapGestureRecognizer
 import platform.UIKit.UITouch
 import platform.UIKit.UIView
@@ -37,22 +40,20 @@ import platform.UIKit.addSubview
 import platform.UIKit.animateWithDuration
 import platform.UIKit.backgroundColor
 import platform.UIKit.bottomAnchor
+import platform.UIKit.convertRect
 import platform.UIKit.endEditing
 import platform.UIKit.layoutIfNeeded
 import platform.UIKit.leadingAnchor
-import platform.UIKit.systemBackgroundColor
 import platform.UIKit.topAnchor
 import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
-import platform.UIKit.window
-import platform.darwin.NSObject
-import platform.UIKit.UIApplication
-import platform.UIKit.convertRect
 import platform.UIKit.isDescendantOfView
 import kotlin.math.max
 
 @ExportObjCClass
-class WidgetViewController : UIViewController(nibName = null, bundle = null), UIGestureRecognizerDelegateProtocol {
+class WidgetViewController(
+    private val isLightStatusBar: Boolean?
+) : UIViewController(nibName = null, bundle = null), UIGestureRecognizerDelegateProtocol {
 
     lateinit var widget: Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>
 
@@ -156,5 +157,10 @@ class WidgetViewController : UIViewController(nibName = null, bundle = null), UI
     @ObjCAction
     fun onContentViewTap() {
         view.endEditing(true)
+    }
+
+    override fun preferredStatusBarStyle(): UIStatusBarStyle {
+        val light = isLightStatusBar ?: application.isLightStatusBar
+        return getStatusBarStyle(light) ?: super.preferredStatusBarStyle()
     }
 }

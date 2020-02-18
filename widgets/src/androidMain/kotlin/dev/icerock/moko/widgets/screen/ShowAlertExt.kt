@@ -10,12 +10,14 @@ import android.os.Bundle
 import android.os.Parcelable
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import dev.icerock.moko.parcelize.Parcelize
 import dev.icerock.moko.resources.desc.StringDesc
 import kotlin.properties.ReadOnlyProperty
 
 actual fun Screen<*>.showAlertDialog(dialogId: Int, factory: AlertDialogBuilder.() -> Unit) {
-    val alert = AlertDialogBuilder(dialogId, this)
+    val context = context ?: return
+    val alert = AlertDialogBuilder(dialogId, context, childFragmentManager)
     factory(alert)
     alert.show()
 }
@@ -44,9 +46,11 @@ actual fun Screen<*>.registerAlertDialogHandler(
     }
 }
 
-actual class AlertDialogBuilder(private val dialogId: Int, private val screen: Screen<*>) {
-    private val context: Context = screen.requireContext()
-
+actual class AlertDialogBuilder(
+    private val dialogId: Int,
+    private val context: Context,
+    private val fragmentManager: FragmentManager
+) {
     private var title: String? = null
     private var message: String? = null
     private var positiveBtn: String? = null
@@ -88,7 +92,7 @@ actual class AlertDialogBuilder(private val dialogId: Int, private val screen: S
                 negativeBtn = negativeBtn
             )
         )
-        alertDialogFragment.show(screen.childFragmentManager, null)
+        alertDialogFragment.show(fragmentManager, null)
     }
 }
 

@@ -4,6 +4,7 @@
 
 package dev.icerock.moko.widgets.screen
 
+import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcher
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.widgets.objc.getAssociatedObject
@@ -17,6 +18,9 @@ actual abstract class Screen<Arg : Args> {
     val viewModelStore = mutableMapOf<Any, ViewModel>()
     // TODO private?
     var arg: Arg? = null
+
+    actual open val androidStatusBarColor: Color? = null
+    actual open val isLightStatusBar: Boolean? = null
 
     actual inline fun <reified VM : ViewModel, Key : Any> getViewModel(
         key: Key,
@@ -34,7 +38,7 @@ actual abstract class Screen<Arg : Args> {
         return EventsDispatcher()
     }
 
-    protected abstract fun createViewController(): UIViewController
+    protected abstract fun createViewController(isLightStatusBar: Boolean?): UIViewController
 
     private var _viewController: WeakReference<UIViewController>? = null
     val viewController: UIViewController
@@ -42,7 +46,7 @@ actual abstract class Screen<Arg : Args> {
             val current = _viewController?.get()
             if (current != null) return current
 
-            val vc = createViewController().also {
+            val vc = createViewController(isLightStatusBar).also {
                 setAssociatedObject(it, this)
             }
             _viewController = WeakReference(vc)

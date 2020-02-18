@@ -14,6 +14,7 @@ import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.TextHorizontalAlignment
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.utils.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.utils.bind
@@ -113,6 +114,15 @@ actual class SystemTextViewFactory actual constructor(
             translatesAutoresizingMaskIntoConstraints = false
             backgroundColor = UIColor.clearColor
             applyBackgroundIfNeeded(background)
+        }
+
+        if (size is WidgetSize.Const<*, *> ) {
+            if (size.width is SizeSpec.WrapContent) {
+                label.setContentCompressionResistancePriority(priority = 999f, forAxis = UILayoutConstraintAxisHorizontal)
+            }
+            if (size.height is SizeSpec.WrapContent) {
+                label.setContentCompressionResistancePriority(priority = 999f, forAxis = UILayoutConstraintAxisVertical)
+            }
         }
 
         wrapper.addSubview(label)

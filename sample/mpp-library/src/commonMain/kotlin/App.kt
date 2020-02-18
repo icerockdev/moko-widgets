@@ -55,6 +55,7 @@ import dev.icerock.moko.widgets.screen.navigation.createRouter
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.background.StateBackground
+import dev.icerock.moko.widgets.style.view.Colors
 import dev.icerock.moko.widgets.style.view.CornerRadiusValue
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
@@ -66,6 +67,8 @@ class App() : BaseApplication() {
     object SystemInputId : InputWidget.Id
     object FloatingLabelInputId : InputWidget.Id
     object FlatInputId : InputWidget.Id
+
+    override val androidStatusBarColor: Color? = Color(0x4444AAFF)
 
     override fun setup(): ScreenDesc<Args.Empty> {
         val theme = Theme {
@@ -308,7 +311,9 @@ class MainBottomNavigationScreen(
 }
 
 class RootNavigationScreen<T>(initialScreen: TypedScreenDesc<Args.Empty, T>, router: Router) :
-    NavigationScreen<T>(initialScreen, router) where T : Screen<Args.Empty>, T : NavigationItem
+    NavigationScreen<T>(initialScreen, router) where T : Screen<Args.Empty>, T : NavigationItem {
+    override val androidStatusBarColor: Color? = Color(0x11AA11FF)
+}
 
 class ProductsNavigationScreen(initialScreen: TypedScreenDesc<Args.Empty, ProductsScreen>, router: Router) :
     NavigationScreen<ProductsScreen>(initialScreen, router)
