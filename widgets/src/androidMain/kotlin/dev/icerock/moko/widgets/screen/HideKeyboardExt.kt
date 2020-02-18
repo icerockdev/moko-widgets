@@ -1,13 +1,15 @@
-package dev.icerock.moko.widgets.screen
+/*
+ * Copyright 2020 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
+ */
 
+package dev.icerock.moko.widgets.screen
 
 import android.app.Activity
 import android.view.inputmethod.InputMethodManager
 
 actual fun Screen<*>.hideKeyboard() {
-    requireActivity().currentFocus.run {
-        val imm =
-            requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(windowToken, 0)
-    }
+    val activity = requireActivity()
+    val focusedView = activity.currentFocus ?: return
+    val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(focusedView.windowToken, 0)
 }
