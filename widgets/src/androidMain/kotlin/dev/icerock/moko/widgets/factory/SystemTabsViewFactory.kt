@@ -4,6 +4,7 @@
 
 package dev.icerock.moko.widgets.factory
 
+import android.view.ContextThemeWrapper
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +13,6 @@ import android.widget.LinearLayout
 import android.widget.TabHost
 import android.widget.TabWidget
 import android.widget.TextView
-import androidx.appcompat.view.ContextThemeWrapper
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.core.ViewBundle
@@ -84,13 +84,13 @@ actual class SystemTabsViewFactory actual constructor(
                 val tabContainer = FrameLayout(
                     ContextThemeWrapper(
                         context,
-                        android.R.style.Widget_Material_Tab
+                        android.R.style.Widget_DeviceDefault_Tab
                     )
                 )
                 val text = TextView(
                     ContextThemeWrapper(
                         context,
-                        android.R.style.Widget_Material_ActionBar_TabText
+                        android.R.style.Widget_DeviceDefault_ActionBar_TabText
                     )
                 ).apply {
                     text = stringDesc.toString(context)

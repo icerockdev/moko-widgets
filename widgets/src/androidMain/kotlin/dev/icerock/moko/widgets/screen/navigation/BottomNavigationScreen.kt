@@ -81,7 +81,7 @@ actual abstract class BottomNavigationScreen actual constructor(
         router.bottomNavigationScreen = this
 
         childFragmentManager.addOnBackStackChangedListener {
-            backPressedCallback.isEnabled = childFragmentManager.backStackEntryCount > 0
+            updateBackCallbackState()
         }
         childFragmentManager.registerFragmentLifecycleCallbacks(
             object : FragmentManager.FragmentLifecycleCallbacks() {
@@ -100,6 +100,8 @@ actual abstract class BottomNavigationScreen actual constructor(
         requireActivity()
             .onBackPressedDispatcher
             .addCallback(this, backPressedCallback)
+
+        updateBackCallbackState()
     }
 
     override fun onCreateView(
@@ -192,7 +194,7 @@ actual abstract class BottomNavigationScreen actual constructor(
     override fun onViewCreated(view: android.view.View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null && childFragmentManager.fragments.isEmpty()) {
             items.firstOrNull()?.let {
                 val instance = it.screenDesc.instantiate()
                 instance.arguments = Bundle().apply { putInt(ARG_ITEM_ID_KEY, it.id) }
@@ -211,6 +213,10 @@ actual abstract class BottomNavigationScreen actual constructor(
         super.onDestroy()
 
         router.bottomNavigationScreen = null
+    }
+
+    private fun updateBackCallbackState() {
+        backPressedCallback.isEnabled = childFragmentManager.backStackEntryCount > 0
     }
 
     private fun updateItemColors() {

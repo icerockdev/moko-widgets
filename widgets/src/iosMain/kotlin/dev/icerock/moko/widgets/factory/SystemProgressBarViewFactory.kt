@@ -32,6 +32,7 @@ actual class SystemProgressBarViewFactory actual constructor(
         ).apply {
             translatesAutoresizingMaskIntoConstraints = false
             color = this@SystemProgressBarViewFactory.color?.toUIColor() ?: UIColor.darkGrayColor
+            hidesWhenStopped = false
             startAnimating()
         }
 

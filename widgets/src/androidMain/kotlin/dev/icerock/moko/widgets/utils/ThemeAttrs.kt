@@ -6,6 +6,7 @@ package dev.icerock.moko.widgets.utils
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.os.Build
 import dev.icerock.moko.widgets.R
 
 object ThemeAttrs {
@@ -37,6 +38,16 @@ object ThemeAttrs {
         val attrs = intArrayOf(R.attr.colorPrimaryDark)
         val ta = context.obtainStyledAttributes(attrs)
         val result = ta.getColor(0, -1)
+        ta.recycle()
+        return result
+    }
+
+
+    fun getLightStatusBar(context: Context): Boolean {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return false
+        val attrs = intArrayOf(android.R.attr.windowLightStatusBar)
+        val ta = context.obtainStyledAttributes(attrs)
+        val result = ta.getBoolean(0, false)
         ta.recycle()
         return result
     }

@@ -22,7 +22,7 @@ internal class FragmentNavigation(
         val fm = fragment.childFragmentManager
 
         val backStackCount = fm.backStackEntryCount
-        for(i in 0 until backStackCount) {
+        for (i in 0 until backStackCount) {
             fm.popBackStack()
         }
 

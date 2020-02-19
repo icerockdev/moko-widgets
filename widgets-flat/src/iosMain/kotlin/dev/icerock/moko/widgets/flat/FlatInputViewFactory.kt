@@ -60,14 +60,14 @@ actual class FlatInputViewFactory actual constructor(
         }
 
         when (widget.inputType) {
-            InputType.EMAIL -> textField.keyboardType = UIKeyboardTypeEmailAddress
-            InputType.PLAIN_TEXT -> {
+            is InputType.Email -> textField.keyboardType = UIKeyboardTypeEmailAddress
+            is InputType.Plain -> {
             }
-            InputType.PASSWORD -> textField.setSecureTextEntry(true)
-            InputType.DATE -> {
+            is InputType.Password -> textField.setSecureTextEntry(true)
+            is InputType.Date -> {
             }
-            InputType.PHONE -> textField.keyboardType = UIKeyboardTypePhonePad
-            InputType.DIGITS -> textField.keyboardType = UIKeyboardTypeNumberPad
+            is InputType.Phone -> textField.keyboardType = UIKeyboardTypePhonePad
+            is InputType.Digits -> textField.keyboardType = UIKeyboardTypeNumberPad
             null -> {
             }
         }

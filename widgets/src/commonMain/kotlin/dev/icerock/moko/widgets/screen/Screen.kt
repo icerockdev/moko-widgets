@@ -4,6 +4,7 @@
 
 package dev.icerock.moko.widgets.screen
 
+import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcher
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.parcelize.Parcelable
@@ -12,6 +13,9 @@ expect abstract class Screen<Arg : Args>() {
     inline fun <reified VM : ViewModel, Key : Any> getViewModel(key: Key, crossinline viewModelFactory: () -> VM): VM
 
     fun <T : Any> createEventsDispatcher(): EventsDispatcher<T>
+
+    open val androidStatusBarColor: Color?
+    open val isLightStatusBar: Boolean?
 }
 
 inline fun <Arg : Args, reified VM : ViewModel> Screen<Arg>.getViewModel(crossinline viewModelFactory: () -> VM): VM {

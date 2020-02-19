@@ -10,7 +10,7 @@ object Versions {
     }
 
     const val kotlin = "1.3.61"
-    private const val mokoWidgets = "0.1.0-dev-11"
+    private const val mokoWidgets = "0.1.0-dev-12"
     private const val mokoResources = "0.8.0"
 
     object Plugins {
@@ -29,6 +29,8 @@ object Versions {
             const val inputMask = "5.0.0"
             const val glide = "4.10.0"
             const val roundedImageView = "2.3.0"
+            const val playServiceAuth = "17.0.0"
+            const val playServiceAuthSms = "17.1.0"
         }
 
         object MultiPlatform {

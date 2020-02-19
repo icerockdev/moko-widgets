@@ -42,6 +42,12 @@ object Deps {
             val roundedImageView = AndroidLibrary(
                 name = "com.makeramen:roundedimageview:${Versions.Libs.Android.roundedImageView}"
             )
+            val playServiceAuth = AndroidLibrary(
+                name = "com.google.android.gms:play-services-auth:${Versions.Libs.Android.playServiceAuth}"
+            )
+            val playServiceAuthSms = AndroidLibrary(
+                name = "com.google.android.gms:play-services-auth-api-phone:${Versions.Libs.Android.playServiceAuthSms}"
+            )
         }
 
         object MultiPlatform {
@@ -58,6 +64,11 @@ object Deps {
                 common = "dev.icerock.moko:widgets-flat:${Versions.Libs.MultiPlatform.mokoWidgets}",
                 iosX64 = "dev.icerock.moko:widgets-flat-iosx64:${Versions.Libs.MultiPlatform.mokoWidgets}",
                 iosArm64 = "dev.icerock.moko:widgets-flat-iosarm64:${Versions.Libs.MultiPlatform.mokoWidgets}"
+            )
+            val mokoWidgetsBottomSheet = MultiPlatformLibrary(
+                common = "dev.icerock.moko:widgets-bottomsheet:${Versions.Libs.MultiPlatform.mokoWidgets}",
+                iosX64 = "dev.icerock.moko:widgets-bottomsheet-iosx64:${Versions.Libs.MultiPlatform.mokoWidgets}",
+                iosArm64 = "dev.icerock.moko:widgets-bottomsheet-iosarm64:${Versions.Libs.MultiPlatform.mokoWidgets}"
             )
             val mokoResources = MultiPlatformLibrary(
                 common = "dev.icerock.moko:resources:${Versions.Libs.MultiPlatform.mokoResources}",
