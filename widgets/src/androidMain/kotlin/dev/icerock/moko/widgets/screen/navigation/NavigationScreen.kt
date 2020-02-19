@@ -59,8 +59,7 @@ actual abstract class NavigationScreen<S> actual constructor(
         }
 
         childFragmentManager.addOnBackStackChangedListener {
-            val haveBack = childFragmentManager.backStackEntryCount > 0
-            backPressedCallback.isEnabled = haveBack
+            updateBackCallbackState()
         }
         childFragmentManager.registerFragmentLifecycleCallbacks(
             object : FragmentManager.FragmentLifecycleCallbacks() {
@@ -107,6 +106,8 @@ actual abstract class NavigationScreen<S> actual constructor(
         requireActivity()
             .onBackPressedDispatcher
             .addCallback(this, backPressedCallback)
+
+        updateBackCallbackState()
     }
 
     override fun onCreateView(
@@ -152,7 +153,7 @@ actual abstract class NavigationScreen<S> actual constructor(
     override fun onViewCreated(view: android.view.View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null && childFragmentManager.fragments.isEmpty()) {
             val instance = initialScreen.instantiate()
             fragmentNavigation.setScreen(instance)
         }
@@ -174,6 +175,10 @@ actual abstract class NavigationScreen<S> actual constructor(
         super.onSaveInstanceState(outState)
 
         outState.putInt(CURRENT_SCREEN_ID_KEY, currentChildId)
+    }
+
+    private fun updateBackCallbackState() {
+        backPressedCallback.isEnabled = childFragmentManager.backStackEntryCount > 0
     }
 
     private fun updateNavigation(fragment: Fragment) {
