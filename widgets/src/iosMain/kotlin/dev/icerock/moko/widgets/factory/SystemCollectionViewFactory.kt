@@ -15,33 +15,14 @@ import dev.icerock.moko.widgets.style.background.Orientation
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
-import dev.icerock.moko.widgets.utils.Edges
-import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
-import dev.icerock.moko.widgets.utils.bind
-import dev.icerock.moko.widgets.utils.toEdgeInsets
+import dev.icerock.moko.widgets.utils.*
+
 import kotlinx.cinterop.CValue
 import kotlinx.cinterop.readValue
 import kotlinx.cinterop.useContents
-import platform.CoreGraphics.CGRectZero
-import platform.CoreGraphics.CGSize
-import platform.CoreGraphics.CGSizeMake
+import platform.CoreGraphics.*
 import platform.Foundation.NSIndexPath
-import platform.UIKit.UICollectionView
-import platform.UIKit.UICollectionViewCell
-import platform.UIKit.UICollectionViewDelegateFlowLayoutProtocol
-import platform.UIKit.UICollectionViewFlowLayout
-import platform.UIKit.UICollectionViewLayout
-import platform.UIKit.UIColor
-import platform.UIKit.UIEdgeInsetsMake
-import platform.UIKit.UIEdgeInsetsZero
-import platform.UIKit.UILayoutPriorityDefaultLow
-import platform.UIKit.UILayoutPriorityRequired
-import platform.UIKit.backgroundColor
-import platform.UIKit.layoutIfNeeded
-import platform.UIKit.row
-import platform.UIKit.setNeedsLayout
-import platform.UIKit.systemLayoutSizeFittingSize
-import platform.UIKit.translatesAutoresizingMaskIntoConstraints
+import platform.UIKit.*
 
 actual class SystemCollectionViewFactory actual constructor(
     private val orientation: Orientation,
@@ -56,11 +37,13 @@ actual class SystemCollectionViewFactory actual constructor(
         size: WS,
         viewFactoryContext: ViewFactoryContext
     ): ViewBundle<WS> {
-        val layoutAndDelegate = SpanCollectionViewLayout(spanCount).apply {
+        val layoutAndDelegate = SpanCollectionViewLayout(spanCount, orientation).apply {
             sectionInset = UIEdgeInsetsZero.readValue()
             minimumInteritemSpacing = 0.0
             minimumLineSpacing = 0.0
         }
+        
+
         val collectionView = UICollectionView(
             frame = CGRectZero.readValue(),
             collectionViewLayout = layoutAndDelegate
@@ -69,6 +52,16 @@ actual class SystemCollectionViewFactory actual constructor(
             delegate = layoutAndDelegate
 
             applyBackgroundIfNeeded(background)
+            when (orientation) {
+                Orientation.VERTICAL -> {
+                    this.setAlwaysBounceHorizontal(false)
+                    this.setShowsHorizontalScrollIndicator(false)
+                }
+                Orientation.HORIZONTAL -> {
+                    this.setAlwaysBounceVertical(false)
+                    this.setShowsVerticalScrollIndicator(false)
+                }
+            }
 
             padding?.toEdgeInsets()?.also { insetsValue ->
                 val insets = insetsValue.useContents {
@@ -114,7 +107,8 @@ actual class SystemCollectionViewFactory actual constructor(
     }
 
     private class SpanCollectionViewLayout(
-        private val spanCount: Int
+        private val spanCount: Int,
+        private val orientation: Orientation
     ) : UICollectionViewFlowLayout(), UICollectionViewDelegateFlowLayoutProtocol {
         private val reusableStubs = mutableMapOf<String, UICollectionViewCell>()
         var dataSource: UnitCollectionViewDataSource? = null
@@ -126,36 +120,44 @@ actual class SystemCollectionViewFactory actual constructor(
         ): CValue<CGSize> {
 //        println("size: $sizeForItemAtIndexPath")
             val collectionViewSize = collectionView.bounds.useContents { size }
-            val width = (collectionViewSize.width - collectionView.contentInset.useContents {
-                this.left + this.right
-            }) / spanCount
-            val position = sizeForItemAtIndexPath.row.toInt()
+
+            val sizeExtract: (CGSize) -> CGFloat
+            val padExtract: (UIEdgeInsets) -> CGFloat
+
+            when (orientation) {
+                Orientation.VERTICAL -> {
+                    sizeExtract = { it.width }
+                    padExtract = { it.left + it.right }
+                }
+                Orientation.HORIZONTAL -> {
+                    sizeExtract = { it.height }
+                    padExtract = { it.top + it.bottom }
+                }
+            }
+
+            val fixedItemSize = (sizeExtract(collectionViewSize)
+                    - collectionView.contentInset.useContents(padExtract)) / spanCount
+
+            val position = sizeForItemAtIndexPath.item.toInt()
 
 //        println("width: $width")
 
             val unit = dataSource!!.unitItems!![position]
-            // TODO create correct cell from unit
-            val stub = UICollectionViewCell()//getStub(collectionView, unit, sizeForItemAtIndexPath)
 
-            val size = with(stub.contentView) {
+            val stub = getStub(collectionView, unit, sizeForItemAtIndexPath)
+            with(stub.contentView) {
+
                 translatesAutoresizingMaskIntoConstraints = false
                 unit.bind(stub)
 
-                setNeedsLayout()
-                layoutIfNeeded()
+                return when (orientation) {
+                    Orientation.VERTICAL ->
+                        CGSizeMake(wrapContentHeight(fixedItemSize), fixedItemSize)
 
-                systemLayoutSizeFittingSize(
-                    CGSizeMake(width, 0.0),
-                    UILayoutPriorityRequired,
-                    UILayoutPriorityDefaultLow
-                )
+                    Orientation.HORIZONTAL ->
+                        CGSizeMake(fixedItemSize, wrapContentWidth(fixedItemSize))
+                }
             }
-
-            val (rw, rh) = size.useContents { width to height }
-
-//        println("sized: $rw $rh")
-
-            return CGSizeMake(rw, rh)
         }
 
         private fun getStub(
