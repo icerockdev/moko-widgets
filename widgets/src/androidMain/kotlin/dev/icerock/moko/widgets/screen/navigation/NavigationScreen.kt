@@ -78,8 +78,7 @@ actual abstract class NavigationScreen<S> actual constructor(
                         val resultTarget = f.screenId
 
                         if (resultTarget != null) {
-                            val target = fm.fragments
-                                .filterIsInstance<Screen<*>>()
+                            val target = fm.getAllScreens()
                                 .firstOrNull { it.resultCode == resultTarget }
 
                             detachHandlers[f] = Runnable {
@@ -108,6 +107,17 @@ actual abstract class NavigationScreen<S> actual constructor(
             .addCallback(this, backPressedCallback)
 
         updateBackCallbackState()
+    }
+
+    private fun FragmentManager.getAllScreens(): List<Screen<*>> {
+        val list = fragments
+            .filterIsInstance<Screen<*>>()
+            .toMutableList()
+        val childScreens = list.map {
+            it.childFragmentManager.getAllScreens()
+        }
+        childScreens.forEach { list.addAll(it) }
+        return list
     }
 
     override fun onCreateView(
