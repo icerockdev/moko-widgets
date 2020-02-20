@@ -6,7 +6,6 @@ package dev.icerock.moko.widgets.screen
 
 import com.soywiz.klock.DateTime
 import dev.icerock.moko.graphics.Color
-import dev.icerock.moko.widgets.screen.Screen
 import kotlin.properties.ReadOnlyProperty
 
 actual class DatePickerDialogHandler
@@ -32,8 +31,8 @@ actual class DatePickerDialogBuilder {
 
 actual fun Screen<*>.showDatePickerDialog(
     dialogId: Int,
-    factory: DatePickerDialogBuilder.() -> Unit,
-    handler: DatePickerDialogHandler
+    handler: DatePickerDialogHandler,
+    factory: DatePickerDialogBuilder.() -> Unit
 ) {
     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 }

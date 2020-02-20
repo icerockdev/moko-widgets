@@ -1,3 +1,7 @@
+/*
+ * Copyright 2020 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
+ */
+
 package dev.icerock.moko.widgets.screen
 
 import com.soywiz.klock.DateTime
@@ -19,6 +23,6 @@ expect class DatePickerDialogBuilder {
 
 expect fun Screen<*>.showDatePickerDialog(
     dialogId: Int,
-    factory: DatePickerDialogBuilder.() -> Unit,
-    handler: DatePickerDialogHandler
+    handler: DatePickerDialogHandler,
+    factory: DatePickerDialogBuilder.() -> Unit
 )

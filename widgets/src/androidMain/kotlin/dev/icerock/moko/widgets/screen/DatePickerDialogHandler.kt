@@ -1,3 +1,7 @@
+/*
+ * Copyright 2020 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
+ */
+
 package dev.icerock.moko.widgets.screen
 
 import android.app.DatePickerDialog
@@ -5,6 +9,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import com.soywiz.klock.DateTime
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.parcelize.Parcelize
@@ -13,12 +18,12 @@ import kotlin.properties.ReadOnlyProperty
 
 actual fun Screen<*>.showDatePickerDialog(
     dialogId: Int,
-    factory: DatePickerDialogBuilder.() -> Unit,
-    handler: DatePickerDialogHandler
+    handler: DatePickerDialogHandler,
+    factory: DatePickerDialogBuilder.() -> Unit
 ) {
     val alert = DatePickerDialogBuilder(
         dialogId,
-        this,
+        this.childFragmentManager,
         handler
     )
     factory(alert)
@@ -48,7 +53,7 @@ actual fun Screen<*>.registerDatePickerDialogHandler(
 
 actual class DatePickerDialogBuilder(
     private val dialogId: Int,
-    private val screen: Screen<*>,
+    private val fragmentManager: FragmentManager,
     private val handler: DatePickerDialogHandler
 ) {
     private var startDate: DateTime? = null
@@ -75,7 +80,7 @@ actual class DatePickerDialogBuilder(
                     endDate = endDate?.unixMillisLong
                 )
             )
-        alertDialogFragment.show(screen.childFragmentManager, null)
+        alertDialogFragment.show(fragmentManager, null)
     }
 }
 
