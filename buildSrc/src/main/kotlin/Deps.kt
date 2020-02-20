@@ -115,6 +115,11 @@ object Deps {
                 common = "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:${Versions.Libs.MultiPlatform.coroutines}",
                 ios = "org.jetbrains.kotlinx:kotlinx-coroutines-core-native:${Versions.Libs.MultiPlatform.coroutines}"
             )
+            val klock = MultiPlatformLibrary(
+                android = "com.soywiz.korlibs.klock:klock-android:${Versions.Libs.MultiPlatform.klockVersion}",
+                common = "com.soywiz.korlibs.klock:klock:${Versions.Libs.MultiPlatform.klockVersion}",
+                ios = "com.soywiz.korlibs.klock:klock:${Versions.Libs.MultiPlatform.klockVersion}"
+            )
         }
 
         object Jvm {

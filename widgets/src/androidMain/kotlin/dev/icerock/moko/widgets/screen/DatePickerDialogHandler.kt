@@ -1,4 +1,4 @@
-package dev.icerock.moko.widgets.datepicker
+package dev.icerock.moko.widgets.screen
 
 import android.app.DatePickerDialog
 import android.app.Dialog
@@ -7,9 +7,8 @@ import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.fragment.app.DialogFragment
+import com.soywiz.klock.DateTime
 import dev.icerock.moko.graphics.Color
-import dev.icerock.moko.widgets.screen.Screen
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.properties.ReadOnlyProperty
 
@@ -49,13 +48,8 @@ actual fun Screen<*>.registerDatePickerDialogHandler(
 actual class DatePickerDialogBuilder(private val dialogId: Int, private val screen: Screen<*>) {
     private val context: Context = screen.requireContext()
 
-    private var format: String = ""
-    private var startDate: DateTime? = null
+     private var startDate: DateTime? = null
     private var endDate: DateTime? = null
-
-    actual fun dateFormat(format: String) {
-        this.format = format
-    }
 
     actual fun accentColor(color: Color) {
         //android color from style
@@ -78,7 +72,6 @@ actual class DatePickerDialogBuilder(private val dialogId: Int, private val scre
             DatePickerDialogFragment.instantiate(
                 arg = DatePickerDialogFragment.Args(
                     dialogId = dialogId,
-                    format = format,
                     startDate = startDate,
                     endDate = endDate
                 )
@@ -97,7 +90,6 @@ class DatePickerDialogFragment : DialogFragment() {
         requireNotNull(argument) { "can't be opened without argument" }
 
         val dialogId = argument.dialogId
-        val formatter = SimpleDateFormat(argument.format ?: "", Locale.getDefault())
         val currentDate = Calendar.getInstance()
         val dialog = DatePickerDialog(
             context, { _
@@ -107,14 +99,14 @@ class DatePickerDialogFragment : DialogFragment() {
                 ->
                 val date = Calendar.getInstance()
                 date.set(year, month, day)
-                listener?.onPositivePressed(dialogId, DateTime.timeInMillis(date.timeInMillis))
+                listener?.onPositivePressed(dialogId, DateTime(date.timeInMillis))
             },
             currentDate.get(Calendar.YEAR),
             currentDate.get(Calendar.MONTH),
             currentDate.get(Calendar.DAY_OF_MONTH)
         )
-        argument.endDate?.let { dialog.datePicker.maxDate = it.date.time }
-        argument.startDate?.let { dialog.datePicker.minDate = it.date.time }
+        argument.endDate?.let { dialog.datePicker.maxDate = it.unixMillisLong }
+        argument.startDate?.let { dialog.datePicker.minDate = it.unixMillisLong }
         dialog.setOnCancelListener { listener?.onNegativePressed(dialogId) }
         return dialog
     }
@@ -126,28 +118,25 @@ class DatePickerDialogFragment : DialogFragment() {
 
     data class Args(
         val dialogId: Int,
-        val format: String?,
         val startDate: DateTime?,
         val endDate: DateTime?
     ) : Parcelable {
         constructor(parcel: Parcel) : this(
             parcel.readInt(),
-            parcel.readString(),
             parcel.readLong().let {
                 if (it == 0L) null
-                else DateTime.timeInMillis(it)
+                else DateTime(it)
             },
             parcel.readLong().let {
                 if (it == 0L) null
-                else DateTime.timeInMillis(it)
+                else DateTime(it)
             }
         )
 
         override fun writeToParcel(parcel: Parcel, flags: Int) {
             parcel.writeInt(dialogId)
-            parcel.writeString(format)
-            parcel.writeLong(startDate?.date?.time ?: 0L)
-            parcel.writeLong(endDate?.date?.time ?: 0L)
+            parcel.writeLong(startDate?.unixMillisLong ?: 0L)
+            parcel.writeLong(endDate?.unixMillisLong ?: 0L)
         }
 
         override fun describeContents(): Int {
@@ -180,26 +169,4 @@ class DatePickerDialogFragment : DialogFragment() {
                 }
         }
     }
-}
-
-actual sealed class DateTime {
-
-    abstract val date: Date
-
-    actual fun format(format: String): String {
-        return SimpleDateFormat(format, Locale.getDefault()).format(date)
-    }
-
-    actual class timeInMillis actual constructor(mills: Long) : DateTime() {
-        override val date = Date(mills)
-    }
-
-    actual class fromString actual constructor(time: String, format: String) : DateTime() {
-        override val date: Date = SimpleDateFormat(format, Locale.getDefault()).parse(time)
-    }
-
-    actual class now actual constructor() : DateTime() {
-        override val date = Date()
-    }
-
 }
