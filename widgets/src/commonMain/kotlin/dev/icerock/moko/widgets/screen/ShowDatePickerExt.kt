@@ -12,7 +12,6 @@ expect fun Screen<*>.registerDatePickerDialogHandler(
 ): ReadOnlyProperty<Screen<*>, DatePickerDialogHandler>
 
 expect class DatePickerDialogBuilder {
-    fun handler(handler: DatePickerDialogHandler)
     fun accentColor(color: Color)
     fun startDate(date: DateTime)
     fun endDate(date: DateTime)
@@ -20,5 +19,6 @@ expect class DatePickerDialogBuilder {
 
 expect fun Screen<*>.showDatePickerDialog(
     dialogId: Int,
-    factory: DatePickerDialogBuilder.() -> Unit
+    factory: DatePickerDialogBuilder.() -> Unit,
+    handler: DatePickerDialogHandler
 )

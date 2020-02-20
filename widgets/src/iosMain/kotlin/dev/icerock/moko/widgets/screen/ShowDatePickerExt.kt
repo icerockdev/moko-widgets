@@ -19,8 +19,6 @@ actual fun Screen<*>.registerDatePickerDialogHandler(
 }
 
 actual class DatePickerDialogBuilder {
-    actual fun handler(handler: DatePickerDialogHandler) {
-    }
 
     actual fun accentColor(color: Color) {
     }
@@ -34,7 +32,8 @@ actual class DatePickerDialogBuilder {
 
 actual fun Screen<*>.showDatePickerDialog(
     dialogId: Int,
-    factory: DatePickerDialogBuilder.() -> Unit
+    factory: DatePickerDialogBuilder.() -> Unit,
+    handler: DatePickerDialogHandler
 ) {
     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 }

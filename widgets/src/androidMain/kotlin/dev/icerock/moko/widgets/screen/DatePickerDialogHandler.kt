@@ -2,23 +2,24 @@ package dev.icerock.moko.widgets.screen
 
 import android.app.DatePickerDialog
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
-import android.os.Parcel
 import android.os.Parcelable
 import androidx.fragment.app.DialogFragment
 import com.soywiz.klock.DateTime
 import dev.icerock.moko.graphics.Color
+import dev.icerock.moko.parcelize.Parcelize
 import java.util.*
 import kotlin.properties.ReadOnlyProperty
 
 actual fun Screen<*>.showDatePickerDialog(
     dialogId: Int,
-    factory: DatePickerDialogBuilder.() -> Unit
+    factory: DatePickerDialogBuilder.() -> Unit,
+    handler: DatePickerDialogHandler
 ) {
     val alert = DatePickerDialogBuilder(
         dialogId,
-        this
+        this,
+        handler
     )
     factory(alert)
     alert.show()
@@ -45,18 +46,16 @@ actual fun Screen<*>.registerDatePickerDialogHandler(
         }
     }
 
-actual class DatePickerDialogBuilder(private val dialogId: Int, private val screen: Screen<*>) {
-    private val context: Context = screen.requireContext()
-
-     private var startDate: DateTime? = null
+actual class DatePickerDialogBuilder(
+    private val dialogId: Int,
+    private val screen: Screen<*>,
+    private val handler: DatePickerDialogHandler
+) {
+    private var startDate: DateTime? = null
     private var endDate: DateTime? = null
 
     actual fun accentColor(color: Color) {
         //android color from style
-    }
-
-    actual fun handler(handler: DatePickerDialogHandler) {
-        // handler is just mark that `Screen` have registered alert handler
     }
 
     actual fun startDate(date: DateTime) {
@@ -72,8 +71,8 @@ actual class DatePickerDialogBuilder(private val dialogId: Int, private val scre
             DatePickerDialogFragment.instantiate(
                 arg = DatePickerDialogFragment.Args(
                     dialogId = dialogId,
-                    startDate = startDate,
-                    endDate = endDate
+                    startDate = startDate?.unixMillisLong,
+                    endDate = endDate?.unixMillisLong
                 )
             )
         alertDialogFragment.show(screen.childFragmentManager, null)
@@ -105,8 +104,8 @@ class DatePickerDialogFragment : DialogFragment() {
             currentDate.get(Calendar.MONTH),
             currentDate.get(Calendar.DAY_OF_MONTH)
         )
-        argument.endDate?.let { dialog.datePicker.maxDate = it.unixMillisLong }
-        argument.startDate?.let { dialog.datePicker.minDate = it.unixMillisLong }
+        argument.endDate?.let { dialog.datePicker.maxDate = it }
+        argument.startDate?.let { dialog.datePicker.minDate = it }
         dialog.setOnCancelListener { listener?.onNegativePressed(dialogId) }
         return dialog
     }
@@ -116,46 +115,12 @@ class DatePickerDialogFragment : DialogFragment() {
         fun onNegativePressed(dialogId: Int)
     }
 
+    @Parcelize
     data class Args(
         val dialogId: Int,
-        val startDate: DateTime?,
-        val endDate: DateTime?
-    ) : Parcelable {
-        constructor(parcel: Parcel) : this(
-            parcel.readInt(),
-            parcel.readLong().let {
-                if (it == 0L) null
-                else DateTime(it)
-            },
-            parcel.readLong().let {
-                if (it == 0L) null
-                else DateTime(it)
-            }
-        )
-
-        override fun writeToParcel(parcel: Parcel, flags: Int) {
-            parcel.writeInt(dialogId)
-            parcel.writeLong(startDate?.unixMillisLong ?: 0L)
-            parcel.writeLong(endDate?.unixMillisLong ?: 0L)
-        }
-
-        override fun describeContents(): Int {
-            return 0
-        }
-
-        companion object CREATOR : Parcelable.Creator<Args> {
-            override fun createFromParcel(parcel: Parcel): Args {
-                return Args(
-                    parcel
-                )
-            }
-
-            override fun newArray(size: Int): Array<Args?> {
-                return arrayOfNulls(size)
-            }
-        }
-
-    }
+        val startDate: Long?,
+        val endDate: Long?
+    ) : Parcelable
 
     companion object {
         private const val ARG_KEY = "arg_bundle"
