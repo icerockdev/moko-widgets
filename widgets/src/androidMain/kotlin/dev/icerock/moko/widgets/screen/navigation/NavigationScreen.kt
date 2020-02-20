@@ -25,11 +25,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.widgets.core.View
-import dev.icerock.moko.widgets.screen.Args
-import dev.icerock.moko.widgets.screen.FragmentNavigation
-import dev.icerock.moko.widgets.screen.Screen
-import dev.icerock.moko.widgets.screen.TypedScreenDesc
-import dev.icerock.moko.widgets.screen.unsafeSetScreenArgument
+import dev.icerock.moko.widgets.screen.*
 import dev.icerock.moko.widgets.style.view.FontStyle
 import dev.icerock.moko.widgets.utils.ThemeAttrs
 import dev.icerock.moko.widgets.utils.dp
@@ -78,8 +74,7 @@ actual abstract class NavigationScreen<S> actual constructor(
                         val resultTarget = f.screenId
 
                         if (resultTarget != null) {
-                            val target = fm.fragments
-                                .filterIsInstance<Screen<*>>()
+                            val target = fm.getAllScreens()
                                 .firstOrNull { it.resultCode == resultTarget }
 
                             detachHandlers[f] = Runnable {
@@ -108,6 +103,17 @@ actual abstract class NavigationScreen<S> actual constructor(
             .addCallback(this, backPressedCallback)
 
         updateBackCallbackState()
+    }
+
+    private fun FragmentManager.getAllScreens(): List<Screen<*>> {
+        val list = fragments
+            .filterIsInstance<Screen<*>>()
+            .toMutableList()
+        val childScreens = list.map {
+            it.childFragmentManager.getAllScreens()
+        }
+        childScreens.forEach { list.addAll(it) }
+        return list
     }
 
     override fun onCreateView(
