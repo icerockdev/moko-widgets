@@ -3,53 +3,54 @@
  */
 package dev.icerock.moko.widgets.datepicker
 
-import cocoapods.mokoWidgetsBottomSheet.BottomSheetController
-import dev.icerock.moko.resources.desc.StringDesc
+
+import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.widgets.screen.Screen
-import platform.UIKit.*
 import kotlin.properties.ReadOnlyProperty
+
+actual class DatePickerDialogHandler
+
+actual fun Screen<*>.registerDatePickerDialogHandler(
+    positive: ((dialogId: Int, date: DateTime) -> Unit)?,
+    negative: ((dialogId: Int) -> Unit)?
+): ReadOnlyProperty<Screen<*>, DatePickerDialogHandler> {
+    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+}
+
+actual class DatePickerDialogBuilder {
+    actual fun dateFormat(format: String) {
+    }
+
+    actual fun handler(handler: DatePickerDialogHandler) {
+    }
+
+    actual fun accentColor(color: Color) {
+    }
+
+    actual fun startDate(date: DateTime) {
+    }
+
+    actual fun endDate(date: DateTime) {
+    }
+}
 
 actual fun Screen<*>.showDatePickerDialog(
     dialogId: Int,
     factory: DatePickerDialogBuilder.() -> Unit
 ) {
-    BottomSheetController().showOnViewController(
-        vc = this.viewController,
-        withContent = UIDatePicker(),
-        onDismiss = {}
-    )
 }
 
-actual class DatePickerDialogHandler(
-    val positive: ((dialogId: Int, date: String) -> Unit)?,
-    val negative: ((dialogId: Int) -> Unit)?
-)
-
-actual fun Screen<*>.registerDatePickerDialogHandler(
-    positive: ((dialogId: Int, date: String) -> Unit)?,
-    negative: ((dialogId: Int) -> Unit)?
-): ReadOnlyProperty<Screen<*>, DatePickerDialogHandler> {
-    val handler = DatePickerDialogHandler(
-        positive = positive,
-        negative = negative
-    )
-    return createConstReadOnlyProperty(handler)
-}
-
-actual class DatePickerDialogBuilder(private val dialogId: Int, val screen: Screen<*>) {
-
-    private var handler: DatePickerDialogHandler? = null
-    private var format: String = ""
-
-    actual fun dateFormat(format: String) {
-        this.format = format
+actual sealed class DateTime {
+    actual fun format(format: String): String {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    actual fun handler(handler: DatePickerDialogHandler) {
-        this.handler = handler
-    }
+    actual class timeInMillis actual constructor(mills: Long) :
+        DateTime()
 
-    internal fun show() {
+    actual class fromString actual constructor(time: String, format: String) :
+        DateTime()
 
-    }
+    actual class now actual constructor() : DateTime()
+
 }

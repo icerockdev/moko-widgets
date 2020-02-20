@@ -48,5 +48,5 @@ publishing {
 cocoaPods {
     podsProject = file("../sample/ios-app/Pods/Pods.xcodeproj")
 
-    pod("moko-widgets-datapicker", "mokoWidgetsDataPicker")
+    pod("moko-widgets-datepicker", "mokoWidgetsDataPicker")
 }
