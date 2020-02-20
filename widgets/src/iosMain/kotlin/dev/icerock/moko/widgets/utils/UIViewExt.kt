@@ -183,3 +183,22 @@ fun UIView.wrapContentHeight(width: CGFloat? = null): CGFloat {
     setFrame(oldFrame)
     return result
 }
+
+fun UIView.wrapContentWidth(height: CGFloat? = null): CGFloat {
+    val oldFrame = frame()
+    val expandedFrame = CGRectMake(
+        0.0,
+        0.0,
+        UIScreen.mainScreen.bounds.useContents { this.size.width },
+        height ?: UIScreen.mainScreen.bounds.useContents { this.size.height }
+    )
+    setFrame(expandedFrame)
+    updateConstraints()
+    layoutSubviews()
+    val result = systemLayoutSizeFittingSize(
+        UILayoutFittingCompressedSize.readValue(),
+        withHorizontalFittingPriority = UILayoutPriorityDefaultLow,
+        verticalFittingPriority = UILayoutPriorityRequired).useContents { this.width }
+    setFrame(oldFrame)
+    return result
+}
