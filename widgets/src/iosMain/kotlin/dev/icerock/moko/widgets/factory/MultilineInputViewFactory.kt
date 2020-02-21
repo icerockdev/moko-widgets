@@ -1,0 +1,154 @@
+/*
+ * Copyright 2020 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
+ */
+
+package dev.icerock.moko.widgets.factory
+
+import dev.icerock.moko.graphics.Color
+import dev.icerock.moko.graphics.toUIColor
+import dev.icerock.moko.widgets.InputWidget
+import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.widgets.core.ViewFactory
+import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.objc.setAssociatedObject
+import dev.icerock.moko.widgets.style.applyInputTypeIfNeeded
+import dev.icerock.moko.widgets.style.view.CornerRadiusValue
+import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.PaddingValues
+import dev.icerock.moko.widgets.style.view.TextHorizontalAlignment
+import dev.icerock.moko.widgets.style.view.TextStyle
+import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.utils.applyTextStyleIfNeeded
+import dev.icerock.moko.widgets.utils.bind
+import kotlinx.cinterop.readValue
+import platform.CoreGraphics.CGRectZero
+import platform.UIKit.NSTextAlignmentCenter
+import platform.UIKit.NSTextAlignmentLeft
+import platform.UIKit.NSTextAlignmentRight
+import platform.UIKit.UIColor
+import platform.UIKit.UITextView
+import platform.UIKit.UITextViewDelegateProtocol
+import platform.UIKit.backgroundColor
+import platform.UIKit.clipsToBounds
+import platform.UIKit.translatesAutoresizingMaskIntoConstraints
+import platform.darwin.NSObject
+
+actual class MultilineInputViewFactory actual constructor(
+    private val cornerRadiusValue: CornerRadiusValue?,
+    private val borderColor: Color?,
+    private val borderWidth: Float?,
+    private val backgroundViewColor: Color?,
+    private val margins: MarginValues?,
+    private val padding: PaddingValues?,
+    private val textStyle: TextStyle?,
+    private val labelTextColor: Color?,
+    private val textHorizontalAlignment: TextHorizontalAlignment?
+) : ViewFactory<InputWidget<out WidgetSize>> {
+
+    private var isPlaceholderShow: Boolean = false
+
+    override fun <WS : WidgetSize> build(
+        widget: InputWidget<out WidgetSize>,
+        size: WS,
+        viewFactoryContext: ViewFactoryContext
+    ): ViewBundle<WS> {
+
+        val textView = UITextView(frame = CGRectZero.readValue()).apply {
+            translatesAutoresizingMaskIntoConstraints = false
+
+            borderColor?.let {
+                layer.borderColor = it.toUIColor().CGColor
+            }
+
+            borderWidth?.let {
+                layer.borderWidth = it.toDouble()
+            }
+
+            cornerRadiusValue?.let {
+                layer.cornerRadius = it.radius.toDouble()
+            }
+
+            backgroundViewColor?.let {
+                backgroundColor = it.toUIColor()
+            }
+
+            applyTextStyleIfNeeded(textStyle)
+            applyInputTypeIfNeeded(widget.inputType)
+
+            clipsToBounds = true
+
+            when (textHorizontalAlignment) {
+                TextHorizontalAlignment.LEFT -> textAlignment = NSTextAlignmentLeft
+                TextHorizontalAlignment.CENTER -> textAlignment = NSTextAlignmentCenter
+                TextHorizontalAlignment.RIGHT -> textAlignment = NSTextAlignmentRight
+                null -> {
+                }
+            }
+        }
+
+        widget.enabled?.bind { textView.editable = it }
+        widget.field.data.bind { textView.text = it }
+
+
+        val textDelegate = TextViewDelegate(
+            textChangedHandler = { newValue ->
+                val currentValue = widget.field.data.value
+
+                if (currentValue != newValue) {
+                    widget.field.data.value = newValue
+                }
+            },
+            didBeginEditHandler = {
+                if (isPlaceholderShow) {
+                    textView.text = ""
+                    textView.textColor = textStyle?.color?.toUIColor() ?: UIColor.blackColor
+                    isPlaceholderShow = false
+                }
+            },
+            didEndEditHandler = {
+                if (textView.text.isEmpty()) {
+                    textView.text = widget.label.value.localized()
+                    textView.textColor = labelTextColor?.toUIColor() ?: UIColor.grayColor
+                    isPlaceholderShow = true
+                }
+            }
+        )
+
+        if (widget.label.value.localized().isNotEmpty()) {
+            if (widget.field.data.value.isEmpty()) {
+                isPlaceholderShow = true
+                textView.text = widget.label.value.localized()
+                textView.textColor = labelTextColor?.toUIColor() ?: UIColor.grayColor
+            }
+        }
+
+        setAssociatedObject(textView, textDelegate)
+        textView.delegate = textDelegate
+
+        return ViewBundle(
+            view = textView,
+            size = size,
+            margins = margins
+        )
+    }
+
+    private class TextViewDelegate(
+        private val textChangedHandler: (String) -> Unit,
+        private val didBeginEditHandler: (() -> Unit)?,
+        private val didEndEditHandler: (() -> Unit)?
+    ) : NSObject(), UITextViewDelegateProtocol {
+
+        override fun textViewDidChange(textView: UITextView) {
+            textChangedHandler(textView.text)
+        }
+
+        override fun textViewDidBeginEditing(textView: UITextView) {
+            didBeginEditHandler?.invoke()
+        }
+
+        override fun textViewDidEndEditing(textView: UITextView) {
+            didEndEditHandler?.invoke()
+        }
+    }
+}
+
