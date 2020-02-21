@@ -19,7 +19,7 @@ fun UITextField.applyInputTypeIfNeeded(
 ) {
     if (type == null) return
     this.keyboardType = type.toPlatformInputType()
-    this.secureTextEntry = type == InputType.Password()
+    this.secureTextEntry = type is InputType.Password
 }
 
 private fun InputType.toPlatformInputType(): UIKeyboardType {
