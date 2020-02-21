@@ -11,6 +11,7 @@ import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
@@ -50,8 +51,8 @@ actual class SystemTabsViewFactory actual constructor(
     private val tabsTintColor: Color?,
     private val selectedTitleColor: Color?,
     private val normalTitleColor: Color?,
-    private val tabsBackground: Background?,
-    private val contentBackground: Background?,
+    private val tabsBackground: Background<Fill.Solid>?,
+    private val contentBackground: Background<out Fill>?,
     private val tabsPadding: PaddingValues?,
     private val contentPadding: PaddingValues?,
     private val margins: MarginValues?

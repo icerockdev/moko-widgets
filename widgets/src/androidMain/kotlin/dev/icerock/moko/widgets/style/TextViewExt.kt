@@ -4,31 +4,31 @@
 
 package dev.icerock.moko.widgets.style
 
+import android.widget.Button
 import android.widget.TextView
+import dev.icerock.moko.graphics.Color
+import dev.icerock.moko.widgets.style.state.PressableState
 import dev.icerock.moko.widgets.style.view.TextStyle
 
-fun TextView.applyTextStyle(textStyle: TextStyle) {
-    textStyle.color?.also {
-        setTextColor(it.argb.toInt())
-    }
-    textStyle.size?.also {
-        textSize = it.toFloat()
-    }
-    textStyle.fontStyle?.also {
-        applyFontStyle(it)
-    }
+fun Button.applyTextStyleIfNeeded(textStyle: TextStyle<PressableState<Color>>?) {
+    applyCommonTextStyleIfNeeded(textStyle)
+
+    if (textStyle == null) return
+
+    textStyle.color?.also { setTextColor(it.toStateList()) }
 }
 
-fun TextView.applyTextStyleIfNeeded(textStyle: TextStyle?) {
-    if(textStyle == null) return
+fun TextView.applyTextStyleIfNeeded(textStyle: TextStyle<Color>?) {
+    applyCommonTextStyleIfNeeded(textStyle)
 
-    textStyle.color?.also {
-        setTextColor(it.argb.toInt())
-    }
-    textStyle.size?.also {
-        textSize = it.toFloat()
-    }
-    textStyle.fontStyle?.also {
-        applyFontStyle(it)
-    }
+    if (textStyle == null) return
+
+    textStyle.color?.also { setTextColor(it.argb.toInt()) }
+}
+
+fun TextView.applyCommonTextStyleIfNeeded(textStyle: TextStyle<*>?) {
+    if (textStyle == null) return
+
+    textStyle.size?.also { textSize = it.toFloat() }
+    textStyle.fontStyle?.also { applyFontStyle(it) }
 }

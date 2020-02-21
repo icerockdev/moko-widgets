@@ -26,6 +26,7 @@ import dev.icerock.moko.widgets.style.applyInputType
 import dev.icerock.moko.widgets.style.applyPaddingIfNeeded
 import dev.icerock.moko.widgets.style.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.ext.getGravity
 import dev.icerock.moko.widgets.style.view.FontStyle
 import dev.icerock.moko.widgets.style.view.MarginValues
@@ -39,12 +40,12 @@ import dev.icerock.moko.widgets.utils.dp
 import dev.icerock.moko.widgets.utils.sp
 
 actual class FloatingLabelInputViewFactory actual constructor(
-    private val background: Background?,
+    private val background: Background<Fill.Solid>?,
     private val margins: MarginValues?,
     private val padding: PaddingValues?,
-    private val textStyle: TextStyle?,
-    private val labelTextStyle: TextStyle?,
-    private val errorTextStyle: TextStyle?,
+    private val textStyle: TextStyle<Color>?,
+    private val labelTextStyle: TextStyle<Color>?,
+    private val errorTextStyle: TextStyle<Color>?,
     private val underLineColor: Color?,
     private val underLineFocusedColor: Color?,
     private val textHorizontalAlignment: TextHorizontalAlignment?

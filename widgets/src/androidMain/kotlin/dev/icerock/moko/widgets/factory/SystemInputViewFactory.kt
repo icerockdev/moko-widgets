@@ -22,17 +22,24 @@ import dev.icerock.moko.widgets.style.applyInputType
 import dev.icerock.moko.widgets.style.applyPaddingIfNeeded
 import dev.icerock.moko.widgets.style.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.ext.getGravityForTextAlignment
-import dev.icerock.moko.widgets.style.view.*
+import dev.icerock.moko.widgets.style.view.IOSFieldBorderStyle
+import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.PaddingValues
+import dev.icerock.moko.widgets.style.view.TextHorizontalAlignment
+import dev.icerock.moko.widgets.style.view.TextStyle
+import dev.icerock.moko.widgets.style.view.TextVerticalAlignment
+import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.androidId
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.dp
 
 actual class SystemInputViewFactory actual constructor(
-    private val background: Background?,
+    private val background: Background<Fill.Solid>?,
     private val margins: MarginValues?,
     private val padding: PaddingValues?,
-    private val textStyle: TextStyle?,
+    private val textStyle: TextStyle<Color>?,
     private val labelTextColor: Color?,
     private val textHorizontalAlignment: TextHorizontalAlignment?,
     private val textVerticalAlignment: TextVerticalAlignment?,
@@ -70,7 +77,7 @@ actual class SystemInputViewFactory actual constructor(
 
             // If there is any nonnull text alignment argument, then set it to gravity
             // otherwise gravity will be with default value.
-            if(textHorizontalAlignment != null || textVerticalAlignment != null) {
+            if (textHorizontalAlignment != null || textVerticalAlignment != null) {
                 gravity = getGravityForTextAlignment(
                     textHorizontalAlignment = textHorizontalAlignment,
                     textVerticalAlignment = textVerticalAlignment
@@ -88,7 +95,8 @@ actual class SystemInputViewFactory actual constructor(
                     start: Int,
                     count: Int,
                     after: Int
-                ) {}
+                ) {
+                }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                     if (s == null) return

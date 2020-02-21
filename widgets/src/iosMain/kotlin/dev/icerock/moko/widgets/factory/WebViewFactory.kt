@@ -11,23 +11,24 @@ import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.objc.setAssociatedObject
 import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.WebViewRedirectUrlHandler
 import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
-import platform.UIKit.translatesAutoresizingMaskIntoConstraints
-import platform.WebKit.WKWebView
-import platform.WebKit.WKNavigationDelegateProtocol
-import platform.Foundation.NSURLRequest
 import platform.Foundation.NSURL
+import platform.Foundation.NSURLRequest
+import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 import platform.WebKit.WKNavigation
 import platform.WebKit.WKNavigationAction
 import platform.WebKit.WKNavigationActionPolicy
+import platform.WebKit.WKNavigationDelegateProtocol
+import platform.WebKit.WKWebView
 import platform.darwin.NSObject
 
 actual class WebViewFactory actual constructor(
     private val margins: MarginValues?,
-    private val background: Background?
+    private val background: Background<Fill.Solid>?
 ) : ViewFactory<WebViewWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
@@ -85,18 +86,18 @@ actual class WebViewFactory actual constructor(
             decisionHandler: (WKNavigationActionPolicy) -> Unit
         ) {
             val requestUrl = decidePolicyForNavigationAction.request.URL
-            if(requestUrl == null) {
+            if (requestUrl == null) {
                 decisionHandler(WKNavigationActionPolicy.WKNavigationActionPolicyCancel)
                 return
             }
 
             val strRequestUrl = requestUrl.absoluteString
-            if(strRequestUrl == null) {
+            if (strRequestUrl == null) {
                 decisionHandler(WKNavigationActionPolicy.WKNavigationActionPolicyCancel)
                 return
             }
 
-            if(redirectUrlHandler.handleUrl(strRequestUrl)) {
+            if (redirectUrlHandler.handleUrl(strRequestUrl)) {
                 // If strRequestUrl contains success or failure token, then cancel navigation.
                 decisionHandler(WKNavigationActionPolicy.WKNavigationActionPolicyCancel)
             } else {

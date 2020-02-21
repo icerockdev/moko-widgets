@@ -13,6 +13,7 @@ import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.style.applyPaddingIfNeeded
 import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.ext.applyMargin
 import dev.icerock.moko.widgets.style.ext.toPlatformSize
 import dev.icerock.moko.widgets.style.view.MarginValues
@@ -21,7 +22,7 @@ import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.androidId
 
 actual class SystemScrollViewFactory actual constructor(
-    private val background: Background?,
+    private val background: Background<Fill.Solid>?,
     private val padding: PaddingValues?,
     private val margins: MarginValues?
 ) : ViewFactory<ScrollWidget<out WidgetSize>> {

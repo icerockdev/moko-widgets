@@ -4,13 +4,15 @@
 
 package dev.icerock.moko.widgets.factory
 
-import dev.icerock.moko.graphics.toUIColor
+import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.bind
-import dev.icerock.moko.widgets.style.background.StateBackground
+import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
+import dev.icerock.moko.widgets.style.state.PressableState
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.TextStyle
@@ -20,16 +22,16 @@ import dev.icerock.moko.widgets.utils.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.setEventHandler
 import platform.UIKit.UIButton
-import platform.UIKit.UIButtonTypeSystem
 import platform.UIKit.UIButtonTypeCustom
+import platform.UIKit.UIButtonTypeSystem
 import platform.UIKit.UIControlEventTouchUpInside
 import platform.UIKit.UIControlStateNormal
 import platform.UIKit.UIEdgeInsetsMake
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
 actual class SystemButtonViewFactory actual constructor(
-    private val background: StateBackground?,
-    private val textStyle: TextStyle?,
+    private val background: PressableState<Background<out Fill>>?,
+    private val textStyle: TextStyle<PressableState<Color>>?,
     private val isAllCaps: Boolean?,
     private val padding: PaddingValues?,
     private val margins: MarginValues?,
@@ -53,9 +55,7 @@ actual class SystemButtonViewFactory actual constructor(
 
             applyStateBackgroundIfNeeded(background)
 
-            titleLabel?.applyTextStyleIfNeeded(textStyle)
-
-            textStyle?.color?.also { setTintColor(it.toUIColor()) }
+            applyTextStyleIfNeeded(textStyle)
 
             padding?.let {
                 contentEdgeInsets = UIEdgeInsetsMake(

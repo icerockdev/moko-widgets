@@ -10,7 +10,6 @@ import dev.icerock.moko.widgets.ImageWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.style.view.CornerRadiusValue
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.bind
@@ -19,7 +18,7 @@ import dev.icerock.moko.widgets.utils.dp
 
 actual class SystemImageViewFactory actual constructor(
     private val margins: MarginValues?,
-    private val cornerRadiusValue: CornerRadiusValue?
+    private val cornerRadius: Float?
 ) : ViewFactory<ImageWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
@@ -45,8 +44,8 @@ actual class SystemImageViewFactory actual constructor(
 
             image.loadIn(imageView)
 
-            if (cornerRadiusValue != null) {
-                imageView.cornerRadius = cornerRadiusValue.radius.dp(context)
+            cornerRadius?.also {
+                imageView.cornerRadius = cornerRadius.dp(context)
             }
         }
 

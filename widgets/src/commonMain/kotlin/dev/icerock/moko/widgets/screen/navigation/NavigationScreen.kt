@@ -10,7 +10,6 @@ import dev.icerock.moko.resources.ImageResource
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.Screen
-import dev.icerock.moko.widgets.screen.ScreenFactory
 import dev.icerock.moko.widgets.screen.TypedScreenDesc
 import dev.icerock.moko.widgets.style.view.TextStyle
 
@@ -111,7 +110,7 @@ sealed class NavigationBar {
 
         data class Styles(
             val backgroundColor: Color? = null,
-            val textStyle: TextStyle? = null,
+            val textStyle: TextStyle<Color>? = null,
             val tintColor: Color? = null
         )
 

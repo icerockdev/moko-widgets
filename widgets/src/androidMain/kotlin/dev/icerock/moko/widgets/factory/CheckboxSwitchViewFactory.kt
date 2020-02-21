@@ -12,11 +12,15 @@ import dev.icerock.moko.widgets.SwitchWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.style.applyBackgroundIfNeeded
+import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.androidId
 import dev.icerock.moko.widgets.utils.bindNotNull
 
 actual class CheckboxSwitchViewFactory actual constructor(
+    private val background: Background<out Fill>?,
     private val checkedImage: ImageResource,
     private val uncheckedImage: ImageResource
 ) : ViewFactory<SwitchWidget<out WidgetSize>> {
@@ -30,6 +34,8 @@ actual class CheckboxSwitchViewFactory actual constructor(
 
         val checkbox = CheckBox(context).apply {
             id = widget.id.androidId
+
+            applyBackgroundIfNeeded(this@CheckboxSwitchViewFactory.background)
         }
 
         val drawable = StateListDrawable().apply {

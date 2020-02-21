@@ -4,7 +4,6 @@
 
 package dev.icerock.moko.widgets.factory
 
-import dev.icerock.moko.widgets.ClickableWidget
 import dev.icerock.moko.widgets.VisibilityWidget
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.style.view.WidgetSize

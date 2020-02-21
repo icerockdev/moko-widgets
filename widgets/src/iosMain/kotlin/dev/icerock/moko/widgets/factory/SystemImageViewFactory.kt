@@ -8,7 +8,6 @@ import dev.icerock.moko.widgets.ImageWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.style.view.CornerRadiusValue
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.bind
@@ -20,7 +19,7 @@ import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
 actual class SystemImageViewFactory actual constructor(
     private val margins: MarginValues?,
-    private val cornerRadiusValue: CornerRadiusValue?
+    private val cornerRadius: Float?
 ) : ViewFactory<ImageWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
@@ -43,7 +42,7 @@ actual class SystemImageViewFactory actual constructor(
                     UIViewContentMode.UIViewContentModeScaleAspectFit
             }
 
-            layer.cornerRadius = cornerRadiusValue?.radius?.toDouble() ?: 0.0
+            layer.cornerRadius = cornerRadius?.toDouble() ?: 0.0
             layer.masksToBounds = true
             clipsToBounds = true
         }

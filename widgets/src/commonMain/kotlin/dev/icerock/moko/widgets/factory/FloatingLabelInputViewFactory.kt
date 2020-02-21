@@ -8,15 +8,20 @@ import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.style.background.Background
-import dev.icerock.moko.widgets.style.view.*
+import dev.icerock.moko.widgets.style.background.Fill
+import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.PaddingValues
+import dev.icerock.moko.widgets.style.view.TextHorizontalAlignment
+import dev.icerock.moko.widgets.style.view.TextStyle
+import dev.icerock.moko.widgets.style.view.WidgetSize
 
 expect class FloatingLabelInputViewFactory(
-    background: Background? = null,
+    background: Background<Fill.Solid>? = null,
     margins: MarginValues? = null,
     padding: PaddingValues? = null,
-    textStyle: TextStyle? = null,
-    labelTextStyle: TextStyle? = null,
-    errorTextStyle: TextStyle? = null,
+    textStyle: TextStyle<Color>? = null,
+    labelTextStyle: TextStyle<Color>? = null,
+    errorTextStyle: TextStyle<Color>? = null,
     underLineColor: Color? = null,
     underLineFocusedColor: Color? = null,
     textHorizontalAlignment: TextHorizontalAlignment? = null
