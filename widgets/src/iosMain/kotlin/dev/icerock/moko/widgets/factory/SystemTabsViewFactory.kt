@@ -4,6 +4,8 @@
 
 package dev.icerock.moko.widgets.factory
 
+import dev.icerock.moko.graphics.Color
+import dev.icerock.moko.graphics.toUIColor
 import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
@@ -21,7 +23,11 @@ import dev.icerock.moko.widgets.utils.setEventHandler
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGFloat
 import platform.CoreGraphics.CGRectZero
+import platform.UIKit.NSForegroundColorAttributeName
 import platform.UIKit.UIControlEventValueChanged
+import platform.UIKit.UIControlStateNormal
+import platform.UIKit.UIControlStateSelected
+import platform.UIKit.UIDevice
 import platform.UIKit.UILayoutConstraintAxisVertical
 import platform.UIKit.UILayoutPriorityDefaultLow
 import platform.UIKit.UILayoutPriorityRequired
@@ -35,13 +41,19 @@ import platform.UIKit.hidden
 import platform.UIKit.leadingAnchor
 import platform.UIKit.setContentHuggingPriority
 import platform.UIKit.subviews
+import platform.UIKit.tintColor
 import platform.UIKit.topAnchor
 import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
 actual class SystemTabsViewFactory actual constructor(
-    private val background: Background?,
-    private val padding: PaddingValues?,
+    private val tabsTintColor: Color?,
+    private val selectedTitleColor: Color?,
+    private val normalTitleColor: Color?,
+    private val tabsBackground: Background?,
+    private val contentBackground: Background?,
+    private val tabsPadding: PaddingValues?,
+    private val contentPadding: PaddingValues?,
     private val margins: MarginValues?
 ) : ViewFactory<TabsWidget<out WidgetSize>> {
 
@@ -60,6 +72,16 @@ actual class SystemTabsViewFactory actual constructor(
                 UILayoutPriorityDefaultLow,
                 forAxis = UILayoutConstraintAxisVertical
             )
+
+            tabsTintColor?.also {
+                if (UIDevice.currentDevice.systemVersion.compareTo("13.0") < 0) {
+                    tintColor = it.toUIColor()
+                } else {
+                    selectedSegmentTintColor = it.toUIColor()
+                }
+            }
+
+            applyBackgroundIfNeeded(tabsBackground)
         }
 
         val container = UIView(frame = CGRectZero.readValue()).apply {
@@ -67,6 +89,26 @@ actual class SystemTabsViewFactory actual constructor(
             setContentHuggingPriority(
                 UILayoutPriorityRequired,
                 forAxis = UILayoutConstraintAxisVertical
+            )
+
+            applyBackgroundIfNeeded(contentBackground)
+        }
+
+
+        selectedTitleColor?.also {
+            segmentedControl.setTitleTextAttributes(
+                attributes = mapOf(
+                    NSForegroundColorAttributeName to it.toUIColor()
+                ),
+                forState = UIControlStateSelected
+            )
+        }
+        normalTitleColor?.also {
+            segmentedControl.setTitleTextAttributes(
+                attributes = mapOf(
+                    NSForegroundColorAttributeName to it.toUIColor()
+                ),
+                forState = UIControlStateNormal
             )
         }
 
@@ -96,7 +138,7 @@ actual class SystemTabsViewFactory actual constructor(
 
                 val edges: Edges<CGFloat> = applySizeToChild(
                     rootView = container,
-                    rootPadding = padding,
+                    rootPadding = contentPadding,
                     childView = view,
                     childSize = viewBundle.size,
                     childMargins = viewBundle.margins
@@ -123,16 +165,27 @@ actual class SystemTabsViewFactory actual constructor(
 
         val view = UIView(frame = CGRectZero.readValue()).apply {
             translatesAutoresizingMaskIntoConstraints = false
-            applyBackgroundIfNeeded(background)
 
             addSubview(segmentedControl)
             addSubview(container)
 
-            segmentedControl.leadingAnchor.constraintEqualToAnchor(leadingAnchor).active = true
-            segmentedControl.trailingAnchor.constraintEqualToAnchor(trailingAnchor).active = true
-            segmentedControl.topAnchor.constraintEqualToAnchor(topAnchor).active = true
+            segmentedControl.leadingAnchor.constraintEqualToAnchor(
+                leadingAnchor,
+                constant = tabsPadding?.start?.toDouble() ?: 0.0
+            ).active = true
+            trailingAnchor.constraintEqualToAnchor(
+                segmentedControl.trailingAnchor,
+                constant = tabsPadding?.end?.toDouble() ?: 0.0
+            ).active = true
+            segmentedControl.topAnchor.constraintEqualToAnchor(
+                topAnchor,
+                constant = tabsPadding?.top?.toDouble() ?: 0.0
+            ).active = true
 
-            container.topAnchor.constraintEqualToAnchor(segmentedControl.bottomAnchor).active = true
+            container.topAnchor.constraintEqualToAnchor(
+                segmentedControl.bottomAnchor,
+                constant = tabsPadding?.bottom?.toDouble() ?: 0.0
+            ).active = true
 
             container.leadingAnchor.constraintEqualToAnchor(leadingAnchor).active = true
             container.trailingAnchor.constraintEqualToAnchor(trailingAnchor).active = true

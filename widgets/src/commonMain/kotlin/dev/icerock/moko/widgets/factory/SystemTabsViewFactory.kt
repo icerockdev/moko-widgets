@@ -4,6 +4,7 @@
 
 package dev.icerock.moko.widgets.factory
 
+import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.style.background.Background
@@ -12,7 +13,12 @@ import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
 expect class SystemTabsViewFactory(
-    background: Background? = null,
-    padding: PaddingValues? = null,
+    tabsTintColor: Color? = null,
+    selectedTitleColor: Color? = null,
+    normalTitleColor: Color? = null,
+    tabsBackground: Background? = null,
+    contentBackground: Background? = null,
+    tabsPadding: PaddingValues? = null,
+    contentPadding: PaddingValues? = null,
     margins: MarginValues? = null
 ) : ViewFactory<TabsWidget<out WidgetSize>>

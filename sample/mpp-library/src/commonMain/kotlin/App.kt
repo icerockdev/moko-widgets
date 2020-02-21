@@ -21,6 +21,7 @@ import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.ImageWidget
 import dev.icerock.moko.widgets.InputWidget
+import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Theme
@@ -31,6 +32,7 @@ import dev.icerock.moko.widgets.factory.IconGravity
 import dev.icerock.moko.widgets.factory.LinearViewFactory
 import dev.icerock.moko.widgets.factory.SystemImageViewFactory
 import dev.icerock.moko.widgets.factory.SystemInputViewFactory
+import dev.icerock.moko.widgets.factory.SystemTabsViewFactory
 import dev.icerock.moko.widgets.flat.FlatInputViewFactory
 import dev.icerock.moko.widgets.sample.InputWidgetGalleryScreen
 import dev.icerock.moko.widgets.sample.ScrollContentScreen
@@ -51,7 +53,6 @@ import dev.icerock.moko.widgets.screen.navigation.Route
 import dev.icerock.moko.widgets.screen.navigation.SelectStates
 import dev.icerock.moko.widgets.screen.navigation.createPushResultRoute
 import dev.icerock.moko.widgets.screen.navigation.createPushRoute
-import dev.icerock.moko.widgets.screen.navigation.createReplaceRoute
 import dev.icerock.moko.widgets.screen.navigation.createRouter
 import dev.icerock.moko.widgets.screen.navigation.route
 import dev.icerock.moko.widgets.style.background.Background
@@ -62,6 +63,7 @@ import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.utils.platformSpecific
 
 class App() : BaseApplication() {
 
@@ -174,6 +176,12 @@ class App() : BaseApplication() {
                     size = 16,
                     color = Color(0x16171AFF)
                 )
+            )
+            factory[TabsWidget.DefaultCategory] = SystemTabsViewFactory(
+                tabsTintColor = Color(0xD20C0AFF),
+                tabsPadding = platformSpecific(android = null, ios = PaddingValues(padding = 16f)),
+                selectedTitleColor = Color(platformSpecific(android = 0x151515FF, ios = 0xFFFFFFFF)),
+                normalTitleColor = platformSpecific(android = Color(0x15151599), ios = null)
             )
         }
 
