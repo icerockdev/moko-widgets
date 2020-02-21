@@ -4,6 +4,7 @@
 
 package dev.icerock.moko.widgets.factory
 
+import android.content.res.ColorStateList
 import android.view.ContextThemeWrapper
 import android.view.Gravity
 import android.view.View
@@ -13,6 +14,8 @@ import android.widget.LinearLayout
 import android.widget.TabHost
 import android.widget.TabWidget
 import android.widget.TextView
+import androidx.core.view.ViewCompat
+import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.core.ViewBundle
@@ -27,8 +30,13 @@ import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.bindNotNull
 
 actual class SystemTabsViewFactory actual constructor(
-    private val background: Background?,
-    private val padding: PaddingValues?,
+    private val tabsTintColor: Color?,
+    private val selectedTitleColor: Color?,
+    private val normalTitleColor: Color?,
+    private val tabsBackground: Background?,
+    private val contentBackground: Background?,
+    private val tabsPadding: PaddingValues?,
+    private val contentPadding: PaddingValues?,
     private val margins: MarginValues?
 ) : ViewFactory<TabsWidget<out WidgetSize>> {
 
@@ -42,12 +50,12 @@ actual class SystemTabsViewFactory actual constructor(
 
         val tabHost = TabHost(context).apply {
             id = android.R.id.tabhost
-
-            applyBackgroundIfNeeded(this@SystemTabsViewFactory.background)
         }
 
         val container = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
+
+            applyBackgroundIfNeeded(this@SystemTabsViewFactory.contentBackground)
         }
 
         tabHost.addView(
@@ -58,6 +66,8 @@ actual class SystemTabsViewFactory actual constructor(
 
         val tabWidget = TabWidget(context).apply {
             id = android.R.id.tabs
+
+            applyBackgroundIfNeeded(this@SystemTabsViewFactory.tabsBackground)
         }
 
         container.addView(
@@ -66,10 +76,18 @@ actual class SystemTabsViewFactory actual constructor(
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
 
+        tabsPadding?.also {
+            val mlp = tabWidget.layoutParams as ViewGroup.MarginLayoutParams
+            mlp.topMargin = it.top.toInt()
+            mlp.bottomMargin = it.bottom.toInt()
+            mlp.leftMargin = it.start.toInt()
+            mlp.rightMargin = it.end.toInt()
+        }
+
         val content = FrameLayout(context).apply {
             id = android.R.id.tabcontent
 
-            applyPaddingIfNeeded(padding)
+            applyPaddingIfNeeded(contentPadding)
         }
         container.addView(
             content,
@@ -94,6 +112,25 @@ actual class SystemTabsViewFactory actual constructor(
                     )
                 ).apply {
                     text = stringDesc.toString(context)
+                }
+                tabsTintColor?.also {
+                    ViewCompat.setBackgroundTintList(tabContainer, ColorStateList.valueOf(it.argb.toInt()))
+                }
+                val selected = selectedTitleColor?.argb?.toInt()
+                val normal = normalTitleColor?.argb?.toInt()
+                if (selected != null && normal != null) {
+                    text.setTextColor(
+                        ColorStateList(
+                            arrayOf(
+                                intArrayOf(android.R.attr.state_selected),
+                                intArrayOf(-android.R.attr.state_selected)
+                            ),
+                            intArrayOf(
+                                selected,
+                                normal
+                            )
+                        )
+                    )
                 }
                 tabContainer.addView(
                     text, FrameLayout.LayoutParams(
