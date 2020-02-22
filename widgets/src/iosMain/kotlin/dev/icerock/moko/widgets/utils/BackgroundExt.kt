@@ -152,11 +152,3 @@ fun UIView.applyBackgroundIfNeeded(background: Background<out Fill>?) {
         CATransaction.commit()
     }
 }
-
-//fun UIControl.applyStateBackgroundIfNeeded(stateBackground: PressableState<Background<out Fill>>?) {
-//    if (stateBackground == null) return
-//
-//    // TODO complete it
-//    applyBackgroundIfNeeded(stateBackground.normal)
-//}
- 
