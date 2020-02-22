@@ -9,6 +9,7 @@ import dev.icerock.moko.graphics.toUIColor
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.Screen
 import dev.icerock.moko.widgets.screen.application
+import dev.icerock.moko.widgets.style.state.SelectableState
 import dev.icerock.moko.widgets.utils.getStatusBarStyle
 import platform.UIKit.UIStatusBarStyle
 import platform.UIKit.UITabBarController
@@ -27,7 +28,7 @@ actual abstract class BottomNavigationScreen actual constructor(
 
     private var tabBarController: UITabBarController? = null
 
-    actual var itemStateColors: SelectStates<Color>? = null
+    actual var itemStateColors: SelectableState<Color>? = null
         set(value) {
             field = value
 

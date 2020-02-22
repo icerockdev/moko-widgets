@@ -15,6 +15,7 @@ import dev.icerock.moko.widgets.style.applyInputTypeIfNeeded
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.input.InputType
+import dev.icerock.moko.widgets.style.state.FocusableState
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.TextHorizontalAlignment
@@ -73,8 +74,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
     private val textStyle: TextStyle<Color>?,
     private val labelTextStyle: TextStyle<Color>?,
     private val errorTextStyle: TextStyle<Color>?,
-    private val underLineColor: Color?,
-    private val underLineFocusedColor: Color?,
+    private val underLineColor: FocusableState<Color>?,
     private val textHorizontalAlignment: TextHorizontalAlignment?
 ) : ViewFactory<InputWidget<out WidgetSize>> {
 
@@ -102,11 +102,9 @@ actual class FloatingLabelInputViewFactory actual constructor(
             applyLabelStyleIfNeeded(labelTextStyle)
             applyInputTypeIfNeeded(widget.inputType)
 
-            underLineColor?.let {
-                deselectedColor = it.toUIColor()
-            }
-            underLineFocusedColor?.let {
-                selectedColor = it.toUIColor()
+            underLineColor?.also {
+                deselectedColor = it.unfocused.toUIColor()
+                selectedColor = it.focused.toUIColor()
             }
 
             textChanged = { newValue ->

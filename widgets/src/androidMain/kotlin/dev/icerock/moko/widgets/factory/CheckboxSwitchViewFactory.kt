@@ -15,14 +15,14 @@ import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Fill
+import dev.icerock.moko.widgets.style.state.CheckableState
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.androidId
 import dev.icerock.moko.widgets.utils.bindNotNull
 
 actual class CheckboxSwitchViewFactory actual constructor(
     private val background: Background<out Fill>?,
-    private val checkedImage: ImageResource,
-    private val uncheckedImage: ImageResource
+    private val image: CheckableState<ImageResource>
 ) : ViewFactory<SwitchWidget<out WidgetSize>> {
     override fun <WS : WidgetSize> build(
         widget: SwitchWidget<out WidgetSize>,
@@ -41,11 +41,11 @@ actual class CheckboxSwitchViewFactory actual constructor(
         val drawable = StateListDrawable().apply {
             addState(
                 intArrayOf(android.R.attr.state_checked),
-                ContextCompat.getDrawable(context, checkedImage.drawableResId)
+                ContextCompat.getDrawable(context, image.checked.drawableResId)
             )
             addState(
                 intArrayOf(-android.R.attr.state_checked),
-                ContextCompat.getDrawable(context, uncheckedImage.drawableResId)
+                ContextCompat.getDrawable(context, image.unchecked.drawableResId)
             )
         }
 

@@ -50,7 +50,6 @@ import dev.icerock.moko.widgets.screen.navigation.NavigationItem
 import dev.icerock.moko.widgets.screen.navigation.NavigationScreen
 import dev.icerock.moko.widgets.screen.navigation.Resultable
 import dev.icerock.moko.widgets.screen.navigation.Route
-import dev.icerock.moko.widgets.screen.navigation.SelectStates
 import dev.icerock.moko.widgets.screen.navigation.createPushResultRoute
 import dev.icerock.moko.widgets.screen.navigation.createPushRoute
 import dev.icerock.moko.widgets.screen.navigation.createRouter
@@ -58,6 +57,7 @@ import dev.icerock.moko.widgets.screen.navigation.route
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.state.PressableState
+import dev.icerock.moko.widgets.style.state.SelectableState
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.TextStyle
@@ -147,10 +147,10 @@ class App() : BaseApplication() {
 
         val loginTheme = Theme(AppTheme.loginScreen) {
             factory[LoginScreen.Id.EmailInputId] = FlatInputViewFactory(
-//                textStyle = TextStyle(
-//                    size = 16,
-//                    color = Color(0x16171AFF)
-//                ),
+                textStyle = TextStyle(
+                    size = 16,
+                    color = Color(0x16171AFF)
+                ),
                 backgroundColor = Color(0xF5F5F5FF)
             )
             factory[LoginScreen.Id.RegistrationButtonId] = ButtonWithIconViewFactory(
@@ -179,8 +179,10 @@ class App() : BaseApplication() {
             factory[TabsWidget.DefaultCategory] = SystemTabsViewFactory(
                 tabsTintColor = Color(0xD20C0AFF),
                 tabsPadding = platformSpecific(android = null, ios = PaddingValues(padding = 16f)),
-                selectedTitleColor = Color(platformSpecific(android = 0x151515FF, ios = 0xFFFFFFFF)),
-                normalTitleColor = platformSpecific(android = Color(0x15151599), ios = null)
+                titleColor = SelectableState(
+                    selected = Color(platformSpecific(android = 0x151515FF, ios = 0xFFFFFFFF)),
+                    unselected = platformSpecific(android = Color(0x15151599), ios = null)
+                )
             )
         }
 
@@ -341,7 +343,7 @@ class MainBottomNavigationScreen(
     init {
         bottomNavigationColor = Color(0x6518f4FF)
 
-        itemStateColors = SelectStates(
+        itemStateColors = SelectableState(
             selected = Color(0xfdfffdFF),
             unselected = Color(0xc0a3f9FF)
         )

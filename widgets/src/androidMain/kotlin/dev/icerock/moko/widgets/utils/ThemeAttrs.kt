@@ -5,66 +5,86 @@
 package dev.icerock.moko.widgets.utils
 
 import android.content.Context
+import android.content.res.TypedArray
 import android.graphics.drawable.Drawable
 import android.os.Build
+import androidx.annotation.AttrRes
 import dev.icerock.moko.widgets.R
 
 object ThemeAttrs {
     fun getContentBackgroundColor(context: Context): Int {
-        val attrs = intArrayOf(android.R.attr.colorBackground)
-        val ta = context.obtainStyledAttributes(attrs)
-        val result = ta.getColor(0, -1)
-        ta.recycle()
-        return result
+        return getAttribute(context, android.R.attr.colorBackground) {
+            getColor(0, -1)
+        }
     }
 
     fun getPrimaryColor(context: Context): Int {
-        val attrs = intArrayOf(R.attr.colorPrimary)
-        val ta = context.obtainStyledAttributes(attrs)
-        val result = ta.getColor(0, -1)
-        ta.recycle()
-        return result
+        return getAttribute(context, R.attr.colorPrimary) {
+            getColor(0, -1)
+        }
     }
 
     fun getControlNormalColor(context: Context): Int {
-        val attrs = intArrayOf(R.attr.colorControlNormal)
-        val ta = context.obtainStyledAttributes(attrs)
-        val result = ta.getColor(0, -1)
-        ta.recycle()
-        return result
+        return getAttribute(context, R.attr.colorControlNormal) {
+            getColor(0, -1)
+        }
     }
 
     fun getPrimaryDarkColor(context: Context): Int {
-        val attrs = intArrayOf(R.attr.colorPrimaryDark)
-        val ta = context.obtainStyledAttributes(attrs)
-        val result = ta.getColor(0, -1)
-        ta.recycle()
-        return result
+        return getAttribute(context, R.attr.colorPrimaryDark) {
+            getColor(0, -1)
+        }
     }
-
 
     fun getLightStatusBar(context: Context): Boolean {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return false
-        val attrs = intArrayOf(android.R.attr.windowLightStatusBar)
-        val ta = context.obtainStyledAttributes(attrs)
-        val result = ta.getBoolean(0, false)
-        ta.recycle()
-        return result
+
+        return getAttribute(context, android.R.attr.windowLightStatusBar) {
+            getBoolean(0, false)
+        }
     }
 
     fun getToolBarHeight(context: Context): Int {
-        val attrs = intArrayOf(android.R.attr.actionBarSize)
-        val ta = context.obtainStyledAttributes(attrs)
-        val toolBarHeight = ta.getDimensionPixelSize(0, -1)
-        ta.recycle()
-        return toolBarHeight
+        return getAttribute(context, android.R.attr.actionBarSize) {
+            getDimensionPixelSize(0, -1)
+        }
     }
 
     fun getToolBarUpIndicator(context: Context): Drawable {
-        val attrs = intArrayOf(android.R.attr.homeAsUpIndicator)
+        return getAttribute(context, android.R.attr.homeAsUpIndicator) {
+            getDrawable(0)
+        }
+    }
+
+    fun getSelectedTabColor(context: Context): Int {
+        return getAttribute(context, R.attr.tabTextAppearance) {
+            val resId = getResourceId(0, R.style.TextAppearance_Design_Tab)
+
+            val stateList = getAttribute(context, resId) {
+                getColorStateList(androidx.appcompat.R.styleable.TextAppearance_android_textColor)
+            }
+
+            stateList.getColorForState(intArrayOf(android.R.attr.state_selected), stateList.defaultColor)
+        }
+    }
+
+    fun getNormalTabColor(context: Context): Int {
+        return getAttribute(context, R.attr.tabTextAppearance) {
+            val resId = getResourceId(0, R.style.TextAppearance_Design_Tab)
+
+            val stateList = getAttribute(context, resId) {
+                getColorStateList(androidx.appcompat.R.styleable.TextAppearance_android_textColor)
+            }
+
+            stateList.getColorForState(intArrayOf(), stateList.defaultColor)
+        }
+    }
+
+    private fun <T> getAttribute(context: Context, @AttrRes id: Int, getter: TypedArray.() -> T?): T {
+        val attrs = intArrayOf(id)
         val ta = context.obtainStyledAttributes(attrs)
-        val indicator = ta.getDrawable(0)
+        val result = ta.getter()
         ta.recycle()
-        return indicator!!
+        return result!!
     }
 }

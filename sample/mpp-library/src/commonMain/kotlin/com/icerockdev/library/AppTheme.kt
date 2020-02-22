@@ -24,6 +24,7 @@ import dev.icerock.moko.widgets.factory.SystemTextViewFactory
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Border
 import dev.icerock.moko.widgets.style.background.Fill
+import dev.icerock.moko.widgets.style.state.FocusableState
 import dev.icerock.moko.widgets.style.state.PressableState
 import dev.icerock.moko.widgets.style.view.Colors
 import dev.icerock.moko.widgets.style.view.FontStyle
@@ -124,8 +125,10 @@ object AppTheme {
 
         factory[InputWidget.DefaultCategory] = FloatingLabelInputViewFactory(
             margins = MarginValues(bottom = 8f),
-            underLineColor = Color(0x000000DD),
-            underLineFocusedColor = Color(0x3949ABFF),
+            underLineColor = FocusableState(
+                focused = Color(0x3949ABFF),
+                unfocused = Color(0x000000DD)
+            ),
             labelTextStyle = TextStyle(
                 size = 12,
                 color = Color(0x3949ABFF),

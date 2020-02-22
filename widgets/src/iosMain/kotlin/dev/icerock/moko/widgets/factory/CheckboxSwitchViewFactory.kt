@@ -11,6 +11,7 @@ import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Fill
+import dev.icerock.moko.widgets.style.state.CheckableState
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.utils.bind
@@ -22,8 +23,7 @@ import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
 actual class CheckboxSwitchViewFactory actual constructor(
     private val background: Background<out Fill>?,
-    private val checkedImage: ImageResource,
-    private val uncheckedImage: ImageResource
+    private val image: CheckableState<ImageResource>
 ) : ViewFactory<SwitchWidget<out WidgetSize>> {
     override fun <WS : WidgetSize> build(
         widget: SwitchWidget<out WidgetSize>,
@@ -37,7 +37,7 @@ actual class CheckboxSwitchViewFactory actual constructor(
         }
 
         widget.state.bind { state ->
-            val imgRes = if (state) checkedImage else uncheckedImage
+            val imgRes = if (state) image.checked else image.unchecked
             btn.setImage(image = imgRes.toUIImage(), forState = UIControlStateNormal)
         }
 

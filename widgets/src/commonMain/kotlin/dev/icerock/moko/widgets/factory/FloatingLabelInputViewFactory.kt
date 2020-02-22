@@ -9,6 +9,7 @@ import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Fill
+import dev.icerock.moko.widgets.style.state.FocusableState
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.TextHorizontalAlignment
@@ -22,7 +23,6 @@ expect class FloatingLabelInputViewFactory(
     textStyle: TextStyle<Color>? = null,
     labelTextStyle: TextStyle<Color>? = null,
     errorTextStyle: TextStyle<Color>? = null,
-    underLineColor: Color? = null,
-    underLineFocusedColor: Color? = null,
+    underLineColor: FocusableState<Color>? = null,
     textHorizontalAlignment: TextHorizontalAlignment? = null
 ) : ViewFactory<InputWidget<out WidgetSize>>
