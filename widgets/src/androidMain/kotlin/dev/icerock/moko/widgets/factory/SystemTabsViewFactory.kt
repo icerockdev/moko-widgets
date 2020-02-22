@@ -124,8 +124,8 @@ actual class SystemTabsViewFactory actual constructor(
                     intArrayOf(-android.R.attr.state_selected)
                 ),
                 intArrayOf(
-                    stateColor.selected?.argb?.toInt() ?: ThemeAttrs.getSelectedTabColor(context),
-                    stateColor.unselected?.argb?.toInt() ?: ThemeAttrs.getNormalTabColor(context)
+                    stateColor.selected?.argb?.toInt() ?: ThemeAttrs.getTextColorPrimary(context),
+                    stateColor.unselected?.argb?.toInt() ?: ThemeAttrs.getTextColorSecondary(context)
                 )
             )
         }

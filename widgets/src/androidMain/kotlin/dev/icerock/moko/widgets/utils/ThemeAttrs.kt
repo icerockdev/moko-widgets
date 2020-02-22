@@ -56,27 +56,15 @@ object ThemeAttrs {
         }
     }
 
-    fun getSelectedTabColor(context: Context): Int {
-        return getAttribute(context, R.attr.tabTextAppearance) {
-            val resId = getResourceId(0, R.style.TextAppearance_Design_Tab)
-
-            val stateList = getAttribute(context, resId) {
-                getColorStateList(androidx.appcompat.R.styleable.TextAppearance_android_textColor)
-            }
-
-            stateList.getColorForState(intArrayOf(android.R.attr.state_selected), stateList.defaultColor)
+    fun getTextColorPrimary(context: Context): Int {
+        return getAttribute(context, android.R.attr.textColorPrimary) {
+            getColor(0, -1)
         }
     }
 
-    fun getNormalTabColor(context: Context): Int {
-        return getAttribute(context, R.attr.tabTextAppearance) {
-            val resId = getResourceId(0, R.style.TextAppearance_Design_Tab)
-
-            val stateList = getAttribute(context, resId) {
-                getColorStateList(androidx.appcompat.R.styleable.TextAppearance_android_textColor)
-            }
-
-            stateList.getColorForState(intArrayOf(), stateList.defaultColor)
+    fun getTextColorSecondary(context: Context): Int {
+        return getAttribute(context, android.R.attr.textColorSecondary) {
+            getColor(0, -1)
         }
     }
 
