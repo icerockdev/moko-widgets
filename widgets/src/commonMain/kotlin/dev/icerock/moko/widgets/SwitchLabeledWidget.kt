@@ -1,16 +1,13 @@
 /*
- * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
+ * Copyright 2020 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
 
 package dev.icerock.moko.widgets
 
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
-import dev.icerock.moko.mvvm.livedata.map
 import dev.icerock.moko.resources.desc.StringDesc
-import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.core.Theme
-import dev.icerock.moko.widgets.core.Value
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
@@ -36,31 +33,5 @@ fun Theme.switchLabeled(
             id = textId,
             text = text
         )
-    }
-}
-
-fun <WS : WidgetSize> Theme.flatAlert(
-    size: WS,
-    message: LiveData<StringDesc?>,
-    buttonText: LiveData<StringDesc?>,
-    onTap: () -> Unit
-): Widget<WS> = constraint(size = size) {
-    val msg = +text(
-        size = WidgetSize.Const(width = SizeSpec.MatchConstraint, height = SizeSpec.WrapContent),
-        text = message.map { it ?: "".desc() }
-    )
-    val submitBtn = +button(
-        size = WidgetSize.Const(width = SizeSpec.MatchConstraint, height = SizeSpec.WrapContent),
-        content = ButtonWidget.Content.Text(Value.liveData(buttonText)),
-        onTap = onTap
-    )
-
-    constraints {
-        msg topToTop root
-        msg leftRightToLeftRight root
-
-        submitBtn topToBottom msg offset 8
-        submitBtn leftRightToLeftRight root
-        submitBtn bottomToBottom root
     }
 }
