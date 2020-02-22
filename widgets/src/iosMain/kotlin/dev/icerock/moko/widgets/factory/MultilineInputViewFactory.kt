@@ -6,6 +6,7 @@ package dev.icerock.moko.widgets.factory
 
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.graphics.toUIColor
+import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
@@ -44,8 +45,6 @@ actual class MultilineInputViewFactory actual constructor(
     private val labelTextColor: Color?,
     private val textHorizontalAlignment: TextHorizontalAlignment?
 ) : ViewFactory<InputWidget<out WidgetSize>> {
-
-    private var isPlaceholderShow: Boolean = false
 
     override fun <WS : WidgetSize> build(
         widget: InputWidget<out WidgetSize>,
@@ -91,6 +90,7 @@ actual class MultilineInputViewFactory actual constructor(
 
 
         val textDelegate = TextViewDelegate(
+            isPlaceholderShow = widget.field.data.value.isEmpty(),
             textChangedHandler = { newValue ->
                 val currentValue = widget.field.data.value
 
@@ -98,25 +98,13 @@ actual class MultilineInputViewFactory actual constructor(
                     widget.field.data.value = newValue
                 }
             },
-            didBeginEditHandler = {
-                if (isPlaceholderShow) {
-                    textView.text = ""
-                    textView.textColor = textStyle?.color?.toUIColor() ?: UIColor.blackColor
-                    isPlaceholderShow = false
-                }
-            },
-            didEndEditHandler = {
-                if (textView.text.isEmpty()) {
-                    textView.text = widget.label.value.localized()
-                    textView.textColor = labelTextColor?.toUIColor() ?: UIColor.grayColor
-                    isPlaceholderShow = true
-                }
-            }
+            placeholderText = widget.label.value,
+            placeholderColor = labelTextColor,
+            textColor = textStyle?.color
         )
 
         if (widget.label.value.localized().isNotEmpty()) {
             if (widget.field.data.value.isEmpty()) {
-                isPlaceholderShow = true
                 textView.text = widget.label.value.localized()
                 textView.textColor = labelTextColor?.toUIColor() ?: UIColor.grayColor
             }
@@ -133,9 +121,11 @@ actual class MultilineInputViewFactory actual constructor(
     }
 
     private class TextViewDelegate(
-        private val textChangedHandler: (String) -> Unit,
-        private val didBeginEditHandler: (() -> Unit)?,
-        private val didEndEditHandler: (() -> Unit)?
+        private var isPlaceholderShow: Boolean,
+        private val placeholderColor: Color?,
+        private val textColor: Color?,
+        private val placeholderText: StringDesc?,
+        private val textChangedHandler: (String) -> Unit
     ) : NSObject(), UITextViewDelegateProtocol {
 
         override fun textViewDidChange(textView: UITextView) {
@@ -143,11 +133,19 @@ actual class MultilineInputViewFactory actual constructor(
         }
 
         override fun textViewDidBeginEditing(textView: UITextView) {
-            didBeginEditHandler?.invoke()
+            if (isPlaceholderShow) {
+                textView.text = ""
+                textView.textColor = textColor?.toUIColor() ?: UIColor.blackColor
+                isPlaceholderShow = false
+            }
         }
 
         override fun textViewDidEndEditing(textView: UITextView) {
-            didEndEditHandler?.invoke()
+            if (textView.text.isEmpty()) {
+                textView.text = placeholderText?.localized() ?: ""
+                textView.textColor = placeholderColor?.toUIColor() ?: UIColor.grayColor
+                isPlaceholderShow = true
+            }
         }
     }
 }
