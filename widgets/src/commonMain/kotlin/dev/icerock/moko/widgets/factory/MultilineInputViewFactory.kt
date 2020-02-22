@@ -19,10 +19,10 @@ import dev.icerock.moko.widgets.style.view.TextVerticalAlignment
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
 expect class MultilineInputViewFactory(
-    cornerRadiusValue: CornerRadiusValue?,
-    borderColor: Color?,
-    borderWidth: Float?,
-    backgroundViewColor: Color?,
+    cornerRadiusValue: CornerRadiusValue? = null,
+    borderColor: Color? = null,
+    borderWidth: Float? = null,
+    backgroundViewColor: Color? = null,
     margins: MarginValues? = null,
     padding: PaddingValues? = null,
     textStyle: TextStyle? = null,
