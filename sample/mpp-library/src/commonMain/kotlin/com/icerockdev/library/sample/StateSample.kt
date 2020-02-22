@@ -17,6 +17,7 @@ import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Value
 import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.flatAlert
 import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.progressBar
 import dev.icerock.moko.widgets.stateful
@@ -92,9 +93,11 @@ open class StateScreen(
     private fun Theme.flatAlertWrapped(message: LiveData<StringDesc?>) =
         container(size = WidgetSize.AsParent) {
             center {
-                text(
-                    size = WidgetSize.WrapContent,
-                    text = message.map { it ?: "".desc() }
+                flatAlert(
+                    size = WidgetSize.Const(width = SizeSpec.Exact(300f), height = SizeSpec.WrapContent),
+                    message = message.map { it ?: "".desc() as StringDesc? },
+                    buttonText = const("press me".desc() as StringDesc?),
+                    onTap = { println("pressed") }
                 )
             }
         }
