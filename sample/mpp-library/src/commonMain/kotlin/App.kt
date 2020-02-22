@@ -19,6 +19,7 @@ import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.parcelize.Parcelize
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.ButtonWidget
+import dev.icerock.moko.widgets.FlatAlertIds
 import dev.icerock.moko.widgets.ImageWidget
 import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.TabsWidget
@@ -33,6 +34,7 @@ import dev.icerock.moko.widgets.factory.LinearViewFactory
 import dev.icerock.moko.widgets.factory.SystemImageViewFactory
 import dev.icerock.moko.widgets.factory.SystemInputViewFactory
 import dev.icerock.moko.widgets.factory.SystemTabsViewFactory
+import dev.icerock.moko.widgets.factory.SystemTextViewFactory
 import dev.icerock.moko.widgets.flat.FlatInputViewFactory
 import dev.icerock.moko.widgets.sample.InputWidgetGalleryScreen
 import dev.icerock.moko.widgets.sample.ScrollContentScreen
@@ -60,6 +62,7 @@ import dev.icerock.moko.widgets.style.state.PressableState
 import dev.icerock.moko.widgets.style.state.SelectableState
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
+import dev.icerock.moko.widgets.style.view.TextHorizontalAlignment
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.platformSpecific
@@ -170,6 +173,9 @@ class App() : BaseApplication() {
         }
 
         val widgetsTheme = Theme(theme) {
+            factory[FlatAlertIds.Message] = SystemTextViewFactory(
+                textHorizontalAlignment = TextHorizontalAlignment.CENTER
+            )
             factory[InputWidget.DefaultCategory] = SystemInputViewFactory(
                 textStyle = TextStyle(
                     size = 16,

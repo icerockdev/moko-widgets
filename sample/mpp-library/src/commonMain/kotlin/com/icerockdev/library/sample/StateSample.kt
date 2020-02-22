@@ -91,16 +91,12 @@ open class StateScreen(
     }
 
     private fun Theme.flatAlertWrapped(message: LiveData<StringDesc?>) =
-        container(size = WidgetSize.AsParent) {
-            center {
-                flatAlert(
-                    size = WidgetSize.Const(width = SizeSpec.Exact(300f), height = SizeSpec.WrapContent),
-                    message = message.map { it ?: "".desc() as StringDesc? },
-                    buttonText = const("press me".desc() as StringDesc?),
-                    onTap = { println("pressed") }
-                )
-            }
-        }
+        flatAlert(
+            size = WidgetSize.AsParent,
+            message = message.map { it ?: "".desc() as StringDesc? },
+            buttonText = const("press me".desc() as StringDesc?),
+            onTap = { println("pressed") }
+        )
 }
 
 interface StateViewModelContract {
