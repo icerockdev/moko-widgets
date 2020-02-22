@@ -10,6 +10,7 @@ import android.text.TextWatcher
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.view.MarginLayoutParamsCompat
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.graphics.colorInt
@@ -55,7 +56,7 @@ actual class SystemInputViewFactory actual constructor(
         val context = viewFactoryContext.androidContext
         val lifecycleOwner = viewFactoryContext.lifecycleOwner
 
-        val editText = EditText(context).apply {
+        val editText = AppCompatEditText(context).apply {
             applyBackgroundIfNeeded(this@SystemInputViewFactory.background)
             applyPaddingIfNeeded(padding)
 

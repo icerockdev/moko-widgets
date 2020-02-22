@@ -6,6 +6,7 @@ package dev.icerock.moko.widgets.factory
 
 import android.graphics.drawable.StateListDrawable
 import android.widget.CheckBox
+import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.core.content.ContextCompat
 import dev.icerock.moko.resources.ImageResource
 import dev.icerock.moko.widgets.SwitchWidget
@@ -32,7 +33,7 @@ actual class CheckboxSwitchViewFactory actual constructor(
         val context = viewFactoryContext.context
         val lifecycleOwner = viewFactoryContext.lifecycleOwner
 
-        val checkbox = CheckBox(context).apply {
+        val checkbox = AppCompatCheckBox(context).apply {
             id = widget.id.androidId
 
             applyBackgroundIfNeeded(this@CheckboxSwitchViewFactory.background)

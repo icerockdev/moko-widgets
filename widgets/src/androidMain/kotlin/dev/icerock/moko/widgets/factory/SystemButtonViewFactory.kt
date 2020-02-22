@@ -8,6 +8,8 @@ import android.os.Build
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
+import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatImageButton
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.core.ViewBundle
@@ -45,7 +47,7 @@ actual class SystemButtonViewFactory actual constructor(
         // it is hell. Compose save us! ImageButton is ImageView, not Button!
         val button: View = when (widget.content) {
             is ButtonWidget.Content.Text -> {
-                Button(ctx).apply {
+                AppCompatButton(ctx).apply {
                     widget.content.text.bind(viewFactoryContext.lifecycleOwner) { text ->
                         this.text = text?.toString(ctx)
                     }
@@ -54,7 +56,7 @@ actual class SystemButtonViewFactory actual constructor(
                 }
             }
             is ButtonWidget.Content.Icon -> {
-                ImageButton(ctx).apply {
+                AppCompatImageButton(ctx).apply {
                     widget.content.image.bind(viewFactoryContext.lifecycleOwner) { image ->
                         image.loadIn(this)
                     }

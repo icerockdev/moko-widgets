@@ -9,6 +9,7 @@ import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.view.Gravity
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatTextView
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.widgets.TextWidget
 import dev.icerock.moko.widgets.core.ViewBundle
@@ -40,7 +41,7 @@ actual class SystemTextViewFactory actual constructor(
         val context = viewFactoryContext.androidContext
         val lifecycleOwner = viewFactoryContext.lifecycleOwner
 
-        val textView = TextView(context).apply {
+        val textView = AppCompatTextView(context).apply {
             applyTextStyleIfNeeded(textStyle)
             applyBackgroundIfNeeded(this@SystemTextViewFactory.background)
 
