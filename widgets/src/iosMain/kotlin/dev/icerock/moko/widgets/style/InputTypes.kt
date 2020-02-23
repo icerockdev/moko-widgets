@@ -12,6 +12,7 @@ import platform.UIKit.UIKeyboardTypeDefault
 import platform.UIKit.UIKeyboardTypeDecimalPad
 import platform.UIKit.UIKeyboardTypePhonePad
 import platform.UIKit.UIKeyboardTypeNumberPad
+import platform.UIKit.UITextView
 
 
 fun UITextField.applyInputTypeIfNeeded(
@@ -20,6 +21,14 @@ fun UITextField.applyInputTypeIfNeeded(
     if (type == null) return
     this.keyboardType = type.toPlatformInputType()
     this.secureTextEntry = type is InputType.Password
+}
+
+fun UITextView.applyInputTypeIfNeeded(
+    type: InputType?
+) {
+    if (type == null) return
+    this.keyboardType = type.toPlatformInputType()
+    this.secureTextEntry = type == InputType.Password()
 }
 
 private fun InputType.toPlatformInputType(): UIKeyboardType {
