@@ -38,6 +38,7 @@ dependencies {
     mppLibrary(Deps.Libs.MultiPlatform.mokoParcelize)
 
     androidLibrary(Deps.Libs.Android.appCompat)
+    androidLibrary(Deps.Libs.Android.fragment)
     androidLibrary(Deps.Libs.Android.recyclerView)
     androidLibrary(Deps.Libs.Android.material)
     androidLibrary(Deps.Libs.Android.swipeRefreshLayout)
