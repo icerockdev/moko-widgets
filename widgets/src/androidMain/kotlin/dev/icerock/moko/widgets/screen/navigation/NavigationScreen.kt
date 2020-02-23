@@ -14,7 +14,6 @@ import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.Toolbar
@@ -22,7 +21,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentContainer
 import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.FragmentManager
 import dev.icerock.moko.parcelize.Parcelable
@@ -360,7 +358,7 @@ actual abstract class NavigationScreen<S> actual constructor(
             return object : Route<Unit> {
                 override fun route(arg: Unit) {
                     val fragmentManager = navigationScreen!!.getChildFragmentManager()
-                    for(i in 0 until fragmentManager.backStackEntryCount) {
+                    for (i in 0 until fragmentManager.backStackEntryCount) {
                         fragmentManager.popBackStack()
                     }
                 }
