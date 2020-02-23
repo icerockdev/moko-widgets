@@ -21,6 +21,7 @@ object Versions {
     object Libs {
         object Android {
             const val appCompat = "1.1.0"
+            const val fragment = "1.2.2"
             const val swipeRefreshLayout = "1.0.0"
             const val material = "1.1.0"
             const val constraintLayout = "1.1.3"
