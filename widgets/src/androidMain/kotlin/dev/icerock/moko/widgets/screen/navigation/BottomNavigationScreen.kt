@@ -17,6 +17,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
@@ -110,7 +111,7 @@ actual abstract class BottomNavigationScreen actual constructor(
         savedInstanceState: Bundle?
     ): android.view.View? {
         val context = requireContext()
-        val root = FrameLayout(context).apply {
+        val root = FragmentContainerView(context).apply {
             id = android.R.id.content
         }
         val bottomNavigation = BottomNavigationView(context).apply {
