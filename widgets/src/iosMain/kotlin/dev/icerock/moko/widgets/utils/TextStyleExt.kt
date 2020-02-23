@@ -23,13 +23,14 @@ import platform.UIKit.UIFontWeightMedium
 import platform.UIKit.UILabel
 import platform.UIKit.UITextField
 import platform.UIKit.systemFontSize
+import platform.UIKit.UITextView
 
 fun TextStyle<*>.toUIFont(defaultFontSize: Double = 17.0): UIFont? { // If this is ok, can be applied to other methods
     val styleSize = size?.toDouble()
-    val styleStyle = fontStyle
-    if (styleStyle != null || styleSize != null) {
+    val fontStyle = fontStyle
+    if (fontStyle != null || styleSize != null) {
         val fontSize = styleSize ?: defaultFontSize
-        return when (styleStyle) {
+        return when (fontStyle) {
             FontStyle.BOLD -> UIFont.boldSystemFontOfSize(fontSize = fontSize)
             FontStyle.MEDIUM -> UIFont.systemFontOfSize(fontSize = fontSize, weight = UIFontWeightMedium)
             else -> UIFont.systemFontOfSize(fontSize = fontSize)
@@ -64,10 +65,10 @@ fun UILabel.applyTextStyleIfNeeded(textStyle: TextStyle<Color>?) {
 
     val currentFontSize = font.pointSize
     val styleSize = textStyle.size?.toDouble()
-    val styleStyle = textStyle.fontStyle
-    if (styleStyle != null || styleSize != null) {
+    val fontStyle = textStyle.fontStyle
+    if (fontStyle != null || styleSize != null) {
         val fontSize = styleSize ?: currentFontSize
-        font = when (styleStyle) {
+        font = when (fontStyle) {
             FontStyle.BOLD -> UIFont.boldSystemFontOfSize(fontSize = fontSize)
             else -> UIFont.systemFontOfSize(fontSize = fontSize)
         }
@@ -80,10 +81,10 @@ fun UITextField.applyTextStyleIfNeeded(textStyle: TextStyle<Color>?) {
 
     val currentFontSize = font?.pointSize ?: UIFont.systemFontSize
     val styleSize = textStyle.size?.toDouble()
-    val styleStyle = textStyle.fontStyle
-    if (styleStyle != null || styleSize != null) {
+    val fontStyle = textStyle.fontStyle
+    if (fontStyle != null || styleSize != null) {
         val fontSize = styleSize ?: currentFontSize
-        font = when (styleStyle) {
+        font = when (fontStyle) {
             FontStyle.BOLD -> UIFont.boldSystemFontOfSize(fontSize = fontSize)
             else -> UIFont.systemFontOfSize(fontSize = fontSize)
         }
@@ -116,4 +117,20 @@ fun CATextLayer.applyTextStyleIfNeeded(textStyle: TextStyle<Color>?) {
             symTraitMask = kCTFontBoldTrait
         )
     }
+}
+
+fun UITextView.applyTextStyleIfNeeded(textStyle: TextStyle<Color>?) {
+    if (textStyle == null) return
+
+    val currentFontSize = font?.pointSize ?: UIFont.systemFontSize
+    val styleSize = textStyle.size?.toDouble()
+    val fontStyle = textStyle.fontStyle
+    if (fontStyle != null || styleSize != null) {
+        val fontSize = styleSize ?: currentFontSize
+        font = when (fontStyle) {
+            FontStyle.BOLD -> UIFont.boldSystemFontOfSize(fontSize = fontSize)
+            else -> UIFont.systemFontOfSize(fontSize = fontSize)
+        }
+    }
+    textStyle.color?.also { textColor = it.toUIColor() }
 }
