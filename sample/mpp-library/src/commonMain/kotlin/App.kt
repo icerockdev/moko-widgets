@@ -37,6 +37,7 @@ import dev.icerock.moko.widgets.factory.SystemTabsViewFactory
 import dev.icerock.moko.widgets.factory.SystemTextViewFactory
 import dev.icerock.moko.widgets.flat.FlatInputViewFactory
 import dev.icerock.moko.widgets.sample.InputWidgetGalleryScreen
+import dev.icerock.moko.widgets.sample.ProductsSearchScreen
 import dev.icerock.moko.widgets.sample.ScrollContentScreen
 import dev.icerock.moko.widgets.sample.SelectGalleryScreen
 import dev.icerock.moko.widgets.screen.Args
@@ -104,6 +105,7 @@ class App() : BaseApplication() {
                 theme = theme,
                 routes = listOf(
                     buildInputGalleryRouteInfo(theme, router),
+                    buildSearchRouteInfo(theme, router),
                     SelectGalleryScreen.RouteInfo(
                         name = "Old Demo".desc(),
                         route = router.createPushRoute(oldDemo(router))
@@ -142,7 +144,21 @@ class App() : BaseApplication() {
         )
     }
 
-    fun oldDemo(
+    private fun buildSearchRouteInfo(
+        theme: Theme,
+        router: NavigationScreen.Router
+    ): SelectGalleryScreen.RouteInfo {
+        val searchScreen = registerScreen(ProductsSearchScreen::class) {
+            ProductsSearchScreen(theme)
+        }
+
+        return SelectGalleryScreen.RouteInfo(
+            name = "SearchScreen".desc(),
+            route = router.createPushRoute(searchScreen)
+        )
+    }
+
+    private fun oldDemo(
         router: NavigationScreen.Router
     ): TypedScreenDesc<Args.Empty, LoginScreen> {
         val sharedFactory = SharedFactory()
