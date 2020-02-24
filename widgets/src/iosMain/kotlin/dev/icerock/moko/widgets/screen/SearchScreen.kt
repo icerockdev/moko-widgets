@@ -15,7 +15,7 @@ import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 import platform.UIKit.UIViewController
 import platform.UIKit.UIView
 
-actual abstract class SearchScreen<A: Args> (
+actual abstract class SearchScreen<A: Args> actual constructor(
     theme: Theme,
     size: WidgetSize,
     id: ListWidget.Id
