@@ -18,11 +18,13 @@ import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.style.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.style.applyInputType
 import dev.icerock.moko.widgets.style.applyPaddingIfNeeded
 import dev.icerock.moko.widgets.style.applyTextStyleIfNeeded
+import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.ext.getGravityForTextAlignment
-import dev.icerock.moko.widgets.style.view.CornerRadiusValue
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.TextHorizontalAlignment
@@ -34,13 +36,10 @@ import dev.icerock.moko.widgets.utils.dp
 import kotlin.math.ceil
 
 actual class MultilineInputViewFactory actual constructor(
-    private val cornerRadiusValue: CornerRadiusValue?,
-    private val borderColor: Color?,
-    private val borderWidth: Float?,
-    private val backgroundViewColor: Color?,
+    private val background: Background<Fill.Solid>?,
     private val margins: MarginValues?,
     private val padding: PaddingValues?,
-    private val textStyle: TextStyle?,
+    private val textStyle: TextStyle<Color>?,
     private val labelTextColor: Color?,
     private val textHorizontalAlignment: TextHorizontalAlignment?
 ) : ViewFactory<InputWidget<out WidgetSize>> {
@@ -56,22 +55,7 @@ actual class MultilineInputViewFactory actual constructor(
 
         val editText = EditText(context).apply {
             applyPaddingIfNeeded(padding)
-
-            val backgroundDrawable = GradientDrawable()
-            val scale = context.resources.displayMetrics.density
-
-            backgroundViewColor?.let {
-                backgroundDrawable.setColor(it.colorInt())
-            }
-
-            cornerRadiusValue?.radius?.let {
-                backgroundDrawable.cornerRadius = it * scale
-            }
-
-            borderColor?.let {
-                backgroundDrawable.setStroke(ceil((borderWidth ?: 1f) * scale).toInt(), it.colorInt())
-            }
-            background = backgroundDrawable
+            applyBackgroundIfNeeded(this@MultilineInputViewFactory.background)
 
             id = widget.id.androidId
 
@@ -91,7 +75,7 @@ actual class MultilineInputViewFactory actual constructor(
 
             // If there is any nonnull text alignment argument, then set it to gravity
             // otherwise gravity will be with default value.
-            if(textHorizontalAlignment != null) {
+            if (textHorizontalAlignment != null) {
                 gravity = getGravityForTextAlignment(
                     textHorizontalAlignment = textHorizontalAlignment,
                     textVerticalAlignment = null
@@ -109,7 +93,8 @@ actual class MultilineInputViewFactory actual constructor(
                     start: Int,
                     count: Int,
                     after: Int
-                ) {}
+                ) {
+                }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                     if (s == null) return

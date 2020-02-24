@@ -24,8 +24,8 @@ import dev.icerock.moko.widgets.factory.SystemTextViewFactory
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Border
 import dev.icerock.moko.widgets.style.background.Fill
-import dev.icerock.moko.widgets.style.background.Shape
-import dev.icerock.moko.widgets.style.background.StateBackground
+import dev.icerock.moko.widgets.style.state.FocusableState
+import dev.icerock.moko.widgets.style.state.PressableState
 import dev.icerock.moko.widgets.style.view.Colors
 import dev.icerock.moko.widgets.style.view.FontStyle
 import dev.icerock.moko.widgets.style.view.MarginValues
@@ -63,7 +63,7 @@ object AppTheme {
             background = {
                 val normalBackground = Background(
                     fill = Fill.Solid(color = Color(0x1375F8FF)),
-                    shape = Shape.Rectangle(cornerRadius = 22f)
+                    cornerRadius = 22f
                 )
                 val disabledBackground = normalBackground.copy(
                     fill = Fill.Solid(color = Color(0x1375F880))
@@ -71,18 +71,19 @@ object AppTheme {
                 val pressedBackground = normalBackground.copy(
                     fill = Fill.Solid(color = Color(0x1375F8BB))
                 )
-                StateBackground(
+                PressableState(
                     normal = normalBackground,
                     disabled = disabledBackground,
                     pressed = pressedBackground
                 )
-            }()
+            }(),
+            textStyle = TextStyle(color = PressableState(all = Colors.white))
         )
         factory[CryptoProfileScreen.Id.TryDemoButton] = SystemButtonViewFactory(
             background = {
                 val normalBackground = Background(
                     fill = Fill.Solid(color = Color(0x303030FF)),
-                    shape = Shape.Rectangle(cornerRadius = 22f),
+                    cornerRadius = 22f,
                     border = Border(
                         color = Colors.white,
                         width = 1f
@@ -94,12 +95,19 @@ object AppTheme {
                 val pressedBackground = normalBackground.copy(
                     fill = Fill.Solid(color = Color(0x303030BB))
                 )
-                StateBackground(
+                PressableState(
                     normal = normalBackground,
                     disabled = disabledBackground,
                     pressed = pressedBackground
                 )
-            }()
+            }(),
+            textStyle = TextStyle(
+                color = PressableState(
+                    normal = Colors.white,
+                    pressed = Color(0xAA0000FF),
+                    disabled = Colors.white
+                )
+            )
         )
 
         factory[PostsCollection] = SystemCollectionViewFactory(
@@ -117,8 +125,10 @@ object AppTheme {
 
         factory[InputWidget.DefaultCategory] = FloatingLabelInputViewFactory(
             margins = MarginValues(bottom = 8f),
-            underLineColor = Color(0x000000DD),
-            underLineFocusedColor = Color(0x3949ABFF),
+            underLineColor = FocusableState(
+                focused = Color(0x3949ABFF),
+                unfocused = Color(0x000000DD)
+            ),
             labelTextStyle = TextStyle(
                 size = 12,
                 color = Color(0x3949ABFF),
@@ -141,36 +151,32 @@ object AppTheme {
         factory[ButtonWidget.DefaultCategory] = SystemButtonViewFactory(
             margins = MarginValues(top = 32f),
             background = {
-                val bg: (Color) -> Background = {
+                val bg: (Color) -> Background<out Fill> = {
                     Background(
                         fill = Fill.Solid(it),
-                        shape = Shape.Rectangle(
-                            cornerRadius = corners
-                        )
+                        cornerRadius = corners
                     )
                 }
-                StateBackground(
+                PressableState(
                     normal = bg(Color(0x6770e0FF)),
                     pressed = bg(Color(0x6770e0EE)),
                     disabled = bg(Color(0x6770e0BB))
                 )
             }.invoke(),
             textStyle = TextStyle(
-                color = Colors.white
+                color = PressableState(all = Colors.white)
             )
         )
 
         factory[LoginScreen.Id.RegistrationButtonId] = SystemButtonViewFactory(
             background = {
-                val bg: (Color) -> Background = {
+                val bg: (Color) -> Background<out Fill> = {
                     Background(
                         fill = Fill.Solid(it),
-                        shape = Shape.Rectangle(
-                            cornerRadius = corners
-                        )
+                        cornerRadius = corners
                     )
                 }
-                StateBackground(
+                PressableState(
                     normal = bg(Color(0xFFFFFF00)),
                     pressed = bg(Color(0xE7E7EEEE)),
                     disabled = bg(Color(0x000000BB))
@@ -178,7 +184,7 @@ object AppTheme {
             }.invoke(),
             margins = MarginValues(top = 16f),
             textStyle = TextStyle(
-                color = Color(0x777889FF)
+                color = PressableState(all = Color(0x777889FF))
             ),
             androidElevationEnabled = false
         )

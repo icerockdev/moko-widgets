@@ -4,11 +4,11 @@
 
 package dev.icerock.moko.widgets.style.input
 
-sealed class InputType(open val mask: String?) {
-    class Email(override val mask: String? = null) : InputType(mask = mask)
-    class Phone(override val mask: String? = "+7 ([000]) [000] [00] [00]") : InputType(mask = mask)
-    class Plain(override val mask: String? = null) : InputType(mask = null)
+sealed class InputType(val mask: String?) {
+    class Email(mask: String? = null) : InputType(mask = mask)
+    class Phone(mask: String? = "+7 ([000]) [000] [00] [00]") : InputType(mask = mask)
+    class Plain(mask: String? = null) : InputType(mask = mask)
     class Password : InputType(mask = null)
-    class Date(override val mask: String? = "[00]{.}[00]{.}[0000]") : InputType(mask = mask)
-    class Digits(override val mask: String? = null) : InputType(mask = mask)
+    class Date(mask: String? = "[00]{.}[00]{.}[0000]") : InputType(mask = mask)
+    class Digits(mask: String? = null) : InputType(mask = mask)
 }

@@ -9,6 +9,7 @@ import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Border
+import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.view.CornerRadiusValue
 import dev.icerock.moko.widgets.style.view.IOSFieldBorderStyle
 import dev.icerock.moko.widgets.style.view.MarginValues
@@ -19,13 +20,10 @@ import dev.icerock.moko.widgets.style.view.TextVerticalAlignment
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
 expect class MultilineInputViewFactory(
-    cornerRadiusValue: CornerRadiusValue? = null,
-    borderColor: Color? = null,
-    borderWidth: Float? = null,
-    backgroundViewColor: Color? = null,
+    background: Background<Fill.Solid>? = null,
     margins: MarginValues? = null,
     padding: PaddingValues? = null,
-    textStyle: TextStyle? = null,
+    textStyle: TextStyle<Color>? = null,
     labelTextColor: Color? = null,
     textHorizontalAlignment: TextHorizontalAlignment? = null
 ) : ViewFactory<InputWidget<out WidgetSize>>

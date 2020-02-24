@@ -4,10 +4,8 @@
 
 package dev.icerock.moko.widgets.style.view
 
-import dev.icerock.moko.graphics.Color
-
-data class TextStyle(
+data class TextStyle<C>(
     val size: Int? = null,
-    val color: Color? = null,
+    val color: C? = null,
     val fontStyle: FontStyle? = null
 )

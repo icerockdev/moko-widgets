@@ -19,6 +19,7 @@ import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.style.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.style.applyPaddingIfNeeded
 import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.ext.applyMargin
 import dev.icerock.moko.widgets.style.ext.toPlatformSize
 import dev.icerock.moko.widgets.style.view.MarginValues
@@ -28,7 +29,7 @@ import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.dp
 
 actual class ConstraintViewFactory actual constructor(
-    private val background: Background?,
+    private val background: Background<out Fill>?,
     private val padding: PaddingValues?,
     private val margins: MarginValues?
 ) : ViewFactory<ConstraintWidget<out WidgetSize>> {

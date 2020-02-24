@@ -26,6 +26,7 @@ import dev.icerock.moko.graphics.colorInt
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.FragmentNavigation
 import dev.icerock.moko.widgets.screen.Screen
+import dev.icerock.moko.widgets.style.state.SelectableState
 import dev.icerock.moko.widgets.utils.ThemeAttrs
 import dev.icerock.moko.widgets.utils.dp
 import dev.icerock.moko.widgets.utils.getIntNullable
@@ -40,7 +41,7 @@ actual abstract class BottomNavigationScreen actual constructor(
 
     private var bottomNavigationView: BottomNavigationView? = null
 
-    actual var itemStateColors: SelectStates<Color>? = null
+    actual var itemStateColors: SelectableState<Color>? = null
         set(value) {
             field = value
             updateItemColors()

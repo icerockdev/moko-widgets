@@ -13,12 +13,14 @@ import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.objc.setAssociatedObject
 import dev.icerock.moko.widgets.style.applyInputTypeIfNeeded
-import dev.icerock.moko.widgets.style.view.CornerRadiusValue
+import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.TextHorizontalAlignment
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.utils.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.utils.bind
 import kotlinx.cinterop.readValue
@@ -27,21 +29,18 @@ import platform.UIKit.NSTextAlignmentCenter
 import platform.UIKit.NSTextAlignmentLeft
 import platform.UIKit.NSTextAlignmentRight
 import platform.UIKit.UIColor
+import platform.UIKit.UIEdgeInsetsMake
 import platform.UIKit.UITextView
 import platform.UIKit.UITextViewDelegateProtocol
-import platform.UIKit.backgroundColor
 import platform.UIKit.clipsToBounds
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 import platform.darwin.NSObject
 
 actual class MultilineInputViewFactory actual constructor(
-    private val cornerRadiusValue: CornerRadiusValue?,
-    private val borderColor: Color?,
-    private val borderWidth: Float?,
-    private val backgroundViewColor: Color?,
+    private val background: Background<Fill.Solid>?,
     private val margins: MarginValues?,
     private val padding: PaddingValues?,
-    private val textStyle: TextStyle?,
+    private val textStyle: TextStyle<Color>?,
     private val labelTextColor: Color?,
     private val textHorizontalAlignment: TextHorizontalAlignment?
 ) : ViewFactory<InputWidget<out WidgetSize>> {
@@ -55,24 +54,18 @@ actual class MultilineInputViewFactory actual constructor(
         val textView = UITextView(frame = CGRectZero.readValue()).apply {
             translatesAutoresizingMaskIntoConstraints = false
 
-            borderColor?.let {
-                layer.borderColor = it.toUIColor().CGColor
-            }
-
-            borderWidth?.let {
-                layer.borderWidth = it.toDouble()
-            }
-
-            cornerRadiusValue?.let {
-                layer.cornerRadius = it.radius.toDouble()
-            }
-
-            backgroundViewColor?.let {
-                backgroundColor = it.toUIColor()
-            }
-
+            applyBackgroundIfNeeded(background)
             applyTextStyleIfNeeded(textStyle)
             applyInputTypeIfNeeded(widget.inputType)
+
+            padding?.also {
+                contentInset = UIEdgeInsetsMake(
+                    top = it.top.toDouble(),
+                    left = it.start.toDouble(),
+                    bottom = it.bottom.toDouble(),
+                    right = it.end.toDouble()
+                )
+            }
 
             clipsToBounds = true
 
@@ -149,4 +142,3 @@ actual class MultilineInputViewFactory actual constructor(
         }
     }
 }
-
