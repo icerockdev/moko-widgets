@@ -82,7 +82,8 @@ actual class DatePickerDialogBuilder(
                 arg = DatePickerDialogFragment.Args(
                     dialogId = dialogId,
                     startDate = startDate?.unixMillisLong,
-                    endDate = endDate?.unixMillisLong
+                    endDate = endDate?.unixMillisLong,
+                    selectedDate = selectedDate?.unixMillisLong
                 )
             )
         alertDialogFragment.show(fragmentManager, null)
@@ -99,7 +100,10 @@ class DatePickerDialogFragment : DialogFragment() {
         requireNotNull(argument) { "can't be opened without argument" }
 
         val dialogId = argument.dialogId
-        val currentDate = Calendar.getInstance()
+        val selectedDate =  Calendar.getInstance()
+        argument.selectedDate?.let {
+            selectedDate.timeInMillis = it
+        }
         val dialog = DatePickerDialog(
             context, { _
                        , year
@@ -110,9 +114,9 @@ class DatePickerDialogFragment : DialogFragment() {
                 date.set(year, month, day)
                 listener?.onPositivePressed(dialogId, DateTime(date.timeInMillis))
             },
-            currentDate.get(Calendar.YEAR),
-            currentDate.get(Calendar.MONTH),
-            currentDate.get(Calendar.DAY_OF_MONTH)
+            selectedDate.get(Calendar.YEAR),
+            selectedDate.get(Calendar.MONTH),
+            selectedDate.get(Calendar.DAY_OF_MONTH)
         )
         argument.endDate?.let { dialog.datePicker.maxDate = it }
         argument.startDate?.let { dialog.datePicker.minDate = it }
@@ -129,7 +133,8 @@ class DatePickerDialogFragment : DialogFragment() {
     data class Args(
         val dialogId: Int,
         val startDate: Long?,
-        val endDate: Long?
+        val endDate: Long?,
+        val selectedDate: Long?
     ) : Parcelable
 
     companion object {
