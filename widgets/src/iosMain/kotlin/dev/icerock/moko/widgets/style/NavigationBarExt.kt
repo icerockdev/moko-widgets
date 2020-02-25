@@ -41,8 +41,8 @@ fun UINavigationBar.applyNavigationBarStyle(style: NavigationBar.Styles?) {
         ?: UIApplication.sharedApplication.keyWindow?.rootViewController()?.view?.tintColor!!
 
 
+//    TODO uncomment when kotlin-native will fix linking to newest api
 //    if (UIDevice.currentDevice.systemVersion.compareTo("13.0") < 0) {
-        println("pre 13.0")
         this.barTintColor = backgroundColor
         this.titleTextAttributes = textAttributes
         this.tintColor = tintColor
