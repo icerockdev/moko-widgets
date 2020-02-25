@@ -33,6 +33,7 @@ class ProductsSearchScreen(
 
     private val products: List<String> = List(size = 50) { "It's product $it" }
 
+    override val searchPlaceholder: StringDesc = "Search".desc()
     override val searchQuery: MutableLiveData<String> = MutableLiveData(initialValue = "")
     override val searchItems: LiveData<List<TableUnitItem>> = searchQuery.map { query ->
         products
