@@ -9,6 +9,11 @@ import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.units.TableUnitItem
 import platform.UIKit.UIViewController
+import dev.icerock.moko.widgets.ListWidget
+import dev.icerock.moko.widgets.core.Image
+import dev.icerock.moko.widgets.core.Theme
+import dev.icerock.moko.widgets.style.background.Background
+
 
 actual abstract class SearchScreen<A : Args> : Screen<A>() {
     actual abstract val searchPlaceholder: StringDesc
@@ -23,4 +28,7 @@ actual abstract class SearchScreen<A : Args> : Screen<A>() {
             searchPlaceholder = searchPlaceholder
         )
     }
+
+    actual open val background: Background<*>? = null
+    actual open val androidBackItem: Image? = null
 }
