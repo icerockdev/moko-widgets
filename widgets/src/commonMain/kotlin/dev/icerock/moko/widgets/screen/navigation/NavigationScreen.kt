@@ -110,7 +110,7 @@ sealed class NavigationBar {
         val styles: Styles? = null,
         val backButton: BarButton? = null,
         val actions: List<BarButton>? = null
-    ) : NavigationBar()
+    ) : NavigationBar(), ExtendableNavigationBar by ExtendableNavigationBarImpl()
 
     data class Search(
         val title: StringDesc,
@@ -119,7 +119,7 @@ sealed class NavigationBar {
         val searchPlaceholder: StringDesc? = null,
         val searchQuery: MutableLiveData<String>,
         val androidSearchBackground: Background<Fill.Solid>? = null
-    ) : NavigationBar()
+    ) : NavigationBar(), ExtendableNavigationBar by ExtendableNavigationBarImpl()
 
     data class Styles(
         val backgroundColor: Color? = null,
@@ -133,3 +133,6 @@ sealed class NavigationBar {
         val action: () -> Unit
     )
 }
+
+expect interface ExtendableNavigationBar
+expect class ExtendableNavigationBarImpl() : ExtendableNavigationBar

@@ -181,3 +181,9 @@ private class NavigationController(
         return getStatusBarStyle(isLight) ?: super.preferredStatusBarStyle()
     }
 }
+
+actual interface ExtendableNavigationBar {
+
+}
+
+actual class ExtendableNavigationBarImpl actual constructor() : ExtendableNavigationBar

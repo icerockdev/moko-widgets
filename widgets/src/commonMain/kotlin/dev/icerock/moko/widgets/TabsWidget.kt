@@ -14,6 +14,7 @@ import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
 import dev.icerock.moko.widgets.factory.SystemTabsViewFactory
+import dev.icerock.moko.widgets.screen.navigation.ExtendableNavigationBar
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
@@ -22,6 +23,7 @@ class TabsWidget<WS : WidgetSize>(
     private val factory: ViewFactory<TabsWidget<out WidgetSize>>,
     override val size: WS,
     override val id: Id?,
+    val extendNavigationBar: ExtendableNavigationBar? = null,
     @Suppress("RemoveRedundantQualifierName")
     tabs: TabsWidget.TabsBuilder.() -> Unit
 ) : Widget<WS>(), OptionalId<TabsWidget.Id> {

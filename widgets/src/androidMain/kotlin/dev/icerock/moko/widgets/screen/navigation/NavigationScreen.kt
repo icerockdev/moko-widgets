@@ -299,3 +299,9 @@ actual abstract class NavigationScreen<S> actual constructor(
         const val CURRENT_SCREEN_ID_KEY = "navigation:screen:current_id"
     }
 }
+
+actual interface ExtendableNavigationBar {
+
+}
+
+actual class ExtendableNavigationBarImpl actual constructor() : ExtendableNavigationBar

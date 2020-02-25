@@ -8,7 +8,6 @@ import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.style.background.Background
-import dev.icerock.moko.widgets.style.background.Border
 import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.state.SelectableState
 import dev.icerock.moko.widgets.style.view.MarginValues

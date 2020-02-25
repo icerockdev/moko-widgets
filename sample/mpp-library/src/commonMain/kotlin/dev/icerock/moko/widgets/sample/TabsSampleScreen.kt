@@ -39,7 +39,7 @@ class TabsSampleScreen(
     private val theme: Theme
 ) : WidgetScreen<Args.Empty>(), NavigationItem {
 
-    override val navigationBar: NavigationBar = NavigationBar.Normal(
+    override val navigationBar: NavigationBar.Normal = NavigationBar.Normal(
         title = "Tabs sample".desc(),
         styles = NavigationBar.Styles(
             backgroundColor = backgroundColor,
@@ -54,7 +54,10 @@ class TabsSampleScreen(
     override fun createContentWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         return with(theme) {
             constraint(size = WidgetSize.AsParent) {
-                val tabs = +tabs(size = WidgetSize.Const(SizeSpec.MatchConstraint, SizeSpec.MatchConstraint)) {
+                val tabs = +tabs(
+                    size = WidgetSize.Const(SizeSpec.MatchConstraint, SizeSpec.MatchConstraint),
+                    extendNavigationBar = navigationBar
+                ) {
                     tab(
                         title = const("Active".desc()),
                         body = buildContent()
