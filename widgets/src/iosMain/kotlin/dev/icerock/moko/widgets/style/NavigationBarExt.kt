@@ -12,7 +12,7 @@ import platform.UIKit.UIApplication
 import platform.UIKit.UINavigationBar
 import platform.UIKit.tintColor
 
-fun UINavigationBar.applyNavigationBarStyle(style: NavigationBar.Normal.Styles?) {
+fun UINavigationBar.applyNavigationBarStyle(style: NavigationBar.Styles?) {
     barTintColor = style?.backgroundColor?.toUIColor()
 
     if (style?.textStyle != null) {

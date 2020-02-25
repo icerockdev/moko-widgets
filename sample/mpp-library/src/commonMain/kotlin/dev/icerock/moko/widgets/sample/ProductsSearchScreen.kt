@@ -8,15 +8,20 @@ import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.mvvm.livedata.map
+import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.units.TableUnitItem
+import dev.icerock.moko.widgets.ListWidget
 import dev.icerock.moko.widgets.constraint
 import dev.icerock.moko.widgets.core.Theme
+import dev.icerock.moko.widgets.list
 import dev.icerock.moko.widgets.screen.Args
-import dev.icerock.moko.widgets.screen.SearchScreen
+import dev.icerock.moko.widgets.screen.WidgetScreen
+import dev.icerock.moko.widgets.screen.getViewModel
 import dev.icerock.moko.widgets.screen.navigation.NavigationBar
 import dev.icerock.moko.widgets.screen.navigation.NavigationItem
+import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.text
 import dev.icerock.moko.widgets.units.UnitItemRoot
@@ -24,21 +29,39 @@ import dev.icerock.moko.widgets.units.WidgetsTableUnitItem
 
 class ProductsSearchScreen(
     private val theme: Theme
-) : SearchScreen<Args.Empty>(), NavigationItem {
+) : WidgetScreen<Args.Empty>(), NavigationItem {
 
-    override val navigationBar: NavigationBar = NavigationBar.Normal(
-        title = "Products search".desc(),
-        styles = NavigationBar.Normal.Styles(backgroundColor = Color(0xAA3333FF))
-    )
+    private val viewModel: ProductsSearchViewModel by lazy {
+        getViewModel { ProductsSearchViewModel() }
+    }
 
-    private val products: List<String> = List(size = 50) { "It's product $it" }
+    override val navigationBar: NavigationBar
+        get() = NavigationBar.Search(
+            title = "Products search".desc(),
+            styles = NavigationBar.Styles(backgroundColor = Color(0xAA3333FF)),
+            searchQuery = viewModel.searchQuery
+        )
 
-    override val searchPlaceholder: StringDesc = "Search".desc()
-    override val searchQuery: MutableLiveData<String> = MutableLiveData(initialValue = "")
-    override val searchItems: LiveData<List<TableUnitItem>> = searchQuery.map { query ->
-        products
-            .filter { it.contains(query) }
-            .map { ProductUnitItem(theme, itemId = it.hashCode().toLong(), data = it) }
+    override fun createContentWidget() = with(theme) {
+        constraint(size = WidgetSize.AsParent) {
+            val results = +list(
+                size = WidgetSize.Const(width = SizeSpec.MatchConstraint, height = SizeSpec.MatchConstraint),
+                items = viewModel.products.map { products ->
+                    products.map { ProductUnitItem(theme, itemId = it.hashCode().toLong(), data = it) as TableUnitItem }
+                },
+                id = Ids.ResultsList
+            )
+
+            constraints {
+                results topToTop root.safeArea
+                results leftRightToLeftRight root
+                results bottomToBottom root.safeArea
+            }
+        }
+    }
+
+    object Ids {
+        object ResultsList : ListWidget.Id
     }
 
     class ProductUnitItem(
@@ -66,5 +89,16 @@ class ProductsSearchScreen(
                 }
             }.let { UnitItemRoot.from(it) }
         }
+    }
+}
+
+class ProductsSearchViewModel : ViewModel() {
+    val searchQuery = MutableLiveData(initialValue = "")
+
+    private val _products: List<String> = List(size = 50) { "It's product $it" }
+
+    val products: LiveData<List<String>> = searchQuery.map { query ->
+        _products
+            .filter { it.contains(query) }
     }
 }

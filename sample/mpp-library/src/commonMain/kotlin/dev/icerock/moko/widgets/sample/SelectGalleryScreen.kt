@@ -28,7 +28,7 @@ class SelectGalleryScreen(
 
     override val navigationBar: NavigationBar = NavigationBar.Normal(
         title = "Select gallery".desc(),
-        styles = NavigationBar.Normal.Styles(
+        styles = NavigationBar.Styles(
             backgroundColor = Color(0x4444EEFF)
         )
     )
