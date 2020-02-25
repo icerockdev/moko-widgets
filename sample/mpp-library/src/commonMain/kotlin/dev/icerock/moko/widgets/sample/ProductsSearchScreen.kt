@@ -38,7 +38,10 @@ class ProductsSearchScreen(
     override val navigationBar: NavigationBar
         get() = NavigationBar.Search(
             title = "Products search".desc(),
-            styles = NavigationBar.Styles(backgroundColor = Color(0xAA3333FF)),
+            styles = NavigationBar.Styles(
+                backgroundColor = Color(0xAA3333FF),
+                tintColor = Color(0x00FF00FF)
+            ),
             searchQuery = viewModel.searchQuery
         )
 
