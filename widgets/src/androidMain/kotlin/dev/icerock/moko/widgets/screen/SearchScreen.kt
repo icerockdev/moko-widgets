@@ -1,30 +1,39 @@
 package dev.icerock.moko.widgets.screen
 
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.util.TypedValue
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SearchView
 import androidx.cardview.widget.CardView
+import dev.icerock.moko.graphics.colorInt
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.units.TableUnitItem
 import dev.icerock.moko.widgets.ListWidget
+import dev.icerock.moko.widgets.core.Image
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.list
+import dev.icerock.moko.widgets.style.applyBackgroundIfNeeded
+import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.view.WidgetSize
+
 
 actual abstract class SearchScreen<A : Args> actual constructor() : Screen<A>() {
 
     actual abstract val searchQuery: MutableLiveData<String>
     actual abstract val searchItems: LiveData<List<TableUnitItem>>
-    actual open val theme: Theme? = null
-    actual open val listCategory: ListWidget.Category? = null
     actual abstract fun onReachEnd()
-    open val searchHint: StringDesc? = null
+    actual open val searchHint: StringDesc? = null
+    actual open val background: Background? = null
+    actual open val androidBackItem: Image? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,8 +45,46 @@ actual abstract class SearchScreen<A : Args> actual constructor() : Screen<A>() 
         rootLayout.orientation = LinearLayout.VERTICAL
 
         context?.let { context ->
-
             val cardView = CardView(context)
+
+
+            val searchContainer = LinearLayout(context)
+            searchContainer.orientation = LinearLayout.HORIZONTAL
+            searchContainer.gravity = Gravity.CENTER_VERTICAL
+            searchContainer.setVerticalGravity(Gravity.CENTER_VERTICAL)
+            androidStatusBarColor?.let {
+                searchContainer.setBackgroundColor(it.colorInt())
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    searchContainer.elevation = 10f
+                }
+            }
+            val tv = TypedValue()
+            if (context.theme.resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+                val actionBarHeight = TypedValue.complexToDimensionPixelSize(
+                    tv.data,
+                    resources.displayMetrics
+                )
+                searchContainer.layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    actionBarHeight
+                )
+            }
+
+            if (androidBackItem != null) {
+                val imageView = ImageView(context)
+                imageView.layoutParams = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    val margin = (20 * context.resources.displayMetrics.density).toInt()
+                    setMargins(margin, 0, margin, 0)
+                }
+                androidBackItem?.loadIn(imageView)
+                imageView.setOnClickListener {
+                    activity?.onBackPressed()
+                }
+                searchContainer.addView(imageView)
+            }
 
             val radius = 8 * context.resources.displayMetrics.density
             val padding = radius.toInt()
@@ -74,14 +121,15 @@ actual abstract class SearchScreen<A : Args> actual constructor() : Screen<A>() 
 
             cardView.addView(searchView)
 
-            rootLayout.addView(cardView)
+            searchContainer.addView(cardView)
+
+            rootLayout.addView(searchContainer)
         }
 
         val listWidget =
-            (theme ?: Theme()).list(
+            Theme().list(
                 size = WidgetSize.AsParent,
                 id = Ids.ListId,
-                category = listCategory ?: ListWidget.DefaultCategory,
                 items = searchItems,
                 onReachEnd = ::onReachEnd
             )
@@ -94,9 +142,7 @@ actual abstract class SearchScreen<A : Args> actual constructor() : Screen<A>() 
             )
         ).view
 
-        rootLayout.background = view.background
-        view.background = null
-
+        rootLayout.applyBackgroundIfNeeded(background)
         rootLayout.addView(view)
         return rootLayout
     }
