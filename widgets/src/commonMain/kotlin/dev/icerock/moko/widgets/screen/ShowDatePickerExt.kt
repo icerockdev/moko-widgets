@@ -19,6 +19,7 @@ expect class DatePickerDialogBuilder {
     fun accentColor(color: Color)
     fun startDate(date: DateTime)
     fun endDate(date: DateTime)
+    fun selectedDate(date: DateTime)
 }
 
 expect fun Screen<*>.showDatePickerDialog(
