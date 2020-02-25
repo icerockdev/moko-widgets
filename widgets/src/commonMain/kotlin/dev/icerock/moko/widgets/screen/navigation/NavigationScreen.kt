@@ -12,6 +12,8 @@ import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.Screen
 import dev.icerock.moko.widgets.screen.TypedScreenDesc
+import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.view.TextStyle
 
 expect abstract class NavigationScreen<S>(
@@ -115,7 +117,8 @@ sealed class NavigationBar {
         val styles: Styles? = null,
         val backButton: BarButton? = null,
         val searchPlaceholder: StringDesc? = null,
-        val searchQuery: MutableLiveData<String>
+        val searchQuery: MutableLiveData<String>,
+        val androidSearchBackground: Background<Fill.Solid>? = null
     ) : NavigationBar()
 
     data class Styles(

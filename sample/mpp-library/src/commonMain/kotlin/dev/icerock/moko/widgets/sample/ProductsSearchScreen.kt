@@ -21,6 +21,8 @@ import dev.icerock.moko.widgets.screen.WidgetScreen
 import dev.icerock.moko.widgets.screen.getViewModel
 import dev.icerock.moko.widgets.screen.navigation.NavigationBar
 import dev.icerock.moko.widgets.screen.navigation.NavigationItem
+import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.text
@@ -39,10 +41,15 @@ class ProductsSearchScreen(
         get() = NavigationBar.Search(
             title = "Products search".desc(),
             styles = NavigationBar.Styles(
-                backgroundColor = Color(0xAA3333FF),
-                tintColor = Color(0x00FF00FF)
+                backgroundColor = Color(0xFFFFFFFF),
+                tintColor = Color(0x111111FF)
             ),
-            searchQuery = viewModel.searchQuery
+            searchQuery = viewModel.searchQuery,
+            searchPlaceholder = "Product title".desc(),
+            androidSearchBackground = Background(
+                fill = Fill.Solid(color = Color(0xF2F2F2FF)),
+                cornerRadius = 2f
+            )
         )
 
     override fun createContentWidget() = with(theme) {

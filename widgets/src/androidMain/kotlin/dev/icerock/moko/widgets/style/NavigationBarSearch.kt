@@ -12,11 +12,14 @@ import android.text.style.AbsoluteSizeSpan
 import android.text.style.StyleSpan
 import android.view.MenuItem
 import android.view.View
-import android.widget.SearchView
+import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.FragmentManager
+import dev.icerock.moko.widgets.R
 import dev.icerock.moko.widgets.screen.navigation.NavigationBar
 import dev.icerock.moko.widgets.style.view.FontStyle
 import dev.icerock.moko.widgets.utils.ThemeAttrs
@@ -83,20 +86,16 @@ fun NavigationBar.Search.apply(
     toolbar.navigationIcon?.also { DrawableCompat.setTint(it, tintColor) }
 
     // TODO SEARCH
-    val searchItem = toolbar.menu.add("search")
-    searchItem.actionView = SearchView(context).apply {
+    val searchView = SearchView(context).apply {
         setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                searchQuery.value = query ?: ""
+            override fun onQueryTextSubmit(query: String): Boolean {
+                searchQuery.value = query
                 return true
             }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText?.isEmpty() == true) {
-                    searchQuery.value = newText
-                    return true
-                }
-                return false
+            override fun onQueryTextChange(newText: String): Boolean {
+                searchQuery.value = newText
+                return true
             }
 
         })
@@ -104,6 +103,16 @@ fun NavigationBar.Search.apply(
             searchQuery.value = query.toString()
         }
         queryHint = searchPlaceholder?.toString(context)
+
+        applyBackgroundIfNeeded(androidSearchBackground)
+
+        val mlp = findViewById<View>(R.id.search_edit_frame).layoutParams as? ViewGroup.MarginLayoutParams
+        mlp?.leftMargin = 0
+        mlp?.rightMargin = 0
     }
-    searchItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW)
+
+    val searchItem = toolbar.menu.add("search")
+    searchItem.icon = searchView.findViewById<ImageView>(R.id.search_button).drawable
+    searchItem.actionView = searchView
+    searchItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW or MenuItem.SHOW_AS_ACTION_ALWAYS)
 }
