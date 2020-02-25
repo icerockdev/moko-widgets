@@ -8,6 +8,9 @@ import android.os.Build
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
+import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatImageButton
+import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
@@ -16,7 +19,9 @@ import dev.icerock.moko.widgets.core.bind
 import dev.icerock.moko.widgets.style.applyPaddingIfNeeded
 import dev.icerock.moko.widgets.style.applyStateBackgroundIfNeeded
 import dev.icerock.moko.widgets.style.applyTextStyleIfNeeded
-import dev.icerock.moko.widgets.style.background.StateBackground
+import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
+import dev.icerock.moko.widgets.style.state.PressableState
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.TextStyle
@@ -24,8 +29,8 @@ import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.bind
 
 actual class SystemButtonViewFactory actual constructor(
-    private val background: StateBackground?,
-    private val textStyle: TextStyle?,
+    private val background: PressableState<Background<out Fill>>?,
+    private val textStyle: TextStyle<PressableState<Color>>?,
     private val isAllCaps: Boolean?,
     private val padding: PaddingValues?,
     private val margins: MarginValues?,
@@ -42,7 +47,7 @@ actual class SystemButtonViewFactory actual constructor(
         // it is hell. Compose save us! ImageButton is ImageView, not Button!
         val button: View = when (widget.content) {
             is ButtonWidget.Content.Text -> {
-                Button(ctx).apply {
+                AppCompatButton(ctx).apply {
                     widget.content.text.bind(viewFactoryContext.lifecycleOwner) { text ->
                         this.text = text?.toString(ctx)
                     }
@@ -51,7 +56,7 @@ actual class SystemButtonViewFactory actual constructor(
                 }
             }
             is ButtonWidget.Content.Icon -> {
-                ImageButton(ctx).apply {
+                AppCompatImageButton(ctx).apply {
                     widget.content.image.bind(viewFactoryContext.lifecycleOwner) { image ->
                         image.loadIn(this)
                     }

@@ -1,3 +1,7 @@
+/*
+ * Copyright 2020 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
+ */
+
 package dev.icerock.moko.widgets.screen
 
 import android.graphics.Color
@@ -26,13 +30,11 @@ import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
 
-actual abstract class SearchScreen<A : Args> actual constructor() : Screen<A>() {
-
+actual abstract class SearchScreen<A : Args> : Screen<A>() {
+    actual abstract val searchPlaceholder: StringDesc
     actual abstract val searchQuery: MutableLiveData<String>
     actual abstract val searchItems: LiveData<List<TableUnitItem>>
-    actual abstract fun onReachEnd()
-    actual open val searchHint: StringDesc? = null
-    actual open val background: Background? = null
+    actual open val background: Background<*>? = null
     actual open val androidBackItem: Image? = null
 
     override fun onCreateView(
@@ -115,7 +117,7 @@ actual abstract class SearchScreen<A : Args> actual constructor() : Screen<A>() 
             searchView.setOnSearchClickListener { _ ->
                 searchQuery.value = searchView.query.toString()
             }
-            searchView.queryHint = searchHint?.toString(context)
+            searchView.queryHint = searchPlaceholder.toString(context)
 
             searchView.setBackgroundColor(Color.WHITE)
 
@@ -130,8 +132,7 @@ actual abstract class SearchScreen<A : Args> actual constructor() : Screen<A>() 
             Theme().list(
                 size = WidgetSize.AsParent,
                 id = Ids.ListId,
-                items = searchItems,
-                onReachEnd = ::onReachEnd
+                items = searchItems
             )
 
         val view = listWidget.buildView(

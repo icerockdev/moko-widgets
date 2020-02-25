@@ -13,9 +13,9 @@ import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.style.applyPaddingIfNeeded
 import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.ext.applyMargin
 import dev.icerock.moko.widgets.style.ext.toPlatformSize
-import dev.icerock.moko.widgets.style.view.CornerRadiusValue
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
@@ -23,8 +23,7 @@ import dev.icerock.moko.widgets.style.view.WidgetSize
 actual class CardViewFactory actual constructor(
     private val padding: PaddingValues?,
     private val margins: MarginValues?,
-    private val background: Background?,
-    private val cornerRadius: CornerRadiusValue?
+    private val background: Background<out Fill>?
 ) : ViewFactory<CardWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
@@ -39,7 +38,7 @@ actual class CardViewFactory actual constructor(
         val root = CardView(context).apply {
             applyBackgroundIfNeeded(this@CardViewFactory.background)
             applyPaddingIfNeeded(padding)
-            radius = cornerRadius?.radius ?: 0f
+            radius = this@CardViewFactory.background?.cornerRadius ?: 0f
         }
 
         val childBundle = widget.child.buildView(

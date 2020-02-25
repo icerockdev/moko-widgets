@@ -4,15 +4,15 @@
 
 package dev.icerock.moko.widgets.factory
 
-import android.content.res.ColorStateList
 import android.widget.Switch
 import androidx.core.graphics.drawable.DrawableCompat
+import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.widgets.SwitchWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.style.ColorStyle
 import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.background.buildBackground
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
@@ -20,8 +20,8 @@ import dev.icerock.moko.widgets.utils.androidId
 import dev.icerock.moko.widgets.utils.bindNotNull
 
 actual class SystemSwitchViewFactory actual constructor(
-    private val background: Background?,
-    private val switchColor: ColorStyle?,
+    private val background: Background<out Fill>?,
+    private val tintColor: Color?,
     private val margins: MarginValues?
 ) : ViewFactory<SwitchWidget<out WidgetSize>> {
 
@@ -35,29 +35,9 @@ actual class SystemSwitchViewFactory actual constructor(
         val switch = Switch(context).apply {
             id = widget.id.androidId
 
-            switchColor?.also { colorStyle ->
-                val thumbStates = ColorStateList(
-                    arrayOf(
-                        intArrayOf(-android.R.attr.state_checked),
-                        intArrayOf(android.R.attr.state_checked)
-                    ),
-                    colorStyle.colors.let {
-                        intArrayOf(it[0], it[1])
-                    }
-                )
-
-                val trackStates = ColorStateList(
-                    arrayOf(
-                        intArrayOf(-android.R.attr.state_checked),
-                        intArrayOf(android.R.attr.state_checked)
-                    ),
-                    colorStyle.colors.let {
-                        intArrayOf(it[2], it[3])
-                    }
-                )
-
-                DrawableCompat.setTintList(thumbDrawable, thumbStates)
-                DrawableCompat.setTintList(trackDrawable, trackStates)
+            tintColor?.also { color ->
+                DrawableCompat.setTint(thumbDrawable, color.argb.toInt())
+                DrawableCompat.setTint(trackDrawable, color.argb.toInt())
             }
 
             this@SystemSwitchViewFactory.background?.also {

@@ -13,14 +13,21 @@ import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.objc.setAssociatedObject
 import dev.icerock.moko.widgets.style.applyInputTypeIfNeeded
 import dev.icerock.moko.widgets.style.background.Background
-import dev.icerock.moko.widgets.style.view.*
+import dev.icerock.moko.widgets.style.background.Fill
+import dev.icerock.moko.widgets.style.view.IOSFieldBorderStyle
+import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.PaddingValues
+import dev.icerock.moko.widgets.style.view.TextHorizontalAlignment
+import dev.icerock.moko.widgets.style.view.TextStyle
+import dev.icerock.moko.widgets.style.view.TextVerticalAlignment
+import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.utils.DefaultFormatterUITextFieldDelegate
+import dev.icerock.moko.widgets.utils.DefaultTextFormatter
 import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.utils.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.setEventHandler
-import dev.icerock.moko.widgets.utils.DefaultTextFormatter
 import dev.icerock.moko.widgets.utils.toIosPattern
-import dev.icerock.moko.widgets.utils.DefaultFormatterUITextFieldDelegate
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGRectZero
 import platform.Foundation.NSMutableAttributedString
@@ -37,15 +44,12 @@ import platform.UIKit.UITextBorderStyle
 import platform.UIKit.UITextField
 import platform.UIKit.clipsToBounds
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
-import platform.UIKit.addSubview
-import platform.UIKit.UIView
-import platform.UIKit.UITextFieldDelegateProtocol
 
 actual class SystemInputViewFactory actual constructor(
-    private val background: Background?,
+    private val background: Background<Fill.Solid>?,
     private val margins: MarginValues?,
     private val padding: PaddingValues?,
-    private val textStyle: TextStyle?,
+    private val textStyle: TextStyle<Color>?,
     private val labelTextColor: Color?,
     private val textHorizontalAlignment: TextHorizontalAlignment?,
     private val textVerticalAlignment: TextVerticalAlignment?,

@@ -17,6 +17,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
@@ -25,6 +26,7 @@ import dev.icerock.moko.graphics.colorInt
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.FragmentNavigation
 import dev.icerock.moko.widgets.screen.Screen
+import dev.icerock.moko.widgets.style.state.SelectableState
 import dev.icerock.moko.widgets.utils.ThemeAttrs
 import dev.icerock.moko.widgets.utils.dp
 import dev.icerock.moko.widgets.utils.getIntNullable
@@ -39,7 +41,7 @@ actual abstract class BottomNavigationScreen actual constructor(
 
     private var bottomNavigationView: BottomNavigationView? = null
 
-    actual var itemStateColors: SelectStates<Color>? = null
+    actual var itemStateColors: SelectableState<Color>? = null
         set(value) {
             field = value
             updateItemColors()
@@ -110,7 +112,7 @@ actual abstract class BottomNavigationScreen actual constructor(
         savedInstanceState: Bundle?
     ): android.view.View? {
         val context = requireContext()
-        val root = FrameLayout(context).apply {
+        val root = FragmentContainerView(context).apply {
             id = android.R.id.content
         }
         val bottomNavigation = BottomNavigationView(context).apply {
