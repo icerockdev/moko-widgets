@@ -111,6 +111,7 @@ fun NavigationBar.Search.apply(
         mlp?.rightMargin = 0
     }
 
+    toolbar.menu.clear()
     val searchItem = toolbar.menu.add("search")
     searchItem.icon = searchView.findViewById<ImageView>(R.id.search_button).drawable
     searchItem.actionView = searchView
