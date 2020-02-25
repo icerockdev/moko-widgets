@@ -36,6 +36,7 @@ dependencies {
     mppLibrary(Deps.Libs.MultiPlatform.mokoMedia)
     mppLibrary(Deps.Libs.MultiPlatform.mokoGraphics)
     mppLibrary(Deps.Libs.MultiPlatform.mokoParcelize)
+    mppLibrary(Deps.Libs.MultiPlatform.klock)
 
     androidLibrary(Deps.Libs.Android.appCompat)
     androidLibrary(Deps.Libs.Android.fragment)
