@@ -26,6 +26,7 @@ import platform.UIKit.topAnchor
 import platform.UIKit.UIButton
 import platform.UIKit.UIControlStateNormal
 import platform.UIKit.UIControlEventTouchUpInside
+import platform.UIKit.UIApplication
 import platform.Foundation.NSBundle
 import platform.Foundation.NSDate
 
@@ -159,13 +160,13 @@ class DatePickerController(
         ).active = true
         controlPanel.heightAnchor.constraintEqualToConstant(44.0)
 
-        val bundle = NSBundle.bundleWithIdentifier("com.apple.UIKit")
+        val bundle = NSBundle.bundleForClass(UIApplication)
         val doneButton = UIButton()
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         doneButton.setTitle(
-            title = bundle?.localizedStringForKey(
+            title = bundle.localizedStringForKey(
                 key = "Done",
-                value = "",
+                value = "Done",
                 table = null
             ) ?: "Done",
             forState = UIControlStateNormal
@@ -188,9 +189,9 @@ class DatePickerController(
         val cancelButton = UIButton()
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
         cancelButton.setTitle(
-            title = bundle?.localizedStringForKey(
+            title = bundle.localizedStringForKey(
                 key = "Cancel",
-                value = "",
+                value = "Cancel",
                 table = null
             ) ?: "Cancel",
             forState = UIControlStateNormal
