@@ -27,7 +27,7 @@ import platform.UIKit.UIKeyboardTypePhonePad
 import platform.UIKit.backgroundColor
 
 actual class FlatInputViewFactory actual constructor(
-    private val textStyle: TextStyle?,
+    private val textStyle: TextStyle<Color>?,
     private val backgroundColor: Color?,
     private val margins: MarginValues?
 ) : ViewFactory<InputWidget<out WidgetSize>> {

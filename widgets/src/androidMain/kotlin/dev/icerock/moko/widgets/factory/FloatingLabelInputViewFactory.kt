@@ -26,7 +26,9 @@ import dev.icerock.moko.widgets.style.applyInputType
 import dev.icerock.moko.widgets.style.applyPaddingIfNeeded
 import dev.icerock.moko.widgets.style.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.ext.getGravity
+import dev.icerock.moko.widgets.style.state.FocusableState
 import dev.icerock.moko.widgets.style.view.FontStyle
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
@@ -39,14 +41,13 @@ import dev.icerock.moko.widgets.utils.dp
 import dev.icerock.moko.widgets.utils.sp
 
 actual class FloatingLabelInputViewFactory actual constructor(
-    private val background: Background?,
+    private val background: Background<Fill.Solid>?,
     private val margins: MarginValues?,
     private val padding: PaddingValues?,
-    private val textStyle: TextStyle?,
-    private val labelTextStyle: TextStyle?,
-    private val errorTextStyle: TextStyle?,
-    private val underLineColor: Color?,
-    private val underLineFocusedColor: Color?,
+    private val textStyle: TextStyle<Color>?,
+    private val labelTextStyle: TextStyle<Color>?,
+    private val errorTextStyle: TextStyle<Color>?,
+    private val underLineColor: FocusableState<Color>?,
     private val textHorizontalAlignment: TextHorizontalAlignment?
 ) : ViewFactory<InputWidget<out WidgetSize>> {
 
@@ -86,33 +87,18 @@ actual class FloatingLabelInputViewFactory actual constructor(
                 gravity = it.getGravity()
             }
 
-            val focusedColor = underLineFocusedColor?.argb?.toInt()
-            val defaultColor = underLineColor?.argb?.toInt()
-
-            if (focusedColor != null && defaultColor != null) {
+            underLineColor?.also { stateColor ->
                 supportBackgroundTintList = ColorStateList(
                     arrayOf(
                         intArrayOf(-android.R.attr.state_focused, -android.R.attr.state_pressed),
                         intArrayOf()
                     ),
                     intArrayOf(
-                        defaultColor,
-                        focusedColor
-                    )
-                )
-            } else if (defaultColor != null) {
-                supportBackgroundTintList = ColorStateList.valueOf(defaultColor)
-            } else if (focusedColor != null) {
-                supportBackgroundTintList = ColorStateList(
-                    arrayOf(
-                        intArrayOf(android.R.attr.state_focused, android.R.attr.state_activated)
-                    ),
-                    intArrayOf(
-                        focusedColor
+                        stateColor.unfocused.argb.toInt(),
+                        stateColor.focused.argb.toInt()
                     )
                 )
             }
-
 
             setOnFocusChangeListener { _, hasFocus ->
                 if (!hasFocus) widget.field.validate()

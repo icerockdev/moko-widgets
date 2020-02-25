@@ -17,6 +17,7 @@ import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.style.applyPaddingIfNeeded
 import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.ext.applyMargin
 import dev.icerock.moko.widgets.style.ext.toPlatformSize
 import dev.icerock.moko.widgets.style.view.Alignment
@@ -29,7 +30,7 @@ import dev.icerock.moko.widgets.view.AspectRatioFrameLayout
 actual class ContainerViewFactory actual constructor(
     private val padding: PaddingValues?,
     private val margins: MarginValues?,
-    private val background: Background?
+    private val background: Background<out Fill>?
 ) : ViewFactory<ContainerWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(

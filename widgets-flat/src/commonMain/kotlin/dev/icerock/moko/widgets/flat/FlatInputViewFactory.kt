@@ -12,7 +12,7 @@ import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
 expect class FlatInputViewFactory(
-    textStyle: TextStyle? = null,
+    textStyle: TextStyle<Color>? = null,
     backgroundColor: Color? = null,
     margins: MarginValues? = null
 ) : ViewFactory<InputWidget<out WidgetSize>>

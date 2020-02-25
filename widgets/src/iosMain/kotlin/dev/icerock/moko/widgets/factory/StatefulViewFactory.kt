@@ -10,6 +10,7 @@ import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
@@ -27,9 +28,9 @@ import platform.UIKit.hidden
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
 actual class StatefulViewFactory actual constructor(
-    private val background: Background?,
     private val margins: MarginValues?,
-    private val padding: PaddingValues?
+    private val padding: PaddingValues?,
+    private val background: Background<out Fill>?
 ) : ViewFactory<StatefulWidget<out WidgetSize, *, *>> {
 
     override fun <WS : WidgetSize> build(

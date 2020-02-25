@@ -18,13 +18,14 @@ import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.WebViewRedirectUrlHandler
 
 actual class WebViewFactory actual constructor(
     private val margins: MarginValues?,
-    private val background: Background?
+    private val background: Background<Fill.Solid>?
 ) : ViewFactory<WebViewWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
@@ -88,7 +89,5 @@ actual class WebViewFactory actual constructor(
             val requestedUrl = Uri.parse(request.url.toString()).toString()
             return redirectUrlHandler.handleUrl(requestedUrl)
         }
-
     }
-
 }
