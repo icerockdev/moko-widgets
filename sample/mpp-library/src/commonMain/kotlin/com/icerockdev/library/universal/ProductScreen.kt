@@ -41,7 +41,7 @@ class ProductScreen(
     override val navigationBar
         get() = NavigationBar.Normal(
             title = getArgument().productId.let { "Product $it".desc() },
-            styles = NavigationBar.Normal.Styles(
+            styles = NavigationBar.Styles(
                 backgroundColor = Color(0x00AA00FF),
                 tintColor = Color(0xFF0000FF),
                 textStyle = TextStyle(
@@ -51,12 +51,12 @@ class ProductScreen(
                 )
             ),
             actions = listOf(
-                NavigationBar.Normal.BarButton(
+                NavigationBar.BarButton(
                     icon = MR.images.cart_black_18
                 ) {
                     println("first press")
                 },
-                NavigationBar.Normal.BarButton(
+                NavigationBar.BarButton(
                     icon = MR.images.stars_black_18
                 ) {
                     println("second press")
