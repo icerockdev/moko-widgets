@@ -58,6 +58,7 @@ actual class DatePickerDialogBuilder(
 ) {
     private var startDate: DateTime? = null
     private var endDate: DateTime? = null
+    private var selectedDate: DateTime? = null
 
     actual fun accentColor(color: Color) {
         //android color from style
@@ -69,6 +70,10 @@ actual class DatePickerDialogBuilder(
 
     actual fun endDate(date: DateTime) {
         endDate = date
+    }
+
+    actual fun selectedDate(date: DateTime) {
+        selectedDate = date
     }
 
     internal fun show() {
