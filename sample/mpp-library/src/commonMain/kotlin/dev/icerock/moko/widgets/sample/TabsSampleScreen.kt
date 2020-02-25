@@ -8,18 +8,23 @@ import com.icerockdev.library.units.UserUnitWidget
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.units.TableUnitItem
+import dev.icerock.moko.widgets.ContainerWidget
 import dev.icerock.moko.widgets.ListWidget
 import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.constraint
+import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.factory.ContainerViewFactory
 import dev.icerock.moko.widgets.factory.SystemTabsViewFactory
+import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.list
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.WidgetScreen
 import dev.icerock.moko.widgets.screen.navigation.NavigationBar
 import dev.icerock.moko.widgets.screen.navigation.NavigationItem
 import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Direction
 import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.state.SelectableState
 import dev.icerock.moko.widgets.style.view.Colors
@@ -41,7 +46,8 @@ class TabsSampleScreen(
             tintColor = tintColor,
             textStyle = TextStyle(
                 color = textColor
-            )
+            ),
+            isShadowEnabled = false
         )
     )
 
@@ -82,11 +88,20 @@ class TabsSampleScreen(
             ) as TableUnitItem
         }
 
-        list(
-            size = WidgetSize.AsParent,
-            id = Ids.List,
-            items = const(items)
-        )
+        linear(size = WidgetSize.AsParent) {
+            +container(
+                size = WidgetSize.Const(
+                    width = SizeSpec.AsParent,
+                    height = SizeSpec.Exact(platformSpecific(android = 4f, ios = 2f))
+                )
+            ) {}
+
+            +list(
+                size = WidgetSize.AsParent,
+                id = Ids.List,
+                items = const(items)
+            )
+        }
     }()
 
     object Ids {
@@ -108,10 +123,17 @@ class TabsSampleScreen(
                     android = null,
                     ios = PaddingValues(start = 16f, end = 16f, bottom = 16f)
                 ),
-                contentPadding = PaddingValues(padding = 16f),
                 titleColor = SelectableState(
                     selected = platformSpecific(android = null, ios = Colors.white),
                     unselected = null
+                )
+            )
+            factory[ContainerWidget.DefaultCategory] = ContainerViewFactory(
+                background = Background(
+                    fill = Fill.Gradient(
+                        colors = listOf(Color(0x00000000), Color(0x00000010)),
+                        direction = Direction.BOTTOM_TOP
+                    )
                 )
             )
         }

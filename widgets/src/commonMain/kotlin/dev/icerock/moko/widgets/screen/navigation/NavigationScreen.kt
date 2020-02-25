@@ -124,7 +124,8 @@ sealed class NavigationBar {
     data class Styles(
         val backgroundColor: Color? = null,
         val textStyle: TextStyle<Color>? = null,
-        val tintColor: Color? = null
+        val tintColor: Color? = null,
+        val isShadowEnabled: Boolean? = null
     )
 
     data class BarButton(
