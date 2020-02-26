@@ -15,10 +15,12 @@ import android.view.View
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.FragmentManager
 import dev.icerock.moko.widgets.screen.navigation.NavigationBar
 import dev.icerock.moko.widgets.style.view.FontStyle
 import dev.icerock.moko.widgets.utils.ThemeAttrs
+import dev.icerock.moko.widgets.utils.dp
 import dev.icerock.moko.widgets.utils.sp
 
 
@@ -28,6 +30,8 @@ fun NavigationBar.Normal.apply(
     fragmentManager: FragmentManager
 ) {
     toolbar.visibility = View.VISIBLE
+
+    styles?.apply(toolbar, context)
 
     val title = title.toString(context)
     toolbar.title = SpannableString(title).apply {
@@ -48,20 +52,8 @@ fun NavigationBar.Normal.apply(
         }
     }
 
-    val bgColor = styles?.backgroundColor?.argb?.toInt()
-        ?: ThemeAttrs.getPrimaryColor(context)
-
-    toolbar.setBackgroundColor(bgColor)
-
     val fallbackTintColor = ThemeAttrs.getControlNormalColor(context)
-
     val tintColor = styles?.tintColor?.argb?.toInt() ?: fallbackTintColor
-
-    toolbar.setTitleTextColor(tintColor)
-    toolbar.overflowIcon?.also { DrawableCompat.setTint(it, tintColor) }
-
-    val textColor = styles?.textStyle?.color?.argb?.toInt() ?: fallbackTintColor
-    toolbar.setTitleTextColor(textColor)
 
     val backBtn = backButton
     if (backBtn != null) {

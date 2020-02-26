@@ -40,6 +40,7 @@ import dev.icerock.moko.widgets.sample.InputWidgetGalleryScreen
 import dev.icerock.moko.widgets.sample.ProductsSearchScreen
 import dev.icerock.moko.widgets.sample.ScrollContentScreen
 import dev.icerock.moko.widgets.sample.SelectGalleryScreen
+import dev.icerock.moko.widgets.sample.TabsSampleScreen
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.BaseApplication
 import dev.icerock.moko.widgets.screen.Screen
@@ -106,6 +107,7 @@ class App() : BaseApplication() {
                 routes = listOf(
                     buildInputGalleryRouteInfo(theme, router),
                     buildSearchRouteInfo(theme, router),
+                    buildTabsRouteInfo(theme, router),
                     SelectGalleryScreen.RouteInfo(
                         name = "Old Demo".desc(),
                         route = router.createPushRoute(oldDemo(router))
@@ -155,6 +157,23 @@ class App() : BaseApplication() {
         return SelectGalleryScreen.RouteInfo(
             name = "SearchScreen".desc(),
             route = router.createPushRoute(searchScreen)
+        )
+    }
+
+    private fun buildTabsRouteInfo(
+        theme: Theme,
+        router: NavigationScreen.Router
+    ): SelectGalleryScreen.RouteInfo {
+        val tabsTheme = Theme(theme) {
+            TabsSampleScreen.configureDefaultTheme(this)
+        }
+        val tabsScreen = registerScreen(TabsSampleScreen::class) {
+            TabsSampleScreen(tabsTheme)
+        }
+
+        return SelectGalleryScreen.RouteInfo(
+            name = "Tabs".desc(),
+            route = router.createPushRoute(tabsScreen)
         )
     }
 

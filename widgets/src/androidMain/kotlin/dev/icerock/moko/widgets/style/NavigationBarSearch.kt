@@ -33,6 +33,8 @@ fun NavigationBar.Search.apply(
 ) {
     toolbar.visibility = View.VISIBLE
 
+    styles?.apply(toolbar, context)
+
     val title = title.toString(context)
     toolbar.title = SpannableString(title).apply {
         val size = styles?.textStyle?.size?.toFloat()?.sp(context)
@@ -52,20 +54,8 @@ fun NavigationBar.Search.apply(
         }
     }
 
-    val bgColor = styles?.backgroundColor?.argb?.toInt()
-        ?: ThemeAttrs.getPrimaryColor(context)
-
-    toolbar.setBackgroundColor(bgColor)
-
     val fallbackTintColor = ThemeAttrs.getControlNormalColor(context)
-
     val tintColor = styles?.tintColor?.argb?.toInt() ?: fallbackTintColor
-
-    toolbar.setTitleTextColor(tintColor)
-    toolbar.overflowIcon?.also { DrawableCompat.setTint(it, tintColor) }
-
-    val textColor = styles?.textStyle?.color?.argb?.toInt() ?: fallbackTintColor
-    toolbar.setTitleTextColor(textColor)
 
     val backBtn = backButton
     if (backBtn != null) {

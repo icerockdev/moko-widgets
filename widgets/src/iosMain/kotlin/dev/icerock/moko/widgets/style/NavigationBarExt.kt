@@ -13,9 +13,9 @@ import platform.UIKit.NSFontAttributeName
 import platform.UIKit.NSForegroundColorAttributeName
 import platform.UIKit.UIApplication
 import platform.UIKit.UIBarButtonItem
-import platform.UIKit.UIDevice
+import platform.UIKit.UIBarMetricsDefault
+import platform.UIKit.UIImage
 import platform.UIKit.UINavigationBar
-import platform.UIKit.UINavigationBarAppearance
 import platform.UIKit.UINavigationController
 import platform.UIKit.UISearchController
 import platform.UIKit.UISearchResultsUpdatingProtocol
@@ -39,13 +39,16 @@ fun UINavigationBar.applyNavigationBarStyle(style: NavigationBar.Styles?) {
     val backgroundColor = style?.backgroundColor?.toUIColor()
     val tintColor = style?.tintColor?.toUIColor()
         ?: UIApplication.sharedApplication.keyWindow?.rootViewController()?.view?.tintColor!!
-
+    val shadowImage = if (style?.isShadowEnabled == false) UIImage() else null
+    val backgroundImage = if (style?.isShadowEnabled == false) UIImage() else null
 
 //    TODO uncomment when kotlin-native will fix linking to newest api
 //    if (UIDevice.currentDevice.systemVersion.compareTo("13.0") < 0) {
-        this.barTintColor = backgroundColor
-        this.titleTextAttributes = textAttributes
-        this.tintColor = tintColor
+    this.barTintColor = backgroundColor
+    this.titleTextAttributes = textAttributes
+    this.tintColor = tintColor
+    this.shadowImage = shadowImage
+    this.setBackgroundImage(backgroundImage, forBarMetrics = UIBarMetricsDefault)
 //    } else {
 //        val appearance = UINavigationBarAppearance().apply {
 //            configureWithDefaultBackground()
