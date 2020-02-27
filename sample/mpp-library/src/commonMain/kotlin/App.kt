@@ -233,7 +233,7 @@ class App() : BaseApplication() {
             val bottomRouter = createRouter()
 
             val templateScreen = registerScreen(TemplateScreen::class) {
-                TemplateScreen(labelText = "Template Screen".desc(), theme = theme)
+                TemplateScreen(navTitle = "Template".desc(), labelText = "Template Screen".desc(), theme = theme)
             }
 
             val cartNavigation = registerScreen(CartNavigationScreen::class) {
