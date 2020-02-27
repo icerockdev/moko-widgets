@@ -17,6 +17,7 @@ import com.icerockdev.library.universal.WidgetsScreen
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.parcelize.Parcelize
+import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.FlatAlertIds
@@ -58,6 +59,7 @@ import dev.icerock.moko.widgets.screen.navigation.createPushResultRoute
 import dev.icerock.moko.widgets.screen.navigation.createPushRoute
 import dev.icerock.moko.widgets.screen.navigation.createRouter
 import dev.icerock.moko.widgets.screen.navigation.route
+import dev.icerock.moko.widgets.screen.TemplateScreen
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.state.PressableState
@@ -230,6 +232,10 @@ class App() : BaseApplication() {
         val mainScreen = registerScreen(MainBottomNavigationScreen::class) {
             val bottomRouter = createRouter()
 
+            val templateScreen = registerScreen(TemplateScreen::class) {
+                TemplateScreen(navTitle = "Template".desc(), labelText = "Template Screen".desc(), theme = theme)
+            }
+
             val cartNavigation = registerScreen(CartNavigationScreen::class) {
                 val navigationRouter = createRouter()
                 val profileScreen = registerScreen(PlatformProfileScreen::class) {
@@ -305,6 +311,11 @@ class App() : BaseApplication() {
                     id = 4,
                     title = "Logout".desc(),
                     screenDesc = logoutScreen
+                )
+                tab(
+                    id = 5,
+                    title = "Empty".desc(),
+                    screenDesc = templateScreen
                 )
             }
         }

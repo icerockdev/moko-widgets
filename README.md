@@ -13,7 +13,7 @@ Current version - `0.1.0-dev-14`. Dev version is not tested in production tasks 
 ## Roadmap
 - December-January: Test library in real project;
 - February: 0.1.0 release with flexible API; production usage at IceRock;
-- First half of 2019: more widgets, more factories; figma template and generation of screens.
+- First half of 2020: more widgets, more factories; figma template and generation of screens.
 
 ## Sample Screen
 |Android|iOS|
