@@ -98,6 +98,10 @@ actual class SystemTextViewFactory actual constructor(
             widget.text.bind { label.text = it.localized() }
         }
 
+        widget.maxLines?.bind {
+            label.numberOfLines = (it ?: 0).toLong()
+        }
+
         return ViewBundle(
             view = label,
             size = size,

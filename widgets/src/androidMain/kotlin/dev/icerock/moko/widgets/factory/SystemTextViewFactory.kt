@@ -6,9 +6,9 @@ package dev.icerock.moko.widgets.factory
 
 import android.annotation.SuppressLint
 import android.text.Html
+import android.text.TextUtils
 import android.text.method.LinkMovementMethod
 import android.view.Gravity
-import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.widgets.TextWidget
@@ -65,7 +65,13 @@ actual class SystemTextViewFactory actual constructor(
                 }
             }
         }
-        widget.text.bind(lifecycleOwner) { textView.text = it?.toString(context)?.run(strProcessing) }
+        widget.maxLines?.bind(lifecycleOwner) {
+            textView.maxLines = (it ?: Int.MAX_VALUE)
+            textView.ellipsize = TextUtils.TruncateAt.END
+        }
+        widget.text.bind(lifecycleOwner) {
+            textView.text = it?.toString(context)?.run(strProcessing)
+        }
 
         if (isHtmlConverted) {
             textView.movementMethod = LinkMovementMethod.getInstance()

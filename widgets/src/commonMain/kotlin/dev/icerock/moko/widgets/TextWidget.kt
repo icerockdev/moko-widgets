@@ -21,7 +21,8 @@ class TextWidget<WS : WidgetSize>(
     private val factory: ViewFactory<TextWidget<out WidgetSize>>,
     override val size: WS,
     override val id: Id?,
-    val text: LiveData<StringDesc>
+    val text: LiveData<StringDesc>,
+    val maxLines: LiveData<Int?>? = null
 ) : Widget<WS>(), OptionalId<TextWidget.Id> {
 
     override fun buildView(viewFactoryContext: ViewFactoryContext): ViewBundle<WS> {
