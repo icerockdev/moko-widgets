@@ -35,6 +35,7 @@ actual class SystemImageViewFactory actual constructor(
             ImageWidget.ScaleType.FILL -> imageView.scaleType = ImageView.ScaleType.CENTER_CROP
             ImageWidget.ScaleType.FIT -> imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE
         }
+        imageView.adjustViewBounds = true
 
         widget.image.bind(lifecycleOwner) { image ->
             if (image == null) {
