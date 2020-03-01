@@ -28,19 +28,19 @@ val <T : Widget<out WidgetSize>> Theme.Id<T>.androidId: Int
             println(String.format("id %s transformed to 0x%X", idString, fullId))
 
             if (classIdMap.containsValue(fullId)) {
-                val collision: String = classIdMap
+                val conflictName: String = classIdMap
                     .filter { it.value == fullId }
                     .keys.toList()
                     .first()
                     .javaClass.name
 
                 val msg = String.format(
-                    "id 0x%X already used by %s, it collides with %s",
+                    "id 0x%X already used by %s, it conflict with %s",
                     fullId,
-                    collision,
+                    conflictName,
                     idString
                 )
-                throw RuntimeException(msg)
+                throw AndroidIdConflictException(msg)
             }
         }
 
@@ -48,3 +48,5 @@ val <T : Widget<out WidgetSize>> Theme.Id<T>.androidId: Int
 
         return fullId
     }
+
+private class AndroidIdConflictException(message: String) : RuntimeException(message)
