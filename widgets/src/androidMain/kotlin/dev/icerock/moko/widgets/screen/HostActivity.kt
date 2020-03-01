@@ -16,16 +16,10 @@ abstract class HostActivity : AppCompatActivity() {
             override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
                 val kclass = Class.forName(className, true, classLoader).kotlin
                 val screenKlass = kclass as? KClass<out Screen<Args.Empty>>
-                return if (screenKlass != null) {
-                    val screenDesc = application.registeredScreens[screenKlass]
-                        ?: error("screen not registered $screenKlass")
-                    screenDesc.instantiate()
-                } else {
-                    super.instantiate(classLoader, className)
-                }
+                val screenDesc = screenKlass?.let { application.registeredScreens[it] }
+                return screenDesc?.instantiate() ?: super.instantiate(classLoader, className)
             }
         }
-
         super.onCreate(savedInstanceState)
 
         if (savedInstanceState == null) {
@@ -37,15 +31,6 @@ abstract class HostActivity : AppCompatActivity() {
                 .commit()
         }
     }
-
-//    override fun onBackPressed() {
-//        val rootScreen = supportFragmentManager.findFragmentById(android.R.id.content)
-//        if (rootScreen is Screen<*>) {
-//            if (rootScreen.onBackPressed()) return
-//        }
-//
-//        super.onBackPressed()
-//    }
 
     abstract val application: BaseApplication
 }

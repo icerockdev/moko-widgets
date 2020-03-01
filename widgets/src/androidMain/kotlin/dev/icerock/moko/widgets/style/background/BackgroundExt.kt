@@ -13,9 +13,10 @@ import android.graphics.drawable.RippleDrawable
 import android.graphics.drawable.StateListDrawable
 import android.os.Build
 import dev.icerock.moko.widgets.style.ext.toPlatformOrientation
+import dev.icerock.moko.widgets.style.state.PressableState
 import kotlin.math.ceil
 
-fun StateBackground.buildBackground(context: Context) = StateListDrawable().also { selector ->
+fun PressableState<Background<out Fill>>.buildBackground(context: Context) = StateListDrawable().also { selector ->
     selector.addState(
         intArrayOf(-android.R.attr.state_enabled),
         disabled.buildBackground(context)
@@ -41,7 +42,7 @@ fun StateBackground.buildBackground(context: Context) = StateListDrawable().also
     )
 }
 
-fun Background.buildBackground(context: Context): Drawable {
+fun Background<out Fill>.buildBackground(context: Context): Drawable {
     val gradientDrawable = GradientDrawable()
     val scale = context.resources.displayMetrics.density
 
@@ -53,16 +54,8 @@ fun Background.buildBackground(context: Context): Drawable {
         }
     }
 
-    when (shape) {
-        is Shape.Rectangle -> {
-            gradientDrawable.shape = GradientDrawable.RECTANGLE
-            if (shape.cornerRadius != null) {
-                gradientDrawable.cornerRadius = shape.cornerRadius * scale
-            }
-        }
-        is Shape.Oval -> {
-            gradientDrawable.shape = GradientDrawable.OVAL
-        }
+    if (cornerRadius != null) {
+        gradientDrawable.cornerRadius = cornerRadius * scale
     }
 
     if (border != null) {

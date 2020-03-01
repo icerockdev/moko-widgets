@@ -6,6 +6,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.multiplatform")
     id("kotlin-kapt")
+    id("kotlin-android-extensions")
     id("dev.icerock.mobile.multiplatform")
     id("maven-publish")
     id("dev.icerock.mobile.multiplatform-widgets-generator")
@@ -35,14 +36,17 @@ dependencies {
     mppLibrary(Deps.Libs.MultiPlatform.mokoMedia)
     mppLibrary(Deps.Libs.MultiPlatform.mokoGraphics)
     mppLibrary(Deps.Libs.MultiPlatform.mokoParcelize)
+    mppLibrary(Deps.Libs.MultiPlatform.klock)
 
     androidLibrary(Deps.Libs.Android.appCompat)
+    androidLibrary(Deps.Libs.Android.fragment)
     androidLibrary(Deps.Libs.Android.recyclerView)
     androidLibrary(Deps.Libs.Android.material)
     androidLibrary(Deps.Libs.Android.swipeRefreshLayout)
     androidLibrary(Deps.Libs.Android.constraintLayout)
     androidLibrary(Deps.Libs.Android.inputMask)
     androidLibrary(Deps.Libs.Android.glide)
+    androidLibrary(Deps.Libs.Android.roundedImageView)
 }
 
 publishing {

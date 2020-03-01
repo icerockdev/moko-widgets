@@ -40,7 +40,6 @@ class ProductsScreen(
     }
 
     private fun onProductPressed() {
-        println("go to product!")
-        productRoute.route(this, 10)
+        productRoute.route(10)
     }
 }

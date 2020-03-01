@@ -6,9 +6,11 @@ package dev.icerock.moko.widgets.factory
 
 import android.annotation.SuppressLint
 import android.text.Html
+import android.text.TextUtils
 import android.text.method.LinkMovementMethod
 import android.view.Gravity
-import android.widget.TextView
+import androidx.appcompat.widget.AppCompatTextView
+import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.widgets.TextWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
@@ -16,6 +18,7 @@ import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.style.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.TextHorizontalAlignment
 import dev.icerock.moko.widgets.style.view.TextStyle
@@ -23,8 +26,8 @@ import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.bind
 
 actual class SystemTextViewFactory actual constructor(
-    private val background: Background?,
-    private val textStyle: TextStyle?,
+    private val background: Background<Fill.Solid>?,
+    private val textStyle: TextStyle<Color>?,
     private val textHorizontalAlignment: TextHorizontalAlignment?,
     private val margins: MarginValues?,
     private val isHtmlConverted: Boolean
@@ -38,7 +41,7 @@ actual class SystemTextViewFactory actual constructor(
         val context = viewFactoryContext.androidContext
         val lifecycleOwner = viewFactoryContext.lifecycleOwner
 
-        val textView = TextView(context).apply {
+        val textView = AppCompatTextView(context).apply {
             applyTextStyleIfNeeded(textStyle)
             applyBackgroundIfNeeded(this@SystemTextViewFactory.background)
 
@@ -62,7 +65,13 @@ actual class SystemTextViewFactory actual constructor(
                 }
             }
         }
-        widget.text.bind(lifecycleOwner) { textView.text = it?.toString(context)?.run(strProcessing) }
+        widget.maxLines?.bind(lifecycleOwner) {
+            textView.maxLines = (it ?: Int.MAX_VALUE)
+            textView.ellipsize = TextUtils.TruncateAt.END
+        }
+        widget.text.bind(lifecycleOwner) {
+            textView.text = it?.toString(context)?.run(strProcessing)
+        }
 
         if (isHtmlConverted) {
             textView.movementMethod = LinkMovementMethod.getInstance()

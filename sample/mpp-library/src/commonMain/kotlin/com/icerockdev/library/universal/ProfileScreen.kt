@@ -21,7 +21,7 @@ import dev.icerock.moko.widgets.screen.listen
 import dev.icerock.moko.widgets.screen.navigation.NavigationBar
 import dev.icerock.moko.widgets.screen.navigation.NavigationItem
 import dev.icerock.moko.widgets.screen.navigation.Route
-import dev.icerock.moko.widgets.screen.navigation.route
+import dev.icerock.moko.widgets.screen.showToast
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -45,8 +45,7 @@ abstract class ProfileScreen : Screen<Args.Parcel<ProfileScreen.Arg>>(),
     }
 
     override fun showTimedMessage(message: StringDesc) {
-        println(message) // TODO should be done in #4
-        backRoute.route(this)
+        showToast(message)
     }
 
     @Parcelize

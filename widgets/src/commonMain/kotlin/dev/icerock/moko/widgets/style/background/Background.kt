@@ -4,8 +4,8 @@
 
 package dev.icerock.moko.widgets.style.background
 
-data class Background(
-    val fill: Fill? = null,
+data class Background<F : Fill>(
+    val fill: F? = null,
     val border: Border? = null,
-    val shape: Shape? = null
+    val cornerRadius: Float? = null
 )

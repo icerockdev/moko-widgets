@@ -4,12 +4,17 @@
 
 package dev.icerock.moko.widgets.screen.navigation
 
+import dev.icerock.moko.graphics.Color
+import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.parcelize.Parcelable
+import dev.icerock.moko.resources.ImageResource
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.Screen
-import dev.icerock.moko.widgets.screen.ScreenFactory
 import dev.icerock.moko.widgets.screen.TypedScreenDesc
+import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
+import dev.icerock.moko.widgets.style.view.TextStyle
 
 expect abstract class NavigationScreen<S>(
     initialScreen: TypedScreenDesc<Args.Empty, S>,
@@ -34,6 +39,7 @@ expect abstract class NavigationScreen<S>(
         ): Route<T> where S : Screen<Arg>, S : NavigationItem
 
         fun createPopRoute(): Route<Unit>
+        fun createPopToRootRoute(): Route<Unit>
     }
 }
 
@@ -98,5 +104,32 @@ interface NavigationItem {
 
 sealed class NavigationBar {
     object None : NavigationBar()
-    data class Normal(val title: StringDesc) : NavigationBar()
+
+    data class Normal(
+        val title: StringDesc,
+        val styles: Styles? = null,
+        val backButton: BarButton? = null,
+        val actions: List<BarButton>? = null
+    ) : NavigationBar()
+
+    data class Search(
+        val title: StringDesc,
+        val styles: Styles? = null,
+        val backButton: BarButton? = null,
+        val searchPlaceholder: StringDesc? = null,
+        val searchQuery: MutableLiveData<String>,
+        val androidSearchBackground: Background<Fill.Solid>? = null
+    ) : NavigationBar()
+
+    data class Styles(
+        val backgroundColor: Color? = null,
+        val textStyle: TextStyle<Color>? = null,
+        val tintColor: Color? = null,
+        val isShadowEnabled: Boolean? = null
+    )
+
+    data class BarButton(
+        val icon: ImageResource,
+        val action: () -> Unit
+    )
 }

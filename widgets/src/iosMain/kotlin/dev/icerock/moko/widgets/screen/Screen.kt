@@ -4,17 +4,23 @@
 
 package dev.icerock.moko.widgets.screen
 
+import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcher
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.widgets.objc.getAssociatedObject
 import dev.icerock.moko.widgets.objc.setAssociatedObject
 import platform.UIKit.UIViewController
 import kotlin.native.ref.WeakReference
+import kotlin.properties.ReadOnlyProperty
+import kotlin.reflect.KProperty
 
 actual abstract class Screen<Arg : Args> {
     val viewModelStore = mutableMapOf<Any, ViewModel>()
     // TODO private?
     var arg: Arg? = null
+
+    actual open val androidStatusBarColor: Color? = null
+    actual open val isLightStatusBar: Boolean? = null
 
     actual inline fun <reified VM : ViewModel, Key : Any> getViewModel(
         key: Key,
@@ -32,7 +38,7 @@ actual abstract class Screen<Arg : Args> {
         return EventsDispatcher()
     }
 
-    protected abstract fun createViewController(): UIViewController
+    protected abstract fun createViewController(isLightStatusBar: Boolean?): UIViewController
 
     private var _viewController: WeakReference<UIViewController>? = null
     val viewController: UIViewController
@@ -40,12 +46,20 @@ actual abstract class Screen<Arg : Args> {
             val current = _viewController?.get()
             if (current != null) return current
 
-            val vc = createViewController().also {
+            val vc = createViewController(isLightStatusBar).also {
                 setAssociatedObject(it, this)
             }
             _viewController = WeakReference(vc)
             return vc
         }
+
+    fun <T> createConstReadOnlyProperty(value: T): ReadOnlyProperty<Screen<*>, T> {
+        return object : ReadOnlyProperty<Screen<*>, T> {
+            override fun getValue(thisRef: Screen<*>, property: KProperty<*>): T {
+                return value
+            }
+        }
+    }
 }
 
 fun UIViewController.getAssociatedScreen(): Screen<*>? = getAssociatedObject(this) as? Screen<*>

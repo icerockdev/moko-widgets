@@ -4,12 +4,10 @@
 
 package dev.icerock.moko.widgets.screen.navigation
 
-import dev.icerock.moko.widgets.screen.Screen
-
 interface Route<T> {
-    fun route(source: Screen<*>, arg: T)
+    fun route(arg: T)
 }
 
-fun Route<Unit>.route(source: Screen<*>) {
-    route(source = source, arg = Unit)
+fun Route<Unit>.route() {
+    route(arg = Unit)
 }

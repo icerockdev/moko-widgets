@@ -6,20 +6,9 @@ package dev.icerock.moko.widgets.screen.navigation
 
 import dev.icerock.moko.widgets.screen.Screen
 import kotlin.properties.ReadOnlyProperty
-import kotlin.reflect.KProperty
 
 actual interface RouteHandler<T> {
     val requestCode: Int
-}
-
-class RouteHandlerProperty<T>(
-    private val requestCode: Int
-) : ReadOnlyProperty<Screen<*>, RouteHandler<T>> {
-    override fun getValue(thisRef: Screen<*>, property: KProperty<*>): RouteHandler<T> {
-        return object : RouteHandler<T> {
-            override val requestCode: Int = this@RouteHandlerProperty.requestCode
-        }
-    }
 }
 
 actual fun <T> Screen<*>.registerRouteHandler(
@@ -30,7 +19,8 @@ actual fun <T> Screen<*>.registerRouteHandler(
     routeHandlers[code] = {
         handler(it?.let(route.resultMapper))
     }
-    return RouteHandlerProperty(
-        requestCode = code
-    )
+    val routeHandler = object : RouteHandler<T> {
+        override val requestCode: Int = code
+    }
+    return createConstReadOnlyProperty(routeHandler)
 }

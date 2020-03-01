@@ -10,5 +10,6 @@ import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
 expect class SystemImageViewFactory(
-    margins: MarginValues? = null
+    margins: MarginValues? = null,
+    cornerRadius: Float? = null
 ) : ViewFactory<ImageWidget<out WidgetSize>>

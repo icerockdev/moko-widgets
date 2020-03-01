@@ -18,6 +18,9 @@ object Deps {
             val appCompat = AndroidLibrary(
                 name = "androidx.appcompat:appcompat:${Versions.Libs.Android.appCompat}"
             )
+            val fragment = AndroidLibrary(
+                name = "androidx.fragment:fragment:${Versions.Libs.Android.fragment}"
+            )
             val swipeRefreshLayout = AndroidLibrary(
                 name = "androidx.swiperefreshlayout:swiperefreshlayout:${Versions.Libs.Android.swipeRefreshLayout}"
             )
@@ -39,6 +42,15 @@ object Deps {
             val glide = AndroidLibrary(
                 name = "com.github.bumptech.glide:glide:${Versions.Libs.Android.glide}"
             )
+            val roundedImageView = AndroidLibrary(
+                name = "com.makeramen:roundedimageview:${Versions.Libs.Android.roundedImageView}"
+            )
+            val playServiceAuth = AndroidLibrary(
+                name = "com.google.android.gms:play-services-auth:${Versions.Libs.Android.playServiceAuth}"
+            )
+            val playServiceAuthSms = AndroidLibrary(
+                name = "com.google.android.gms:play-services-auth-api-phone:${Versions.Libs.Android.playServiceAuthSms}"
+            )
         }
 
         object MultiPlatform {
@@ -55,6 +67,11 @@ object Deps {
                 common = "dev.icerock.moko:widgets-flat:${Versions.Libs.MultiPlatform.mokoWidgets}",
                 iosX64 = "dev.icerock.moko:widgets-flat-iosx64:${Versions.Libs.MultiPlatform.mokoWidgets}",
                 iosArm64 = "dev.icerock.moko:widgets-flat-iosarm64:${Versions.Libs.MultiPlatform.mokoWidgets}"
+            )
+            val mokoWidgetsBottomSheet = MultiPlatformLibrary(
+                common = "dev.icerock.moko:widgets-bottomsheet:${Versions.Libs.MultiPlatform.mokoWidgets}",
+                iosX64 = "dev.icerock.moko:widgets-bottomsheet-iosx64:${Versions.Libs.MultiPlatform.mokoWidgets}",
+                iosArm64 = "dev.icerock.moko:widgets-bottomsheet-iosarm64:${Versions.Libs.MultiPlatform.mokoWidgets}"
             )
             val mokoResources = MultiPlatformLibrary(
                 common = "dev.icerock.moko:resources:${Versions.Libs.MultiPlatform.mokoResources}",
@@ -95,6 +112,11 @@ object Deps {
                 android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.Libs.MultiPlatform.coroutines}",
                 common = "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:${Versions.Libs.MultiPlatform.coroutines}",
                 ios = "org.jetbrains.kotlinx:kotlinx-coroutines-core-native:${Versions.Libs.MultiPlatform.coroutines}"
+            )
+            val klock = MultiPlatformLibrary(
+                android = "com.soywiz.korlibs.klock:klock-android:${Versions.Libs.MultiPlatform.klockVersion}",
+                common = "com.soywiz.korlibs.klock:klock:${Versions.Libs.MultiPlatform.klockVersion}",
+                ios = "com.soywiz.korlibs.klock:klock:${Versions.Libs.MultiPlatform.klockVersion}"
             )
         }
 

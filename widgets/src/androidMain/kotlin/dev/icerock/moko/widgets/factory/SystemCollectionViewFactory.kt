@@ -16,6 +16,7 @@ import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.style.applyPaddingIfNeeded
 import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.background.Orientation
 import dev.icerock.moko.widgets.style.ext.toStaggeredGridLayoutManager
 import dev.icerock.moko.widgets.style.view.MarginValues
@@ -28,9 +29,9 @@ import dev.icerock.moko.widgets.view.UnitItemDecorator
 actual class SystemCollectionViewFactory actual constructor(
     private val orientation: Orientation,
     private val spanCount: Int,
-    private val background: Background?,
     private val padding: PaddingValues?,
-    private val margins: MarginValues?
+    private val margins: MarginValues?,
+    private val background: Background<Fill.Solid>?
 ) : ViewFactory<CollectionWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(

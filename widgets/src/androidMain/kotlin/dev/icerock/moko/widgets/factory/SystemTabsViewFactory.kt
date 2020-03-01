@@ -4,16 +4,14 @@
 
 package dev.icerock.moko.widgets.factory
 
-import android.view.Gravity
+import android.content.res.ColorStateList
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.LinearLayout
-import android.widget.TabHost
-import android.widget.TabWidget
-import android.widget.TextView
-import androidx.appcompat.view.ContextThemeWrapper
-import dev.icerock.moko.resources.desc.StringDesc
+import androidx.viewpager.widget.PagerAdapter
+import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
+import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
@@ -21,14 +19,20 @@ import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.style.applyPaddingIfNeeded
 import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
+import dev.icerock.moko.widgets.style.state.SelectableState
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
-import dev.icerock.moko.widgets.utils.bindNotNull
+import dev.icerock.moko.widgets.utils.ThemeAttrs
 
 actual class SystemTabsViewFactory actual constructor(
-    private val background: Background?,
-    private val padding: PaddingValues?,
+    private val tabsTintColor: Color?,
+    private val titleColor: SelectableState<Color?>?,
+    private val tabsBackground: Background<Fill.Solid>?,
+    private val contentBackground: Background<out Fill>?,
+    private val tabsPadding: PaddingValues?,
+    private val contentPadding: PaddingValues?,
     private val margins: MarginValues?
 ) : ViewFactory<TabsWidget<out WidgetSize>> {
 
@@ -40,89 +44,96 @@ actual class SystemTabsViewFactory actual constructor(
         val context = viewFactoryContext.context
         val lifecycleOwner = viewFactoryContext.lifecycleOwner
 
-        val tabHost = TabHost(context).apply {
-            id = android.R.id.tabhost
-
-            applyBackgroundIfNeeded(this@SystemTabsViewFactory.background)
-        }
-
         val container = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
+
+            applyBackgroundIfNeeded(this@SystemTabsViewFactory.contentBackground)
         }
 
-        tabHost.addView(
-            container,
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
-        )
-
-        val tabWidget = TabWidget(context).apply {
+        val tabLayout = TabLayout(context).apply {
             id = android.R.id.tabs
+
+            applyBackgroundIfNeeded(this@SystemTabsViewFactory.tabsBackground)
         }
 
         container.addView(
-            tabWidget,
+            tabLayout,
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
 
-        val content = FrameLayout(context).apply {
+        tabsPadding?.also {
+            val mlp = tabLayout.layoutParams as ViewGroup.MarginLayoutParams
+            mlp.topMargin = it.top.toInt()
+            mlp.bottomMargin = it.bottom.toInt()
+            mlp.leftMargin = it.start.toInt()
+            mlp.rightMargin = it.end.toInt()
+        }
+
+        val viewPagerAdapter = object : PagerAdapter() {
+            override fun isViewFromObject(view: View, `object`: Any): Boolean {
+                return view == `object`
+            }
+
+            override fun getCount(): Int {
+                return widget.tabs.size
+            }
+
+            override fun instantiateItem(container: ViewGroup, position: Int): Any {
+                val viewBundle = widget.tabs[position].body.buildView(
+                    ViewFactoryContext(
+                        context = context,
+                        lifecycleOwner = lifecycleOwner,
+                        parent = container
+                    )
+                )
+                val view = viewBundle.view
+                container.addView(view)
+                return view
+            }
+
+            override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
+                container.removeView(`object` as View?)
+            }
+
+            override fun getPageTitle(position: Int): CharSequence? {
+                return widget.tabs[position].title.value.toString(context)
+            }
+        }
+        val viewPager = ViewPager(context).apply {
             id = android.R.id.tabcontent
 
-            applyPaddingIfNeeded(padding)
+            applyPaddingIfNeeded(contentPadding)
+
+            adapter = viewPagerAdapter
         }
+
         container.addView(
-            content,
+            viewPager,
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
 
-        tabHost.setup()
-
-        widget.tabs.forEachIndexed { index, tab ->
-            fun createIndicator(stringDesc: StringDesc): View {
-                val tabContainer = FrameLayout(
-                    ContextThemeWrapper(
-                        context,
-                        android.R.style.Widget_Material_Tab
-                    )
+        tabsTintColor?.also {
+            tabLayout.setSelectedTabIndicatorColor(it.argb.toInt())
+        }
+        titleColor?.also { stateColor ->
+            tabLayout.tabTextColors = ColorStateList(
+                arrayOf(
+                    intArrayOf(android.R.attr.state_selected),
+                    intArrayOf(-android.R.attr.state_selected)
+                ),
+                intArrayOf(
+                    stateColor.selected?.argb?.toInt() ?: ThemeAttrs.getTextColorPrimary(context),
+                    stateColor.unselected?.argb?.toInt() ?: ThemeAttrs.getTextColorSecondary(context)
                 )
-                val text = TextView(
-                    ContextThemeWrapper(
-                        context,
-                        android.R.style.Widget_Material_ActionBar_TabText
-                    )
-                ).apply {
-                    text = stringDesc.toString(context)
-                }
-                tabContainer.addView(
-                    text, FrameLayout.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        Gravity.CENTER
-                    )
-                )
-                return tabContainer
-            }
-
-            val tabSpec = tabHost.newTabSpec("tab$index").apply {
-                setContent {
-                    tab.body.buildView(
-                        ViewFactoryContext(
-                            context = context,
-                            parent = content,
-                            lifecycleOwner = lifecycleOwner
-                        )
-                    ).view // TODO apply margins?
-                }
-                setIndicator(createIndicator(tab.title.value))
-            }
-            tab.title.bindNotNull(lifecycleOwner) { tabSpec.setIndicator(createIndicator(it)) }
-            tabHost.addTab(tabSpec)
+            )
         }
 
+        tabLayout.setupWithViewPager(viewPager)
+
         return ViewBundle(
-            view = tabHost,
+            view = container,
             size = size,
             margins = margins
         )

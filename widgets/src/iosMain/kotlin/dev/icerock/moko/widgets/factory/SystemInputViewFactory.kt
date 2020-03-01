@@ -10,12 +10,24 @@ import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.objc.setAssociatedObject
+import dev.icerock.moko.widgets.style.applyInputTypeIfNeeded
 import dev.icerock.moko.widgets.style.background.Background
-import dev.icerock.moko.widgets.style.view.*
+import dev.icerock.moko.widgets.style.background.Fill
+import dev.icerock.moko.widgets.style.view.IOSFieldBorderStyle
+import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.PaddingValues
+import dev.icerock.moko.widgets.style.view.TextHorizontalAlignment
+import dev.icerock.moko.widgets.style.view.TextStyle
+import dev.icerock.moko.widgets.style.view.TextVerticalAlignment
+import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.utils.DefaultFormatterUITextFieldDelegate
+import dev.icerock.moko.widgets.utils.DefaultTextFormatter
 import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.utils.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.setEventHandler
+import dev.icerock.moko.widgets.utils.toIosPattern
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGRectZero
 import platform.Foundation.NSMutableAttributedString
@@ -34,10 +46,10 @@ import platform.UIKit.clipsToBounds
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
 actual class SystemInputViewFactory actual constructor(
-    private val background: Background?,
+    private val background: Background<Fill.Solid>?,
     private val margins: MarginValues?,
     private val padding: PaddingValues?,
-    private val textStyle: TextStyle?,
+    private val textStyle: TextStyle<Color>?,
     private val labelTextColor: Color?,
     private val textHorizontalAlignment: TextHorizontalAlignment?,
     private val textVerticalAlignment: TextVerticalAlignment?,
@@ -56,6 +68,8 @@ actual class SystemInputViewFactory actual constructor(
             translatesAutoresizingMaskIntoConstraints = false
             applyBackgroundIfNeeded(backgroundConfig)
             applyTextStyleIfNeeded(textStyle)
+            applyInputTypeIfNeeded(widget.inputType)
+
             clipsToBounds = true
 
             when (textHorizontalAlignment) {
@@ -67,9 +81,12 @@ actual class SystemInputViewFactory actual constructor(
             }
 
             when (textVerticalAlignment) {
-                TextVerticalAlignment.TOP -> contentVerticalAlignment = UIControlContentVerticalAlignmentTop
-                TextVerticalAlignment.MIDDLE -> contentVerticalAlignment = UIControlContentVerticalAlignmentCenter
-                TextVerticalAlignment.BOTTOM -> contentVerticalAlignment = UIControlContentVerticalAlignmentBottom
+                TextVerticalAlignment.TOP -> contentVerticalAlignment =
+                    UIControlContentVerticalAlignmentTop
+                TextVerticalAlignment.MIDDLE -> contentVerticalAlignment =
+                    UIControlContentVerticalAlignmentCenter
+                TextVerticalAlignment.BOTTOM -> contentVerticalAlignment =
+                    UIControlContentVerticalAlignmentBottom
                 null -> {
                 }
             }
@@ -94,6 +111,17 @@ actual class SystemInputViewFactory actual constructor(
             }
         }
 
+        widget.inputType?.mask?.let { mask ->
+            val delegate = DefaultFormatterUITextFieldDelegate(
+                inputFormatter = DefaultTextFormatter(
+                    mask.toIosPattern(),
+                    patternSymbol = '#'
+                )
+            )
+            textField.delegate = delegate
+            setAssociatedObject(textField, delegate)
+        }
+
         textField.setEventHandler(UIControlEventEditingChanged) {
             val currentValue = widget.field.data.value
             val newValue = textField.text
@@ -102,7 +130,7 @@ actual class SystemInputViewFactory actual constructor(
                 widget.field.data.value = newValue.orEmpty()
             }
         }
-        
+
         widget.enabled?.bind { textField.enabled = it }
         widget.label.bind { textField.placeholder = it.localized() }
         widget.field.data.bind { textField.text = it }

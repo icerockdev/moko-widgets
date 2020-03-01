@@ -6,14 +6,14 @@ This is a Kotlin MultiPlatform library that provides declarative UI and applicat
  in common code. You can implement full application for Android and iOS only from common code with it.  
 
 ## Current status
-Current version - `0.1.0-dev-9`. Dev version is not tested in production tasks yet, API can be changed and
+Current version - `0.1.0-dev-14`. Dev version is not tested in production tasks yet, API can be changed and
  bugs may be found. But dev version is chance to test limits of API and concepts to feedback and improve lib.
  We open for any feedback and ideas (go to issues or #moko at [kotlinlang.slack.com](https://kotlinlang.slack.com))!
 
 ## Roadmap
 - December-January: Test library in real project;
 - February: 0.1.0 release with flexible API; production usage at IceRock;
-- First half of 2019: more widgets, more factories; figma template and generation of screens.
+- First half of 2020: more widgets, more factories; figma template and generation of screens.
 
 ## Sample Screen
 |Android|iOS|
@@ -216,6 +216,11 @@ val loginScreen = Theme(baseTheme) {
   - 0.1.0-dev-7
   - 0.1.0-dev-8
   - 0.1.0-dev-9
+  - 0.1.0-dev-10
+  - 0.1.0-dev-11
+  - 0.1.0-dev-12
+  - 0.1.0-dev-13
+  - 0.1.0-dev-14
 
 ## Installation
 root build.gradle  
@@ -230,7 +235,7 @@ allprojects {
 project build.gradle
 ```groovy
 dependencies {
-    commonMainApi("dev.icerock.moko:widgets:0.1.0-dev-9")
+    commonMainApi("dev.icerock.moko:widgets:0.1.0-dev-14")
 }
 ```
 
@@ -248,7 +253,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "dev.icerock.moko.widgets:gradle-plugin:0.1.0-dev-9"
+        classpath "dev.icerock.moko.widgets:gradle-plugin:0.1.0-dev-14"
     }
 }
 
@@ -362,6 +367,8 @@ Please see more examples in the [sample directory](sample).
 
 ## Set Up Locally 
 - The [widgets directory](widgets) contains the `widgets` library;
+- The [widgets-bottomsheet directory](widgets-bottomsheet) contains the `widgets-bottomsheet` library;
+- The [widgets-sms directory](widgets-sms) contains the `widgets-sms` library;
 - The [gradle-plugin directory](gradle-plugin) contains the gradle-plugin which apply compiler plugins for Native and JVM;
 - The [kotlin-plugin directory](kotlin-plugin) contains the JVM compiler plugin with code-generation from @WidgetDef annotation;
 - The [kotlin-native-plugin directory](kotlin-native-plugin) contains the Native compiler plugin with code-generation from @WidgetDef annotation;
@@ -369,8 +376,13 @@ Please see more examples in the [sample directory](sample).
 - The [sample directory](sample) contains sample apps for Android and iOS; plus the mpp-library connected to the apps;
 - For local testing a library use:
   - `./gradlew -PpluginPublish publishPluginPublicationToMavenLocal`
-  - `./gradlew -PlibraryPublish publishToMavenLocal` 
-  - sample apps priority use the locally published version.
+  - `./gradlew -PlibraryPublish :widgets:publishToMavenLocal`
+  - `cd sample/ios-app && pod install`
+  - `./gradlew -PlibraryPublish :widgets-flat:publishToMavenLocal :widgets-bottomsheet:publishToMavenLocal :widgets-sms:publishToMavenLocal` 
+  - sample apps priority use the locally published version
+  - `./gradlew :sample:mpp-library:syncMultiPlatformLibraryDebugFrameworkIosX64` - compile sample shared code for iOS
+  - `cd sample/ios-app && pod install` - install pods with compiled shared code
+  - run android from `Android Studio` - module `android-app`, run iOS from xcode workspace `sample/ios-app/ios-app.xcworkspace`
 
 ## Contributing
 All development (both new features and bug fixes) is performed in the `develop` branch. This way `master` always contains the sources of the most recently released version. Please send PRs with bug fixes to the `develop` branch. Documentation fixes in the markdown files are an exception to this rule. They are updated directly in `master`.

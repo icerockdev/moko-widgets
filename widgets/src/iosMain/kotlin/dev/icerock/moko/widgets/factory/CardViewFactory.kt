@@ -9,18 +9,33 @@ import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.background.Background
-import dev.icerock.moko.widgets.style.view.*
-import dev.icerock.moko.widgets.utils.*
+import dev.icerock.moko.widgets.style.background.Fill
+import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.PaddingValues
+import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.utils.Edges
+import dev.icerock.moko.widgets.utils.UIViewWithIdentifier
+import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
+import dev.icerock.moko.widgets.utils.applySizeToChild
 import dev.icerock.moko.widgets.utils.identifier
-import kotlinx.cinterop.readValue
-import platform.CoreGraphics.*
-import platform.UIKit.*
+import platform.CoreGraphics.CGFloat
+import platform.CoreGraphics.CGSizeMake
+import platform.UIKit.UIColor
+import platform.UIKit.UIView
+import platform.UIKit.UIViewController
+import platform.UIKit.addSubview
+import platform.UIKit.backgroundColor
+import platform.UIKit.bottomAnchor
+import platform.UIKit.clipsToBounds
+import platform.UIKit.leadingAnchor
+import platform.UIKit.topAnchor
+import platform.UIKit.trailingAnchor
+import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
 actual class CardViewFactory actual constructor(
     private val padding: PaddingValues?,
     private val margins: MarginValues?,
-    private val background: Background?,
-    private val cornerRadius: CornerRadiusValue?
+    private val background: Background<out Fill>?
 ) : ViewFactory<CardWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
@@ -35,7 +50,7 @@ actual class CardViewFactory actual constructor(
             translatesAutoresizingMaskIntoConstraints = false
             applyBackgroundIfNeeded(background)
 
-            layer.cornerRadius = cornerRadius?.radius?.toDouble() ?: 0.0
+            layer.cornerRadius = background?.cornerRadius?.toDouble() ?: 0.0
             clipsToBounds = true
             backgroundColor = UIColor.whiteColor
 
@@ -80,7 +95,7 @@ actual class CardViewFactory actual constructor(
 
         val shadowContainerView = UIView(frame = root.frame).apply {
             translatesAutoresizingMaskIntoConstraints = false
-            layer.cornerRadius = cornerRadius?.radius?.toDouble() ?: 0.0
+            layer.cornerRadius = background?.cornerRadius?.toDouble() ?: 0.0
 
             layer.shadowColor = UIColor.grayColor.CGColor
             layer.shadowOpacity = 0.7f

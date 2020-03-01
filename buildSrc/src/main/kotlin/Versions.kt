@@ -10,8 +10,8 @@ object Versions {
     }
 
     const val kotlin = "1.3.61"
-    private const val mokoWidgets = "0.1.0-dev-9"
-    private const val mokoResources = "0.7.0"
+    private const val mokoWidgets = "0.1.0-dev-14"
+    private const val mokoResources = "0.8.0"
 
     object Plugins {
         const val mokoWidgets = Versions.mokoWidgets
@@ -21,13 +21,17 @@ object Versions {
     object Libs {
         object Android {
             const val appCompat = "1.1.0"
+            const val fragment = "1.2.2"
             const val swipeRefreshLayout = "1.0.0"
-            const val material = "1.0.0"
+            const val material = "1.1.0"
             const val constraintLayout = "1.1.3"
             const val lifecycle = "2.0.0"
             const val recyclerView = "1.0.0"
             const val inputMask = "5.0.0"
             const val glide = "4.10.0"
+            const val roundedImageView = "2.3.0"
+            const val playServiceAuth = "17.0.0"
+            const val playServiceAuthSms = "17.1.0"
         }
 
         object MultiPlatform {
@@ -41,6 +45,7 @@ object Versions {
             const val mokoMedia = "0.2.0"
             const val mokoGraphics = "0.2.0"
             const val mokoParcelize = "0.2.0"
+            const val klockVersion = "1.8.4"
         }
     }
 }

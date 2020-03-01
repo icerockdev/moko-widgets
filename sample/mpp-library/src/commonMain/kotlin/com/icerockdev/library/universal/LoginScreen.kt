@@ -4,7 +4,6 @@
 
 package com.icerockdev.library.universal
 
-import com.icerockdev.library.MR
 import dev.icerock.moko.fields.FormField
 import dev.icerock.moko.fields.liveBlock
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcher
@@ -15,6 +14,7 @@ import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.ButtonWidget
 import dev.icerock.moko.widgets.ImageWidget
 import dev.icerock.moko.widgets.InputWidget
+import dev.icerock.moko.widgets.bottomsheet.showBottomSheet
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.constraint
 import dev.icerock.moko.widgets.core.Image
@@ -22,6 +22,7 @@ import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Value
 import dev.icerock.moko.widgets.image
 import dev.icerock.moko.widgets.input
+import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.WidgetScreen
 import dev.icerock.moko.widgets.screen.getViewModel
@@ -32,6 +33,7 @@ import dev.icerock.moko.widgets.screen.navigation.Route
 import dev.icerock.moko.widgets.screen.navigation.RouteWithResult
 import dev.icerock.moko.widgets.screen.navigation.registerRouteHandler
 import dev.icerock.moko.widgets.screen.navigation.route
+import dev.icerock.moko.widgets.screen.showToast
 import dev.icerock.moko.widgets.style.input.InputType
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
@@ -41,6 +43,7 @@ class LoginScreen(
     private val theme: Theme,
     private val mainRoute: Route<Unit>,
     private val registerRoute: RouteWithResult<Unit, String>,
+    private val infoWebViewRoute: Route<String>,
     private val loginViewModelFactory: (EventsDispatcher<LoginViewModel.EventsListener>) -> LoginViewModel
 ) : WidgetScreen<Args.Empty>(), NavigationItem, LoginViewModel.EventsListener {
 
@@ -61,8 +64,8 @@ class LoginScreen(
 
         constraint(size = WidgetSize.AsParent) {
             val logoImage = +image(
-                size = WidgetSize.Const(SizeSpec.WrapContent, SizeSpec.WrapContent),
-                image = const(Image.resource(MR.images.logo)),
+                size = WidgetSize.AspectByWidth(width = SizeSpec.Exact(300f), aspectRatio = 1.49f),
+                image = const(Image.network("https://html5box.com/html5lightbox/images/mountain.jpg")),
                 scaleType = ImageWidget.ScaleType.FIT
             )
 
@@ -71,7 +74,7 @@ class LoginScreen(
                 id = Id.EmailInputId,
                 label = const("Email".desc() as StringDesc),
                 field = viewModel.emailField,
-                inputType = InputType.PHONE
+                inputType = InputType.Phone()
             )
             val passwordInput = +input(
                 size = WidgetSize.WidthAsParentHeightWrapContent,
@@ -84,10 +87,15 @@ class LoginScreen(
                 content = ButtonWidget.Content.Text(Value.data("Login".desc())),
                 onTap = viewModel::onLoginPressed
             )
+            val showInfoButton = +button(
+                size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.Exact(50f)),
+                content = ButtonWidget.Content.Text(Value.data("Show info".desc())),
+                onTap = viewModel::onShowInfoPressed
+            )
 
             val registerButton = +button(
                 id = Id.RegistrationButtonId,
-                size = WidgetSize.Const(SizeSpec.WrapContent, SizeSpec.Exact(40f)),
+                size = WidgetSize.Const(SizeSpec.Exact(300f), SizeSpec.WrapContent),
                 content = ButtonWidget.Content.Text(Value.data("Registration".desc())),
                 onTap = viewModel::onRegistrationPressed
             )
@@ -107,7 +115,10 @@ class LoginScreen(
                 loginButton topToBottom passwordInput
                 loginButton leftRightToLeftRight root
 
-                registerButton topToBottom loginButton
+                showInfoButton topToBottom loginButton
+                showInfoButton leftRightToLeftRight root
+
+                registerButton topToBottom showInfoButton
                 registerButton rightToRight root
 
                 // logo image height must be automatic ?
@@ -130,12 +141,35 @@ class LoginScreen(
     }
 
     override fun routeToMain() {
-        mainRoute.route(this)
+        mainRoute.route()
     }
 
     override fun routeToRegistration() {
-        registerRoute.route(this, registerHandler)
+//        registerRoute.route(this, registerHandler)
+        showBottomSheet(
+            content = with(theme) {
+                linear(size = WidgetSize.WidthAsParentHeightWrapContent) {
+                    +text(
+                        size = WidgetSize.WidthAsParentHeightWrapContent,
+                        text = const("hello world")
+                    )
+                    +button(
+                        size = WidgetSize.WidthAsParentHeightWrapContent,
+                        content = ButtonWidget.Content.Text(Value.data("hi!".desc()))
+                    ) {
+                        showToast("hi".desc())
+                    }
+                }
+            }
+        ) {
+            showToast("dismissed".desc())
+        }
     }
+
+    override fun routeToWebViewInfo() {
+        infoWebViewRoute.route("https://icerockdev.com/")
+    }
+
 }
 
 class LoginViewModel(
@@ -148,6 +182,10 @@ class LoginViewModel(
         eventsDispatcher.dispatchEvent { routeToMain() }
     }
 
+    fun onShowInfoPressed() {
+        eventsDispatcher.dispatchEvent { routeToWebViewInfo() }
+    }
+
     fun onRegistrationPressed() {
         eventsDispatcher.dispatchEvent { routeToRegistration() }
     }
@@ -155,5 +193,6 @@ class LoginViewModel(
     interface EventsListener {
         fun routeToMain()
         fun routeToRegistration()
+        fun routeToWebViewInfo()
     }
 }

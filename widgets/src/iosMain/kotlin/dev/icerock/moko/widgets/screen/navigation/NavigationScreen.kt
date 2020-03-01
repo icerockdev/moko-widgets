@@ -6,14 +6,17 @@ package dev.icerock.moko.widgets.screen.navigation
 
 import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.widgets.screen.Args
+import dev.icerock.moko.widgets.screen.BaseApplication
 import dev.icerock.moko.widgets.screen.Screen
 import dev.icerock.moko.widgets.screen.TypedScreenDesc
 import dev.icerock.moko.widgets.screen.getAssociatedScreen
+import dev.icerock.moko.widgets.style.apply
+import dev.icerock.moko.widgets.utils.getStatusBarStyle
 import kotlinx.coroutines.Runnable
 import platform.UIKit.UINavigationController
 import platform.UIKit.UINavigationControllerDelegateProtocol
+import platform.UIKit.UIStatusBarStyle
 import platform.UIKit.UIViewController
-import platform.UIKit.navigationItem
 import platform.darwin.NSObject
 import kotlin.native.ref.WeakReference
 
@@ -29,8 +32,8 @@ actual abstract class NavigationScreen<S> actual constructor(
     private var navigationController: UINavigationController? = null
     private val controllerDelegate = ControllerDelegate(this)
 
-    override fun createViewController(): UIViewController {
-        val controller = UINavigationController().also {
+    override fun createViewController(isLightStatusBar: Boolean?): UIViewController {
+        val controller = NavigationController(isLightStatusBar).also {
             navigationController = it
             it.delegate = controllerDelegate
         }
@@ -46,11 +49,9 @@ actual abstract class NavigationScreen<S> actual constructor(
         viewController: UIViewController
     ) {
         when (val navBar = navigationItem.navigationBar) {
-            is NavigationBar.None -> navigationController?.navigationBarHidden = true
-            is NavigationBar.Normal -> {
-                navigationController?.navigationBarHidden = false
-                viewController.navigationItem.title = navBar.title.localized()
-            }
+            is NavigationBar.None -> navBar.apply(navigationController)
+            is NavigationBar.Normal -> navBar.apply(navigationController, viewController)
+            is NavigationBar.Search -> navBar.apply(navigationController, viewController)
         }
     }
 
@@ -62,12 +63,15 @@ actual abstract class NavigationScreen<S> actual constructor(
             inputMapper: (T) -> Arg
         ): Route<T> where S : Screen<Arg>, S : NavigationItem {
             return object : Route<T> {
-                override fun route(source: Screen<*>, arg: T) {
+                override fun route(arg: T) {
                     val newScreen = destination.instantiate()
                     newScreen.arg = inputMapper(arg)
                     val screenViewController: UIViewController = newScreen.viewController
                     navigationScreen!!.run {
-                        navigationController?.pushViewController(screenViewController, animated = true)
+                        navigationController?.pushViewController(
+                            screenViewController,
+                            animated = true
+                        )
                     }
                 }
             }
@@ -86,14 +90,18 @@ actual abstract class NavigationScreen<S> actual constructor(
                     newScreen.arg = inputMapper(arg)
                     val screenViewController: UIViewController = newScreen.viewController
 
-                    navigationScreen.controllerDelegate.resultCallbacks[screenViewController] = Runnable {
-                        val result = newScreen.screenResult
-                        val mappedResult = result?.let(outputMapper)
-                        handler.handleResult(mappedResult)
-                    }
+                    navigationScreen.controllerDelegate.resultCallbacks[screenViewController] =
+                        Runnable {
+                            val result = newScreen.screenResult
+                            val mappedResult = result?.let(outputMapper)
+                            handler.handleResult(mappedResult)
+                        }
 
                     navigationScreen.run {
-                        navigationController?.pushViewController(screenViewController, animated = true)
+                        navigationController?.pushViewController(
+                            screenViewController,
+                            animated = true
+                        )
                     }
                 }
 
@@ -106,12 +114,15 @@ actual abstract class NavigationScreen<S> actual constructor(
             inputMapper: (T) -> Arg
         ): Route<T> where S : Screen<Arg>, S : NavigationItem {
             return object : Route<T> {
-                override fun route(source: Screen<*>, arg: T) {
+                override fun route(arg: T) {
                     val newScreen = destination.instantiate()
                     newScreen.arg = inputMapper(arg)
                     val screenViewController: UIViewController = newScreen.viewController
                     navigationScreen!!.run {
-                        navigationController?.setViewControllers(listOf(screenViewController), animated = true)
+                        navigationController?.setViewControllers(
+                            listOf(screenViewController),
+                            animated = true
+                        )
                     }
                 }
             }
@@ -119,8 +130,16 @@ actual abstract class NavigationScreen<S> actual constructor(
 
         actual fun createPopRoute(): Route<Unit> {
             return object : Route<Unit> {
-                override fun route(source: Screen<*>, arg: Unit) {
+                override fun route(arg: Unit) {
                     navigationScreen!!.navigationController!!.popViewControllerAnimated(true)
+                }
+            }
+        }
+
+        actual fun createPopToRootRoute(): Route<Unit> {
+            return object : Route<Unit> {
+                override fun route(arg: Unit) {
+                    navigationScreen!!.navigationController!!.popToRootViewControllerAnimated(true)
                 }
             }
         }
@@ -149,5 +168,16 @@ actual abstract class NavigationScreen<S> actual constructor(
                 navigationScreen.get()?.updateNavigation(screen, controller)
             }
         }
+    }
+}
+
+private class NavigationController(
+    private val isLightStatusBar: Boolean?
+) : UINavigationController(nibName = null, bundle = null) {
+
+    override fun preferredStatusBarStyle(): UIStatusBarStyle {
+        val topScreen = topViewController?.getAssociatedScreen()
+        val isLight = topScreen?.isLightStatusBar ?: isLightStatusBar ?: BaseApplication.sharedInstance.isLightStatusBar
+        return getStatusBarStyle(isLight) ?: super.preferredStatusBarStyle()
     }
 }

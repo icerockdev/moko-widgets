@@ -1,5 +1,7 @@
 package com.icerockdev.library.universal
 
+import com.icerockdev.library.MR
+import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcher
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcherOwner
 import dev.icerock.moko.mvvm.livedata.LiveData
@@ -25,7 +27,9 @@ import dev.icerock.moko.widgets.screen.navigation.NavigationBar
 import dev.icerock.moko.widgets.screen.navigation.NavigationItem
 import dev.icerock.moko.widgets.screen.navigation.Route
 import dev.icerock.moko.widgets.screen.navigation.route
+import dev.icerock.moko.widgets.style.view.FontStyle
 import dev.icerock.moko.widgets.style.view.SizeSpec
+import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.text
 
@@ -35,7 +39,30 @@ class ProductScreen(
 ) : WidgetScreen<Args.Parcel<ProductScreen.Args>>(),
     ProductViewModel.EventsListener, NavigationItem {
     override val navigationBar
-        get() = NavigationBar.Normal(title = getArgument().productId.let { "Product $it".desc() })
+        get() = NavigationBar.Normal(
+            title = getArgument().productId.let { "Product $it".desc() },
+            styles = NavigationBar.Styles(
+                backgroundColor = Color(0x00AA00FF),
+                tintColor = Color(0xFF0000FF),
+                textStyle = TextStyle(
+                    color = Color(0x0000FFFF),
+                    size = 18,
+                    fontStyle = FontStyle.BOLD
+                )
+            ),
+            actions = listOf(
+                NavigationBar.BarButton(
+                    icon = MR.images.cart_black_18
+                ) {
+                    println("first press")
+                },
+                NavigationBar.BarButton(
+                    icon = MR.images.stars_black_18
+                ) {
+                    println("second press")
+                }
+            )
+        )
 
     override fun createContentWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         val arg = getArgument()
@@ -67,7 +94,7 @@ class ProductScreen(
     }
 
     override fun routeToCart() {
-        cartRoute.route(this)
+        cartRoute.route()
     }
 
     @Parcelize

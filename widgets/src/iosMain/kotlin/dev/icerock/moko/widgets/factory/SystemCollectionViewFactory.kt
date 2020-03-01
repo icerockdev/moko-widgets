@@ -11,6 +11,7 @@ import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.background.Orientation
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
@@ -46,9 +47,9 @@ import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 actual class SystemCollectionViewFactory actual constructor(
     private val orientation: Orientation,
     private val spanCount: Int,
-    private val background: Background?,
     private val padding: PaddingValues?,
-    private val margins: MarginValues?
+    private val margins: MarginValues?,
+    private val background: Background<Fill.Solid>?
 ) : ViewFactory<CollectionWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
@@ -113,6 +114,12 @@ actual class SystemCollectionViewFactory actual constructor(
         )
     }
 
+    @Suppress(
+        "CONFLICTING_OVERLOADS",
+        "RETURN_TYPE_MISMATCH_ON_INHERITANCE",
+        "MANY_INTERFACES_MEMBER_NOT_IMPLEMENTED",
+        "DIFFERENT_NAMES_FOR_THE_SAME_PARAMETER_IN_SUPERTYPES"
+    )
     private class SpanCollectionViewLayout(
         private val spanCount: Int
     ) : UICollectionViewFlowLayout(), UICollectionViewDelegateFlowLayoutProtocol {

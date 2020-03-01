@@ -15,6 +15,7 @@ import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.style.applyPaddingIfNeeded
 import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.ext.applyMargin
 import dev.icerock.moko.widgets.style.ext.toLinearLayoutOrientation
 import dev.icerock.moko.widgets.style.ext.toPlatformSize
@@ -25,9 +26,9 @@ import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.view.AspectRatioFrameLayout
 
 actual class LinearViewFactory actual constructor(
-    private val background: Background?,
     private val padding: PaddingValues?,
-    private val margins: MarginValues?
+    private val margins: MarginValues?,
+    private val background: Background<out Fill>?
 ) : ViewFactory<LinearWidget<out WidgetSize>> {
     override fun <WS : WidgetSize> build(
         widget: LinearWidget<out WidgetSize>,

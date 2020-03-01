@@ -20,7 +20,7 @@ import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.bind
 
 actual class FlatInputViewFactory actual constructor(
-    private val textStyle: TextStyle?,
+    private val textStyle: TextStyle<Color>?,
     private val backgroundColor: Color?,
     private val margins: MarginValues?
 ) : ViewFactory<InputWidget<out WidgetSize>> {

@@ -26,6 +26,7 @@ import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.applyPaddingIfNeeded
 import dev.icerock.moko.widgets.style.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.background.buildBackground
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
@@ -36,11 +37,11 @@ import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.dp
 
 actual class SystemSingleChoiceViewFactory actual constructor(
-    private val textStyle: TextStyle?,
-    private val labelTextStyle: TextStyle?,
+    private val textStyle: TextStyle<Color>?,
+    private val labelTextStyle: TextStyle<Color>?,
     private val dropDownTextColor: Color?,
     private val underlineColor: Color?,
-    private val dropDownBackground: Background?,
+    private val dropDownBackground: Background<Fill.Solid>?,
     private val padding: PaddingValues?,
     private val margins: MarginValues?
 ) : ViewFactory<SingleChoiceWidget<out WidgetSize>> {

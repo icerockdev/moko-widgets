@@ -5,6 +5,7 @@
 package dev.icerock.moko.widgets.factory
 
 import android.widget.ImageView
+import com.makeramen.roundedimageview.RoundedImageView
 import dev.icerock.moko.widgets.ImageWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
@@ -12,9 +13,12 @@ import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.bind
+import dev.icerock.moko.widgets.utils.dp
+
 
 actual class SystemImageViewFactory actual constructor(
-    private val margins: MarginValues?
+    private val margins: MarginValues?,
+    private val cornerRadius: Float?
 ) : ViewFactory<ImageWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
@@ -25,12 +29,13 @@ actual class SystemImageViewFactory actual constructor(
         val context = viewFactoryContext.androidContext
         val lifecycleOwner = viewFactoryContext.lifecycleOwner
 
-        val imageView = ImageView(context)
+        val imageView = RoundedImageView(context)
 
         when (widget.scaleType) {
             ImageWidget.ScaleType.FILL -> imageView.scaleType = ImageView.ScaleType.CENTER_CROP
             ImageWidget.ScaleType.FIT -> imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE
         }
+        imageView.adjustViewBounds = true
 
         widget.image.bind(lifecycleOwner) { image ->
             if (image == null) {
@@ -39,6 +44,10 @@ actual class SystemImageViewFactory actual constructor(
             }
 
             image.loadIn(imageView)
+
+            cornerRadius?.also {
+                imageView.cornerRadius = cornerRadius.dp(context)
+            }
         }
 
         return ViewBundle(

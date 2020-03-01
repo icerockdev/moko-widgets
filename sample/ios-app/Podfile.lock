@@ -2,7 +2,10 @@ PODS:
   - Alamofire (4.9.1)
   - AlamofireImage (3.6.0):
     - Alamofire (~> 4.9)
+  - FloatingPanel (1.7.2)
   - InputMask (5.0.0)
+  - moko-widgets-bottomsheet (0.1.0):
+    - FloatingPanel
   - moko-widgets-flat (0.1.0):
     - InputMask (~> 5.0.0)
   - mppLibraryIos (0.1.0)
@@ -23,6 +26,7 @@ PODS:
   - SkyFloatingLabelTextField (3.7.0)
 
 DEPENDENCIES:
+  - moko-widgets-bottomsheet (from `../../`)
   - moko-widgets-flat (from `../../`)
   - mppLibraryIos (from `../mpp-library`)
   - MultiPlatformLibrary (from `../mpp-library`)
@@ -34,8 +38,12 @@ SPEC REPOS:
     - AlamofireImage
     - InputMask
     - SkyFloatingLabelTextField
+  trunk:
+    - FloatingPanel
 
 EXTERNAL SOURCES:
+  moko-widgets-bottomsheet:
+    :path: "../../"
   moko-widgets-flat:
     :path: "../../"
   mppLibraryIos:
@@ -54,13 +62,15 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   AlamofireImage: be9963c6582d68b39e89191f64c82a7d7bf40fdd
+  FloatingPanel: b275a35d0a09be4bd37025e710a6a1d063bfc161
   InputMask: 8a10dbc8ac3f94f0a5b4c380424bbe6795c69b16
+  moko-widgets-bottomsheet: 68e942940b15bf0c6605675140d907fdb79db31d
   moko-widgets-flat: 3d68acddc0469a1288ede5b5b63b6588de5aa5e1
   mppLibraryIos: 72c3984fbaa53978d678e62096fd613e67839f0c
   MultiPlatformLibrary: 176fb8ade516666cd47e93de1b71ba0441a541bb
   MultiPlatformLibraryMvvm: 999ac3896d8214fd65e0e0a376a2e553bf4515b3
   SkyFloatingLabelTextField: 4b46db0ab1ccde0919cded29c656e6b4805eda04
 
-PODFILE CHECKSUM: 28883f836bd0d431cc3d548bcfba9f7b496c17f6
+PODFILE CHECKSUM: 4b3a5440fa9c919597e5ebac2ced886871ffb124
 
-COCOAPODS: 1.8.3
+COCOAPODS: 1.8.4

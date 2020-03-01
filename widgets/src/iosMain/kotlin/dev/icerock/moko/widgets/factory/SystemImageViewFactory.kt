@@ -18,7 +18,8 @@ import platform.UIKit.contentMode
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
 actual class SystemImageViewFactory actual constructor(
-    private val margins: MarginValues?
+    private val margins: MarginValues?,
+    private val cornerRadius: Float?
 ) : ViewFactory<ImageWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
@@ -41,6 +42,7 @@ actual class SystemImageViewFactory actual constructor(
                     UIViewContentMode.UIViewContentModeScaleAspectFit
             }
 
+            layer.cornerRadius = cornerRadius?.toDouble() ?: 0.0
             layer.masksToBounds = true
             clipsToBounds = true
         }

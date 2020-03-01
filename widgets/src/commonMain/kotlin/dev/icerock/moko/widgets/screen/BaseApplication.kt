@@ -4,12 +4,26 @@
 
 package dev.icerock.moko.widgets.screen
 
+import dev.icerock.moko.graphics.Color
+import kotlin.native.concurrent.ThreadLocal
 import kotlin.reflect.KClass
 
 abstract class BaseApplication {
-    abstract fun setup(): ScreenDesc<Args.Empty>
+    private val _registeredScreens = mutableMapOf<KClass<*>, ScreenDesc<*>>()
+    internal val registeredScreens: Map<KClass<*>, ScreenDesc<*>> = _registeredScreens
 
-    val rootScreen: ScreenDesc<Args.Empty> by lazy { setup() }
+    lateinit var rootScreen: ScreenDesc<Args.Empty>
+        private set
+
+    open val androidStatusBarColor: Color? = null
+    open val isLightStatusBar: Boolean? = null
+
+    protected abstract fun setup(): ScreenDesc<Args.Empty>
+
+    fun initialize() {
+        rootScreen = setup()
+        sharedInstance = this
+    }
 
     fun <Arg : Args, T : Screen<Arg>> registerScreen(
         kClass: KClass<T>,
@@ -18,6 +32,8 @@ abstract class BaseApplication {
         _registeredScreens[kClass] = it
     }
 
-    private val _registeredScreens = mutableMapOf<KClass<*>, ScreenDesc<*>>()
-    internal val registeredScreens: Map<KClass<*>, ScreenDesc<*>> = _registeredScreens
+    @ThreadLocal
+    companion object {
+        lateinit var sharedInstance: BaseApplication
+    }
 }

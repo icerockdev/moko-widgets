@@ -75,21 +75,21 @@ class SocialProfileScreen(
                         id = Id.EmailInput,
                         label = const("Email"),
                         field = viewModel.emailField,
-                        inputType = InputType.EMAIL
+                        inputType = InputType.Email()
                     )
                     +input(
                         size = WidgetSize.WidthAsParentHeightWrapContent,
                         id = Id.PhoneInput,
                         label = const("Телефон"),
                         field = viewModel.phoneField,
-                        inputType = InputType.PHONE
+                        inputType = InputType.Phone()
                     )
                     +input(
                         size = WidgetSize.WidthAsParentHeightWrapContent,
                         id = Id.BirthdayInput,
                         label = const("Дата рождения"),
                         field = viewModel.birthdayField,
-                        inputType = InputType.DATE
+                        inputType = InputType.Date()
                     )
                     +singleChoice(
                         size = WidgetSize.WidthAsParentHeightWrapContent,

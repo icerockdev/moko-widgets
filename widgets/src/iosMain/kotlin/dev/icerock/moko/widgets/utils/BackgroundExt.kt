@@ -9,8 +9,7 @@ import dev.icerock.moko.widgets.objc.cgColors
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Direction
 import dev.icerock.moko.widgets.style.background.Fill
-import dev.icerock.moko.widgets.style.background.Shape
-import dev.icerock.moko.widgets.style.background.StateBackground
+import dev.icerock.moko.widgets.style.state.PressableState
 import kotlinx.cinterop.useContents
 import platform.CoreGraphics.CGPointMake
 import platform.CoreGraphics.CGRectMake
@@ -19,12 +18,10 @@ import platform.QuartzCore.CALayer
 import platform.QuartzCore.CATransaction
 import platform.UIKit.UIButton
 import platform.UIKit.UIColor
-import platform.UIKit.UIControl
 import platform.UIKit.UIView
 import platform.UIKit.backgroundColor
-import kotlin.math.min
 
-fun Background.caLayer(): CALayer {
+fun Background<out Fill>.caLayer(): CALayer {
 
     val backgroundLayer: CALayer
 
@@ -60,38 +57,18 @@ fun Background.caLayer(): CALayer {
         }
     }
 
-    val border = border
-    if (border != null) {
-        backgroundLayer.borderWidth = border.width.toDouble()
-        backgroundLayer.borderColor = border.color.toUIColor().CGColor
+    border?.also {
+        backgroundLayer.borderWidth = it.width.toDouble()
+        backgroundLayer.borderColor = it.color.toUIColor().CGColor
+    }
+    cornerRadius?.also {
+        backgroundLayer.cornerRadius = it.toDouble()
     }
 
-    when (val shape = shape) {
-        is Shape.Rectangle -> {
-            val cornerRadius = shape.cornerRadius
-            if (cornerRadius != null) {
-                backgroundLayer.masksToBounds = true
-
-                // FIXME memoryleak.
-                backgroundLayer.displayLink {
-                    CATransaction.begin()
-                    CATransaction.setDisableActions(true)
-
-                    val minEdge = backgroundLayer.bounds.useContents { min(size.width, size.height) }
-                    backgroundLayer.cornerRadius = min(minEdge / 2, cornerRadius.toDouble())
-
-                    CATransaction.commit()
-                }
-            }
-        }
-        is Shape.Oval -> {
-            TODO()
-        }
-    }
     return backgroundLayer
 }
 
-fun UIButton.applyStateBackgroundIfNeeded(background: StateBackground?) {
+fun UIButton.applyStateBackgroundIfNeeded(background: PressableState<Background<out Fill>>?) {
     if (background == null) return
 
     adjustsImageWhenDisabled = false
@@ -144,7 +121,18 @@ fun UIButton.applyStateBackgroundIfNeeded(background: StateBackground?) {
     }
 }
 
-fun UIView.applyBackgroundIfNeeded(background: Background?) {
+fun UIView.applyBackgroundIfNeeded(background: Background<Fill.Solid>?) {
+    if (background == null) return
+
+    background.fill?.also { backgroundColor = it.color.toUIColor() }
+    background.border?.also {
+        layer.borderWidth = it.width.toDouble()
+        layer.borderColor = it.color.toUIColor().CGColor
+    }
+    background.cornerRadius?.also { layer.cornerRadius = it.toDouble() }
+}
+
+fun UIView.applyBackgroundIfNeeded(background: Background<out Fill>?) {
     if (background == null) return
 
     this.backgroundColor = UIColor.clearColor
@@ -164,11 +152,3 @@ fun UIView.applyBackgroundIfNeeded(background: Background?) {
         CATransaction.commit()
     }
 }
-
-fun UIControl.applyStateBackgroundIfNeeded(stateBackground: StateBackground?) {
-    if (stateBackground == null) return
-
-    // TODO complete it
-    applyBackgroundIfNeeded(stateBackground.normal)
-}
- 
