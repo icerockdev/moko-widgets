@@ -4,13 +4,47 @@
 
 package dev.icerock.moko.widgets.utils
 
-import androidx.core.view.ViewCompat
+import dev.icerock.moko.widgets.BuildConfig
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import kotlin.math.abs
+
+private val classIdMap: MutableMap<Theme.Id<*>, Int> = mutableMapOf()
 
 val <T : Widget<out WidgetSize>> Theme.Id<T>.androidId: Int
     get() {
-        // #61 here should be constant and unique id for every Id object. Or android SaveInstanceState will not work :(
-        return ViewCompat.generateViewId() // this::class.java.hashCode()
+        if (classIdMap.containsKey(this)) return classIdMap[this]!!
+
+        val idString = this.javaClass.name
+        val hashCode = abs(idString.hashCode())
+        val id = hashCode % 0x9000
+        // 0x7F - application resources package
+        // 0x08 - id resource
+        // 0x1000 - ids is libraries reserved
+        val fullId = 0x7f081000 + id
+
+        if (BuildConfig.DEBUG) {
+            println(String.format("id %s transformed to 0x%X", idString, fullId))
+
+            if (classIdMap.containsValue(fullId)) {
+                val collision: String = classIdMap
+                    .filter { it.value == fullId }
+                    .keys.toList()
+                    .first()
+                    .javaClass.name
+
+                val msg = String.format(
+                    "id 0x%X already used by %s, it collides with %s",
+                    fullId,
+                    collision,
+                    idString
+                )
+                throw RuntimeException(msg)
+            }
+        }
+
+        classIdMap[this] = fullId
+
+        return fullId
     }
