@@ -26,22 +26,22 @@ val <T : Widget<out WidgetSize>> Theme.Id<T>.androidId: Int
 
         if (BuildConfig.DEBUG) {
             println(String.format("id %s transformed to 0x%X", idString, fullId))
+        }
 
-            if (classIdMap.containsValue(fullId)) {
-                val conflictName: String = classIdMap
-                    .filter { it.value == fullId }
-                    .keys.toList()
-                    .first()
-                    .javaClass.name
+        if (classIdMap.containsValue(fullId)) {
+            val conflictName: String = classIdMap
+                .filter { it.value == fullId }
+                .keys.toList()
+                .first()
+                .javaClass.name
 
-                val msg = String.format(
-                    "id 0x%X already used by %s, it conflict with %s",
-                    fullId,
-                    conflictName,
-                    idString
-                )
-                throw AndroidIdConflictException(msg)
-            }
+            val msg = String.format(
+                "id 0x%X already used by %s, it conflict with %s",
+                fullId,
+                conflictName,
+                idString
+            )
+            throw AndroidIdConflictException(msg)
         }
 
         classIdMap[this] = fullId
