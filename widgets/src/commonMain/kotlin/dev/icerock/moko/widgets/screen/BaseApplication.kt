@@ -5,6 +5,7 @@
 package dev.icerock.moko.widgets.screen
 
 import dev.icerock.moko.graphics.Color
+import kotlin.native.concurrent.ThreadLocal
 import kotlin.reflect.KClass
 
 abstract class BaseApplication {
@@ -21,6 +22,7 @@ abstract class BaseApplication {
 
     fun initialize() {
         rootScreen = setup()
+        sharedInstance = this
     }
 
     fun <Arg : Args, T : Screen<Arg>> registerScreen(
@@ -28,5 +30,10 @@ abstract class BaseApplication {
         factory: ScreenFactory<Arg, T>.() -> T
     ): TypedScreenDesc<Arg, T> = TypedScreenDesc(factory).also {
         _registeredScreens[kClass] = it
+    }
+
+    @ThreadLocal
+    companion object {
+        lateinit var sharedInstance: BaseApplication
     }
 }

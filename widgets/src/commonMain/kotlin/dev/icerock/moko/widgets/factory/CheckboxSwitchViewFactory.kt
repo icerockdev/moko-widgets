@@ -7,9 +7,12 @@ package dev.icerock.moko.widgets.factory
 import dev.icerock.moko.resources.ImageResource
 import dev.icerock.moko.widgets.SwitchWidget
 import dev.icerock.moko.widgets.core.ViewFactory
+import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
+import dev.icerock.moko.widgets.style.state.CheckableState
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
 expect class CheckboxSwitchViewFactory(
-    checkedImage: ImageResource,
-    uncheckedImage: ImageResource
+    background: Background<out Fill>? = null,
+    image: CheckableState<ImageResource>
 ) : ViewFactory<SwitchWidget<out WidgetSize>>

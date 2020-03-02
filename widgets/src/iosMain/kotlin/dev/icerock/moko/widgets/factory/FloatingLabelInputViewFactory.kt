@@ -13,26 +13,32 @@ import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.objc.setAssociatedObject
 import dev.icerock.moko.widgets.style.applyInputTypeIfNeeded
 import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.input.InputType
-import dev.icerock.moko.widgets.style.view.*
+import dev.icerock.moko.widgets.style.state.FocusableState
+import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.PaddingValues
+import dev.icerock.moko.widgets.style.view.TextHorizontalAlignment
+import dev.icerock.moko.widgets.style.view.TextStyle
+import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.utils.DefaultFormatterUITextFieldDelegate
+import dev.icerock.moko.widgets.utils.DefaultTextFormatter
 import dev.icerock.moko.widgets.utils.Edges
 import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
+import dev.icerock.moko.widgets.utils.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.identifier
-import dev.icerock.moko.widgets.utils.DefaultTextFormatter
-import dev.icerock.moko.widgets.utils.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.utils.toIosPattern
-import dev.icerock.moko.widgets.utils.DefaultFormatterUITextFieldDelegate
 import kotlinx.cinterop.CValue
 import kotlinx.cinterop.ObjCAction
 import kotlinx.cinterop.readValue
 import kotlinx.cinterop.useContents
-import platform.Foundation.NSSelectorFromString
-import platform.Foundation.NSRange
 import platform.CoreGraphics.CGFloat
-import platform.CoreGraphics.CGRectZero
 import platform.CoreGraphics.CGPointMake
 import platform.CoreGraphics.CGRectMake
+import platform.CoreGraphics.CGRectZero
+import platform.Foundation.NSRange
+import platform.Foundation.NSSelectorFromString
 import platform.QuartzCore.CALayer
 import platform.QuartzCore.CAShapeLayer
 import platform.QuartzCore.CATextLayer
@@ -62,14 +68,13 @@ import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
 actual class FloatingLabelInputViewFactory actual constructor(
-    private val background: Background?,
+    private val background: Background<Fill.Solid>?,
     private val margins: MarginValues?,
     private val padding: PaddingValues?,
-    private val textStyle: TextStyle?,
-    private val labelTextStyle: TextStyle?,
-    private val errorTextStyle: TextStyle?,
-    private val underLineColor: Color?,
-    private val underLineFocusedColor: Color?,
+    private val textStyle: TextStyle<Color>?,
+    private val labelTextStyle: TextStyle<Color>?,
+    private val errorTextStyle: TextStyle<Color>?,
+    private val underLineColor: FocusableState<Color>?,
     private val textHorizontalAlignment: TextHorizontalAlignment?
 ) : ViewFactory<InputWidget<out WidgetSize>> {
 
@@ -97,11 +102,9 @@ actual class FloatingLabelInputViewFactory actual constructor(
             applyLabelStyleIfNeeded(labelTextStyle)
             applyInputTypeIfNeeded(widget.inputType)
 
-            underLineColor?.let {
-                deselectedColor = it.toUIColor()
-            }
-            underLineFocusedColor?.let {
-                selectedColor = it.toUIColor()
+            underLineColor?.also {
+                deselectedColor = it.unfocused.toUIColor()
+                selectedColor = it.focused.toUIColor()
             }
 
             textChanged = { newValue ->
@@ -376,7 +379,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
             textChanged?.invoke(textField.text.orEmpty())
         }
 
-        fun applyTextStyleIfNeeded(textStyle: TextStyle?) {
+        fun applyTextStyleIfNeeded(textStyle: TextStyle<Color>?) {
             textField.applyTextStyleIfNeeded(textStyle)
         }
 
@@ -395,11 +398,11 @@ actual class FloatingLabelInputViewFactory actual constructor(
             }
         }
 
-        fun applyLabelStyleIfNeeded(textStyle: TextStyle?) {
+        fun applyLabelStyleIfNeeded(textStyle: TextStyle<Color>?) {
             placeholderTextLayer.applyTextStyleIfNeeded(textStyle)
         }
 
-        fun applyErrorStyleIfNeeded(textStyle: TextStyle?) {
+        fun applyErrorStyleIfNeeded(textStyle: TextStyle<Color>?) {
             errorLabel.applyTextStyleIfNeeded(textStyle)
         }
 
@@ -418,5 +421,4 @@ actual class FloatingLabelInputViewFactory actual constructor(
             CATransaction.commit()
         }
     }
-
 }

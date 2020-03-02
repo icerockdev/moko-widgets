@@ -4,17 +4,18 @@
 
 package dev.icerock.moko.widgets.factory
 
+import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.graphics.toUIColor
 import dev.icerock.moko.widgets.TextWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.background.Background
+import dev.icerock.moko.widgets.style.background.Fill
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.TextHorizontalAlignment
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
-import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.utils.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.utils.bind
@@ -47,26 +48,15 @@ import platform.UIKit.NSTextAlignmentLeft
 import platform.UIKit.NSTextAlignmentRight
 import platform.UIKit.NSUnderlineColorAttributeName
 import platform.UIKit.UIApplication
-import platform.UIKit.UIColor
 import platform.UIKit.UILabel
-import platform.UIKit.UILayoutConstraintAxisHorizontal
-import platform.UIKit.UILayoutConstraintAxisVertical
 import platform.UIKit.UITapGestureRecognizer
-import platform.UIKit.UIView
 import platform.UIKit.addGestureRecognizer
-import platform.UIKit.addSubview
-import platform.UIKit.backgroundColor
-import platform.UIKit.bottomAnchor
 import platform.UIKit.create
-import platform.UIKit.leadingAnchor
-import platform.UIKit.setContentCompressionResistancePriority
-import platform.UIKit.topAnchor
-import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
 actual class SystemTextViewFactory actual constructor(
-    private val background: Background?,
-    private val textStyle: TextStyle?,
+    private val background: Background<Fill.Solid>?,
+    private val textStyle: TextStyle<Color>?,
     private val textHorizontalAlignment: TextHorizontalAlignment?,
     private val margins: MarginValues?,
     private val isHtmlConverted: Boolean
@@ -80,11 +70,9 @@ actual class SystemTextViewFactory actual constructor(
         val label = UILabel(frame = CGRectZero.readValue()).apply {
             translatesAutoresizingMaskIntoConstraints = false
             applyTextStyleIfNeeded(textStyle)
+            applyBackgroundIfNeeded(background)
 
             numberOfLines = 0
-
-            setContentCompressionResistancePriority(749f, UILayoutConstraintAxisHorizontal)
-            setContentCompressionResistancePriority(749f, UILayoutConstraintAxisVertical)
 
             when (this@SystemTextViewFactory.textHorizontalAlignment) {
                 TextHorizontalAlignment.LEFT -> textAlignment = NSTextAlignmentLeft
@@ -110,36 +98,19 @@ actual class SystemTextViewFactory actual constructor(
             widget.text.bind { label.text = it.localized() }
         }
 
-        val wrapper = UIView(frame = CGRectZero.readValue()).apply {
-            translatesAutoresizingMaskIntoConstraints = false
-            backgroundColor = UIColor.clearColor
-            applyBackgroundIfNeeded(background)
+        widget.maxLines?.bind {
+            label.numberOfLines = (it ?: 0).toLong()
         }
-
-        if (size is WidgetSize.Const<*, *> ) {
-            if (size.width is SizeSpec.WrapContent) {
-                label.setContentCompressionResistancePriority(priority = 999f, forAxis = UILayoutConstraintAxisHorizontal)
-            }
-            if (size.height is SizeSpec.WrapContent) {
-                label.setContentCompressionResistancePriority(priority = 999f, forAxis = UILayoutConstraintAxisVertical)
-            }
-        }
-
-        wrapper.addSubview(label)
-        label.topAnchor.constraintEqualToAnchor(wrapper.topAnchor).active = true
-        label.leadingAnchor.constraintEqualToAnchor(wrapper.leadingAnchor).active = true
-        wrapper.trailingAnchor.constraintEqualToAnchor(label.trailingAnchor).active = true
-        wrapper.bottomAnchor.constraintEqualToAnchor(label.bottomAnchor).active = true
 
         return ViewBundle(
-            view = wrapper,
+            view = label,
             size = size,
             margins = margins
         )
     }
 }
 
-private fun String.stringFromHtml(textStyle: TextStyle?): NSAttributedString? {
+private fun String.stringFromHtml(textStyle: TextStyle<Color>?): NSAttributedString? {
     val nsString = NSString.create(string = this)
     val data: NSData = nsString.dataUsingEncoding(NSUTF8StringEncoding) ?: return null
 
@@ -156,7 +127,7 @@ private fun String.stringFromHtml(textStyle: TextStyle?): NSAttributedString? {
     }
 }
 
-private fun NSMutableAttributedString.changeUrlColor(textStyle: TextStyle?) {
+private fun NSMutableAttributedString.changeUrlColor(textStyle: TextStyle<Color>?) {
     if (textStyle?.color == null) return
 
     this.enumerateAttribute(attrName = NSLinkAttributeName,

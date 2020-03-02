@@ -17,10 +17,13 @@ import com.icerockdev.library.universal.WidgetsScreen
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.parcelize.Parcelize
+import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.ButtonWidget
+import dev.icerock.moko.widgets.FlatAlertIds
 import dev.icerock.moko.widgets.ImageWidget
 import dev.icerock.moko.widgets.InputWidget
+import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Theme
@@ -31,10 +34,14 @@ import dev.icerock.moko.widgets.factory.IconGravity
 import dev.icerock.moko.widgets.factory.LinearViewFactory
 import dev.icerock.moko.widgets.factory.SystemImageViewFactory
 import dev.icerock.moko.widgets.factory.SystemInputViewFactory
+import dev.icerock.moko.widgets.factory.SystemTabsViewFactory
+import dev.icerock.moko.widgets.factory.SystemTextViewFactory
 import dev.icerock.moko.widgets.flat.FlatInputViewFactory
 import dev.icerock.moko.widgets.sample.InputWidgetGalleryScreen
+import dev.icerock.moko.widgets.sample.ProductsSearchScreen
 import dev.icerock.moko.widgets.sample.ScrollContentScreen
 import dev.icerock.moko.widgets.sample.SelectGalleryScreen
+import dev.icerock.moko.widgets.sample.TabsSampleScreen
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.BaseApplication
 import dev.icerock.moko.widgets.screen.Screen
@@ -48,20 +55,21 @@ import dev.icerock.moko.widgets.screen.navigation.NavigationItem
 import dev.icerock.moko.widgets.screen.navigation.NavigationScreen
 import dev.icerock.moko.widgets.screen.navigation.Resultable
 import dev.icerock.moko.widgets.screen.navigation.Route
-import dev.icerock.moko.widgets.screen.navigation.SelectStates
 import dev.icerock.moko.widgets.screen.navigation.createPushResultRoute
 import dev.icerock.moko.widgets.screen.navigation.createPushRoute
-import dev.icerock.moko.widgets.screen.navigation.createReplaceRoute
 import dev.icerock.moko.widgets.screen.navigation.createRouter
 import dev.icerock.moko.widgets.screen.navigation.route
+import dev.icerock.moko.widgets.screen.TemplateScreen
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Fill
-import dev.icerock.moko.widgets.style.background.StateBackground
-import dev.icerock.moko.widgets.style.view.CornerRadiusValue
+import dev.icerock.moko.widgets.style.state.PressableState
+import dev.icerock.moko.widgets.style.state.SelectableState
 import dev.icerock.moko.widgets.style.view.MarginValues
 import dev.icerock.moko.widgets.style.view.PaddingValues
+import dev.icerock.moko.widgets.style.view.TextHorizontalAlignment
 import dev.icerock.moko.widgets.style.view.TextStyle
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.utils.platformSpecific
 
 class App() : BaseApplication() {
 
@@ -100,6 +108,8 @@ class App() : BaseApplication() {
                 theme = theme,
                 routes = listOf(
                     buildInputGalleryRouteInfo(theme, router),
+                    buildSearchRouteInfo(theme, router),
+                    buildTabsRouteInfo(theme, router),
                     SelectGalleryScreen.RouteInfo(
                         name = "Old Demo".desc(),
                         route = router.createPushRoute(oldDemo(router))
@@ -138,7 +148,38 @@ class App() : BaseApplication() {
         )
     }
 
-    fun oldDemo(
+    private fun buildSearchRouteInfo(
+        theme: Theme,
+        router: NavigationScreen.Router
+    ): SelectGalleryScreen.RouteInfo {
+        val searchScreen = registerScreen(ProductsSearchScreen::class) {
+            ProductsSearchScreen(theme)
+        }
+
+        return SelectGalleryScreen.RouteInfo(
+            name = "SearchScreen".desc(),
+            route = router.createPushRoute(searchScreen)
+        )
+    }
+
+    private fun buildTabsRouteInfo(
+        theme: Theme,
+        router: NavigationScreen.Router
+    ): SelectGalleryScreen.RouteInfo {
+        val tabsTheme = Theme(theme) {
+            TabsSampleScreen.configureDefaultTheme(this)
+        }
+        val tabsScreen = registerScreen(TabsSampleScreen::class) {
+            TabsSampleScreen(tabsTheme)
+        }
+
+        return SelectGalleryScreen.RouteInfo(
+            name = "Tabs".desc(),
+            route = router.createPushRoute(tabsScreen)
+        )
+    }
+
+    private fun oldDemo(
         router: NavigationScreen.Router
     ): TypedScreenDesc<Args.Empty, LoginScreen> {
         val sharedFactory = SharedFactory()
@@ -153,32 +194,47 @@ class App() : BaseApplication() {
                 backgroundColor = Color(0xF5F5F5FF)
             )
             factory[LoginScreen.Id.RegistrationButtonId] = ButtonWithIconViewFactory(
-                icon = MR.images.stars_black_18,
+                icon = PressableState(all = MR.images.stars_black_18),
                 iconGravity = IconGravity.TEXT_END,
                 iconPadding = 8.0f,
                 padding = PaddingValues(padding = 16f),
-                background = StateBackground(
+                background = PressableState(
                     normal = Background(fill = Fill.Solid(color = Color(0xAAFFFFFF))),
                     pressed = Background(fill = Fill.Solid(color = Color(0x88FFFFFF))),
                     disabled = Background(fill = Fill.Solid(color = Color(0x55FFFFFF)))
                 )
             )
             factory[ImageWidget.DefaultCategory] = SystemImageViewFactory(
-                cornerRadiusValue = CornerRadiusValue(16.0f)
+                cornerRadius = 16.0f
             )
         }
 
         val widgetsTheme = Theme(theme) {
+            factory[FlatAlertIds.Message] = SystemTextViewFactory(
+                textHorizontalAlignment = TextHorizontalAlignment.CENTER
+            )
             factory[InputWidget.DefaultCategory] = SystemInputViewFactory(
                 textStyle = TextStyle(
                     size = 16,
                     color = Color(0x16171AFF)
                 )
             )
+            factory[TabsWidget.DefaultCategory] = SystemTabsViewFactory(
+                tabsTintColor = Color(0xD20C0AFF),
+                tabsPadding = platformSpecific(android = null, ios = PaddingValues(padding = 16f)),
+                titleColor = SelectableState(
+                    selected = Color(platformSpecific(android = 0x151515FF, ios = 0xFFFFFFFF)),
+                    unselected = platformSpecific(android = Color(0x15151599), ios = null)
+                )
+            )
         }
 
         val mainScreen = registerScreen(MainBottomNavigationScreen::class) {
             val bottomRouter = createRouter()
+
+            val templateScreen = registerScreen(TemplateScreen::class) {
+                TemplateScreen(navTitle = "Template".desc(), labelText = "Template Screen".desc(), theme = theme)
+            }
 
             val cartNavigation = registerScreen(CartNavigationScreen::class) {
                 val navigationRouter = createRouter()
@@ -255,6 +311,11 @@ class App() : BaseApplication() {
                     id = 4,
                     title = "Logout".desc(),
                     screenDesc = logoutScreen
+                )
+                tab(
+                    id = 5,
+                    title = "Empty".desc(),
+                    screenDesc = templateScreen
                 )
             }
         }
@@ -334,7 +395,7 @@ class MainBottomNavigationScreen(
     init {
         bottomNavigationColor = Color(0x6518f4FF)
 
-        itemStateColors = SelectStates(
+        itemStateColors = SelectableState(
             selected = Color(0xfdfffdFF),
             unselected = Color(0xc0a3f9FF)
         )

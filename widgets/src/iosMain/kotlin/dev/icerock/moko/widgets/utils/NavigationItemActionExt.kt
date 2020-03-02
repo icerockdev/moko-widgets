@@ -9,7 +9,7 @@ import platform.Foundation.NSSelectorFromString
 import platform.UIKit.UIBarButtonItem
 import platform.UIKit.UIBarButtonItemStyle
 
-fun NavigationBar.Normal.BarButton.toUIBarButtonItem(): UIBarButtonItem {
+fun NavigationBar.BarButton.toUIBarButtonItem(): UIBarButtonItem {
     val actionHandler = LambdaTarget(action)
     val button = UIBarButtonItem(
         image = icon.toUIImage(),

@@ -18,6 +18,9 @@ object Deps {
             val appCompat = AndroidLibrary(
                 name = "androidx.appcompat:appcompat:${Versions.Libs.Android.appCompat}"
             )
+            val fragment = AndroidLibrary(
+                name = "androidx.fragment:fragment:${Versions.Libs.Android.fragment}"
+            )
             val swipeRefreshLayout = AndroidLibrary(
                 name = "androidx.swiperefreshlayout:swiperefreshlayout:${Versions.Libs.Android.swipeRefreshLayout}"
             )
@@ -109,6 +112,11 @@ object Deps {
                 android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.Libs.MultiPlatform.coroutines}",
                 common = "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:${Versions.Libs.MultiPlatform.coroutines}",
                 ios = "org.jetbrains.kotlinx:kotlinx-coroutines-core-native:${Versions.Libs.MultiPlatform.coroutines}"
+            )
+            val klock = MultiPlatformLibrary(
+                android = "com.soywiz.korlibs.klock:klock-android:${Versions.Libs.MultiPlatform.klockVersion}",
+                common = "com.soywiz.korlibs.klock:klock:${Versions.Libs.MultiPlatform.klockVersion}",
+                ios = "com.soywiz.korlibs.klock:klock:${Versions.Libs.MultiPlatform.klockVersion}"
             )
         }
 

@@ -6,14 +6,14 @@ This is a Kotlin MultiPlatform library that provides declarative UI and applicat
  in common code. You can implement full application for Android and iOS only from common code with it.  
 
 ## Current status
-Current version - `0.1.0-dev-12`. Dev version is not tested in production tasks yet, API can be changed and
+Current version - `0.1.0-dev-14`. Dev version is not tested in production tasks yet, API can be changed and
  bugs may be found. But dev version is chance to test limits of API and concepts to feedback and improve lib.
  We open for any feedback and ideas (go to issues or #moko at [kotlinlang.slack.com](https://kotlinlang.slack.com))!
 
 ## Roadmap
 - December-January: Test library in real project;
 - February: 0.1.0 release with flexible API; production usage at IceRock;
-- First half of 2019: more widgets, more factories; figma template and generation of screens.
+- First half of 2020: more widgets, more factories; figma template and generation of screens.
 
 ## Sample Screen
 |Android|iOS|
@@ -219,6 +219,8 @@ val loginScreen = Theme(baseTheme) {
   - 0.1.0-dev-10
   - 0.1.0-dev-11
   - 0.1.0-dev-12
+  - 0.1.0-dev-13
+  - 0.1.0-dev-14
 
 ## Installation
 root build.gradle  
@@ -233,7 +235,7 @@ allprojects {
 project build.gradle
 ```groovy
 dependencies {
-    commonMainApi("dev.icerock.moko:widgets:0.1.0-dev-12")
+    commonMainApi("dev.icerock.moko:widgets:0.1.0-dev-14")
 }
 ```
 
@@ -251,7 +253,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "dev.icerock.moko.widgets:gradle-plugin:0.1.0-dev-12"
+        classpath "dev.icerock.moko.widgets:gradle-plugin:0.1.0-dev-14"
     }
 }
 

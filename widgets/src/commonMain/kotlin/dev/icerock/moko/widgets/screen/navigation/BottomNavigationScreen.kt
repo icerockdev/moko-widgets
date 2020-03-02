@@ -10,6 +10,7 @@ import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.Screen
 import dev.icerock.moko.widgets.screen.ScreenDesc
+import dev.icerock.moko.widgets.style.state.SelectableState
 
 expect abstract class BottomNavigationScreen(
     router: Router,
@@ -20,7 +21,7 @@ expect abstract class BottomNavigationScreen(
     var selectedItemId: Int
     var bottomNavigationColor: Color?
     var isTitleVisible: Boolean
-    var itemStateColors: SelectStates<Color>?
+    var itemStateColors: SelectableState<Color>?
 
     class Router {
         fun createChangeTabRoute(itemId: Int): Route<Unit>
@@ -30,7 +31,7 @@ expect abstract class BottomNavigationScreen(
 data class BottomNavigationItem(
     val id: Int,
     val title: StringDesc,
-    val stateIcons: SelectStates<ImageResource>? = null,
+    val stateIcons: SelectableState<ImageResource>? = null,
     val screenDesc: ScreenDesc<Args.Empty>
 ) {
     class Builder() {
@@ -39,7 +40,7 @@ data class BottomNavigationItem(
         private fun tab(
             id: Int,
             title: StringDesc,
-            stateIcons: SelectStates<ImageResource>? = null,
+            stateIcons: SelectableState<ImageResource>? = null,
             screenDesc: ScreenDesc<Args.Empty>
         ) {
             tabs.add(
@@ -62,7 +63,7 @@ data class BottomNavigationItem(
             tab(
                 id = id,
                 title = title,
-                stateIcons = SelectStates(
+                stateIcons = SelectableState(
                     selected = selectedIcon,
                     unselected = unselectedIcon
                 ),
@@ -79,7 +80,7 @@ data class BottomNavigationItem(
             tab(
                 id = id,
                 title = title,
-                stateIcons = icon?.let { SelectStates(selected = it, unselected = it) },
+                stateIcons = icon?.let { SelectableState(all = it) },
                 screenDesc = screenDesc
             )
         }
@@ -87,8 +88,3 @@ data class BottomNavigationItem(
         fun build(): List<BottomNavigationItem> = tabs
     }
 }
-
-data class SelectStates<T>(
-    val selected: T,
-    val unselected: T
-)

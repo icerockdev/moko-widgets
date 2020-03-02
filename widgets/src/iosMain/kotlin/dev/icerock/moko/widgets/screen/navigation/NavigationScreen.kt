@@ -6,20 +6,17 @@ package dev.icerock.moko.widgets.screen.navigation
 
 import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.widgets.screen.Args
+import dev.icerock.moko.widgets.screen.BaseApplication
 import dev.icerock.moko.widgets.screen.Screen
 import dev.icerock.moko.widgets.screen.TypedScreenDesc
-import dev.icerock.moko.widgets.screen.application
 import dev.icerock.moko.widgets.screen.getAssociatedScreen
-import dev.icerock.moko.widgets.style.applyNavigationBarStyle
+import dev.icerock.moko.widgets.style.apply
 import dev.icerock.moko.widgets.utils.getStatusBarStyle
-import dev.icerock.moko.widgets.utils.toUIBarButtonItem
 import kotlinx.coroutines.Runnable
-import platform.UIKit.UIBarButtonItem
 import platform.UIKit.UINavigationController
 import platform.UIKit.UINavigationControllerDelegateProtocol
 import platform.UIKit.UIStatusBarStyle
 import platform.UIKit.UIViewController
-import platform.UIKit.navigationItem
 import platform.darwin.NSObject
 import kotlin.native.ref.WeakReference
 
@@ -52,21 +49,9 @@ actual abstract class NavigationScreen<S> actual constructor(
         viewController: UIViewController
     ) {
         when (val navBar = navigationItem.navigationBar) {
-            is NavigationBar.None -> navigationController?.navigationBarHidden = true
-            is NavigationBar.Normal -> {
-                navigationController?.navigationBarHidden = false
-                viewController.navigationItem.title = navBar.title.localized()
-                navigationController?.navigationBar?.applyNavigationBarStyle(navBar.styles)
-
-                if (navBar.backButton != null) {
-                    viewController.navigationItem.leftBarButtonItem = navBar.backButton.toUIBarButtonItem()
-                }
-
-                val rightButtons: List<UIBarButtonItem>? = navBar.actions?.map {
-                    it.toUIBarButtonItem()
-                }?.reversed()
-                viewController.navigationItem.rightBarButtonItems = rightButtons
-            }
+            is NavigationBar.None -> navBar.apply(navigationController)
+            is NavigationBar.Normal -> navBar.apply(navigationController, viewController)
+            is NavigationBar.Search -> navBar.apply(navigationController, viewController)
         }
     }
 
@@ -192,7 +177,7 @@ private class NavigationController(
 
     override fun preferredStatusBarStyle(): UIStatusBarStyle {
         val topScreen = topViewController?.getAssociatedScreen()
-        val isLight = topScreen?.isLightStatusBar ?: isLightStatusBar ?: application.isLightStatusBar
+        val isLight = topScreen?.isLightStatusBar ?: isLightStatusBar ?: BaseApplication.sharedInstance.isLightStatusBar
         return getStatusBarStyle(isLight) ?: super.preferredStatusBarStyle()
     }
 }

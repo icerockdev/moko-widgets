@@ -7,8 +7,9 @@ package dev.icerock.moko.widgets.screen.navigation
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.graphics.toUIColor
 import dev.icerock.moko.widgets.screen.Args
+import dev.icerock.moko.widgets.screen.BaseApplication
 import dev.icerock.moko.widgets.screen.Screen
-import dev.icerock.moko.widgets.screen.application
+import dev.icerock.moko.widgets.style.state.SelectableState
 import dev.icerock.moko.widgets.utils.getStatusBarStyle
 import platform.UIKit.UIStatusBarStyle
 import platform.UIKit.UITabBarController
@@ -27,7 +28,7 @@ actual abstract class BottomNavigationScreen actual constructor(
 
     private var tabBarController: UITabBarController? = null
 
-    actual var itemStateColors: SelectStates<Color>? = null
+    actual var itemStateColors: SelectableState<Color>? = null
         set(value) {
             field = value
 
@@ -103,7 +104,7 @@ private class TabBarController(
 ) : UITabBarController(nibName = null, bundle = null) {
 
     override fun preferredStatusBarStyle(): UIStatusBarStyle {
-        val light = isLightStatusBar ?: application.isLightStatusBar
+        val light = isLightStatusBar ?: BaseApplication.sharedInstance.isLightStatusBar
         return getStatusBarStyle(light) ?: super.preferredStatusBarStyle()
     }
 }
