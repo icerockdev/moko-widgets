@@ -14,7 +14,8 @@ private val classIdMap: MutableMap<Theme.Id<*>, Int> = mutableMapOf()
 
 val <T : Widget<out WidgetSize>> Theme.Id<T>.androidId: Int
     get() {
-        if (classIdMap.containsKey(this)) return classIdMap[this]!!
+        val cachedId = classIdMap[this]
+        if(cachedId != null) return cachedId
 
         val idString = this.javaClass.name
         val hashCode = abs(idString.hashCode())
