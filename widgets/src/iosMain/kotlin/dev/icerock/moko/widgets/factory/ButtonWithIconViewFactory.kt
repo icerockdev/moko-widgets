@@ -26,7 +26,7 @@ import dev.icerock.moko.widgets.utils.setEventHandler
 import kotlinx.cinterop.useContents
 import platform.CoreGraphics.CGFloat
 import platform.UIKit.UIButton
-import platform.UIKit.UIButtonTypeSystem
+import platform.UIKit.UIButtonTypeCustom
 import platform.UIKit.UIControlContentHorizontalAlignment
 import platform.UIKit.UIControlContentHorizontalAlignmentCenter
 import platform.UIKit.UIControlContentHorizontalAlignmentLeft
@@ -59,7 +59,7 @@ actual class ButtonWithIconViewFactory actual constructor(
         viewFactoryContext: ViewFactoryContext
     ): ViewBundle<WS> {
         val button = UIButton.buttonWithType(
-            buttonType = UIButtonTypeSystem
+            buttonType = UIButtonTypeCustom
         ).apply {
             translatesAutoresizingMaskIntoConstraints = false
 
