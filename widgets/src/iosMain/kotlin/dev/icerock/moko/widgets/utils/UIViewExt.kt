@@ -165,6 +165,7 @@ fun PaddingValues.toEdgeInsets(): CValue<UIEdgeInsets> {
 }
 
 fun UIView.wrapContentHeight(width: CGFloat? = null): CGFloat {
+
     val oldFrame = frame()
     val expandedFrame = CGRectMake(
         0.0,
@@ -181,6 +182,7 @@ fun UIView.wrapContentHeight(width: CGFloat? = null): CGFloat {
         verticalFittingPriority = UILayoutPriorityDefaultLow
     ).useContents { this.height }
     setFrame(oldFrame)
+    println("Calculate wrap content height: $result")
     return result
 }
 
@@ -200,5 +202,7 @@ fun UIView.wrapContentWidth(height: CGFloat? = null): CGFloat {
         withHorizontalFittingPriority = UILayoutPriorityDefaultLow,
         verticalFittingPriority = UILayoutPriorityRequired).useContents { this.width }
     setFrame(oldFrame)
+    println("Calculate wrap content width: $result")
+
     return result
 }

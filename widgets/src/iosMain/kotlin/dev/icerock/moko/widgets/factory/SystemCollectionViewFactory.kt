@@ -125,7 +125,8 @@ actual class SystemCollectionViewFactory actual constructor(
             layout: UICollectionViewLayout,
             sizeForItemAtIndexPath: NSIndexPath
         ): CValue<CGSize> {
-//        println("size: $sizeForItemAtIndexPath")
+
+            println("Request cell for indexPath: ${sizeForItemAtIndexPath.debugDescription() ?: "unknown"}")
             val collectionViewSize = collectionView.bounds.useContents { size }
 
             val sizeExtract: (CGSize) -> CGFloat
@@ -147,14 +148,17 @@ actual class SystemCollectionViewFactory actual constructor(
 
             val position = sizeForItemAtIndexPath.item.toInt()
 
-//        println("width: $width")
 
             val unit = dataSource!!.unitItems!![position]
+
+            println("Request stub")
 
             val stub = getStub(collectionView, unit, sizeForItemAtIndexPath)
             with(stub.contentView) {
 
                 translatesAutoresizingMaskIntoConstraints = false
+                println("Bind unit to stub")
+
                 unit.bind(stub)
 
                 return when (orientation) {
@@ -172,9 +176,15 @@ actual class SystemCollectionViewFactory actual constructor(
             unit: CollectionUnitItem,
             indexPath: NSIndexPath
         ): UICollectionViewCell {
+            println("Dequeue cell - ${unit.reusableIdentifier}")
             val exist = reusableStubs[unit.reusableIdentifier]
-            return if (exist != null) exist
+            return if (exist != null) {
+                println("Already stubbed, return")
+                exist
+            }
             else {
+                println("Dequeue stub")
+
                 val stub = collectionView.dequeueReusableCellWithReuseIdentifier(
                     unit.reusableIdentifier,
                     indexPath
