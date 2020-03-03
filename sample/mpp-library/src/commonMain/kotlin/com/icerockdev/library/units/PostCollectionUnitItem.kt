@@ -8,6 +8,7 @@ import com.icerockdev.library.sample.PostsViewModelContract
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.map
 import dev.icerock.moko.widgets.clickable
+import dev.icerock.moko.widgets.constraint
 import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Image
 import dev.icerock.moko.widgets.core.Theme
@@ -35,41 +36,12 @@ class PostCollectionUnitItem(
 
     private fun Theme.createBody(data: LiveData<PostsViewModelContract.PostItem>) =
         clickable(
-            child = container(
-//                factory = DefaultContainerWidgetViewFactory(
-//                    DefaultContainerWidgetViewFactoryBase.Style(
-//                        background = Background(
-//                            fill = Fill.Solid(Color(0x66, 0x66, 0x66, 0xFF))
-//                        ),
-//                        margins = MarginValues(4f)
-//                    )
-//                ),
-                size = WidgetSize.AspectByWidth(
-                    width = SizeSpec.AsParent,
-                    aspectRatio = 0.73f
-                )
-            ) {
-                center {
-                    image(
-                        size = WidgetSize.Const(
-                            width = SizeSpec.AsParent,
-                            height = SizeSpec.AsParent
-                        ),
-//                        factory = DefaultImageWidgetViewFactory(
-//                            DefaultImageWidgetViewFactoryBase.Style(
-//                                scaleType = DefaultImageWidgetViewFactoryBase.ScaleType.FILL
-//                            )
-//                        ),
-                        image = data.map { Image.network(it.imageUrl) }
-                    )
-                }
-                top {
-                    createHeader(data)
-                }
-                bottom {
-                    createFooter(data)
-                }
-            },
+            child = image( size = WidgetSize.AspectByWidth(
+                width = SizeSpec.AsParent,
+                aspectRatio = 0.73f
+            ),
+                image = data.map { Image.network(it.imageUrl) }
+            ),
             onClick = {
                 println("item $data pressed!")
             }
@@ -91,7 +63,7 @@ class PostCollectionUnitItem(
 //                    padding = PaddingValues(bottom = 8f)
 //                )
 //            ),
-            size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent)
+            size = WidgetSize.Const(SizeSpec.MatchConstraint, SizeSpec.MatchConstraint)
         ) {
             center {
                 text(
@@ -115,7 +87,7 @@ class PostCollectionUnitItem(
     ): Widget<out WidgetSize> {
         val regularItems = listOf<Widget<out WidgetSize>>(
             text(
-                size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent),
+                size = WidgetSize.Const(SizeSpec.MatchConstraint, SizeSpec.WrapContent),
 //                factory = DefaultTextWidgetViewFactory(
 //                    DefaultTextWidgetViewFactoryBase.Style(
 //                        textStyle = TextStyle(

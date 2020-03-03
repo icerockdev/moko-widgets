@@ -24,6 +24,8 @@ import kotlinx.cinterop.useContents
 import platform.CoreGraphics.*
 import platform.Foundation.NSIndexPath
 import platform.UIKit.*
+import platform.objc.objc_sync_enter
+import platform.objc.objc_sync_exit
 
 actual class SystemCollectionViewFactory actual constructor(
     private val orientation: Orientation,
@@ -43,7 +45,6 @@ actual class SystemCollectionViewFactory actual constructor(
             minimumInteritemSpacing = 0.0
             minimumLineSpacing = 0.0
         }
-        
 
         val collectionView = UICollectionView(
             frame = CGRectZero.readValue(),
@@ -107,6 +108,8 @@ actual class SystemCollectionViewFactory actual constructor(
         )
     }
 
+
+
     @Suppress(
         "CONFLICTING_OVERLOADS",
         "RETURN_TYPE_MISMATCH_ON_INHERITANCE",
@@ -127,48 +130,43 @@ actual class SystemCollectionViewFactory actual constructor(
         ): CValue<CGSize> {
 
             println("Request cell for indexPath: ${sizeForItemAtIndexPath.debugDescription() ?: "unknown"}")
-            val collectionViewSize = collectionView.bounds.useContents { size }
 
-            val sizeExtract: (CGSize) -> CGFloat
-            val padExtract: (UIEdgeInsets) -> CGFloat
-
-            when (orientation) {
-                Orientation.VERTICAL -> {
-                    sizeExtract = { it.width }
-                    padExtract = { it.left + it.right }
-                }
-                Orientation.HORIZONTAL -> {
-                    sizeExtract = { it.height }
-                    padExtract = { it.top + it.bottom }
-                }
-            }
-
-            val fixedItemSize = (sizeExtract(collectionViewSize)
-                    - collectionView.contentInset.useContents(padExtract)) / spanCount
+            val fixedItemSize = getFixedCellDimension(collectionView, spanCount, orientation)
 
             val position = sizeForItemAtIndexPath.item.toInt()
-
 
             val unit = dataSource!!.unitItems!![position]
 
             println("Request stub")
 
             val stub = getStub(collectionView, unit, sizeForItemAtIndexPath)
-            with(stub.contentView) {
+            objc_sync_enter(stub)
+            stub.setTranslatesAutoresizingMaskIntoConstraints(false)
+            unit.bind(stub)
+
+            val containerSubview = (stub.contentView.subviews.first() as? UIView) ?: stub.contentView
+
+            with(containerSubview) {
 
                 translatesAutoresizingMaskIntoConstraints = false
                 println("Bind unit to stub")
 
-                unit.bind(stub)
 
-                return when (orientation) {
-                    Orientation.VERTICAL ->
-                        CGSizeMake(wrapContentHeight(fixedItemSize), fixedItemSize)
+                when (orientation) {
+                    Orientation.VERTICAL -> {
+                        widthAnchor.constraintEqualToConstant(fixedItemSize).setActive(true)
+                        stub.contentView.updateConstraints()
+                        stub.contentView.layoutSubviews()
+                        return CGSizeMake(fixedItemSize, wrapContentHeight(fixedItemSize))
+                    }
 
-                    Orientation.HORIZONTAL ->
-                        CGSizeMake(fixedItemSize, wrapContentWidth(fixedItemSize))
+                    Orientation.HORIZONTAL -> {
+                        heightAnchor.constraintEqualToConstant(fixedItemSize).setActive(true)
+                        return CGSizeMake(wrapContentWidth(fixedItemSize), fixedItemSize)
+                    }
                 }
             }
+            objc_sync_exit(stub)
         }
 
         private fun getStub(
@@ -194,4 +192,24 @@ actual class SystemCollectionViewFactory actual constructor(
             }
         }
     }
+}
+
+internal fun getFixedCellDimension(forCollectionView: UICollectionView, spanCount: Int, andOrientation: Orientation): CGFloat {
+    val collectionViewSize = forCollectionView.bounds.useContents { size }
+
+    val sizeExtract: (CGSize) -> CGFloat
+    val padExtract: (UIEdgeInsets) -> CGFloat
+
+    when (andOrientation) {
+        Orientation.VERTICAL -> {
+            sizeExtract = { it.width }
+            padExtract = { it.left + it.right }
+        }
+        Orientation.HORIZONTAL -> {
+            sizeExtract = { it.height }
+            padExtract = { it.top + it.bottom }
+        }
+    }
+    return (sizeExtract(collectionViewSize)
+            - forCollectionView.contentInset.useContents(padExtract)) / spanCount
 }

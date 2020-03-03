@@ -17,6 +17,7 @@ import platform.UIKit.bottomAnchor
 import platform.UIKit.layoutMargins
 import platform.UIKit.layoutMarginsGuide
 import platform.UIKit.leadingAnchor
+import platform.UIKit.setTranslatesAutoresizingMaskIntoConstraints
 import platform.UIKit.topAnchor
 import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
@@ -54,12 +55,12 @@ internal fun <T> UIView.setupWidgetContent(
         val childMargins = viewBundle.margins
 
         val edges = dev.icerock.moko.widgets.utils.Edges(
-            top = childMargins?.top?.toDouble() ?: 0.0,
+            top = childMargins?.top?.toDouble() ?: 0.0, //TODO: Support this
             leading = childMargins?.start?.toDouble() ?: 0.0 + margin_left,
-            bottom = childMargins?.bottom?.toDouble() ?: 0.0,
+            bottom = childMargins?.bottom?.toDouble() ?: 0.0, //TODO: Support this
             trailing = childMargins?.end?.toDouble() ?: 0.0 + margin_right
         )
-
+        setTranslatesAutoresizingMaskIntoConstraints(false)
         view.applySize(childSize, this, edges)
 
         view.topAnchor.constraintEqualToAnchor(
