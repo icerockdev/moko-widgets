@@ -139,6 +139,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
                 collapsingTextHelper.collapsedTypeface = when (it.fontStyle) {
                     FontStyle.BOLD -> Typeface.DEFAULT_BOLD
                     FontStyle.MEDIUM -> Typeface.DEFAULT
+                    FontStyle.ITALIC -> Typeface.create(Typeface.DEFAULT, Typeface.ITALIC)
                 }
                 collapsingTextHelper.expandedTypeface = collapsingTextHelper.collapsedTypeface
             }

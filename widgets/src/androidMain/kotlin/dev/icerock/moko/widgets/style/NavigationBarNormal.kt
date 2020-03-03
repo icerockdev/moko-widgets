@@ -46,6 +46,7 @@ fun NavigationBar.Normal.apply(
             val style = when (fontStyle) {
                 FontStyle.BOLD -> Typeface.BOLD
                 FontStyle.MEDIUM -> Typeface.NORMAL
+                FontStyle.ITALIC -> Typeface.ITALIC
             }
             val styleSpan = StyleSpan(style)
             setSpan(styleSpan, 0, title.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
