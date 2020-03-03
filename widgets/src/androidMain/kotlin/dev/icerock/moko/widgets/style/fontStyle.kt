@@ -12,5 +12,6 @@ fun TextView.applyFontStyle(fontStyle: FontStyle) {
     when (fontStyle) {
         FontStyle.BOLD -> setTypeface(typeface, Typeface.BOLD)
         FontStyle.MEDIUM -> setTypeface(typeface, Typeface.NORMAL)
+        FontStyle.ITALIC -> setTypeface(typeface, Typeface.ITALIC)
     }
 }
