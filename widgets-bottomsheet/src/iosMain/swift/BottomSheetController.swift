@@ -43,6 +43,10 @@ private var AssociatedDelegateHandle: UInt8 = 0
     fpc.backdropView.backgroundColor = UIColor.black
     fpc.isRemovalInteractionEnabled = true
     
+    view.superview?.layer.maskedCorners = [CACornerMask.layerMinXMinYCorner, CACornerMask.layerMaxXMinYCorner]
+    view.superview?.layer.masksToBounds = true
+    view.superview?.layer.cornerRadius = 14
+    
     controller = fpc
     self.onDismiss = onDismiss
     
