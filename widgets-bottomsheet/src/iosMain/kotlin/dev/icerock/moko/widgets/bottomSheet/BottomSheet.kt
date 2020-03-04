@@ -12,12 +12,22 @@ import dev.icerock.moko.widgets.style.view.WidgetSize
 
 actual fun Screen<*>.showBottomSheet(
     content: Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.WrapContent>>,
-    onDismiss: () -> Unit
-) {
+    onDismiss: (isSelfDismissed: Boolean) -> Unit
+): SelfDismisser? {
     val view = content.buildView(viewController).view
-    BottomSheetController().showOnViewController(
+    val holder = BottomSheetHolder()
+    holder.bottomSheet.showOnViewController(
         vc = this.viewController,
         withContent = view,
         onDismiss = onDismiss
     )
+    return holder
+}
+
+private class BottomSheetHolder: SelfDismisser {
+    val bottomSheet = BottomSheetController()
+
+    override fun dismissSelf() {
+        bottomSheet.dismiss()
+    }
 }

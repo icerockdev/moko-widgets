@@ -9,17 +9,20 @@ private var AssociatedDelegateHandle: UInt8 = 0
 
 @objc public class BottomSheetController: NSObject, FloatingPanelControllerDelegate {
   
+  private weak var controller: FloatingPanelController?
+  private var onDismiss: ((Bool) -> Void)?
+  
   @objc public func show(
     onViewController vc: UIViewController,
     withContent view: UIView,
-    onDismiss: @escaping () -> Void
+    onDismiss: @escaping (Bool) -> Void
   ) {
     view.updateConstraints()
     view.layoutSubviews()
-  
+    
     let maxSize = CGSize(width: UIScreen.main.bounds.width, height: UIView.layoutFittingCompressedSize.height)
     view.frame = UIScreen.main.bounds
-
+    
     let floatLayout = BottomSheetLayout(
       preferredHeight: view.systemLayoutSizeFitting(
         UIView.layoutFittingCompressedSize,
@@ -40,17 +43,25 @@ private var AssociatedDelegateHandle: UInt8 = 0
     fpc.backdropView.backgroundColor = UIColor.black
     fpc.isRemovalInteractionEnabled = true
     
+    controller = fpc
+    self.onDismiss = onDismiss
+    
     objc_setAssociatedObject(fpc, &AssociatedDelegateHandle, delegate, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
     
     vc.present(fpc, animated: true, completion: nil)
+  }
+  
+  @objc public func dismiss() {
+    controller?.dismiss(animated: true, completion: nil)
+    self.onDismiss?(true)
   }
 }
 
 class FloatingDelegate: FloatingPanelControllerDelegate {
   private let floatingLayout: FloatingPanelLayout
-  private let onDismiss: () -> Void
+  private let onDismiss: (Bool) -> Void
   
-  init(floatingLayout: FloatingPanelLayout, onDismiss: @escaping () -> Void) {
+  init(floatingLayout: FloatingPanelLayout, onDismiss: @escaping (Bool) -> Void) {
     self.floatingLayout = floatingLayout
     self.onDismiss = onDismiss
   }
@@ -60,7 +71,7 @@ class FloatingDelegate: FloatingPanelControllerDelegate {
   }
   
   func floatingPanelDidEndRemove(_ vc: FloatingPanelController) {
-    onDismiss()
+    onDismiss(false)
   }
 }
 
