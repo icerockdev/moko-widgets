@@ -74,6 +74,14 @@ class FloatingDelegate: FloatingPanelControllerDelegate {
     return floatingLayout
   }
   
+  func floatingPanelDidEndDecelerating(_ vc: FloatingPanelController) {
+    if vc.position == .hidden {
+      vc.removePanelFromParent(animated: true)
+      vc.dismiss(animated: false, completion: nil)
+      onDismiss(false)
+    }
+  }
+  
   func floatingPanelDidEndRemove(_ vc: FloatingPanelController) {
     onDismiss(false)
   }
@@ -93,11 +101,11 @@ class BottomSheetLayout: FloatingPanelLayout {
     case .half: return preferredHeight
     case .full: return 0
     case .tip: return 0
-    case .hidden: return nil
+    case .hidden: return 0
     }
   }
   
-  var supportedPositions: Set<FloatingPanelPosition> = [.half, .tip]
+  var supportedPositions: Set<FloatingPanelPosition> = [.half, .hidden]
   
   func backdropAlphaFor(position: FloatingPanelPosition) -> CGFloat {
     return 0.3
