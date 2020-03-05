@@ -34,6 +34,10 @@ actual abstract class Screen<Arg : Args> {
         return created
     }
 
+    actual open fun onViewCreated() {
+
+    }
+
     actual fun <T : Any> createEventsDispatcher(): EventsDispatcher<T> {
         return EventsDispatcher()
     }
@@ -49,6 +53,7 @@ actual abstract class Screen<Arg : Args> {
             val vc = createViewController(isLightStatusBar).also {
                 setAssociatedObject(it, this)
             }
+            onViewCreated()
             _viewController = WeakReference(vc)
             return vc
         }

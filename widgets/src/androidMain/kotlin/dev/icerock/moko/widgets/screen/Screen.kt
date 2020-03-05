@@ -51,6 +51,10 @@ actual abstract class Screen<Arg : Args> : Fragment() {
         return EventsDispatcher(mainExecutor)
     }
 
+    actual open fun onViewCreated() {
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -59,6 +63,7 @@ actual abstract class Screen<Arg : Args> : Fragment() {
             resultCode = getIntNullable(RESULT_CODE_KEY)
             screenId = getIntNullable(SCREEN_ID_KEY)
         }
+        onViewCreated()
     }
 
     override fun onResume() {
