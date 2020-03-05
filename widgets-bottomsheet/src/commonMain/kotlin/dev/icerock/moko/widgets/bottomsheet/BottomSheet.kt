@@ -11,5 +11,9 @@ import dev.icerock.moko.widgets.style.view.WidgetSize
 
 expect fun Screen<*>.showBottomSheet(
     content: Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.WrapContent>>,
-    onDismiss: () -> Unit
-)
+    onDismiss: (isSelfDismissed: Boolean) -> Unit
+): SelfDismisser?
+
+interface SelfDismisser {
+    fun dismissSelf()
+}
