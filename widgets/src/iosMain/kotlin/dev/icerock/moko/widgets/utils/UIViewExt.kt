@@ -167,11 +167,9 @@ fun PaddingValues.toEdgeInsets(): CValue<UIEdgeInsets> {
 }
 
 fun UIView.wrapContentHeight(width: CGFloat? = null): CGFloat {
-    var fittingSize = CGSizeMake(width ?: 2000.0, 0.0)
+    var fittingSize = CGSizeMake(width ?: 2000.0, UILayoutFittingCompressedSize.height)
 
     println("Trying to calculate height by content width: ${fittingSize.useContents { width }}")
-
-    setFrame(CGRectMake(0.0,0.0,width ?: 2000.0, 2000.0))
 
     updateConstraints()
     layoutSubviews()
