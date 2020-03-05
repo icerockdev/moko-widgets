@@ -144,28 +144,29 @@ actual class SystemCollectionViewFactory actual constructor(
             stub.setTranslatesAutoresizingMaskIntoConstraints(false)
             unit.bind(stub)
 
-            val containerSubview = (stub.contentView.subviews.first() as? UIView) ?: stub.contentView
-
-            with(containerSubview) {
-
+            with(stub.contentView) {
                 translatesAutoresizingMaskIntoConstraints = false
                 println("Bind unit to stub")
 
 
                 when (orientation) {
                     Orientation.VERTICAL -> {
-                        widthAnchor.constraintEqualToConstant(fixedItemSize).setActive(true)
-                        stub.contentView.updateConstraints()
-                        stub.contentView.layoutSubviews()
-                        return CGSizeMake(fixedItemSize, wrapContentHeight(fixedItemSize))
+                        val constraint = widthAnchor.constraintEqualToConstant(fixedItemSize)
+                        constraint.setActive(true)
+                        updateConstraints()
+                        layoutSubviews()
+                        val result = CGSizeMake(fixedItemSize, wrapContentHeight(fixedItemSize))
+                        removeConstraint(constraint)
+                        return result
                     }
 
                     Orientation.HORIZONTAL -> {
-                        heightAnchor.constraintEqualToConstant(fixedItemSize).setActive(true)
+                        //TODO: Copy logic from vertical
                         return CGSizeMake(wrapContentWidth(fixedItemSize), fixedItemSize)
                     }
                 }
             }
+
             objc_sync_exit(stub)
         }
 
