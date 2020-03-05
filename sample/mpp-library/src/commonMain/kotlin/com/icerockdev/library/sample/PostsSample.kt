@@ -16,6 +16,12 @@ import dev.icerock.moko.widgets.CollectionWidget
 import dev.icerock.moko.widgets.collection
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.screen.Args
+import dev.icerock.moko.widgets.screen.Args.Empty
+import dev.icerock.moko.widgets.screen.TypedScreenDesc
+import dev.icerock.moko.widgets.screen.WidgetScreen
+import dev.icerock.moko.widgets.screen.navigation.NavigationBar
+import dev.icerock.moko.widgets.screen.navigation.NavigationItem
 import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 
@@ -23,7 +29,7 @@ class PostsScreen(
     private val theme: Theme,
     private val viewModel: PostsViewModelContract,
     private val collectionCategory: CollectionWidget.Category
-) {
+): WidgetScreen<Empty>(), NavigationItem {
     fun createWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         return with(theme) {
             collection(
@@ -46,7 +52,15 @@ class PostsScreen(
     object Id {
         object Collection : CollectionWidget.Id
     }
+
+    override val navigationBar: NavigationBar
+        get() = NavigationBar.Normal("Posts".desc())
+
+    override fun createContentWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
+        return createWidget()
+    }
 }
+
 
 interface PostsViewModelContract {
     val posts: LiveData<List<PostItem>>

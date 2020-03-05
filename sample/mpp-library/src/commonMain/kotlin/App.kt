@@ -5,6 +5,8 @@
 import com.icerockdev.library.AppTheme
 import com.icerockdev.library.MR
 import com.icerockdev.library.SharedFactory
+import com.icerockdev.library.sample.PostsScreen
+import com.icerockdev.library.sample.PostsViewModel
 import com.icerockdev.library.universal.CartScreen
 import com.icerockdev.library.universal.InfoWebViewScreen
 import com.icerockdev.library.universal.LoginScreen
@@ -91,10 +93,50 @@ class App() : BaseApplication() {
 
         return registerScreen(RootNavigationScreen::class) {
             val router = createRouter()
+            val widgetsTheme = Theme(theme) {
+                factory[FlatAlertIds.Message] = SystemTextViewFactory(
+                    textHorizontalAlignment = TextHorizontalAlignment.CENTER
+                )
+                factory[InputWidget.DefaultCategory] = SystemInputViewFactory(
+                    textStyle = TextStyle(
+                        size = 16,
+                        color = Color(0x16171AFF)
+                    )
+                )
+                factory[TabsWidget.DefaultCategory] = SystemTabsViewFactory(
+                    tabsTintColor = Color(0xD20C0AFF),
+                    tabsPadding = platformSpecific(android = null, ios = PaddingValues(padding = 16f)),
+                    titleColor = SelectableState(
+                        selected = Color(platformSpecific(android = 0x151515FF, ios = 0xFFFFFFFF)),
+                        unselected = platformSpecific(android = Color(0x15151599), ios = null)
+                    )
+                )
+            }
+            val collectionTestScr = registerScreen(WidgetsScreen::class) {
+                WidgetsScreen(SharedFactory(), widgetsTheme, AppTheme.PostsCollection)
+            }
+
+            val posts = PostsScreen(
+                theme = theme,
+                viewModel = PostsViewModel(),
+                collectionCategory = AppTheme.PostsCollection
+            )
 
             RootNavigationScreen(
-                initialScreen = registerGalleryScreen(theme, router),
+                initialScreen = registerPostTestScreen(theme, createRouter()),
                 router = router
+            )
+        }
+    }
+
+    private fun registerPostTestScreen(theme: Theme,
+                                       router: NavigationScreen.Router
+    ): TypedScreenDesc<Args.Empty, PostsScreen> {
+        return registerScreen(PostsScreen::class) {
+            PostsScreen(
+                theme,
+                PostsViewModel(),
+                AppTheme.PostsCollection
             )
         }
     }
