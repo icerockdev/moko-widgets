@@ -4,6 +4,7 @@
 
 package dev.icerock.moko.widgets.bottomsheet
 
+import android.content.Context
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
@@ -13,10 +14,10 @@ import dev.icerock.moko.widgets.style.view.WidgetSize
 
 actual fun Screen<*>.showBottomSheet(
     content: Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.WrapContent>>,
-    onDismiss: () -> Unit
-) {
-    val context = context ?: return
-    val dialog = BottomSheetDialog(context)
+    onDismiss: (isSelfDismissed: Boolean) -> Unit
+): SelfDismisser? {
+    val context = context ?: return null
+    val dialog = DismissedBottomSheetDialog(context, onDismiss)
     dialog.setContentView(
         content.buildView(
             ViewFactoryContext(
@@ -26,6 +27,14 @@ actual fun Screen<*>.showBottomSheet(
             )
         ).view
     )
-    dialog.setOnCancelListener { onDismiss() }
+    dialog.setOnCancelListener { onDismiss(false) }
     dialog.show()
+    return dialog
+}
+
+private class DismissedBottomSheetDialog(context: Context, val onDismiss: (Boolean) -> Unit): BottomSheetDialog(context), SelfDismisser {
+    override fun dismissSelf() {
+        this.dismiss()
+        onDismiss(true)
+    }
 }

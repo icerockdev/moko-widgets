@@ -5,5 +5,5 @@
 package dev.icerock.moko.widgets.style.view
 
 enum class FontStyle {
-    BOLD, MEDIUM
+    BOLD, MEDIUM, ITALIC
 }

@@ -22,17 +22,20 @@ import platform.UIKit.UIFont
 import platform.UIKit.UIFontWeightMedium
 import platform.UIKit.UILabel
 import platform.UIKit.UITextField
-import platform.UIKit.systemFontSize
 import platform.UIKit.UITextView
 
-fun TextStyle<*>.toUIFont(defaultFontSize: Double = 17.0): UIFont? { // If this is ok, can be applied to other methods
+fun TextStyle<*>.toUIFont(defaultFontSize: Double = 17.0): UIFont? {
     val styleSize = size?.toDouble()
     val fontStyle = fontStyle
     if (fontStyle != null || styleSize != null) {
         val fontSize = styleSize ?: defaultFontSize
         return when (fontStyle) {
             FontStyle.BOLD -> UIFont.boldSystemFontOfSize(fontSize = fontSize)
-            FontStyle.MEDIUM -> UIFont.systemFontOfSize(fontSize = fontSize, weight = UIFontWeightMedium)
+            FontStyle.MEDIUM -> UIFont.systemFontOfSize(
+                fontSize = fontSize,
+                weight = UIFontWeightMedium
+            )
+            FontStyle.ITALIC -> UIFont.italicSystemFontOfSize(fontSize = fontSize)
             else -> UIFont.systemFontOfSize(fontSize = fontSize)
         }
     }
@@ -42,16 +45,8 @@ fun TextStyle<*>.toUIFont(defaultFontSize: Double = 17.0): UIFont? { // If this 
 fun UIButton.applyTextStyleIfNeeded(textStyle: TextStyle<PressableState<Color>>?) {
     if (textStyle == null) return
 
-    val currentFontSize = titleLabel?.font?.pointSize ?: 14.0
-    val styleSize = textStyle.size?.toDouble()
-    val styleStyle = textStyle.fontStyle
-    if (styleStyle != null || styleSize != null) {
-        val fontSize = styleSize ?: currentFontSize
-        titleLabel?.font = when (styleStyle) {
-            FontStyle.BOLD -> UIFont.boldSystemFontOfSize(fontSize = fontSize)
-            else -> UIFont.systemFontOfSize(fontSize = fontSize)
-        }
-    }
+    val textFont = textStyle.toUIFont(14.0)
+    if (textFont != null) titleLabel?.font = textFont
 
     textStyle.color?.also {
         setTitleColor(color = it.normal.toUIColor(), forState = UIControlStateNormal)
@@ -63,32 +58,14 @@ fun UIButton.applyTextStyleIfNeeded(textStyle: TextStyle<PressableState<Color>>?
 fun UILabel.applyTextStyleIfNeeded(textStyle: TextStyle<Color>?) {
     if (textStyle == null) return
 
-    val currentFontSize = font.pointSize
-    val styleSize = textStyle.size?.toDouble()
-    val fontStyle = textStyle.fontStyle
-    if (fontStyle != null || styleSize != null) {
-        val fontSize = styleSize ?: currentFontSize
-        font = when (fontStyle) {
-            FontStyle.BOLD -> UIFont.boldSystemFontOfSize(fontSize = fontSize)
-            else -> UIFont.systemFontOfSize(fontSize = fontSize)
-        }
-    }
+    font = textStyle.toUIFont() ?: font
     textStyle.color?.also { textColor = it.toUIColor() }
 }
 
 fun UITextField.applyTextStyleIfNeeded(textStyle: TextStyle<Color>?) {
     if (textStyle == null) return
 
-    val currentFontSize = font?.pointSize ?: UIFont.systemFontSize
-    val styleSize = textStyle.size?.toDouble()
-    val fontStyle = textStyle.fontStyle
-    if (fontStyle != null || styleSize != null) {
-        val fontSize = styleSize ?: currentFontSize
-        font = when (fontStyle) {
-            FontStyle.BOLD -> UIFont.boldSystemFontOfSize(fontSize = fontSize)
-            else -> UIFont.systemFontOfSize(fontSize = fontSize)
-        }
-    }
+    font = textStyle.toUIFont() ?: font
     textStyle.color?.also { textColor = it.toUIColor() }
 }
 
@@ -122,15 +99,6 @@ fun CATextLayer.applyTextStyleIfNeeded(textStyle: TextStyle<Color>?) {
 fun UITextView.applyTextStyleIfNeeded(textStyle: TextStyle<Color>?) {
     if (textStyle == null) return
 
-    val currentFontSize = font?.pointSize ?: UIFont.systemFontSize
-    val styleSize = textStyle.size?.toDouble()
-    val fontStyle = textStyle.fontStyle
-    if (fontStyle != null || styleSize != null) {
-        val fontSize = styleSize ?: currentFontSize
-        font = when (fontStyle) {
-            FontStyle.BOLD -> UIFont.boldSystemFontOfSize(fontSize = fontSize)
-            else -> UIFont.systemFontOfSize(fontSize = fontSize)
-        }
-    }
+    font = textStyle.toUIFont() ?: font
     textStyle.color?.also { textColor = it.toUIColor() }
 }
