@@ -2,7 +2,7 @@
  * Copyright 2020 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
 
-package dev.icerock.moko.widgets.screen
+package dev.icerock.moko.widgets.datetimepicker
 
 import android.app.Dialog
 import android.app.TimePickerDialog
@@ -11,6 +11,7 @@ import android.os.Parcelable
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import dev.icerock.moko.graphics.Color
+import dev.icerock.moko.widgets.screen.Screen
 import kotlinx.android.parcel.Parcelize
 import kotlin.properties.ReadOnlyProperty
 

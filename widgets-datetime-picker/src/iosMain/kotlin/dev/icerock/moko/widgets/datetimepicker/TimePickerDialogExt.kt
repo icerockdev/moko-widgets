@@ -1,110 +1,104 @@
 /*
  * Copyright 2020 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
-package dev.icerock.moko.widgets.screen
 
-import com.soywiz.klock.DateTime
+package dev.icerock.moko.widgets.datetimepicker
+
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.graphics.toUIColor
+import dev.icerock.moko.widgets.screen.Screen
 import dev.icerock.moko.widgets.utils.setEventHandler
-import kotlin.properties.ReadOnlyProperty
-import platform.UIKit.UIModalPresentationOverCurrentContext
-import platform.UIKit.UIViewController
+import platform.Foundation.NSBundle
+import platform.Foundation.NSCalendar
+import platform.Foundation.NSCalendarUnitHour
+import platform.Foundation.NSCalendarUnitMinute
+import platform.Foundation.NSDate
+import platform.UIKit.UIApplication
+import platform.UIKit.UIButton
 import platform.UIKit.UIColor
-import platform.UIKit.UIView
-import platform.UIKit.translatesAutoresizingMaskIntoConstraints
-import platform.UIKit.backgroundColor
-import platform.UIKit.addSubview
-import platform.UIKit.leadingAnchor
-import platform.UIKit.trailingAnchor
-import platform.UIKit.bottomAnchor
+import platform.UIKit.UIControlEventTouchUpInside
+import platform.UIKit.UIControlStateNormal
 import platform.UIKit.UIDatePicker
 import platform.UIKit.UIDatePickerMode
-import platform.UIKit.safeAreaLayoutGuide
+import platform.UIKit.UIModalPresentationOverCurrentContext
+import platform.UIKit.UIView
+import platform.UIKit.UIViewController
+import platform.UIKit.addSubview
+import platform.UIKit.backgroundColor
+import platform.UIKit.bottomAnchor
 import platform.UIKit.heightAnchor
+import platform.UIKit.leadingAnchor
+import platform.UIKit.safeAreaLayoutGuide
 import platform.UIKit.topAnchor
-import platform.UIKit.UIButton
-import platform.UIKit.UIControlStateNormal
-import platform.UIKit.UIControlEventTouchUpInside
-import platform.UIKit.UIApplication
-import platform.Foundation.NSBundle
-import platform.Foundation.NSDate
+import platform.UIKit.trailingAnchor
+import platform.UIKit.translatesAutoresizingMaskIntoConstraints
+import kotlin.properties.ReadOnlyProperty
 
-actual class DatePickerDialogHandler(
-    val positive: ((dialogId: Int, date: DateTime) -> Unit)?,
+actual class TimePickerDialogHandler(
+    val positive: ((dialogId: Int, hour: Int, minute: Int) -> Unit)?,
     val negative: ((dialogId: Int) -> Unit)?
 )
 
-actual fun Screen<*>.registerDatePickerDialogHandler(
-    positive: ((dialogId: Int, date: DateTime) -> Unit)?,
+actual fun Screen<*>.registerTimePickerDialogHandler(
+    positive: ((dialogId: Int, hour: Int, minute: Int) -> Unit)?,
     negative: ((dialogId: Int) -> Unit)?
-): ReadOnlyProperty<Screen<*>, DatePickerDialogHandler> {
-    val handler = DatePickerDialogHandler(
-        positive = positive,
-        negative = negative
-    )
-    return createConstReadOnlyProperty(handler)
+): ReadOnlyProperty<Screen<*>, TimePickerDialogHandler> {
+    return createConstReadOnlyProperty(TimePickerDialogHandler(positive, negative))
 }
 
-actual class DatePickerDialogBuilder {
+actual fun Screen<*>.showTimePickerDialog(
+    dialogId: Int,
+    handler: TimePickerDialogHandler,
+    factory: TimePickerDialogBuilder.() -> Unit
+) {
+    TimePickerDialogBuilder().apply {
+        factory(this)
+        val controller = createViewController(handler, dialogId)
+        controller.modalPresentationStyle = UIModalPresentationOverCurrentContext
+        this@showTimePickerDialog.viewController.presentViewController(
+            controller,
+            animated = true,
+            completion = null
+        )
+    }
+}
 
+actual class TimePickerDialogBuilder {
+    private var initialHour = 12
+    private var initialMinute = 5
     private var accentColor: Color? = null
-    private var startDate: DateTime? = null
-    private var endDate: DateTime? = null
-    private var selectedDate: DateTime? = null
 
-    actual fun accentColor(color: Color) {
+    actual fun setAccentColor(color: Color) {
         accentColor = color
     }
 
-    actual fun startDate(date: DateTime) {
-        startDate = date
+    actual fun setInitialHour(hour: Int) {
+        initialHour = validateHours(hour)
     }
 
-    actual fun endDate(date: DateTime) {
-        endDate = date
+    actual fun setInitialMinutes(minute: Int) {
+        initialMinute = validateMinutes(minute)
     }
 
-    actual fun selectedDate(date: DateTime) {
-        selectedDate = date
-    }
+    /**
+     * Don't work for iOS, it takes format from user local settings in setting.app.
+     */
+    actual fun is24HoursFormat(flag: Boolean) {}
 
-    fun createViewController(
-        handler: DatePickerDialogHandler,
+    internal fun createViewController(
+        handler: TimePickerDialogHandler,
         dialogId: Int
-    ): DatePickerController {
-        return DatePickerController(
-            accentColor = accentColor,
-            startDate = startDate,
-            endDate = endDate,
-            selectedDate = selectedDate,
-            handler = handler,
-            dialogId = dialogId
-        )
-    }
-
+    ) = TimePickerController(accentColor, initialHour, initialMinute, handler, dialogId)
 }
 
-actual fun Screen<*>.showDatePickerDialog(
-    dialogId: Int,
-    handler: DatePickerDialogHandler,
-    factory: DatePickerDialogBuilder.() -> Unit
-) {
-    val builder = DatePickerDialogBuilder()
-    factory(builder)
-    val controller = builder.createViewController(handler = handler, dialogId = dialogId)
-    controller.modalPresentationStyle = UIModalPresentationOverCurrentContext
-    this.viewController.presentViewController(controller, animated = true, completion = null)
-}
-
-class DatePickerController(
+class TimePickerController(
     private val accentColor: Color?,
-    private val startDate: DateTime?,
-    private val endDate: DateTime?,
-    private val selectedDate: DateTime?,
-    private val handler: DatePickerDialogHandler,
+    private val initialHour: Int,
+    private val initialMinute: Int,
+    private val handler: TimePickerDialogHandler,
     private val dialogId: Int
 ) : UIViewController(nibName = null, bundle = null) {
+
     override fun viewDidLoad() {
         super.viewDidLoad()
 
@@ -126,7 +120,7 @@ class DatePickerController(
 
         val datePicker = UIDatePicker()
         datePicker.translatesAutoresizingMaskIntoConstraints = false
-        datePicker.datePickerMode = UIDatePickerMode.UIDatePickerModeDate
+        datePicker.datePickerMode = UIDatePickerMode.UIDatePickerModeTime
         view.addSubview(datePicker)
         datePicker.leadingAnchor.constraintEqualToAnchor(
             anchor = view.leadingAnchor
@@ -139,11 +133,9 @@ class DatePickerController(
         ).active = true
         datePicker.heightAnchor.constraintEqualToConstant(232.0)
 
-
         pickerBackground.topAnchor.constraintEqualToAnchor(
             anchor = datePicker.topAnchor
         ).active = true
-
 
         val controlPanel = UIView()
         controlPanel.translatesAutoresizingMaskIntoConstraints = false
@@ -211,30 +203,24 @@ class DatePickerController(
             anchor = controlPanel.topAnchor
         ).active = true
 
-        val nsDate = NSDate()
-        val date = DateTime.nowUnix()
-        val diffDate = date - nsDate.timeIntervalSinceReferenceDate
-
-        if (startDate != null) {
-            startDate.unixMillis
-            datePicker.minimumDate = NSDate(startDate.unixMillis - diffDate)
+        val initialComponents = NSCalendar.currentCalendar.components(
+            NSCalendarUnitHour or NSCalendarUnitMinute,
+            NSDate()
+        ).apply {
+            setHour(initialHour.toLong())
+            setMinute(initialMinute.toLong())
         }
-
-        if (endDate != null) {
-            endDate.unixMillis
-            datePicker.maximumDate = NSDate(endDate.unixMillis - diffDate)
-        }
-
-        if (selectedDate != null) {
-            datePicker.setDate(NSDate(selectedDate.unixMillis - diffDate))
+        NSCalendar.currentCalendar.dateFromComponents(initialComponents)?.let {
+            datePicker.setDate(it)
         }
 
         doneButton.setEventHandler(UIControlEventTouchUpInside) {
             this.dismissViewControllerAnimated(flag = true, completion = null)
-            handler.positive?.invoke(
-                dialogId,
-                DateTime(diffDate + datePicker.date.timeIntervalSinceReferenceDate)
-            )
+            val hour =
+                NSCalendar.currentCalendar.components(NSCalendarUnitHour, datePicker.date).hour
+            val minute =
+                NSCalendar.currentCalendar.components(NSCalendarUnitMinute, datePicker.date).minute
+            handler.positive?.invoke(dialogId, hour.toInt(), minute.toInt())
         }
         cancelButton.setEventHandler(UIControlEventTouchUpInside) {
             this.dismissViewControllerAnimated(flag = true, completion = null)
