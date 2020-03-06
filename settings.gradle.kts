@@ -43,6 +43,7 @@ if (!pluginPublish) {
     include(":widgets-sms")
     include(":widgets-bottomsheet")
     include(":widgets-collection")
+    include(":widgets-datetime-picker")
 
     if (!libraryPublish) {
         include(":sample:android-app")

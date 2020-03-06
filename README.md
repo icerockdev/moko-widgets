@@ -369,6 +369,7 @@ Please see more examples in the [sample directory](sample).
 - The [widgets directory](widgets) contains the `widgets` library;
 - The [widgets-bottomsheet directory](widgets-bottomsheet) contains the `widgets-bottomsheet` library;
 - The [widgets-sms directory](widgets-sms) contains the `widgets-sms` library;
+- The [widgets-datetime-picker directory] (widgets-datetime-picker) contains the `datetime-picker` library;
 - The [gradle-plugin directory](gradle-plugin) contains the gradle-plugin which apply compiler plugins for Native and JVM;
 - The [kotlin-plugin directory](kotlin-plugin) contains the JVM compiler plugin with code-generation from @WidgetDef annotation;
 - The [kotlin-native-plugin directory](kotlin-native-plugin) contains the Native compiler plugin with code-generation from @WidgetDef annotation;
@@ -378,7 +379,7 @@ Please see more examples in the [sample directory](sample).
   - `./gradlew -PpluginPublish publishPluginPublicationToMavenLocal`
   - `./gradlew -PlibraryPublish :widgets:publishToMavenLocal`
   - `cd sample/ios-app && pod install`
-  - `./gradlew -PlibraryPublish :widgets-flat:publishToMavenLocal :widgets-bottomsheet:publishToMavenLocal :widgets-sms:publishToMavenLocal` 
+  - `./gradlew -PlibraryPublish :widgets-flat:publishToMavenLocal :widgets-bottomsheet:publishToMavenLocal :widgets-sms:publishToMavenLocal :widgets-datetime-picker:publishToMavenLocal`
   - sample apps priority use the locally published version
   - `./gradlew :sample:mpp-library:syncMultiPlatformLibraryDebugFrameworkIosX64` - compile sample shared code for iOS
   - `cd sample/ios-app && pod install` - install pods with compiled shared code

@@ -23,4 +23,4 @@ jobs:
       - name: Cocoapods install
         run: (cd sample/ios-app && pod install)
       - name: Build pods-dependent and publish local
-        run: ./gradlew -PlibraryPublish :widgets-flat:publishToMavenLocal :widgets-bottomsheet:publishToMavenLocal :widgets-sms:publishToMavenLocal
+        run: ./gradlew -PlibraryPublish :widgets-flat:publishToMavenLocal :widgets-bottomsheet:publishToMavenLocal :widgets-sms:publishToMavenLocal :widgets-datetime-picker:publishToMavenLocal
