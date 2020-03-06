@@ -11,6 +11,7 @@ import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.style.view.MarginValues
+import dev.icerock.moko.widgets.style.view.SizeSpec
 import dev.icerock.moko.widgets.style.view.WidgetSize
 import dev.icerock.moko.widgets.utils.bind
 import dev.icerock.moko.widgets.utils.dp
@@ -34,6 +35,13 @@ actual class SystemImageViewFactory actual constructor(
         when (widget.scaleType) {
             ImageWidget.ScaleType.FILL -> imageView.scaleType = ImageView.ScaleType.CENTER_CROP
             ImageWidget.ScaleType.FIT -> imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE
+        }
+        if ((size is WidgetSize.Const<*, *> &&
+                    (size.width is SizeSpec.WrapContent || size.height is SizeSpec.WrapContent)) ||
+            (size is WidgetSize.AspectByWidth<*> && size.width is SizeSpec.WrapContent) ||
+            (size is WidgetSize.AspectByHeight<*> && size.height is SizeSpec.WrapContent)
+        ) {
+            imageView.adjustViewBounds = true
         }
 
         widget.image.bind(lifecycleOwner) { image ->

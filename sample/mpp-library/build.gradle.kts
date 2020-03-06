@@ -31,12 +31,11 @@ val deps = listOf(
     Deps.Libs.MultiPlatform.mokoGraphics,
     Deps.Libs.MultiPlatform.mokoWidgets,
     Deps.Libs.MultiPlatform.mokoWidgetsFlat,
-    Deps.Libs.MultiPlatform.mokoWidgetsBottomSheet
+    Deps.Libs.MultiPlatform.mokoWidgetsBottomSheet,
+    Deps.Libs.MultiPlatform.mokoWidgetsCollection
 )
 
-setupFramework(
-    exports = deps
-)
+setupFramework(exports = emptyList())
 
 dependencies {
     mppLibrary(Deps.Libs.MultiPlatform.kotlinStdLib)
@@ -58,5 +57,6 @@ cocoaPods {
 
     pod("moko-widgets-flat", "mokoWidgetsFlat", onlyLink = true)
     pod("moko-widgets-bottomsheet", "mokoWidgetsBottomSheet", onlyLink = true)
+    pod("moko-widgets-collection", "mokoWidgetsCollection", onlyLink = true)
     pod("mppLibraryIos")
 }

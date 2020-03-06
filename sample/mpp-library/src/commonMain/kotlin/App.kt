@@ -5,6 +5,8 @@
 import com.icerockdev.library.AppTheme
 import com.icerockdev.library.MR
 import com.icerockdev.library.SharedFactory
+import com.icerockdev.library.sample.PostsScreen
+import com.icerockdev.library.sample.PostsViewModel
 import com.icerockdev.library.universal.CartScreen
 import com.icerockdev.library.universal.InfoWebViewScreen
 import com.icerockdev.library.universal.LoginScreen
@@ -24,6 +26,8 @@ import dev.icerock.moko.widgets.ImageWidget
 import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.TabsWidget
 import dev.icerock.moko.widgets.button
+import dev.icerock.moko.widgets.collection.CollectionWidget
+import dev.icerock.moko.widgets.collection.SimpleCollectionViewFactory
 import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Value
@@ -36,6 +40,8 @@ import dev.icerock.moko.widgets.factory.SystemInputViewFactory
 import dev.icerock.moko.widgets.factory.SystemTabsViewFactory
 import dev.icerock.moko.widgets.factory.SystemTextViewFactory
 import dev.icerock.moko.widgets.flat.FlatInputViewFactory
+import dev.icerock.moko.widgets.sample.CollectionImageUnitItem
+import dev.icerock.moko.widgets.sample.CollectionScreen
 import dev.icerock.moko.widgets.sample.InputWidgetGalleryScreen
 import dev.icerock.moko.widgets.sample.ProductsSearchScreen
 import dev.icerock.moko.widgets.sample.ScrollContentScreen
@@ -45,6 +51,7 @@ import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.BaseApplication
 import dev.icerock.moko.widgets.screen.Screen
 import dev.icerock.moko.widgets.screen.ScreenDesc
+import dev.icerock.moko.widgets.screen.TemplateScreen
 import dev.icerock.moko.widgets.screen.TypedScreenDesc
 import dev.icerock.moko.widgets.screen.WidgetScreen
 import dev.icerock.moko.widgets.screen.navigation.BottomNavigationItem
@@ -60,6 +67,7 @@ import dev.icerock.moko.widgets.screen.navigation.createRouter
 import dev.icerock.moko.widgets.screen.navigation.route
 import dev.icerock.moko.widgets.style.background.Background
 import dev.icerock.moko.widgets.style.background.Fill
+import dev.icerock.moko.widgets.style.background.Orientation
 import dev.icerock.moko.widgets.style.state.PressableState
 import dev.icerock.moko.widgets.style.state.SelectableState
 import dev.icerock.moko.widgets.style.view.MarginValues
@@ -108,6 +116,8 @@ class App() : BaseApplication() {
                     buildInputGalleryRouteInfo(theme, router),
                     buildSearchRouteInfo(theme, router),
                     buildTabsRouteInfo(theme, router),
+                    buildCollectionRouteInfo(theme, router),
+                    buildPostsRouteInfo(theme, router),
                     SelectGalleryScreen.RouteInfo(
                         name = "Old Demo".desc(),
                         route = router.createPushRoute(oldDemo(router))
@@ -177,6 +187,53 @@ class App() : BaseApplication() {
         )
     }
 
+    private fun buildCollectionRouteInfo(
+        theme: Theme,
+        router: NavigationScreen.Router
+    ): SelectGalleryScreen.RouteInfo {
+        val collectionTheme = Theme(theme) {
+            factory[CollectionWidget.DefaultCategory] = SimpleCollectionViewFactory(
+                orientation = Orientation.HORIZONTAL,
+                margins = MarginValues(top = 16f, bottom = 16f)
+            )
+            factory[CollectionImageUnitItem.Id.Image] = SystemImageViewFactory(
+                cornerRadius = 8f,
+                margins = MarginValues(start = 4f, end = 4f)
+            )
+        }
+        val collectionScreen = registerScreen(CollectionScreen::class) {
+            CollectionScreen(collectionTheme)
+        }
+
+        return SelectGalleryScreen.RouteInfo(
+            name = "Collection in list".desc(),
+            route = router.createPushRoute(collectionScreen)
+        )
+    }
+
+    private fun buildPostsRouteInfo(
+        theme: Theme,
+        router: NavigationScreen.Router
+    ): SelectGalleryScreen.RouteInfo {
+        val postsTheme = Theme(theme) {
+            factory[PostsScreen.Id.Collection] = SimpleCollectionViewFactory(
+                padding = PaddingValues(4f)
+            )
+        }
+
+        val postsScreen = registerScreen(PostsScreen::class) {
+            PostsScreen(
+                postsTheme,
+                PostsViewModel()
+            )
+        }
+
+        return SelectGalleryScreen.RouteInfo(
+            name = "Posts Collection".desc(),
+            route = router.createPushRoute(postsScreen)
+        )
+    }
+
     private fun oldDemo(
         router: NavigationScreen.Router
     ): TypedScreenDesc<Args.Empty, LoginScreen> {
@@ -229,6 +286,10 @@ class App() : BaseApplication() {
 
         val mainScreen = registerScreen(MainBottomNavigationScreen::class) {
             val bottomRouter = createRouter()
+
+            val templateScreen = registerScreen(TemplateScreen::class) {
+                TemplateScreen(navTitle = "Template".desc(), labelText = "Template Screen".desc(), theme = theme)
+            }
 
             val cartNavigation = registerScreen(CartNavigationScreen::class) {
                 val navigationRouter = createRouter()
@@ -305,6 +366,11 @@ class App() : BaseApplication() {
                     id = 4,
                     title = "Logout".desc(),
                     screenDesc = logoutScreen
+                )
+                tab(
+                    id = 5,
+                    title = "Empty".desc(),
+                    screenDesc = templateScreen
                 )
             }
         }

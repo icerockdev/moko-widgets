@@ -12,7 +12,9 @@ import kotlinx.cinterop.CValue
 import kotlinx.cinterop.readValue
 import kotlinx.cinterop.useContents
 import platform.CoreGraphics.CGFloat
+import platform.CoreGraphics.CGSize
 import platform.CoreGraphics.CGRectMake
+import platform.CoreGraphics.CGSizeMake
 import platform.UIKit.NSLayoutDimension
 import platform.UIKit.UIEdgeInsets
 import platform.UIKit.UIEdgeInsetsMake
@@ -165,21 +167,39 @@ fun PaddingValues.toEdgeInsets(): CValue<UIEdgeInsets> {
 }
 
 fun UIView.wrapContentHeight(width: CGFloat? = null): CGFloat {
-    val oldFrame = frame()
+    var fittingSize = CGSizeMake(width ?: 2000.0, UILayoutFittingCompressedSize.height)
+
+    println("Trying to calculate height by content width: ${fittingSize.useContents { width }}")
+
+    updateConstraints()
+    layoutSubviews()
+
+    val resultSize = systemLayoutSizeFittingSize(
+        fittingSize,
+        withHorizontalFittingPriority = UILayoutPriorityRequired,
+        verticalFittingPriority = UILayoutPriorityDefaultLow
+    ).useContents{ this }
+    println("Calculate wrap content size: W: ${resultSize.width} H: ${resultSize.height}")
+    return resultSize.height
+}
+
+fun UIView.wrapContentWidth(height: CGFloat? = null): CGFloat {
     val expandedFrame = CGRectMake(
         0.0,
         0.0,
-        width ?: UIScreen.mainScreen.bounds.useContents { this.size.width },
-        UIScreen.mainScreen.bounds.useContents { this.size.height }
+        UIScreen.mainScreen.bounds.useContents { size.width },
+        height ?: UIScreen.mainScreen.bounds.useContents { size.height }
     )
-    setFrame(expandedFrame)
+    println("== Trying to calculate height with from initial size: W: ${expandedFrame.useContents { size }.width} H:  ${expandedFrame.useContents { size }.height} ==")
+    height?.let {
+        heightAnchor.constraintEqualToConstant(it).setActive(true)
+    }
     updateConstraints()
     layoutSubviews()
-    val result = systemLayoutSizeFittingSize(
-        UILayoutFittingCompressedSize.readValue(),
-        withHorizontalFittingPriority = UILayoutPriorityRequired,
-        verticalFittingPriority = UILayoutPriorityDefaultLow
-    ).useContents { this.height }
-    setFrame(oldFrame)
-    return result
+    val resultSize = systemLayoutSizeFittingSize(
+        expandedFrame.useContents { size }.readValue(),
+        withHorizontalFittingPriority = UILayoutPriorityDefaultLow,
+        verticalFittingPriority = UILayoutPriorityRequired).useContents { this }
+    println("== Calculate wrap content size: W: ${resultSize.width} H: ${resultSize.height} ==")
+    return resultSize.width
 }

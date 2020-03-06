@@ -73,6 +73,16 @@ object Deps {
                 iosX64 = "dev.icerock.moko:widgets-bottomsheet-iosx64:${Versions.Libs.MultiPlatform.mokoWidgets}",
                 iosArm64 = "dev.icerock.moko:widgets-bottomsheet-iosarm64:${Versions.Libs.MultiPlatform.mokoWidgets}"
             )
+            val mokoWidgetsCollection = MultiPlatformLibrary(
+                common = "dev.icerock.moko:widgets-collection:${Versions.Libs.MultiPlatform.mokoWidgets}",
+                iosX64 = "dev.icerock.moko:widgets-collection-iosx64:${Versions.Libs.MultiPlatform.mokoWidgets}",
+                iosArm64 = "dev.icerock.moko:widgets-collection-iosarm64:${Versions.Libs.MultiPlatform.mokoWidgets}"
+            )
+            val mokoWidgetsDateTimePicker = MultiPlatformLibrary(
+                common = "dev.icerock.moko:widgets-datetime-picker:${Versions.Libs.MultiPlatform.mokoWidgets}",
+                iosX64 = "dev.icerock.moko:widgets-datetime-picker-iosx64:${Versions.Libs.MultiPlatform.mokoWidgets}",
+                iosArm64 = "dev.icerock.moko:widgets-datetime-picker-iosarm64:${Versions.Libs.MultiPlatform.mokoWidgets}"
+            )
             val mokoResources = MultiPlatformLibrary(
                 common = "dev.icerock.moko:resources:${Versions.Libs.MultiPlatform.mokoResources}",
                 iosX64 = "dev.icerock.moko:resources-iosx64:${Versions.Libs.MultiPlatform.mokoResources}",

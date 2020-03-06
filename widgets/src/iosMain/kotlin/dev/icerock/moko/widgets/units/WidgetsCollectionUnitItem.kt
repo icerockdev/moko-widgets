@@ -8,13 +8,16 @@ import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.units.CollectionUnitItem
 import platform.UIKit.UICollectionView
 import platform.UIKit.UICollectionViewCell
+import platform.UIKit.translatesAutoresizingMaskIntoConstraints
+import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.style.view.WidgetSize
 
 actual abstract class WidgetsCollectionUnitItem<T> actual constructor(
     override val itemId: Long,
     private val data: T
 ) : CollectionUnitItem {
     actual abstract val reuseId: String
-    actual abstract fun createWidget(data: LiveData<T>): UnitItemRoot
+    actual abstract fun createWidget(data: LiveData<T>): Widget<out WidgetSize>
 
     override val reusableIdentifier: String get() = reuseId
 
@@ -25,7 +28,7 @@ actual abstract class WidgetsCollectionUnitItem<T> actual constructor(
         )
     }
 
-    override fun bind(cell: UICollectionViewCell) {
-        cell.contentView.setupWidgetContent(data, ::createWidget)
+    override fun bind(collectionViewCell: UICollectionViewCell) {
+        collectionViewCell.contentView.setupWidgetContent(data, ::createWidget)
     }
 }

@@ -86,6 +86,7 @@ actual class ButtonWithIconViewFactory actual constructor(
         button.applyStateBackgroundIfNeeded(background)
         button.supportBackgroundTintList = null
         button.supportBackgroundTintMode = null
+        button.iconTint = null
         button.applyPaddingIfNeeded(padding)
 
         if (androidElevationEnabled == false && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

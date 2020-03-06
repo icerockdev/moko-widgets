@@ -11,10 +11,9 @@ import dev.icerock.moko.mvvm.livedata.mergeWith
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.units.CollectionUnitItem
 import dev.icerock.moko.units.TableUnitItem
-import dev.icerock.moko.widgets.CollectionWidget
 import dev.icerock.moko.widgets.ListWidget
-import dev.icerock.moko.widgets.TabsWidget
-import dev.icerock.moko.widgets.collection
+import dev.icerock.moko.widgets.collection.CollectionWidget
+import dev.icerock.moko.widgets.collection.collection
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.list

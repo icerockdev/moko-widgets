@@ -64,8 +64,8 @@ class LoadingUnitWidget(
 
         override val reuseId: String = "LoadingUnitItem"
 
-        override fun createWidget(data: LiveData<Unit>): UnitItemRoot {
-            return unitWidget.createWidget(data).let { UnitItemRoot.from(it) }
+        override fun createWidget(data: LiveData<Unit>): Widget<out WidgetSize> {
+            return unitWidget.createWidget(data)
         }
     }
 }

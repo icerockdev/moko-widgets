@@ -14,10 +14,6 @@ internal class UnitItemDecorator(
     val onBind: () -> Unit
 ) : UnitItem {
 
-//    init {
-//        layoutParams = decorated.layoutParams
-//    }
-
     override val itemId: Long get() = decorated.itemId
 
     override val viewType: Int get() = decorated.viewType
