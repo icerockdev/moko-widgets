@@ -42,6 +42,7 @@ if (!pluginPublish) {
     include(":widgets-flat")
     include(":widgets-sms")
     include(":widgets-bottomsheet")
+    include(":widgets-collection")
 
     if (!libraryPublish) {
         include(":sample:android-app")

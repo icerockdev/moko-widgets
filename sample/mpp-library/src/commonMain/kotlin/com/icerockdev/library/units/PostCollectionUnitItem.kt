@@ -7,8 +7,8 @@ package com.icerockdev.library.units
 import com.icerockdev.library.sample.PostsViewModelContract
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.map
+import dev.icerock.moko.widgets.ImageWidget
 import dev.icerock.moko.widgets.clickable
-import dev.icerock.moko.widgets.constraint
 import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Image
 import dev.icerock.moko.widgets.core.Theme
@@ -28,18 +28,17 @@ class PostCollectionUnitItem(
 ) : WidgetsCollectionUnitItem<PostsViewModelContract.PostItem>(itemId, data) {
     override val reuseId: String = "PostUnitItem"
 
-    override fun createWidget(data: LiveData<PostsViewModelContract.PostItem>): UnitItemRoot {
-        return with(theme) {
-            UnitItemRoot.from(createBody(data))
-        }
+    override fun createWidget(data: LiveData<PostsViewModelContract.PostItem>): Widget<out WidgetSize> {
+        return theme.createBody(data)
     }
 
     private fun Theme.createBody(data: LiveData<PostsViewModelContract.PostItem>) =
         clickable(
-            child = image( size = WidgetSize.AspectByWidth(
+            child = image(size = WidgetSize.AspectByWidth(
                 width = SizeSpec.AsParent,
-                aspectRatio = 0.73f
+                aspectRatio = 1.5f
             ),
+                scaleType = ImageWidget.ScaleType.FILL,
                 image = data.map { Image.network(it.imageUrl) }
             ),
             onClick = {

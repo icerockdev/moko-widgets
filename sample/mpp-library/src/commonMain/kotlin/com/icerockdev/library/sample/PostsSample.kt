@@ -12,13 +12,11 @@ import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.units.CollectionUnitItem
-import dev.icerock.moko.widgets.CollectionWidget
-import dev.icerock.moko.widgets.collection
+import dev.icerock.moko.widgets.collection.CollectionWidget
+import dev.icerock.moko.widgets.collection.collection
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
-import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.Args.Empty
-import dev.icerock.moko.widgets.screen.TypedScreenDesc
 import dev.icerock.moko.widgets.screen.WidgetScreen
 import dev.icerock.moko.widgets.screen.navigation.NavigationBar
 import dev.icerock.moko.widgets.screen.navigation.NavigationItem
@@ -27,15 +25,13 @@ import dev.icerock.moko.widgets.style.view.WidgetSize
 
 class PostsScreen(
     private val theme: Theme,
-    private val viewModel: PostsViewModelContract,
-    private val collectionCategory: CollectionWidget.Category
-): WidgetScreen<Empty>(), NavigationItem {
+    private val viewModel: PostsViewModelContract
+) : WidgetScreen<Empty>(), NavigationItem {
     fun createWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         return with(theme) {
             collection(
                 size = WidgetSize.AsParent,
                 id = Id.Collection,
-                category = collectionCategory,
                 items = viewModel.posts.map { posts ->
                     posts.map { post ->
                         PostCollectionUnitItem(
