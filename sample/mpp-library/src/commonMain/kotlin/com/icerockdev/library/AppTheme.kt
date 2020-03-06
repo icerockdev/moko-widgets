@@ -9,16 +9,16 @@ import com.icerockdev.library.sample.UsersScreen
 import com.icerockdev.library.universal.LoginScreen
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.widgets.ButtonWidget
-import dev.icerock.moko.widgets.CollectionWidget
 import dev.icerock.moko.widgets.ConstraintWidget
 import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.StatefulWidget
+import dev.icerock.moko.widgets.collection.CollectionWidget
+import dev.icerock.moko.widgets.collection.SimpleCollectionViewFactory
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.factory.ConstraintViewFactory
 import dev.icerock.moko.widgets.factory.FloatingLabelInputViewFactory
 import dev.icerock.moko.widgets.factory.StatefulViewFactory
 import dev.icerock.moko.widgets.factory.SystemButtonViewFactory
-import dev.icerock.moko.widgets.factory.SystemCollectionViewFactory
 import dev.icerock.moko.widgets.factory.SystemListViewFactory
 import dev.icerock.moko.widgets.factory.SystemTextViewFactory
 import dev.icerock.moko.widgets.style.background.Background
@@ -110,7 +110,7 @@ object AppTheme {
             )
         )
 
-        factory[PostsCollection] = SystemCollectionViewFactory(
+        factory[PostsCollection] = SimpleCollectionViewFactory(
             padding = PaddingValues(4f)
         )
     }

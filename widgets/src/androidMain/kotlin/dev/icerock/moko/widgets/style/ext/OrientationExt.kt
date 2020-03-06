@@ -31,8 +31,3 @@ internal fun Orientation.toRecyclerView(): Int = when (this) {
     Orientation.VERTICAL -> RecyclerView.VERTICAL
     Orientation.HORIZONTAL -> RecyclerView.HORIZONTAL
 }
-
-internal fun Orientation.toStaggeredGridLayoutManager(): Int = when (this) {
-    Orientation.VERTICAL -> StaggeredGridLayoutManager.VERTICAL
-    Orientation.HORIZONTAL -> StaggeredGridLayoutManager.HORIZONTAL
-}

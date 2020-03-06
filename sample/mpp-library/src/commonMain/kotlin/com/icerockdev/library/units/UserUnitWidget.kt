@@ -11,6 +11,7 @@ import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.clickable
 import dev.icerock.moko.widgets.core.Image
 import dev.icerock.moko.widgets.core.Theme
+import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.image
 import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.style.background.Orientation
@@ -109,8 +110,8 @@ class UserUnitWidget(
 
         override val reuseId: String = "UserUnitItem"
 
-        override fun createWidget(data: LiveData<Data>): UnitItemRoot {
-            return unitWidget.createWidget(data).let { UnitItemRoot.from(it) }
+        override fun createWidget(data: LiveData<Data>): Widget<out WidgetSize> {
+            return unitWidget.createWidget(data)
         }
     }
 }

@@ -17,7 +17,7 @@ import com.icerockdev.library.sample.StateScreen
 import com.icerockdev.library.sample.StateViewModel
 import com.icerockdev.library.sample.UsersScreen
 import com.icerockdev.library.sample.UsersViewModel
-import dev.icerock.moko.widgets.CollectionWidget
+import dev.icerock.moko.widgets.collection.CollectionWidget
 import dev.icerock.moko.widgets.constraint
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
@@ -81,8 +81,7 @@ class WidgetsScreen(
                         title = const("P"),
                         body = PostsScreen(
                             theme = theme,
-                            viewModel = PostsViewModel(),
-                            collectionCategory = postsCollectionCategory
+                            viewModel = PostsViewModel()
                         ).createWidget()
                     )
                     tab(

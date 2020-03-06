@@ -369,20 +369,18 @@ Please see more examples in the [sample directory](sample).
 - The [widgets directory](widgets) contains the `widgets` library;
 - The [widgets-bottomsheet directory](widgets-bottomsheet) contains the `widgets-bottomsheet` library;
 - The [widgets-sms directory](widgets-sms) contains the `widgets-sms` library;
-- The [widgets-datetime-picker directory] (widgets-datetime-picker) contains the `datetime-picker` library;
+- The [widgets-datetime-picker directory](widgets-datetime-picker) contains the `datetime-picker` library;
+- The [widgets-collection directory](widgets-collection) contains the `collection` library;
 - The [gradle-plugin directory](gradle-plugin) contains the gradle-plugin which apply compiler plugins for Native and JVM;
 - The [kotlin-plugin directory](kotlin-plugin) contains the JVM compiler plugin with code-generation from @WidgetDef annotation;
 - The [kotlin-native-plugin directory](kotlin-native-plugin) contains the Native compiler plugin with code-generation from @WidgetDef annotation;
 - The [kotlin-common-plugin directory](kotlin-common-plugin) contains the common code of JVM and Native compiler plugins;
 - The [sample directory](sample) contains sample apps for Android and iOS; plus the mpp-library connected to the apps;
 - For local testing a library use:
-  - `./gradlew -PpluginPublish publishPluginPublicationToMavenLocal`
-  - `./gradlew -PlibraryPublish :widgets:publishToMavenLocal`
-  - `cd sample/ios-app && pod install`
-  - `./gradlew -PlibraryPublish :widgets-flat:publishToMavenLocal :widgets-bottomsheet:publishToMavenLocal :widgets-sms:publishToMavenLocal :widgets-datetime-picker:publishToMavenLocal`
+  - `./publishToMavenLocal.sh`
+  - `cd sample/ios-app`
+  - `pod install`
   - sample apps priority use the locally published version
-  - `./gradlew :sample:mpp-library:syncMultiPlatformLibraryDebugFrameworkIosX64` - compile sample shared code for iOS
-  - `cd sample/ios-app && pod install` - install pods with compiled shared code
   - run android from `Android Studio` - module `android-app`, run iOS from xcode workspace `sample/ios-app/ios-app.xcworkspace`
 
 ## Contributing

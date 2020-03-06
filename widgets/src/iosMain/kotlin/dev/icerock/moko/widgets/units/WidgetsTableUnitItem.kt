@@ -11,6 +11,8 @@ import platform.UIKit.UITableView
 import platform.UIKit.UITableViewCell
 import platform.UIKit.UIView
 import platform.UIKit.subviews
+import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.style.view.WidgetSize
 
 actual abstract class WidgetsTableUnitItem<T> actual constructor(
     override val itemId: Long,
@@ -29,7 +31,7 @@ actual abstract class WidgetsTableUnitItem<T> actual constructor(
     }
 
     override fun bind(cell: UITableViewCell) {
-        cell.contentView.setupWidgetContent(data, ::createWidget)
+        cell.contentView.setupWidgetContent(data) { createWidget(it).widget }
         findAnimated(cell.contentView).forEach { it.startAnimating() }
     }
 
