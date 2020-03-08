@@ -11,6 +11,11 @@ import platform.UIKit.UICollectionViewCell
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.style.view.WidgetSize
+import platform.UIKit.bottomAnchor
+import platform.UIKit.leadingAnchor
+import platform.UIKit.leftAnchor
+import platform.UIKit.topAnchor
+import platform.UIKit.trailingAnchor
 
 actual abstract class WidgetsCollectionUnitItem<T> actual constructor(
     override val itemId: Long,
@@ -29,6 +34,16 @@ actual abstract class WidgetsCollectionUnitItem<T> actual constructor(
     }
 
     override fun bind(collectionViewCell: UICollectionViewCell) {
-        collectionViewCell.contentView.setupWidgetContent(data, ::createWidget)
+        val cvc = collectionViewCell
+        val cv = collectionViewCell.contentView
+        with(cv) {
+            setupWidgetContent(data, ::createWidget)
+            translatesAutoresizingMaskIntoConstraints = false
+
+            leadingAnchor.constraintEqualToAnchor(cvc.leadingAnchor).active = true
+            topAnchor.constraintEqualToAnchor(cvc.topAnchor).active = true
+            trailingAnchor.constraintEqualToAnchor(cvc.trailingAnchor).active = true
+            bottomAnchor.constraintEqualToAnchor(cvc.bottomAnchor).active = true
+        }
     }
 }
