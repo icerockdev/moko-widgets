@@ -45,7 +45,7 @@ object Versions {
             const val mokoMedia = "0.4.0"
             const val mokoGraphics = "0.3.0"
             const val mokoParcelize = "0.3.0"
-            const val klockVersion = "1.9.1"
+            const val klock = "1.9.1"
         }
     }
 }
