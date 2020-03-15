@@ -14,19 +14,19 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-        - name: Publish plugin
-          run: ./gradlew -PpluginPublish publishPluginPublicationToBintrayRepository -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }}
-        - name: Publish core
-          run: ./gradlew -PcorePublish :widgets:publishAllPublicationsToBintrayRepository -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }}
-        - name: Cocoapods install
-          run: (cd sample/ios-app && pod install)
-        - name: Publish flat
-          run: ./gradlew -PadditionsPublish :widgets-flat:publishAllPublicationsToBintrayRepository -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }}
-        - name: Publish bottomsheet
-          run: ./gradlew -PadditionsPublish :widgets-bottomsheet:publishAllPublicationsToBintrayRepository -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }}
-        - name: Publish sms
-          run: ./gradlew -PadditionsPublish :widgets-sms:publishAllPublicationsToBintrayRepository -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }}
-        - name: Publish datetime-picker
-          run: ./gradlew -PadditionsPublish :widgets-datetime-picker:publishAllPublicationsToBintrayRepository -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }}
-        - name: Publish collection
-          run: ./gradlew -PadditionsPublish :widgets-collection:publishAllPublicationsToBintrayRepository -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }}
+      - name: Publish plugin
+        run: ./gradlew -PpluginPublish publishPluginPublicationToBintrayRepository -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }}
+      - name: Publish core
+        run: ./gradlew -PcorePublish :widgets:publishAllPublicationsToBintrayRepository -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }}
+      - name: Cocoapods install
+        run: (cd sample/ios-app && pod install)
+      - name: Publish flat
+        run: ./gradlew -PadditionsPublish :widgets-flat:publishAllPublicationsToBintrayRepository -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }}
+      - name: Publish bottomsheet
+        run: ./gradlew -PadditionsPublish :widgets-bottomsheet:publishAllPublicationsToBintrayRepository -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }}
+      - name: Publish sms
+        run: ./gradlew -PadditionsPublish :widgets-sms:publishAllPublicationsToBintrayRepository -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }}
+      - name: Publish datetime-picker
+        run: ./gradlew -PadditionsPublish :widgets-datetime-picker:publishAllPublicationsToBintrayRepository -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }}
+      - name: Publish collection
+        run: ./gradlew -PadditionsPublish :widgets-collection:publishAllPublicationsToBintrayRepository -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }}
