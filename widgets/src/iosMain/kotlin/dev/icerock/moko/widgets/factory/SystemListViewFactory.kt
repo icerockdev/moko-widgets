@@ -51,7 +51,7 @@ actual class SystemListViewFactory actual constructor(
             frame = CGRectZero.readValue(),
             style = UITableViewStyle.UITableViewStylePlain
         )
-        val unitDataSource = UnitTableViewDataSource(tableView)
+        val unitDataSource = UnitTableViewDataSource.create(tableView)
 
         with(tableView) {
             translatesAutoresizingMaskIntoConstraints = false

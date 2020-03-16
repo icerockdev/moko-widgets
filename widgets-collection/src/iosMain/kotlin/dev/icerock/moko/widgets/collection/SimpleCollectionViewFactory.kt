@@ -88,7 +88,7 @@ actual class SimpleCollectionViewFactory actual constructor(
                 )
             }
         }
-        val unitDataSource = UnitCollectionViewDataSource(collectionView)
+        val unitDataSource = UnitCollectionViewDataSource.create(collectionView)
 
         with(collectionView) {
             translatesAutoresizingMaskIntoConstraints = false
