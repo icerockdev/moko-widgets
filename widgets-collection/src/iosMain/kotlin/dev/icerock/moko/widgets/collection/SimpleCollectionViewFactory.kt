@@ -6,6 +6,7 @@ package dev.icerock.moko.widgets.collection
 
 import cocoapods.mokoWidgetsCollection.ALCollectionFlowLayout
 import dev.icerock.moko.units.UnitCollectionViewDataSource
+import dev.icerock.moko.units.createUnitCollectionViewDataSource
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
@@ -88,7 +89,7 @@ actual class SimpleCollectionViewFactory actual constructor(
                 )
             }
         }
-        val unitDataSource = UnitCollectionViewDataSource.create(collectionView)
+        val unitDataSource = createUnitCollectionViewDataSource(collectionView)
 
         with(collectionView) {
             translatesAutoresizingMaskIntoConstraints = false

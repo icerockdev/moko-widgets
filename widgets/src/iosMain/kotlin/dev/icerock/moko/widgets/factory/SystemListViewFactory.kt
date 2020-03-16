@@ -6,6 +6,7 @@ package dev.icerock.moko.widgets.factory
 
 import dev.icerock.moko.units.TableUnitItem
 import dev.icerock.moko.units.UnitTableViewDataSource
+import dev.icerock.moko.units.createUnitTableViewDataSource
 import dev.icerock.moko.widgets.ListWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
@@ -51,7 +52,7 @@ actual class SystemListViewFactory actual constructor(
             frame = CGRectZero.readValue(),
             style = UITableViewStyle.UITableViewStylePlain
         )
-        val unitDataSource = UnitTableViewDataSource.create(tableView)
+        val unitDataSource = createUnitTableViewDataSource(tableView)
 
         with(tableView) {
             translatesAutoresizingMaskIntoConstraints = false
