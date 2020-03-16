@@ -10,7 +10,7 @@ object Versions {
     }
 
     const val kotlin = "1.3.70"
-    private const val mokoWidgets = "0.1.0-dev-16"
+    private const val mokoWidgets = "0.1.0-dev-17"
     private const val mokoResources = "0.9.0"
 
     object Plugins {
@@ -41,7 +41,7 @@ object Versions {
             const val mokoResources = Versions.mokoResources
             const val mokoMvvm = "0.6.0"
             const val mokoFields = "0.3.0"
-            const val mokoUnits = "0.3.0"
+            const val mokoUnits = "0.3.1"
             const val mokoMedia = "0.4.0"
             const val mokoGraphics = "0.3.0"
             const val mokoParcelize = "0.3.0"
