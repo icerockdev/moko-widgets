@@ -1,12 +1,12 @@
 ![moko-widgets](https://user-images.githubusercontent.com/5010169/70204294-93a45900-1752-11ea-9bb6-820d514ceef9.png)  
-[![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![Download](https://api.bintray.com/packages/icerockdev/moko/moko-widgets/images/download.svg) ](https://bintray.com/icerockdev/moko/moko-widgets/_latestVersion) ![kotlin-version](https://img.shields.io/badge/kotlin-1.3.61-orange)
+[![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![Download](https://api.bintray.com/packages/icerockdev/moko/moko-widgets/images/download.svg) ](https://bintray.com/icerockdev/moko/moko-widgets/_latestVersion) ![kotlin-version](https://img.shields.io/badge/kotlin-1.3.70-orange)
 
 # Mobile Kotlin widgets
 This is a Kotlin MultiPlatform library that provides declarative UI and application screens management
  in common code. You can implement full application for Android and iOS only from common code with it.  
 
 ## Current status
-Current version - `0.1.0-dev-15`. Dev version is not tested in production tasks yet, API can be changed and
+Current version - `0.1.0-dev-16`. Dev version is not tested in production tasks yet, API can be changed and
  bugs may be found. But dev version is chance to test limits of API and concepts to feedback and improve lib.
  We open for any feedback and ideas (go to issues or #moko at [kotlinlang.slack.com](https://kotlinlang.slack.com))!
 
@@ -199,7 +199,7 @@ val loginScreen = Theme(baseTheme) {
 - **reactive data handling**.
 
 ## Requirements
-- Gradle version 5.4.1+
+- Gradle version 5.6.4+
 - Android API 16+
 - iOS version 9.0+
 
@@ -222,6 +222,8 @@ val loginScreen = Theme(baseTheme) {
   - 0.1.0-dev-13
   - 0.1.0-dev-14
   - 0.1.0-dev-15
+- kotlin 1.3.70
+  - 0.1.0-dev-16
 
 ## Installation
 root build.gradle  
@@ -236,13 +238,8 @@ allprojects {
 project build.gradle
 ```groovy
 dependencies {
-    commonMainApi("dev.icerock.moko:widgets:0.1.0-dev-15")
+    commonMainApi("dev.icerock.moko:widgets:0.1.0-dev-16")
 }
-```
-
-settings.gradle  
-```groovy
-enableFeaturePreview("GRADLE_METADATA")
 ```
 
 ### Codegen for new Widgets with @WidgetDef
@@ -254,7 +251,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "dev.icerock.moko.widgets:gradle-plugin:0.1.0-dev-15"
+        classpath "dev.icerock.moko.widgets:gradle-plugin:0.1.0-dev-16"
     }
 }
 
