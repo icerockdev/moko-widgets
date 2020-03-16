@@ -9,9 +9,9 @@ object Versions {
         const val minSdk = 16
     }
 
-    const val kotlin = "1.3.61"
-    private const val mokoWidgets = "0.1.0-dev-15"
-    private const val mokoResources = "0.8.0"
+    const val kotlin = "1.3.70"
+    private const val mokoWidgets = "0.1.0-dev-16"
+    private const val mokoResources = "0.9.0"
 
     object Plugins {
         const val mokoWidgets = Versions.mokoWidgets
@@ -35,17 +35,17 @@ object Versions {
         }
 
         object MultiPlatform {
-            const val coroutines = "1.3.3"
+            const val coroutines = "1.3.4"
 
             const val mokoWidgets = Versions.mokoWidgets
             const val mokoResources = Versions.mokoResources
-            const val mokoMvvm = "0.4.0"
-            const val mokoFields = "0.2.0"
-            const val mokoUnits = "0.2.2"
-            const val mokoMedia = "0.2.0"
-            const val mokoGraphics = "0.2.0"
-            const val mokoParcelize = "0.2.0"
-            const val klockVersion = "1.8.4"
+            const val mokoMvvm = "0.6.0"
+            const val mokoFields = "0.3.0"
+            const val mokoUnits = "0.3.0"
+            const val mokoMedia = "0.4.0"
+            const val mokoGraphics = "0.3.0"
+            const val mokoParcelize = "0.3.0"
+            const val klock = "1.9.1"
         }
     }
 }

@@ -79,16 +79,16 @@ internal fun <T> UIView.setupWidgetContent(
             anchor = view.trailingAnchor,
             constant = edges.trailing
         ).apply {
-            active = true
             priority = UILayoutPriorityDefaultHigh
+            active = true
         }
 
         bottomAnchor.constraintEqualToAnchor(
             anchor = view.bottomAnchor,
             constant = edges.bottom
         ).apply {
-            active = true
             priority = UILayoutPriorityDefaultHigh
+            active = true
         }
 
         this.setWidgetLiveData(mutableLiveData)

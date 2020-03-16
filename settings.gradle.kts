@@ -25,12 +25,9 @@ enableFeaturePreview("GRADLE_METADATA")
 
 val properties = startParameter.projectProperties
 
-// ./gradlew -PpluginPublish publishPluginPublicationToMavenLocal
 val pluginPublish: Boolean = properties.containsKey("pluginPublish")
-
-// ./gradlew -PlibraryPublish :widgets:publishToMavenLocal
-// ./gradlew -PlibraryPublish :widgets-flat:publishToMavenLocal :widgets-bottomsheet:publishToMavenLocal :widgets-sms:publishToMavenLocal
-val libraryPublish: Boolean = properties.containsKey("libraryPublish")
+val corePublish: Boolean = properties.containsKey("corePublish")
+val additionsPublish: Boolean = properties.containsKey("additionsPublish")
 
 include(":kotlin-common-plugin")
 include(":kotlin-plugin")
@@ -39,14 +36,17 @@ include(":gradle-plugin")
 
 if (!pluginPublish) {
     include(":widgets")
-    include(":widgets-flat")
-    include(":widgets-sms")
-    include(":widgets-bottomsheet")
-    include(":widgets-collection")
-    include(":widgets-datetime-picker")
 
-    if (!libraryPublish) {
-        include(":sample:android-app")
-        include(":sample:mpp-library")
+    if(!corePublish) {
+        include(":widgets-flat")
+        include(":widgets-sms")
+        include(":widgets-bottomsheet")
+        include(":widgets-collection")
+        include(":widgets-datetime-picker")
+
+        if (!additionsPublish) {
+            include(":sample:android-app")
+            include(":sample:mpp-library")
+        }
     }
 }
