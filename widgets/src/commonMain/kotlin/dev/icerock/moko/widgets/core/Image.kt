@@ -11,7 +11,7 @@ expect abstract class Image {
 
     companion object {
         fun resource(imageResource: ImageResource): Image
-        fun network(url: String): Image
+        fun network(url: String, placeholder: ImageResource? = null): Image
         fun bitmap(bitmap: Bitmap): Image
     }
 }
