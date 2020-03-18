@@ -30,6 +30,7 @@ class WebViewWidget<WS : WidgetSize>(
     override val id: Id?,
     val targetUrl: String,
     val isJavaScriptEnabled: Boolean = true,
+    val androidIsDomStorageEnabled: Boolean = true,
     val isWebPageLoading: MutableLiveData<Boolean>? = null,
     val successRedirectConfig: WebViewWidget.RedirectConfig? = null,
     val failureRedirectConfig: WebViewWidget.RedirectConfig? = null
