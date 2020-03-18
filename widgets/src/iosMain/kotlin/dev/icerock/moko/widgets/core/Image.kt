@@ -22,8 +22,8 @@ actual abstract class Image {
             return ResourceImage(imageResource)
         }
 
-        actual fun network(url: String): Image {
-            return NetworkImage(url)
+        actual fun network(url: String, placeholder: ImageResource?): Image {
+            return NetworkImage(url, placeholder)
         }
 
         actual fun bitmap(bitmap: Bitmap): Image {
@@ -51,10 +51,11 @@ class BitmapImage(
 
 // TODO add https://github.com/SDWebImage/SDWebImage to cache images
 class NetworkImage(
-    private val url: String
+    private val url: String,
+    private val placeholder: ImageResource?
 ) : Image() {
     override fun apply(view: UIView, block: (UIImage?) -> Unit) {
-        block(null)
+        block(placeholder?.toUIImage())
 
         try {
             val tag = url.hashCode().toLong()
