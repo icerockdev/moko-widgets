@@ -19,8 +19,8 @@ actual abstract class Image {
             return ResourceImage(imageResource)
         }
 
-        actual fun network(url: String): Image {
-            return NetworkImage(url)
+        actual fun network(url: String, placeholder: ImageResource?): Image {
+            return NetworkImage(url, placeholder)
         }
 
         actual fun bitmap(bitmap: Bitmap): Image {
@@ -35,11 +35,18 @@ private class ResourceImage(val imageResource: ImageResource) : Image() {
     }
 }
 
-private class NetworkImage(val url: String) : Image() {
+private class NetworkImage(val url: String, val placeholder: ImageResource?) : Image() {
     override fun loadIn(imageView: ImageView) {
+
         Glide.with(imageView)
             .load(Uri.parse(url))
+            .apply {
+                if(placeholder != null) {
+                    placeholder(placeholder.drawableResId)
+                }
+            }
             .into(imageView)
+
     }
 }
 

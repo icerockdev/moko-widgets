@@ -38,6 +38,7 @@ actual class WebViewFactory actual constructor(
         val root = WebView(context).apply {
             applyBackgroundIfNeeded(this@WebViewFactory.background)
             settings.javaScriptEnabled = widget.isJavaScriptEnabled
+            settings.domStorageEnabled = widget.androidIsDomStorageEnabled
 
             webViewClient = CustomWebViewClient(
                 successRedirectConfig = widget.successRedirectConfig,
