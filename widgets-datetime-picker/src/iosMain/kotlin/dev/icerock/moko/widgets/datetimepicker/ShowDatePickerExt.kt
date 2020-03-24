@@ -30,6 +30,7 @@ import platform.UIKit.UIControlEventTouchUpInside
 import platform.UIKit.UIApplication
 import platform.Foundation.NSBundle
 import platform.Foundation.NSDate
+import platform.Foundation.NSTimeIntervalSince1970
 
 actual class DatePickerDialogHandler(
     val positive: ((dialogId: Int, date: DateTime) -> Unit)?,
@@ -212,29 +213,18 @@ class DatePickerController(
             anchor = controlPanel.topAnchor
         ).active = true
 
-        val nsDate = NSDate()
-        val date = DateTime.nowUnix()
-        val diffDate = date - nsDate.timeIntervalSinceReferenceDate
-
-        if (startDate != null) {
-            startDate.unixMillis
-            datePicker.minimumDate = NSDate(startDate.unixMillis - diffDate)
-        }
-
-        if (endDate != null) {
-            endDate.unixMillis
-            datePicker.maximumDate = NSDate(endDate.unixMillis - diffDate)
-        }
+        datePicker.minimumDate = startDate?.toNSDate()
+        datePicker.maximumDate = endDate?.toNSDate()
 
         if (selectedDate != null) {
-            datePicker.setDate(NSDate(selectedDate.unixMillis - diffDate))
+            datePicker.setDate(selectedDate.toNSDate())
         }
 
         doneButton.setEventHandler(UIControlEventTouchUpInside) {
             this.dismissViewControllerAnimated(flag = true, completion = null)
             handler.positive?.invoke(
                 dialogId,
-                DateTime(diffDate + datePicker.date.timeIntervalSinceReferenceDate)
+                datePicker.date.toKlock()
             )
         }
         cancelButton.setEventHandler(UIControlEventTouchUpInside) {
@@ -242,5 +232,12 @@ class DatePickerController(
             handler.negative?.invoke(dialogId)
         }
     }
+}
 
+internal fun DateTime.toNSDate(): NSDate {
+    return NSDate((unixMillis / 1000) - NSTimeIntervalSince1970)
+}
+
+internal fun NSDate.toKlock(): DateTime {
+    return DateTime(unixMillis = (this.timeIntervalSinceReferenceDate() + NSTimeIntervalSince1970) * 1000)
 }
