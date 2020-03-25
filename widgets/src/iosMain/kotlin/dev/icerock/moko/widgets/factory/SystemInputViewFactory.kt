@@ -110,14 +110,15 @@ actual class SystemInputViewFactory actual constructor(
                 )
             }
         }
+        
+        var valueFormatter: DefaultTextFormatter? = null
 
         widget.inputType?.mask?.let { mask ->
-            val delegate = DefaultFormatterUITextFieldDelegate(
-                inputFormatter = DefaultTextFormatter(
-                    mask.toIosPattern(),
-                    patternSymbol = '#'
-                )
+            valueFormatter = DefaultTextFormatter(
+                mask.toIosPattern(),
+                patternSymbol = '#'
             )
+            val delegate = DefaultFormatterUITextFieldDelegate(inputFormatter = valueFormatter!!)
             textField.delegate = delegate
             setAssociatedObject(textField, delegate)
         }
@@ -133,7 +134,7 @@ actual class SystemInputViewFactory actual constructor(
 
         widget.enabled?.bind { textField.enabled = it }
         widget.label.bind { textField.placeholder = it.localized() }
-        widget.field.data.bind { textField.text = it }
+        widget.field.data.bind { textField.text = valueFormatter?.format(it) ?: it }
 
         return ViewBundle(
             view = textField,
