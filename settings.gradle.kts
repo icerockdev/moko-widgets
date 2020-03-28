@@ -43,6 +43,7 @@ if (!pluginPublish) {
         include(":widgets-bottomsheet")
         include(":widgets-collection")
         include(":widgets-datetime-picker")
+        include(":widgets-image-network")
 
         if (!additionsPublish) {
             include(":sample:android-app")
