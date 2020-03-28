@@ -28,6 +28,8 @@ android {
         versionName = Versions.Libs.MultiPlatform.mokoWidgets
 
         vectorDrawables.useSupportLibrary = true
+
+        multiDexEnabled = true
     }
 
     buildTypes {
