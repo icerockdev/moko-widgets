@@ -21,6 +21,7 @@ import dev.icerock.moko.widgets.core.Image
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Value
 import dev.icerock.moko.widgets.image
+import dev.icerock.moko.widgets.imagenetwork.network
 import dev.icerock.moko.widgets.input
 import dev.icerock.moko.widgets.linear
 import dev.icerock.moko.widgets.screen.Args

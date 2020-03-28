@@ -6,13 +6,19 @@ PODS:
   - moko-widgets-collection (0.1.0)
   - moko-widgets-flat (0.1.0):
     - InputMask (~> 5.0.0)
+  - moko-widgets-image-network (0.1.0):
+    - SDWebImage (~> 5.0)
   - mppLibraryIos (0.1.0)
   - MultiPlatformLibrary (0.1.0)
+  - SDWebImage (5.6.1):
+    - SDWebImage/Core (= 5.6.1)
+  - SDWebImage/Core (5.6.1)
 
 DEPENDENCIES:
   - moko-widgets-bottomsheet (from `../../`)
   - moko-widgets-collection (from `../../`)
   - moko-widgets-flat (from `../../`)
+  - moko-widgets-image-network (from `../../`)
   - mppLibraryIos (from `../mpp-library`)
   - MultiPlatformLibrary (from `../mpp-library`)
 
@@ -21,6 +27,7 @@ SPEC REPOS:
     - InputMask
   trunk:
     - FloatingPanel
+    - SDWebImage
 
 EXTERNAL SOURCES:
   moko-widgets-bottomsheet:
@@ -28,6 +35,8 @@ EXTERNAL SOURCES:
   moko-widgets-collection:
     :path: "../../"
   moko-widgets-flat:
+    :path: "../../"
+  moko-widgets-image-network:
     :path: "../../"
   mppLibraryIos:
     :path: "../mpp-library"
@@ -40,9 +49,11 @@ SPEC CHECKSUMS:
   moko-widgets-bottomsheet: 68e942940b15bf0c6605675140d907fdb79db31d
   moko-widgets-collection: 722c6fca0b0dcab0b54fdb674b4638d4f715434c
   moko-widgets-flat: 3d68acddc0469a1288ede5b5b63b6588de5aa5e1
+  moko-widgets-image-network: 074870717767dfcc1a0e942a0a070ad183c01195
   mppLibraryIos: 72c3984fbaa53978d678e62096fd613e67839f0c
   MultiPlatformLibrary: 176fb8ade516666cd47e93de1b71ba0441a541bb
+  SDWebImage: 7edb9c3ea661e77a66661f7f044de8c1b55d1120
 
-PODFILE CHECKSUM: d67011d3954d166daed6874ad60b67569d84c8b3
+PODFILE CHECKSUM: 028fe9afc77c75c739108a4421bc4275cd2705cd
 
 COCOAPODS: 1.9.0

@@ -18,4 +18,5 @@ target 'TestProj' do
   pod 'moko-widgets-flat', :path => '../../'
   pod 'moko-widgets-bottomsheet', :path => '../../'
   pod 'moko-widgets-collection', :path => '../../'
+  pod 'moko-widgets-image-network', :path => '../../'
 end

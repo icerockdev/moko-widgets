@@ -32,7 +32,8 @@ val deps = listOf(
     Deps.Libs.MultiPlatform.mokoWidgets,
     Deps.Libs.MultiPlatform.mokoWidgetsFlat,
     Deps.Libs.MultiPlatform.mokoWidgetsBottomSheet,
-    Deps.Libs.MultiPlatform.mokoWidgetsCollection
+    Deps.Libs.MultiPlatform.mokoWidgetsCollection,
+    Deps.Libs.MultiPlatform.mokoWidgetsImageNetwork
 )
 
 setupFramework(exports = emptyList())
@@ -58,5 +59,6 @@ cocoaPods {
     pod("moko-widgets-flat", "mokoWidgetsFlat", onlyLink = true)
     pod("moko-widgets-bottomsheet", "mokoWidgetsBottomSheet", onlyLink = true)
     pod("moko-widgets-collection", "mokoWidgetsCollection", onlyLink = true)
+    pod("moko-widgets-image-network", "mokoWidgetsImageNetwork", onlyLink = true)
     pod("mppLibraryIos")
 }

@@ -31,4 +31,6 @@ jobs:
       - name: Check datetime-picker
         run: ./gradlew -PadditionsPublish :widgets-datetime-picker:publishToMavenLocal 
       - name: Check collection
-        run: ./gradlew -PadditionsPublish :widgets-collection:publishToMavenLocal 
+        run: ./gradlew -PadditionsPublish :widgets-collection:publishToMavenLocal
+      - name: Check image network
+        run: ./gradlew -PadditionsPublish :widgets-image-network:publishToMavenLocal

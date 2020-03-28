@@ -19,6 +19,7 @@ import dev.icerock.moko.widgets.core.Image
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.image
+import dev.icerock.moko.widgets.imagenetwork.network
 import dev.icerock.moko.widgets.list
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.WidgetScreen
