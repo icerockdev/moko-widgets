@@ -60,4 +60,5 @@ cocoaPods {
     pod("moko-widgets-bottomsheet", "mokoWidgetsBottomSheet", onlyLink = true)
     pod("moko-widgets-collection", "mokoWidgetsCollection", onlyLink = true)
     pod("mppLibraryIos")
+    pod("SDWebImage", onlyLink = true)
 }

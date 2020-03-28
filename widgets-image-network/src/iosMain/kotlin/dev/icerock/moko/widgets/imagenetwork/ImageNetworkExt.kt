@@ -4,12 +4,10 @@
 
 package dev.icerock.moko.widgets.imagenetwork
 
+import cocoapods.SDWebImage.sd_internalSetImageWithURL
 import dev.icerock.moko.resources.ImageResource
 import dev.icerock.moko.widgets.core.Image
-import dev.icerock.moko.widgets.objc.dataTask
 import platform.Foundation.NSURL
-import platform.Foundation.NSURLSession
-import platform.Foundation.NSURLSessionConfiguration
 import platform.UIKit.UIImage
 import platform.UIKit.UIView
 
@@ -19,33 +17,28 @@ actual fun Image.Companion.network(
 ): Image {
     return object : Image() {
         override fun apply(view: UIView, block: (UIImage?) -> Unit) {
-            block(placeholder?.toUIImage())
+            val tag = url.hashCode().toLong()
+            view.tag = tag
 
-            try {
-                val tag = url.hashCode().toLong()
-                view.tag = tag
-                val nsUrl = NSURL.URLWithString(url) ?: return
-
-                val config = NSURLSessionConfiguration.defaultSessionConfiguration().apply {
-                    timeoutIntervalForRequest = 60.0
-                }
-                dataTask(
-                    session = NSURLSession.sessionWithConfiguration(config),
-                    url = nsUrl
-                ) { data, _, error ->
-                    if (error != null) {
-                        println(error)
-                        return@dataTask
-                    }
-                    if (data == null) return@dataTask
-
-                    if (view.tag != tag) return@dataTask
-
-                    block(UIImage.imageWithData(data))
-                }?.resume()
-            } catch (error: Throwable) {
-                error.printStackTrace()
+            val nsUrl = NSURL.URLWithString(url)
+            if (nsUrl == null) {
+                println("url \"$url\"")
+                return
             }
+
+            view.sd_internalSetImageWithURL(
+                url = nsUrl,
+                context = null,
+                placeholderImage = placeholder?.toUIImage(),
+                progress = null,
+                completed = null,
+                options = 0UL,
+                setImageBlock = { image, _, _, _ ->
+                    if (view.tag != tag) return@sd_internalSetImageWithURL // view reused
+
+                    block(image)
+                }
+            )
         }
     }
 }
