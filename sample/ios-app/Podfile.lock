@@ -7,7 +7,7 @@ PODS:
   - moko-widgets-flat (0.1.0):
     - InputMask (~> 5.0.0)
   - moko-widgets-image-network (0.1.0):
-    - SDWebImage (= 5.6.1)
+    - SDWebImage (~> 5.0)
   - mppLibraryIos (0.1.0)
   - MultiPlatformLibrary (0.1.0)
   - SDWebImage (5.6.1):
@@ -49,7 +49,7 @@ SPEC CHECKSUMS:
   moko-widgets-bottomsheet: 68e942940b15bf0c6605675140d907fdb79db31d
   moko-widgets-collection: 722c6fca0b0dcab0b54fdb674b4638d4f715434c
   moko-widgets-flat: 3d68acddc0469a1288ede5b5b63b6588de5aa5e1
-  moko-widgets-image-network: 7201bfcf151bbb7123f4129111cafa03ffc1f28d
+  moko-widgets-image-network: 074870717767dfcc1a0e942a0a070ad183c01195
   mppLibraryIos: 72c3984fbaa53978d678e62096fd613e67839f0c
   MultiPlatformLibrary: 176fb8ade516666cd47e93de1b71ba0441a541bb
   SDWebImage: 7edb9c3ea661e77a66661f7f044de8c1b55d1120

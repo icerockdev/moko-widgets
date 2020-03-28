@@ -11,7 +11,7 @@ Pod::Spec.new do |spec|
     spec.source_files             = "widgets-image-network/src/iosMain/swift/**/*.{h,m,swift}"
     spec.resources                = "widgets-image-network/src/iosMain/bundle/**/*"
 
-    spec.dependency 'SDWebImage', '5.6.1'
+    spec.dependency 'SDWebImage', '~> 5.0'
 
     spec.ios.deployment_target  = '11.0'
     spec.swift_version          = '5.0'
