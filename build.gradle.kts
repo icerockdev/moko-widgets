@@ -16,8 +16,14 @@ allprojects {
         maven { url = uri("http://dl.bintray.com/lukaville/maven") }
     }
 
-    // workaround for https://youtrack.jetbrains.com/issue/KT-27170
-    configurations.create("compileClasspath")
+    afterEvaluate {
+        dependencies {
+            if(configurations.map { it.name }.contains("compileOnly")) {
+                // fix of package javax.annotation does not exist import javax.annotation.Generated in DataBinding code
+                "compileOnly"("javax.annotation:jsr250-api:1.0")
+            }
+        }
+    }
 }
 
 tasks.register("clean", Delete::class).configure {
