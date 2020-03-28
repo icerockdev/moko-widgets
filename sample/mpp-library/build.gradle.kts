@@ -59,6 +59,6 @@ cocoaPods {
     pod("moko-widgets-flat", "mokoWidgetsFlat", onlyLink = true)
     pod("moko-widgets-bottomsheet", "mokoWidgetsBottomSheet", onlyLink = true)
     pod("moko-widgets-collection", "mokoWidgetsCollection", onlyLink = true)
+    pod("moko-widgets-image-network", "mokoWidgetsImageNetwork", onlyLink = true)
     pod("mppLibraryIos")
-    pod("SDWebImage", onlyLink = true)
 }

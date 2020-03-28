@@ -45,5 +45,5 @@ publishing {
 cocoaPods {
     podsProject = file("../sample/ios-app/Pods/Pods.xcodeproj")
 
-    pod("SDWebImage")
+    pod("moko-widgets-image-network", "mokoWidgetsImageNetwork")
 }
