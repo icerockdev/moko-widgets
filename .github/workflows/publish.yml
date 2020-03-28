@@ -30,3 +30,5 @@ jobs:
         run: ./gradlew -PadditionsPublish :widgets-datetime-picker:publishAllPublicationsToBintrayRepository -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }}
       - name: Publish collection
         run: ./gradlew -PadditionsPublish :widgets-collection:publishAllPublicationsToBintrayRepository -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }}
+       - name: Check image network
+        run: ./gradlew -PadditionsPublish :widgets-image-network:publishAllPublicationsToBintrayRepository -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }}
