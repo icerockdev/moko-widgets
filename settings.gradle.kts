@@ -13,6 +13,8 @@ pluginManagement {
         maven { url = uri("https://kotlin.bintray.com/kotlinx") }
         maven { url = uri("https://plugins.gradle.org/m2/") }
         maven { url = uri("https://dl.bintray.com/icerockdev/plugins") }
+
+        maven { url = uri("https://dl.bintray.com/icerockdev/plugins-dev") }
     }
     resolutionStrategy.eachPlugin {
         val module = Deps.plugins[requested.id.id] ?: return@eachPlugin
