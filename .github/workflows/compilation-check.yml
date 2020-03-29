@@ -21,11 +21,6 @@ jobs:
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven
-      - uses: actions/cache@v1
-        name: Cache ~/.konan
-        with:
-          path: ~/.konan
-          key: ${{ runner.os }}-konan
       - name: Check plugin
         run: ./gradlew -PpluginPublish publishPluginPublicationToMavenLocal
 
@@ -48,7 +43,7 @@ jobs:
         name: Cache ~/.konan
         with:
           path: ~/.konan
-          key: ${{ runner.os }}-konan
+          key: ${{ runner.os }}-kn
       - name: Check core
         run: ./gradlew -PcorePublish :widgets:publishToMavenLocal
 
@@ -71,7 +66,7 @@ jobs:
         name: Cache ~/.konan
         with:
           path: ~/.konan
-          key: ${{ runner.os }}-konan
+          key: ${{ runner.os }}-kn
       - name: Cocoapods install
         run: (cd sample/ios-app && pod install)
       - name: Check flat
@@ -96,7 +91,7 @@ jobs:
         name: Cache ~/.konan
         with:
           path: ~/.konan
-          key: ${{ runner.os }}-konan
+          key: ${{ runner.os }}-kn
       - name: Cocoapods install
         run: (cd sample/ios-app && pod install)
       - name: Check bottomsheet
@@ -121,7 +116,7 @@ jobs:
         name: Cache ~/.konan
         with:
           path: ~/.konan
-          key: ${{ runner.os }}-konan
+          key: ${{ runner.os }}-kn
       - name: Cocoapods install
         run: (cd sample/ios-app && pod install)
       - name: Check sms
@@ -146,7 +141,7 @@ jobs:
         name: Cache ~/.konan
         with:
           path: ~/.konan
-          key: ${{ runner.os }}-konan
+          key: ${{ runner.os }}-kn
       - name: Cocoapods install
         run: (cd sample/ios-app && pod install)
       - name: Check datetime-picker
@@ -171,7 +166,7 @@ jobs:
         name: Cache ~/.konan
         with:
           path: ~/.konan
-          key: ${{ runner.os }}-konan
+          key: ${{ runner.os }}-kn
       - name: Cocoapods install
         run: (cd sample/ios-app && pod install)
       - name: Check collection
@@ -196,7 +191,7 @@ jobs:
         name: Cache ~/.konan
         with:
           path: ~/.konan
-          key: ${{ runner.os }}-konan
+          key: ${{ runner.os }}-kn
       - name: Cocoapods install
         run: (cd sample/ios-app && pod install)
       - name: Check image network
