@@ -34,14 +34,14 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
           restore-keys: ${{ runner.os }}-gradle
       - name: Compile plugin
-        run: gradle -PpluginPublish publishPluginPublicationToMavenLocal
+        run: ./gradlew -PdevPublish -PpluginPublish publishPluginPublicationToMavenLocal
       - name: Compile core
-        run: gradle -PcorePublish :widgets:publishToMavenLocal
+        run: ./gradlew -PdevPublish -PcorePublish :widgets:publishToMavenLocal
       - name: Cocoapods install
         run: (cd sample/ios-app && pod install)
       - name: Compile additions
         run: |
-          gradle -PadditionsPublish :widgets-flat:publishToMavenLocal \
+          ./gradlew -PdevPublish -PadditionsPublish :widgets-flat:publishToMavenLocal \
           :widgets-bottomsheet:publishToMavenLocal \
           :widgets-sms:publishToMavenLocal \
           :widgets-datetime-picker:publishToMavenLocal \
@@ -49,7 +49,7 @@ jobs:
           :widgets-image-network:publishToMavenLocal
       - name: Publish all to bintray
         run: |
-          gradle --no-parallel -PdevPublish publishPluginPublicationToBintrayDevRepository \
+          ./gradlew --no-parallel -PdevPublish publishPluginPublicationToBintrayDevRepository \
           :widgets:publishAllPublicationsToBintrayDevRepository \
           :widgets-flat:publishAllPublicationsToBintrayDevRepository \
           :widgets-bottomsheet:publishAllPublicationsToBintrayDevRepository \

@@ -35,14 +35,14 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
           restore-keys: ${{ runner.os }}-gradle
       - name: Check plugin
-        run: gradle -PpluginPublish publishPluginPublicationToMavenLocal
+        run: ./gradlew -PpluginPublish publishPluginPublicationToMavenLocal
       - name: Check core
-        run: gradle -PcorePublish :widgets:publishToMavenLocal
+        run: ./gradlew -PcorePublish :widgets:publishToMavenLocal
       - name: Cocoapods install
         run: (cd sample/ios-app && pod install)
       - name: Check additions
         run: |
-          gradle -PadditionsPublish :widgets-flat:publishToMavenLocal \
+          ./gradlew -PadditionsPublish :widgets-flat:publishToMavenLocal \
           :widgets-bottomsheet:publishToMavenLocal \
           :widgets-sms:publishToMavenLocal \
           :widgets-datetime-picker:publishToMavenLocal \
