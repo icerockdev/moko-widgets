@@ -20,12 +20,16 @@ jobs:
         name: Cache ~/.m2/repository
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-maven
+          key: ${{ runner.os }}-maven-${{ hashFiles('buildSrc/src/main/kotlin/**/*') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
       - uses: actions/cache@v1
         name: Cache ~/.konan
         with:
           path: ~/.konan
-          key: ${{ runner.os }}-kn
+          key: ${{ runner.os }}-kn-${{ hashFiles('buildSrc/build.gradle.kts') }}
+          restore-keys: |
+            ${{ runner.os }}-kn-
       - name: Check plugin
         run: ./gradlew -PpluginPublish publishPluginPublicationToMavenLocal
       - name: Check core
