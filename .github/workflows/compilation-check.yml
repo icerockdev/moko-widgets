@@ -7,7 +7,7 @@ on:
       - develop
 
 jobs:
-  build:
+  plugin-build:
     runs-on: macOS-latest
 
     steps:
@@ -16,21 +16,172 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
+      - uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven
+      - uses: actions/cache@v1
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-kotlin-native
       - name: Check plugin
         run: ./gradlew -PpluginPublish publishPluginPublicationToMavenLocal
+
+  core-build:
+    runs-on: macOS-latest
+    needs: plugin-build
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven
+      - uses: actions/cache@v1
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-kotlin-native
       - name: Check core
         run: ./gradlew -PcorePublish :widgets:publishToMavenLocal
+
+  additions-flat-build:
+    runs-on: macOS-latest
+    needs: core-build
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven
+      - uses: actions/cache@v1
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-kotlin-native
       - name: Cocoapods install
         run: (cd sample/ios-app && pod install)
       - name: Check flat
-        run: ./gradlew -PadditionsPublish :widgets-flat:publishToMavenLocal 
+        run: ./gradlew -PadditionsPublish :widgets-flat:publishToMavenLocal
+
+  additions-bottomsheet-build:
+    runs-on: macOS-latest
+    needs: core-build
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven
+      - uses: actions/cache@v1
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-kotlin-native
+      - name: Cocoapods install
+        run: (cd sample/ios-app && pod install)
       - name: Check bottomsheet
-        run: ./gradlew -PadditionsPublish :widgets-bottomsheet:publishToMavenLocal 
+        run: ./gradlew -PadditionsPublish :widgets-bottomsheet:publishToMavenLocal
+
+  additions-sms-build:
+    runs-on: macOS-latest
+    needs: core-build
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven
+      - uses: actions/cache@v1
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-kotlin-native
+      - name: Cocoapods install
+        run: (cd sample/ios-app && pod install)
       - name: Check sms
-        run: ./gradlew -PadditionsPublish :widgets-sms:publishToMavenLocal 
+        run: ./gradlew -PadditionsPublish :widgets-sms:publishToMavenLocal
+
+  additions-datetime-picker-build:
+    runs-on: macOS-latest
+    needs: core-build
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven
+      - uses: actions/cache@v1
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-kotlin-native
+      - name: Cocoapods install
+        run: (cd sample/ios-app && pod install)
       - name: Check datetime-picker
-        run: ./gradlew -PadditionsPublish :widgets-datetime-picker:publishToMavenLocal 
+        run: ./gradlew -PadditionsPublish :widgets-datetime-picker:publishToMavenLocal
+
+  additions-collection-build:
+    runs-on: macOS-latest
+    needs: core-build
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven
+      - uses: actions/cache@v1
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-kotlin-native
+      - name: Cocoapods install
+        run: (cd sample/ios-app && pod install)
       - name: Check collection
         run: ./gradlew -PadditionsPublish :widgets-collection:publishToMavenLocal
+
+  additions-image-network-build:
+    runs-on: macOS-latest
+    needs: core-build
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven
+      - uses: actions/cache@v1
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-kotlin-native
+      - name: Cocoapods install
+        run: (cd sample/ios-app && pod install)
       - name: Check image network
         run: ./gradlew -PadditionsPublish :widgets-image-network:publishToMavenLocal
