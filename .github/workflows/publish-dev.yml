@@ -49,7 +49,9 @@ jobs:
           :widgets-image-network:publishToMavenLocal
       - name: Publish all to bintray
         run: |
-          ./gradlew --no-parallel -PdevPublish publishPluginPublicationToBintrayDevRepository \
+          ./gradlew --no-parallel -PdevPublish \
+          -Dorg.gradle.internal.publish.checksums.insecure=true \
+          publishPluginPublicationToBintrayDevRepository \
           :widgets:publishAllPublicationsToBintrayDevRepository \
           :widgets-flat:publishAllPublicationsToBintrayDevRepository \
           :widgets-bottomsheet:publishAllPublicationsToBintrayDevRepository \
