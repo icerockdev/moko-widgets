@@ -1,4 +1,4 @@
-name: KMP library publish
+name: KMP library publish dev version
 
 on:
   push:
