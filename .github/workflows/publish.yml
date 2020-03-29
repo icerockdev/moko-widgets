@@ -10,25 +10,36 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
+      - uses: actions/setup-java@v1
+        name: Set up JDK 1.8
         with:
           java-version: 1.8
+      - uses: actions/cache@v1
+        name: Cache ~/.m2/repository
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('buildSrc/src/main/kotlin/**/*') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - uses: actions/cache@v1
+        name: Cache ~/.konan
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-kn-${{ hashFiles('buildSrc/build.gradle.kts') }}
+          restore-keys: |
+            ${{ runner.os }}-kn-
       - name: Publish plugin
         run: ./gradlew -PpluginPublish publishPluginPublicationToBintrayRepository -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }}
       - name: Publish core
         run: ./gradlew -PcorePublish :widgets:publishAllPublicationsToBintrayRepository -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }}
       - name: Cocoapods install
         run: (cd sample/ios-app && pod install)
-      - name: Publish flat
-        run: ./gradlew -PadditionsPublish :widgets-flat:publishAllPublicationsToBintrayRepository -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }}
-      - name: Publish bottomsheet
-        run: ./gradlew -PadditionsPublish :widgets-bottomsheet:publishAllPublicationsToBintrayRepository -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }}
-      - name: Publish sms
-        run: ./gradlew -PadditionsPublish :widgets-sms:publishAllPublicationsToBintrayRepository -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }}
-      - name: Publish datetime-picker
-        run: ./gradlew -PadditionsPublish :widgets-datetime-picker:publishAllPublicationsToBintrayRepository -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }}
-      - name: Publish collection
-        run: ./gradlew -PadditionsPublish :widgets-collection:publishAllPublicationsToBintrayRepository -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }}
-      - name: Check image network
-        run: ./gradlew -PadditionsPublish :widgets-image-network:publishAllPublicationsToBintrayRepository -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }}
+      - name: Publish additions
+        run: |
+          ./gradlew -PadditionsPublish :widgets-flat:publishAllPublicationsToBintrayRepository \
+          :widgets-bottomsheet:publishAllPublicationsToBintrayRepository \
+          :widgets-sms:publishAllPublicationsToBintrayRepository \
+          :widgets-datetime-picker:publishAllPublicationsToBintrayRepository \
+          :widgets-collection:publishAllPublicationsToBintrayRepository \
+          :widgets-image-network:publishAllPublicationsToBintrayRepository \
+          -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }}
