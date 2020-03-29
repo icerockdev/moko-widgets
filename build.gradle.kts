@@ -62,7 +62,10 @@ allprojects {
         }
     } else if (this.name.endsWith("-plugin")) {
         this.group = "dev.icerock.moko.widgets"
-        this.version = Versions.Plugins.mokoWidgets
+        this.version = when (devPublishing) {
+            true -> getGitCommit()
+            false -> Versions.Plugins.mokoWidgets
+        }
 
         this.plugins.withType<MavenPublishPlugin> {
             this@allprojects.configure<PublishingExtension> {
