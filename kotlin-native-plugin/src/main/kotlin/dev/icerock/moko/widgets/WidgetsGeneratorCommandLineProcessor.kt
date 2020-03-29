@@ -17,7 +17,11 @@ object GenerationDir : CompilerConfigurationKey<String>("generationDir")
 class WidgetsGeneratorCommandLineProcessor : CommandLineProcessor {
     override val pluginId = CommonCommandLineProcessor.pluginId
     override val pluginOptions = listOf(
-        CliOption(CommonCommandLineProcessor.generationDirOptionName, "valdesc", "desc")
+        CliOption(
+            optionName = CommonCommandLineProcessor.generationDirOptionName,
+            description = "directory of generation sources",
+            valueDescription = "absolute path to directory"
+        )
     )
 
     override fun processOption(option: AbstractCliOption, value: String, configuration: CompilerConfiguration) {

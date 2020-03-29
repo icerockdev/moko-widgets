@@ -4,10 +4,10 @@
 
 plugins {
     id("com.android.library")
+    id("dev.icerock.mobile.multiplatform-widgets-generator")
     id("org.jetbrains.kotlin.multiplatform")
     id("dev.icerock.mobile.multiplatform")
     id("maven-publish")
-    id("dev.icerock.mobile.multiplatform-widgets-generator")
 }
 
 dependencies {

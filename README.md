@@ -268,7 +268,7 @@ allprojects {
 
 project build.gradle
 ```groovy
-apply plugin: "dev.icerock.mobile.multiplatform-widgets-generator"
+apply plugin: "dev.icerock.mobile.multiplatform-widgets-generator" // must apply before kotlin-multiplatform plugin
 ```
 
 ## Usage
