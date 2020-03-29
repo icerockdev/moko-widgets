@@ -17,13 +17,15 @@ jobs:
         with:
           java-version: 1.8
       - uses: actions/cache@v1
+        name: Cache ~/.m2/repository
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven
       - uses: actions/cache@v1
+        name: Cache ~/.konan
         with:
           path: ~/.konan
-          key: ${{ runner.os }}-kotlin-native
+          key: ${{ runner.os }}-konan
       - name: Check plugin
         run: ./gradlew -PpluginPublish publishPluginPublicationToMavenLocal
 
@@ -38,13 +40,15 @@ jobs:
         with:
           java-version: 1.8
       - uses: actions/cache@v1
+        name: Cache ~/.m2/repository
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven
       - uses: actions/cache@v1
+        name: Cache ~/.konan
         with:
           path: ~/.konan
-          key: ${{ runner.os }}-kotlin-native
+          key: ${{ runner.os }}-konan
       - name: Check core
         run: ./gradlew -PcorePublish :widgets:publishToMavenLocal
 
@@ -59,13 +63,15 @@ jobs:
         with:
           java-version: 1.8
       - uses: actions/cache@v1
+        name: Cache ~/.m2/repository
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven
       - uses: actions/cache@v1
+        name: Cache ~/.konan
         with:
           path: ~/.konan
-          key: ${{ runner.os }}-kotlin-native
+          key: ${{ runner.os }}-konan
       - name: Cocoapods install
         run: (cd sample/ios-app && pod install)
       - name: Check flat
@@ -82,13 +88,15 @@ jobs:
         with:
           java-version: 1.8
       - uses: actions/cache@v1
+        name: Cache ~/.m2/repository
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven
       - uses: actions/cache@v1
+        name: Cache ~/.konan
         with:
           path: ~/.konan
-          key: ${{ runner.os }}-kotlin-native
+          key: ${{ runner.os }}-konan
       - name: Cocoapods install
         run: (cd sample/ios-app && pod install)
       - name: Check bottomsheet
@@ -105,13 +113,15 @@ jobs:
         with:
           java-version: 1.8
       - uses: actions/cache@v1
+        name: Cache ~/.m2/repository
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven
       - uses: actions/cache@v1
+        name: Cache ~/.konan
         with:
           path: ~/.konan
-          key: ${{ runner.os }}-kotlin-native
+          key: ${{ runner.os }}-konan
       - name: Cocoapods install
         run: (cd sample/ios-app && pod install)
       - name: Check sms
@@ -128,13 +138,15 @@ jobs:
         with:
           java-version: 1.8
       - uses: actions/cache@v1
+        name: Cache ~/.m2/repository
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven
       - uses: actions/cache@v1
+        name: Cache ~/.konan
         with:
           path: ~/.konan
-          key: ${{ runner.os }}-kotlin-native
+          key: ${{ runner.os }}-konan
       - name: Cocoapods install
         run: (cd sample/ios-app && pod install)
       - name: Check datetime-picker
@@ -151,13 +163,15 @@ jobs:
         with:
           java-version: 1.8
       - uses: actions/cache@v1
+        name: Cache ~/.m2/repository
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven
       - uses: actions/cache@v1
+        name: Cache ~/.konan
         with:
           path: ~/.konan
-          key: ${{ runner.os }}-kotlin-native
+          key: ${{ runner.os }}-konan
       - name: Cocoapods install
         run: (cd sample/ios-app && pod install)
       - name: Check collection
@@ -174,13 +188,15 @@ jobs:
         with:
           java-version: 1.8
       - uses: actions/cache@v1
+        name: Cache ~/.m2/repository
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven
       - uses: actions/cache@v1
+        name: Cache ~/.konan
         with:
           path: ~/.konan
-          key: ${{ runner.os }}-kotlin-native
+          key: ${{ runner.os }}-konan
       - name: Cocoapods install
         run: (cd sample/ios-app && pod install)
       - name: Check image network
