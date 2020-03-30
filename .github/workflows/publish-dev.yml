@@ -1,8 +1,11 @@
-name: KMP library publish production version
+name: KMP library publish dev version
 
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - develop
+    paths-ignore:
+      - '**/*.md'
 
 jobs:
   build:
@@ -33,14 +36,14 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
           restore-keys: ${{ runner.os }}-gradle
       - name: Compile plugin
-        run: ./gradlew -PpluginPublish publishPluginPublicationToMavenLocal
+        run: ./gradlew -PdevPublish -PpluginPublish publishPluginPublicationToMavenLocal
       - name: Compile core
-        run: ./gradlew -PcorePublish :widgets:publishToMavenLocal
+        run: ./gradlew -PdevPublish -PcorePublish :widgets:publishToMavenLocal
       - name: Cocoapods install
         run: (cd sample/ios-app && pod install)
       - name: Compile additions
         run: |
-          ./gradlew -PadditionsPublish :widgets-flat:publishToMavenLocal \
+          ./gradlew -PdevPublish -PadditionsPublish :widgets-flat:publishToMavenLocal \
           :widgets-bottomsheet:publishToMavenLocal \
           :widgets-sms:publishToMavenLocal \
           :widgets-datetime-picker:publishToMavenLocal \
@@ -48,15 +51,15 @@ jobs:
           :widgets-image-network:publishToMavenLocal
       - name: Publish all to bintray
         run: |
-          ./gradlew --no-parallel \
+          ./gradlew --no-parallel -PdevPublish \
           -Dorg.gradle.internal.publish.checksums.insecure=true \
-          publishPluginPublicationToBintrayRepository \
-          :widgets:publishAllPublicationsToBintrayRepository \
-          :widgets-flat:publishAllPublicationsToBintrayRepository \
-          :widgets-bottomsheet:publishAllPublicationsToBintrayRepository \
-          :widgets-sms:publishAllPublicationsToBintrayRepository \
-          :widgets-datetime-picker:publishAllPublicationsToBintrayRepository \
-          :widgets-collection:publishAllPublicationsToBintrayRepository \
-          :widgets-image-network:publishAllPublicationsToBintrayRepository \
+          publishPluginPublicationToBintrayDevRepository \
+          :widgets:publishAllPublicationsToBintrayDevRepository \
+          :widgets-flat:publishAllPublicationsToBintrayDevRepository \
+          :widgets-bottomsheet:publishAllPublicationsToBintrayDevRepository \
+          :widgets-sms:publishAllPublicationsToBintrayDevRepository \
+          :widgets-datetime-picker:publishAllPublicationsToBintrayDevRepository \
+          :widgets-collection:publishAllPublicationsToBintrayDevRepository \
+          :widgets-image-network:publishAllPublicationsToBintrayDevRepository \
           -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }} \
           --stacktrace

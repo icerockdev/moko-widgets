@@ -4,22 +4,10 @@
 
 plugins {
     id("com.android.library")
+    id("dev.icerock.mobile.multiplatform-widgets-generator")
     id("org.jetbrains.kotlin.multiplatform")
     id("dev.icerock.mobile.multiplatform")
     id("maven-publish")
-    id("dev.icerock.mobile.multiplatform-widgets-generator")
-}
-
-group = "dev.icerock.moko"
-version = Versions.Libs.MultiPlatform.mokoWidgets
-
-android {
-    compileSdkVersion(Versions.Android.compileSdk)
-
-    defaultConfig {
-        minSdkVersion(Versions.Android.minSdk)
-        targetSdkVersion(Versions.Android.targetSdk)
-    }
 }
 
 dependencies {
@@ -35,17 +23,6 @@ dependencies {
     androidLibrary(Deps.Libs.Android.lifecycle)
     androidLibrary(Deps.Libs.Android.recyclerView)
     androidLibrary(Deps.Libs.Android.swipeRefreshLayout)
-}
-
-publishing {
-    repositories.maven("https://api.bintray.com/maven/icerockdev/moko/moko-widgets/;publish=1") {
-        name = "bintray"
-
-        credentials {
-            username = System.getProperty("BINTRAY_USER")
-            password = System.getProperty("BINTRAY_KEY")
-        }
-    }
 }
 
 cocoaPods {

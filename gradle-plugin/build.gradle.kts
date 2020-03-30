@@ -19,11 +19,6 @@ dependencies {
     kapt(Deps.Libs.Jvm.autoService)
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_6
-    targetCompatibility = JavaVersion.VERSION_1_6
-}
-
 buildConfigKotlin {
     sourceSet("main") {
         buildConfig(name = "compilerPluginVersion", value = Versions.Plugins.mokoWidgets)
@@ -31,20 +26,11 @@ buildConfigKotlin {
 }
 
 publishing {
-    repositories.maven("https://api.bintray.com/maven/icerockdev/plugins/moko-widgets-generator/;publish=1") {
-        name = "bintray"
-
-        credentials {
-            username = System.getProperty("BINTRAY_USER")
-            password = System.getProperty("BINTRAY_KEY")
-        }
-    }
-
     publications {
         register("plugin", MavenPublication::class) {
-            groupId = "dev.icerock.moko.widgets"
-            artifactId = "gradle-plugin"
-            version = Versions.Plugins.mokoWidgets
+            groupId = project.group.toString()
+            artifactId = project.name
+            version = project.version.toString()
 
             from(components["java"])
         }

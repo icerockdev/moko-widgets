@@ -25,12 +25,13 @@ class WidgetsGeneratorGradleSubplugin : KotlinGradleSubplugin<AbstractCompile> {
         kotlinCompilation: KotlinCompilation<KotlinCommonOptions>?
     ): List<SubpluginOption> {
         return listOf(
-            SubpluginOption("generationDir", project.getGenerationDir().path)
+            SubpluginOption("generationDir", getGenerationDir(project).path)
         )
     }
 
-    override fun isApplicable(project: Project, task: AbstractCompile) =
-        project.plugins.hasPlugin(WidgetsGeneratorGradlePlugin::class.java)
+    override fun isApplicable(project: Project, task: AbstractCompile): Boolean {
+        return project.plugins.hasPlugin(WidgetsGeneratorGradlePlugin::class.java)
+    }
 
     override fun getCompilerPluginId(): String = "widgets-generator"
 

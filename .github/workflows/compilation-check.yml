@@ -16,21 +16,36 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
+      - name: Cache ~/.m2/repository
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('buildSrc/src/main/kotlin/**/*') }}
+          restore-keys: ${{ runner.os }}-maven
+      - name: Cache ~/.konan
+        uses: actions/cache@v1
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-kn-${{ hashFiles('buildSrc/build.gradle.kts') }}
+          restore-keys: ${{ runner.os }}-kn
+      - name: Cache Gradle packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
+          restore-keys: ${{ runner.os }}-gradle
       - name: Check plugin
         run: ./gradlew -PpluginPublish publishPluginPublicationToMavenLocal
       - name: Check core
         run: ./gradlew -PcorePublish :widgets:publishToMavenLocal
       - name: Cocoapods install
         run: (cd sample/ios-app && pod install)
-      - name: Check flat
-        run: ./gradlew -PadditionsPublish :widgets-flat:publishToMavenLocal 
-      - name: Check bottomsheet
-        run: ./gradlew -PadditionsPublish :widgets-bottomsheet:publishToMavenLocal 
-      - name: Check sms
-        run: ./gradlew -PadditionsPublish :widgets-sms:publishToMavenLocal 
-      - name: Check datetime-picker
-        run: ./gradlew -PadditionsPublish :widgets-datetime-picker:publishToMavenLocal 
-      - name: Check collection
-        run: ./gradlew -PadditionsPublish :widgets-collection:publishToMavenLocal
-      - name: Check image network
-        run: ./gradlew -PadditionsPublish :widgets-image-network:publishToMavenLocal
+      - name: Check additions
+        run: |
+          ./gradlew -PadditionsPublish \
+          :widgets-flat:publishToMavenLocal \
+          :widgets-bottomsheet:publishToMavenLocal \
+          :widgets-sms:publishToMavenLocal \
+          :widgets-datetime-picker:publishToMavenLocal \
+          :widgets-collection:publishToMavenLocal \
+          :widgets-image-network:publishToMavenLocal

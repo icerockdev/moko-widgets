@@ -6,11 +6,6 @@ plugins {
     id("kotlin")
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_6
-    targetCompatibility = JavaVersion.VERSION_1_6
-}
-
 dependencies {
     compileOnly(Deps.Libs.Jvm.kotlinStdLib)
 
