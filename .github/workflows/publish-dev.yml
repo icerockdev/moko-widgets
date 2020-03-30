@@ -59,4 +59,5 @@ jobs:
           :widgets-datetime-picker:publishAllPublicationsToBintrayDevRepository \
           :widgets-collection:publishAllPublicationsToBintrayDevRepository \
           :widgets-image-network:publishAllPublicationsToBintrayDevRepository \
-          -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }}
+          -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }} \
+          --stacktrace
