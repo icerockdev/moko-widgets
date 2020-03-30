@@ -34,7 +34,8 @@ val deps = listOf(
     Deps.Libs.MultiPlatform.mokoWidgetsBottomSheet,
     Deps.Libs.MultiPlatform.mokoWidgetsCollection,
     Deps.Libs.MultiPlatform.mokoWidgetsImageNetwork,
-    Deps.Libs.MultiPlatform.mokoWidgetsPermissions
+    Deps.Libs.MultiPlatform.mokoWidgetsPermissions,
+    Deps.Libs.MultiPlatform.mokoWidgetsMedia
 )
 
 setupFramework(exports = emptyList())
