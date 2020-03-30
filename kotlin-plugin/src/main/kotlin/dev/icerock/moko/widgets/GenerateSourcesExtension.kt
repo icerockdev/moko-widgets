@@ -44,8 +44,11 @@ class GenerateSourcesExtension(private val collector: MessageCollector) : Collec
             val imports = importList?.childrenStubs
                 .orEmpty()
                 .filterIsInstance<KotlinImportDirectiveStub>()
-                .map { it.getImportedFqName() }
-                .mapNotNull { it?.asString() }
+                .mapNotNull { import ->
+                    val str = import.getImportedFqName()?.toString() ?: return@mapNotNull null
+                    if(import.isAllUnder()) "$str.*"
+                    else str
+                }
 
             return ktFileStub.childrenStubs.filterIsInstance<KotlinClassStub>().mapNotNull { classStub ->
                 val modifiersList =
