@@ -16,10 +16,9 @@ buildscript {
 
         maven { url = uri("https://dl.bintray.com/icerockdev/plugins-dev") }
     }
-
-    dependencies {
-        Deps.plugins.values.forEach {
-            classpath(it)
+    if (!properties.containsKey("pluginPublish")) {
+        dependencies {
+            Deps.plugins.values.forEach { classpath(it) }
         }
     }
 }
@@ -41,6 +40,17 @@ allprojects {
         maven { url = uri("https://dl.bintray.com/icerockdev/plugins-dev") }
     }
 
+    // Workaround for https://youtrack.jetbrains.com/issue/KT-36721.
+    pluginManager.withPlugin("kotlin-multiplatform") {
+        val kotlinExtension = project.extensions.getByName("kotlin")
+                as org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+        val uniqueName = "${project.group}.${project.name}"
+
+        kotlinExtension.targets.withType(org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget::class.java) {
+            compilations["main"].kotlinOptions.freeCompilerArgs += listOf("-module-name", uniqueName)
+        }
+    }
+
     afterEvaluate {
         dependencies {
             if (configurations.map { it.name }.contains("compileOnly")) {
@@ -50,14 +60,9 @@ allprojects {
         }
     }
 
-    val devPublishing: Boolean = properties.containsKey("devPublish")
-
     if (this.name.startsWith("widgets")) {
         this.group = "dev.icerock.moko"
-        this.version = when (devPublishing) {
-            true -> getGitCommit()
-            false -> Versions.Libs.MultiPlatform.mokoWidgets
-        }
+        this.version = Versions.Libs.MultiPlatform.mokoWidgets
 
         this.plugins.withType<MavenPublishPlugin> {
             this@allprojects.configure<PublishingExtension> {
@@ -84,10 +89,7 @@ allprojects {
         }
     } else if (this.name.endsWith("-plugin")) {
         this.group = "dev.icerock.moko.widgets"
-        this.version = when (devPublishing) {
-            true -> getGitCommit()
-            false -> Versions.Plugins.mokoWidgets
-        }
+        this.version = Versions.Plugins.mokoWidgets
 
         this.plugins.withType<MavenPublishPlugin> {
             this@allprojects.configure<PublishingExtension> {
@@ -120,15 +122,6 @@ fun PublishingExtension.registerBintrayMaven(name: String, url: String) {
             password = System.getProperty("BINTRAY_KEY")
         }
     }
-}
-
-fun getGitCommit(): String {
-    val stdout = java.io.ByteArrayOutputStream()
-    exec {
-        commandLine = listOf("git", "rev-parse", "--short", "HEAD")
-        standardOutput = stdout
-    }
-    return stdout.toString().trim()
 }
 
 tasks.register("clean", Delete::class).configure {
