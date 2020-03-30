@@ -43,10 +43,11 @@ jobs:
       - name: Check additions
         run: |
           ./gradlew -PadditionsPublish \
-          :widgets-flat:publishToMavenLocal \
-          :widgets-bottomsheet:publishToMavenLocal \
-          :widgets-sms:publishToMavenLocal \
-          :widgets-datetime-picker:publishToMavenLocal \
-          :widgets-collection:publishToMavenLocal \
-          :widgets-image-network:publishToMavenLocal \
-          :widgets-permissions:publishToMavenLocal
+          :widgets-flat:build \
+          :widgets-bottomsheet:build \
+          :widgets-sms:build \
+          :widgets-datetime-picker:build \
+          :widgets-collection:build \
+          :widgets-image-network:build \
+          :widgets-permissions:build \
+          :widgets-media:build

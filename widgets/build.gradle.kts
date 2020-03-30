@@ -21,7 +21,6 @@ dependencies {
     mppLibrary(Deps.Libs.MultiPlatform.mokoMvvm)
     mppLibrary(Deps.Libs.MultiPlatform.mokoFields)
     mppLibrary(Deps.Libs.MultiPlatform.mokoUnits)
-    mppLibrary(Deps.Libs.MultiPlatform.mokoMedia)
     mppLibrary(Deps.Libs.MultiPlatform.mokoGraphics)
     mppLibrary(Deps.Libs.MultiPlatform.mokoParcelize)
 

@@ -5,7 +5,6 @@
 package dev.icerock.moko.widgets.core
 
 import android.widget.ImageView
-import dev.icerock.moko.media.Bitmap
 import dev.icerock.moko.resources.ImageResource
 
 actual abstract class Image {
@@ -18,14 +17,6 @@ actual fun Image.Companion.resource(imageResource: ImageResource): Image {
     return object : Image() {
         override fun loadIn(imageView: ImageView) {
             imageView.setImageResource(imageResource.drawableResId)
-        }
-    }
-}
-
-actual fun Image.Companion.bitmap(bitmap: Bitmap): Image {
-    return object : Image() {
-        override fun loadIn(imageView: ImageView) {
-            imageView.setImageBitmap(bitmap.platformBitmap)
         }
     }
 }

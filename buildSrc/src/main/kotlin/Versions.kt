@@ -42,7 +42,7 @@ object Versions {
             const val mokoMvvm = "0.6.0"
             const val mokoFields = "0.3.0"
             const val mokoUnits = "0.3.1"
-            const val mokoMedia = "0.4.0"
+            const val mokoMedia = "0.4.1"
             const val mokoPermissions = "0.5.0"
             const val mokoGraphics = "0.3.0"
             const val mokoParcelize = "0.3.0"

@@ -26,6 +26,7 @@ if (!pluginPublish) {
         include(":widgets-datetime-picker")
         include(":widgets-image-network")
         include(":widgets-permissions")
+        include(":widgets-media")
 
         if (!additionsPublish) {
             include(":sample:android-app")
