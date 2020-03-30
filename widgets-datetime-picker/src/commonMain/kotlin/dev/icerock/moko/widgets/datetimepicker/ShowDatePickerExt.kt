@@ -6,7 +6,7 @@ package dev.icerock.moko.widgets.datetimepicker
 
 import com.soywiz.klock.DateTime
 import dev.icerock.moko.graphics.Color
-import dev.icerock.moko.widgets.screen.Screen
+import dev.icerock.moko.widgets.core.screen.Screen
 import kotlin.properties.ReadOnlyProperty
 
 expect class DatePickerDialogHandler

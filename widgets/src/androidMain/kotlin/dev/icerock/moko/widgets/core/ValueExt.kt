@@ -6,7 +6,7 @@ package dev.icerock.moko.widgets.core
 
 import androidx.lifecycle.LifecycleOwner
 import dev.icerock.moko.mvvm.livedata.LiveData
-import dev.icerock.moko.widgets.utils.bind
+import dev.icerock.moko.widgets.core.utils.bind
 
 fun <T> Value<T>.bind(lifecycleOwner: LifecycleOwner, lambda: (T) -> Unit) {
     if (value is LiveData<*>) {

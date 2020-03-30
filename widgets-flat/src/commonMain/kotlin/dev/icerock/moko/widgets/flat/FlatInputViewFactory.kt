@@ -5,11 +5,11 @@
 package dev.icerock.moko.widgets.flat
 
 import dev.icerock.moko.graphics.Color
-import dev.icerock.moko.widgets.InputWidget
+import dev.icerock.moko.widgets.core.widget.InputWidget
 import dev.icerock.moko.widgets.core.ViewFactory
-import dev.icerock.moko.widgets.style.view.MarginValues
-import dev.icerock.moko.widgets.style.view.TextStyle
-import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.core.style.view.MarginValues
+import dev.icerock.moko.widgets.core.style.view.TextStyle
+import dev.icerock.moko.widgets.core.style.view.WidgetSize
 
 expect class FlatInputViewFactory(
     textStyle: TextStyle<Color>? = null,
