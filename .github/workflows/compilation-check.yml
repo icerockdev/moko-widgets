@@ -42,7 +42,8 @@ jobs:
         run: (cd sample/ios-app && pod install)
       - name: Check additions
         run: |
-          ./gradlew -PadditionsPublish :widgets-flat:publishToMavenLocal \
+          ./gradlew -PadditionsPublish \
+          :widgets-flat:publishToMavenLocal \
           :widgets-bottomsheet:publishToMavenLocal \
           :widgets-sms:publishToMavenLocal \
           :widgets-datetime-picker:publishToMavenLocal \

@@ -2,6 +2,8 @@ name: KMP library publish dev version
 
 on:
   push:
+    branches:
+      - develop
     paths-ignore:
       - '**/*.md'
 
