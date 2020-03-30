@@ -6,4 +6,5 @@
 :widgets-sms:publishToMavenLocal \
 :widgets-datetime-picker:publishToMavenLocal \
 :widgets-collection:publishToMavenLocal \
-:widgets-image-network:publishToMavenLocal
+:widgets-image-network:publishToMavenLocal \
+:widgets-permissions:publishToMavenLocal
