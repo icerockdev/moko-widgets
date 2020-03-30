@@ -29,12 +29,6 @@ jobs:
           path: ~/.konan
           key: ${{ runner.os }}-kn-${{ hashFiles('buildSrc/build.gradle.kts') }}
           restore-keys: ${{ runner.os }}-kn
-      - name: Cache Gradle packages
-        uses: actions/cache@v1
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
-          restore-keys: ${{ runner.os }}-gradle
       - name: Compile plugin
         run: ./gradlew -PdevPublish -PpluginPublish publishPluginPublicationToMavenLocal
       - name: Compile core
