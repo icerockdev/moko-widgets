@@ -25,6 +25,7 @@ if (!pluginPublish) {
         include(":widgets-collection")
         include(":widgets-datetime-picker")
         include(":widgets-image-network")
+        include(":widgets-permissions")
         include(":widgets-media")
 
         if (!additionsPublish) {
