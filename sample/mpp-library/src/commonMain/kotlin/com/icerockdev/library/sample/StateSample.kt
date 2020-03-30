@@ -11,22 +11,22 @@ import dev.icerock.moko.mvvm.livedata.map
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
-import dev.icerock.moko.widgets.ButtonWidget
-import dev.icerock.moko.widgets.button
-import dev.icerock.moko.widgets.container
+import dev.icerock.moko.widgets.core.widget.ButtonWidget
+import dev.icerock.moko.widgets.core.widget.button
+import dev.icerock.moko.widgets.core.widget.container
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Value
 import dev.icerock.moko.widgets.core.Widget
-import dev.icerock.moko.widgets.flatAlert
-import dev.icerock.moko.widgets.linear
-import dev.icerock.moko.widgets.progressBar
-import dev.icerock.moko.widgets.stateful
-import dev.icerock.moko.widgets.style.background.Orientation
-import dev.icerock.moko.widgets.style.view.SizeSpec
-import dev.icerock.moko.widgets.style.view.WidgetSize
-import dev.icerock.moko.widgets.tabs
-import dev.icerock.moko.widgets.text
-import dev.icerock.moko.widgets.utils.asLiveData
+import dev.icerock.moko.widgets.core.widget.flatAlert
+import dev.icerock.moko.widgets.core.widget.linear
+import dev.icerock.moko.widgets.core.widget.progressBar
+import dev.icerock.moko.widgets.core.widget.stateful
+import dev.icerock.moko.widgets.core.style.background.Orientation
+import dev.icerock.moko.widgets.core.style.view.SizeSpec
+import dev.icerock.moko.widgets.core.style.view.WidgetSize
+import dev.icerock.moko.widgets.core.widget.tabs
+import dev.icerock.moko.widgets.core.widget.text
+import dev.icerock.moko.widgets.core.utils.asLiveData
 
 open class StateScreen(
     private val theme: Theme,

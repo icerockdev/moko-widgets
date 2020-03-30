@@ -5,15 +5,15 @@
 package com.icerockdev.library.units
 
 import dev.icerock.moko.mvvm.livedata.LiveData
-import dev.icerock.moko.widgets.container
+import dev.icerock.moko.widgets.core.widget.container
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
-import dev.icerock.moko.widgets.progressBar
-import dev.icerock.moko.widgets.style.view.SizeSpec
-import dev.icerock.moko.widgets.style.view.WidgetSize
-import dev.icerock.moko.widgets.units.UnitItemRoot
-import dev.icerock.moko.widgets.units.WidgetsCollectionUnitItem
-import dev.icerock.moko.widgets.units.WidgetsTableUnitItem
+import dev.icerock.moko.widgets.core.widget.progressBar
+import dev.icerock.moko.widgets.core.style.view.SizeSpec
+import dev.icerock.moko.widgets.core.style.view.WidgetSize
+import dev.icerock.moko.widgets.core.units.UnitItemRoot
+import dev.icerock.moko.widgets.core.units.WidgetsCollectionUnitItem
+import dev.icerock.moko.widgets.core.units.WidgetsTableUnitItem
 
 class LoadingUnitWidget(
     private val theme: Theme

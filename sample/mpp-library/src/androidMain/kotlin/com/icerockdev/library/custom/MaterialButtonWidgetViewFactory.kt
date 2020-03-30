@@ -9,13 +9,13 @@ import android.view.View
 import android.widget.ImageButton
 import com.google.android.material.button.MaterialButton
 import com.icerockdev.library.R
-import dev.icerock.moko.widgets.ButtonWidget
+import dev.icerock.moko.widgets.core.widget.ButtonWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.bind
-import dev.icerock.moko.widgets.style.view.WidgetSize
-import dev.icerock.moko.widgets.utils.bind
+import dev.icerock.moko.widgets.core.style.view.WidgetSize
+import dev.icerock.moko.widgets.core.utils.bind
 
 actual class MaterialButtonWidgetViewFactory actual constructor() : ViewFactory<ButtonWidget<out WidgetSize>> {
 

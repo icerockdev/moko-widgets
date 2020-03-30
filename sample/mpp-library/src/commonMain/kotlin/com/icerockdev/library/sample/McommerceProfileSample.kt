@@ -10,19 +10,19 @@ import dev.icerock.moko.fields.validate
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
-import dev.icerock.moko.widgets.ButtonWidget
-import dev.icerock.moko.widgets.InputWidget
-import dev.icerock.moko.widgets.ScrollWidget
-import dev.icerock.moko.widgets.button
+import dev.icerock.moko.widgets.core.widget.ButtonWidget
+import dev.icerock.moko.widgets.core.widget.InputWidget
+import dev.icerock.moko.widgets.core.widget.ScrollWidget
+import dev.icerock.moko.widgets.core.widget.button
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Value
 import dev.icerock.moko.widgets.core.Widget
-import dev.icerock.moko.widgets.input
-import dev.icerock.moko.widgets.linear
-import dev.icerock.moko.widgets.scroll
-import dev.icerock.moko.widgets.style.input.InputType
-import dev.icerock.moko.widgets.style.view.SizeSpec
-import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.core.widget.input
+import dev.icerock.moko.widgets.core.widget.linear
+import dev.icerock.moko.widgets.core.widget.scroll
+import dev.icerock.moko.widgets.core.style.input.InputType
+import dev.icerock.moko.widgets.core.style.view.SizeSpec
+import dev.icerock.moko.widgets.core.style.view.WidgetSize
 
 class McommerceProfileScreen(
     private val theme: Theme,

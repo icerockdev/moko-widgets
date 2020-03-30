@@ -16,12 +16,12 @@ import dev.icerock.moko.widgets.collection.CollectionWidget
 import dev.icerock.moko.widgets.collection.collection
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
-import dev.icerock.moko.widgets.screen.Args.Empty
-import dev.icerock.moko.widgets.screen.WidgetScreen
-import dev.icerock.moko.widgets.screen.navigation.NavigationBar
-import dev.icerock.moko.widgets.screen.navigation.NavigationItem
-import dev.icerock.moko.widgets.style.view.SizeSpec
-import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.core.screen.Args.Empty
+import dev.icerock.moko.widgets.core.screen.WidgetScreen
+import dev.icerock.moko.widgets.core.screen.navigation.NavigationBar
+import dev.icerock.moko.widgets.core.screen.navigation.NavigationItem
+import dev.icerock.moko.widgets.core.style.view.SizeSpec
+import dev.icerock.moko.widgets.core.style.view.WidgetSize
 
 class PostsScreen(
     private val theme: Theme,

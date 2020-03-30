@@ -7,20 +7,20 @@ package com.icerockdev.library.units
 import com.icerockdev.library.sample.PostsViewModelContract
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.map
-import dev.icerock.moko.widgets.ImageWidget
-import dev.icerock.moko.widgets.clickable
-import dev.icerock.moko.widgets.container
+import dev.icerock.moko.widgets.core.widget.ImageWidget
+import dev.icerock.moko.widgets.core.widget.clickable
+import dev.icerock.moko.widgets.core.widget.container
 import dev.icerock.moko.widgets.core.Image
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
-import dev.icerock.moko.widgets.image
+import dev.icerock.moko.widgets.core.widget.image
 import dev.icerock.moko.widgets.imagenetwork.network
-import dev.icerock.moko.widgets.linear
-import dev.icerock.moko.widgets.style.view.SizeSpec
-import dev.icerock.moko.widgets.style.view.WidgetSize
-import dev.icerock.moko.widgets.text
-import dev.icerock.moko.widgets.units.UnitItemRoot
-import dev.icerock.moko.widgets.units.WidgetsCollectionUnitItem
+import dev.icerock.moko.widgets.core.widget.linear
+import dev.icerock.moko.widgets.core.style.view.SizeSpec
+import dev.icerock.moko.widgets.core.style.view.WidgetSize
+import dev.icerock.moko.widgets.core.widget.text
+import dev.icerock.moko.widgets.core.units.UnitItemRoot
+import dev.icerock.moko.widgets.core.units.WidgetsCollectionUnitItem
 
 class PostCollectionUnitItem(
     private val theme: Theme,

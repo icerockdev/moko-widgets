@@ -5,8 +5,8 @@
 package com.icerockdev.library.universal
 
 import cocoapods.mppLibraryIos.ProfileViewController
-import dev.icerock.moko.widgets.screen.navigation.Route
-import dev.icerock.moko.widgets.utils.bind
+import dev.icerock.moko.widgets.core.screen.navigation.Route
+import dev.icerock.moko.widgets.core.utils.bind
 import platform.Foundation.NSBundle
 import platform.UIKit.UIViewController
 

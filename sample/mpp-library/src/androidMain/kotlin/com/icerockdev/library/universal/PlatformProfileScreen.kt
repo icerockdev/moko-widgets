@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.icerockdev.library.databinding.FragmentProfileBinding
-import dev.icerock.moko.widgets.screen.navigation.Route
+import dev.icerock.moko.widgets.core.screen.navigation.Route
 
 // here we can work with ProfileScreen as any other Fragment
 actual class PlatformProfileScreen actual constructor(
