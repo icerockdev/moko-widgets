@@ -4,7 +4,6 @@
 
 package dev.icerock.moko.widgets.core
 
-import dev.icerock.moko.media.Bitmap
 import dev.icerock.moko.resources.ImageResource
 import platform.UIKit.UIImage
 import platform.UIKit.UIView
@@ -20,14 +19,6 @@ actual fun Image.Companion.resource(imageResource: ImageResource): Image {
         override fun apply(view: UIView, block: (UIImage?) -> Unit) {
             val image = requireNotNull(imageResource.toUIImage()) { "resource not found" }
             block(image)
-        }
-    }
-}
-
-actual fun Image.Companion.bitmap(bitmap: Bitmap): Image {
-    return object : Image() {
-        override fun apply(view: UIView, block: (UIImage?) -> Unit) {
-            block(bitmap.image)
         }
     }
 }
