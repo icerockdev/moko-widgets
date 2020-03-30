@@ -50,7 +50,8 @@ jobs:
           :widgets-datetime-picker:build \
           :widgets-collection:build \
           :widgets-image-network:build \
-          :widgets-permissions:build
+          :widgets-permissions:build \
+          :widgets-media:build
       - name: Publish all to bintray
         run: |
           ./gradlew --no-parallel -PdevPublish \
@@ -64,5 +65,6 @@ jobs:
           :widgets-collection:publishAllPublicationsToBintrayDevRepository \
           :widgets-image-network:publishAllPublicationsToBintrayDevRepository \
           :widgets-permissions:publishAllPublicationsToBintrayRepository \
+          :widgets-media:publishAllPublicationsToBintrayRepository \
           -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }} \
           --stacktrace
