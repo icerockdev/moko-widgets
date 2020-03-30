@@ -20,7 +20,7 @@ import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Value
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.permissions.bind
-import dev.icerock.moko.widgets.permissions.permissionsController
+import dev.icerock.moko.widgets.permissions.createPermissionsController
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.WidgetScreen
 import dev.icerock.moko.widgets.screen.getViewModel
@@ -41,7 +41,7 @@ class PermissionsScreen(
 
     override fun createContentWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         val viewModel = getViewModel {
-            PermissionsViewModel(permissionsController())
+            PermissionsViewModel(createPermissionsController())
         }
         viewModel.permissionsController.bind(this)
 

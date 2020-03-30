@@ -27,7 +27,7 @@ import dev.icerock.moko.widgets.image
 import dev.icerock.moko.widgets.media.bind
 import dev.icerock.moko.widgets.media.bitmap
 import dev.icerock.moko.widgets.media.createMediaPickerController
-import dev.icerock.moko.widgets.permissions.permissionsController
+import dev.icerock.moko.widgets.permissions.createPermissionsController
 import dev.icerock.moko.widgets.screen.Args
 import dev.icerock.moko.widgets.screen.WidgetScreen
 import dev.icerock.moko.widgets.screen.getViewModel
@@ -50,7 +50,7 @@ class MediaScreen(
     override fun createContentWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         val viewModel = getViewModel {
             MediaViewModel(
-                mediaPickerController = createMediaPickerController(permissionsController()),
+                mediaPickerController = createMediaPickerController(createPermissionsController()),
                 eventsDispatcher = createEventsDispatcher()
             )
         }

@@ -7,6 +7,6 @@ package dev.icerock.moko.widgets.permissions
 import dev.icerock.moko.permissions.PermissionsController
 import dev.icerock.moko.widgets.screen.Screen
 
-expect fun Screen<*>.permissionsController(): PermissionsController
+expect fun Screen<*>.createPermissionsController(): PermissionsController
 
 expect fun PermissionsController.bind(screen: Screen<*>)
