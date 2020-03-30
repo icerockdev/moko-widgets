@@ -21,7 +21,7 @@ dependencies {
 
 buildConfigKotlin {
     sourceSet("main") {
-        buildConfig(name = "compilerPluginVersion", value = Versions.Plugins.mokoWidgets)
+        buildConfig(name = "compilerPluginVersion", value = project.version.toString())
     }
 }
 
