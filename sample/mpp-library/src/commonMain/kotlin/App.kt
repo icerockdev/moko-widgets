@@ -43,6 +43,7 @@ import dev.icerock.moko.widgets.flat.FlatInputViewFactory
 import dev.icerock.moko.widgets.sample.CollectionImageUnitItem
 import dev.icerock.moko.widgets.sample.CollectionScreen
 import dev.icerock.moko.widgets.sample.InputWidgetGalleryScreen
+import dev.icerock.moko.widgets.sample.PermissionsScreen
 import dev.icerock.moko.widgets.sample.ProductsSearchScreen
 import dev.icerock.moko.widgets.sample.ScrollContentScreen
 import dev.icerock.moko.widgets.sample.SelectGalleryScreen
@@ -118,6 +119,7 @@ class App() : BaseApplication() {
                     buildTabsRouteInfo(theme, router),
                     buildCollectionRouteInfo(theme, router),
                     buildPostsRouteInfo(theme, router),
+                    buildPermissionsRouteInfo(theme, router),
                     SelectGalleryScreen.RouteInfo(
                         name = "Old Demo".desc(),
                         route = router.createPushRoute(oldDemo(router))
@@ -231,6 +233,20 @@ class App() : BaseApplication() {
         return SelectGalleryScreen.RouteInfo(
             name = "Posts Collection".desc(),
             route = router.createPushRoute(postsScreen)
+        )
+    }
+
+    private fun buildPermissionsRouteInfo(
+        theme: Theme,
+        router: NavigationScreen.Router
+    ): SelectGalleryScreen.RouteInfo {
+        val screen = registerScreen(PermissionsScreen::class) {
+            PermissionsScreen(theme)
+        }
+
+        return SelectGalleryScreen.RouteInfo(
+            name = "Permissions".desc(),
+            route = router.createPushRoute(screen)
         )
     }
 

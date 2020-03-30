@@ -88,6 +88,11 @@ object Deps {
                 iosX64 = "dev.icerock.moko:widgets-image-network-iosx64:${Versions.Libs.MultiPlatform.mokoWidgets}",
                 iosArm64 = "dev.icerock.moko:widgets-image-network-iosarm64:${Versions.Libs.MultiPlatform.mokoWidgets}"
             )
+            val mokoWidgetsPermissions = MultiPlatformLibrary(
+                common = "dev.icerock.moko:widgets-permissions:${Versions.Libs.MultiPlatform.mokoWidgets}",
+                iosX64 = "dev.icerock.moko:widgets-permissions-iosx64:${Versions.Libs.MultiPlatform.mokoWidgets}",
+                iosArm64 = "dev.icerock.moko:widgets-permissions-iosarm64:${Versions.Libs.MultiPlatform.mokoWidgets}"
+            )
             val mokoResources = MultiPlatformLibrary(
                 common = "dev.icerock.moko:resources:${Versions.Libs.MultiPlatform.mokoResources}",
                 iosX64 = "dev.icerock.moko:resources-iosx64:${Versions.Libs.MultiPlatform.mokoResources}",
@@ -112,6 +117,11 @@ object Deps {
                 common = "dev.icerock.moko:media:${Versions.Libs.MultiPlatform.mokoMedia}",
                 iosX64 = "dev.icerock.moko:media-iosx64:${Versions.Libs.MultiPlatform.mokoMedia}",
                 iosArm64 = "dev.icerock.moko:media-iosarm64:${Versions.Libs.MultiPlatform.mokoMedia}"
+            )
+            val mokoPermissions = MultiPlatformLibrary(
+                common = "dev.icerock.moko:permissions:${Versions.Libs.MultiPlatform.mokoPermissions}",
+                iosX64 = "dev.icerock.moko:permissions-iosx64:${Versions.Libs.MultiPlatform.mokoPermissions}",
+                iosArm64 = "dev.icerock.moko:permissions-iosarm64:${Versions.Libs.MultiPlatform.mokoPermissions}"
             )
             val mokoGraphics = MultiPlatformLibrary(
                 common = "dev.icerock.moko:graphics:${Versions.Libs.MultiPlatform.mokoGraphics}",
