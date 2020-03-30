@@ -43,12 +43,14 @@ jobs:
         run: (cd sample/ios-app && pod install)
       - name: Compile additions
         run: |
-          ./gradlew -PdevPublish -PadditionsPublish :widgets-flat:publishToMavenLocal \
-          :widgets-bottomsheet:publishToMavenLocal \
-          :widgets-sms:publishToMavenLocal \
-          :widgets-datetime-picker:publishToMavenLocal \
-          :widgets-collection:publishToMavenLocal \
-          :widgets-image-network:publishToMavenLocal
+          ./gradlew -PdevPublish -PadditionsPublish \
+          :widgets-flat:build \
+          :widgets-bottomsheet:build \
+          :widgets-sms:build \
+          :widgets-datetime-picker:build \
+          :widgets-collection:build \
+          :widgets-image-network:build \
+          :widgets-permissions:build
       - name: Publish all to bintray
         run: |
           ./gradlew --no-parallel -PdevPublish \
@@ -61,5 +63,6 @@ jobs:
           :widgets-datetime-picker:publishAllPublicationsToBintrayDevRepository \
           :widgets-collection:publishAllPublicationsToBintrayDevRepository \
           :widgets-image-network:publishAllPublicationsToBintrayDevRepository \
+          :widgets-permissions:publishAllPublicationsToBintrayRepository \
           -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }} \
           --stacktrace
