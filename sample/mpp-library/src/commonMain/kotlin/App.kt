@@ -20,35 +20,19 @@ import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.parcelize.Parcelize
 import dev.icerock.moko.resources.desc.desc
-import dev.icerock.moko.widgets.core.widget.ButtonWidget
-import dev.icerock.moko.widgets.core.widget.FlatAlertIds
-import dev.icerock.moko.widgets.core.widget.ImageWidget
-import dev.icerock.moko.widgets.core.widget.InputWidget
-import dev.icerock.moko.widgets.core.widget.TabsWidget
-import dev.icerock.moko.widgets.core.widget.button
 import dev.icerock.moko.widgets.collection.CollectionWidget
 import dev.icerock.moko.widgets.collection.SimpleCollectionViewFactory
-import dev.icerock.moko.widgets.core.widget.container
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Value
 import dev.icerock.moko.widgets.core.factory.ButtonWithIconViewFactory
 import dev.icerock.moko.widgets.core.factory.FloatingLabelInputViewFactory
 import dev.icerock.moko.widgets.core.factory.IconGravity
 import dev.icerock.moko.widgets.core.factory.LinearViewFactory
+import dev.icerock.moko.widgets.core.factory.MultilineInputViewFactory
 import dev.icerock.moko.widgets.core.factory.SystemImageViewFactory
 import dev.icerock.moko.widgets.core.factory.SystemInputViewFactory
 import dev.icerock.moko.widgets.core.factory.SystemTabsViewFactory
 import dev.icerock.moko.widgets.core.factory.SystemTextViewFactory
-import dev.icerock.moko.widgets.flat.FlatInputViewFactory
-import dev.icerock.moko.widgets.sample.CollectionImageUnitItem
-import dev.icerock.moko.widgets.sample.CollectionScreen
-import dev.icerock.moko.widgets.sample.InputWidgetGalleryScreen
-import dev.icerock.moko.widgets.sample.MediaScreen
-import dev.icerock.moko.widgets.sample.PermissionsScreen
-import dev.icerock.moko.widgets.sample.ProductsSearchScreen
-import dev.icerock.moko.widgets.sample.ScrollContentScreen
-import dev.icerock.moko.widgets.sample.SelectGalleryScreen
-import dev.icerock.moko.widgets.sample.TabsSampleScreen
 import dev.icerock.moko.widgets.core.screen.Args
 import dev.icerock.moko.widgets.core.screen.BaseApplication
 import dev.icerock.moko.widgets.core.screen.Screen
@@ -78,12 +62,30 @@ import dev.icerock.moko.widgets.core.style.view.TextHorizontalAlignment
 import dev.icerock.moko.widgets.core.style.view.TextStyle
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.utils.platformSpecific
+import dev.icerock.moko.widgets.core.widget.ButtonWidget
+import dev.icerock.moko.widgets.core.widget.FlatAlertIds
+import dev.icerock.moko.widgets.core.widget.ImageWidget
+import dev.icerock.moko.widgets.core.widget.InputWidget
+import dev.icerock.moko.widgets.core.widget.TabsWidget
+import dev.icerock.moko.widgets.core.widget.button
+import dev.icerock.moko.widgets.core.widget.container
+import dev.icerock.moko.widgets.flat.FlatInputViewFactory
+import dev.icerock.moko.widgets.sample.CollectionImageUnitItem
+import dev.icerock.moko.widgets.sample.CollectionScreen
+import dev.icerock.moko.widgets.sample.InputWidgetGalleryScreen
+import dev.icerock.moko.widgets.sample.MediaScreen
+import dev.icerock.moko.widgets.sample.PermissionsScreen
+import dev.icerock.moko.widgets.sample.ProductsSearchScreen
+import dev.icerock.moko.widgets.sample.ScrollContentScreen
+import dev.icerock.moko.widgets.sample.SelectGalleryScreen
+import dev.icerock.moko.widgets.sample.TabsSampleScreen
 
 class App() : BaseApplication() {
 
     object SystemInputId : InputWidget.Id
     object FloatingLabelInputId : InputWidget.Id
     object FlatInputId : InputWidget.Id
+    object MultilineInputId : InputWidget.Id
 
     override val androidStatusBarColor: Color? = Color(0x4444AAFF)
 
@@ -95,6 +97,7 @@ class App() : BaseApplication() {
             factory[SystemInputId] = SystemInputViewFactory(margins = MarginValues(bottom = 16.0f))
             factory[FloatingLabelInputId] = FloatingLabelInputViewFactory(margins = MarginValues(bottom = 16.0f))
             factory[FlatInputId] = FlatInputViewFactory(margins = MarginValues(bottom = 16.0f))
+            factory[MultilineInputId] = MultilineInputViewFactory(margins = MarginValues(bottom = 16.0f))
         }
 
         return registerScreen(RootNavigationScreen::class) {
@@ -146,6 +149,10 @@ class App() : BaseApplication() {
                     InputWidgetGalleryScreen.InputInfo(
                         id = FloatingLabelInputId,
                         label = "FloatingLabelInputViewFactory".desc()
+                    ),
+                    InputWidgetGalleryScreen.InputInfo(
+                        id = MultilineInputId,
+                        label = "MultilineInputViewFactory".desc()
                     ),
                     InputWidgetGalleryScreen.InputInfo(
                         id = FlatInputId,

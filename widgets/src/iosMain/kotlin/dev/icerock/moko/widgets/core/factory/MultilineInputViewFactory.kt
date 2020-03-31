@@ -10,11 +10,13 @@ import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.core.objc.setAssociatedObject
 import dev.icerock.moko.widgets.core.style.applyInputTypeIfNeeded
 import dev.icerock.moko.widgets.core.style.background.Background
 import dev.icerock.moko.widgets.core.style.background.Fill
 import dev.icerock.moko.widgets.core.style.view.MarginValues
 import dev.icerock.moko.widgets.core.style.view.PaddingValues
+import dev.icerock.moko.widgets.core.style.view.SizeSpec
 import dev.icerock.moko.widgets.core.style.view.TextHorizontalAlignment
 import dev.icerock.moko.widgets.core.style.view.TextStyle
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
@@ -22,7 +24,6 @@ import dev.icerock.moko.widgets.core.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.core.utils.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.core.utils.bind
 import dev.icerock.moko.widgets.core.widget.InputWidget
-import dev.icerock.moko.widgets.core.objc.setAssociatedObject
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGRectZero
 import platform.UIKit.NSTextAlignmentCenter
@@ -65,6 +66,10 @@ actual class MultilineInputViewFactory actual constructor(
                     bottom = it.bottom.toDouble(),
                     right = it.end.toDouble()
                 )
+            }
+
+            if (isWrapContent(size)) {
+                setScrollEnabled(false)
             }
 
             clipsToBounds = true
@@ -112,6 +117,14 @@ actual class MultilineInputViewFactory actual constructor(
             size = size,
             margins = margins
         )
+    }
+
+    private fun isWrapContent(size: WidgetSize): Boolean {
+        return when (size) {
+            is WidgetSize.Const<*, *> -> size.height is SizeSpec.WrapContent
+            is WidgetSize.AspectByHeight<*> -> size.height is SizeSpec.WrapContent
+            else -> false
+        }
     }
 
     private class TextViewDelegate(
