@@ -14,11 +14,11 @@ import android.widget.TextView
 import com.google.android.gms.auth.api.phone.SmsRetriever
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.common.api.Status
-import dev.icerock.moko.widgets.InputWidget
+import dev.icerock.moko.widgets.core.widget.InputWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.core.style.view.WidgetSize
 
 actual class SmsInputViewFactory actual constructor(private val wrapped: ViewFactory<InputWidget<out WidgetSize>>) :
     ViewFactory<InputWidget<out WidgetSize>> {

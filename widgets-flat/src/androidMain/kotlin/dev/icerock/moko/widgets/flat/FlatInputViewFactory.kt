@@ -8,16 +8,16 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
 import dev.icerock.moko.graphics.Color
-import dev.icerock.moko.widgets.InputWidget
+import dev.icerock.moko.widgets.core.widget.InputWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.style.applyInputType
-import dev.icerock.moko.widgets.style.applyTextStyleIfNeeded
-import dev.icerock.moko.widgets.style.view.MarginValues
-import dev.icerock.moko.widgets.style.view.TextStyle
-import dev.icerock.moko.widgets.style.view.WidgetSize
-import dev.icerock.moko.widgets.utils.bind
+import dev.icerock.moko.widgets.core.style.applyInputType
+import dev.icerock.moko.widgets.core.style.applyTextStyleIfNeeded
+import dev.icerock.moko.widgets.core.style.view.MarginValues
+import dev.icerock.moko.widgets.core.style.view.TextStyle
+import dev.icerock.moko.widgets.core.style.view.WidgetSize
+import dev.icerock.moko.widgets.core.utils.bind
 
 actual class FlatInputViewFactory actual constructor(
     private val textStyle: TextStyle<Color>?,

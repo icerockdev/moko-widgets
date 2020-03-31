@@ -13,15 +13,15 @@ import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.parcelize.Parcelize
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
-import dev.icerock.moko.widgets.screen.Args
-import dev.icerock.moko.widgets.screen.Screen
-import dev.icerock.moko.widgets.screen.getArgument
-import dev.icerock.moko.widgets.screen.getViewModel
-import dev.icerock.moko.widgets.screen.listen
-import dev.icerock.moko.widgets.screen.navigation.NavigationBar
-import dev.icerock.moko.widgets.screen.navigation.NavigationItem
-import dev.icerock.moko.widgets.screen.navigation.Route
-import dev.icerock.moko.widgets.screen.showToast
+import dev.icerock.moko.widgets.core.screen.Args
+import dev.icerock.moko.widgets.core.screen.Screen
+import dev.icerock.moko.widgets.core.screen.getArgument
+import dev.icerock.moko.widgets.core.screen.getViewModel
+import dev.icerock.moko.widgets.core.screen.listen
+import dev.icerock.moko.widgets.core.screen.navigation.NavigationBar
+import dev.icerock.moko.widgets.core.screen.navigation.NavigationItem
+import dev.icerock.moko.widgets.core.screen.navigation.Route
+import dev.icerock.moko.widgets.core.screen.showToast
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

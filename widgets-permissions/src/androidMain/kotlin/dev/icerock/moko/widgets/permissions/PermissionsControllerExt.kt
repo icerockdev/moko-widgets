@@ -5,7 +5,7 @@
 package dev.icerock.moko.widgets.permissions
 
 import dev.icerock.moko.permissions.PermissionsController
-import dev.icerock.moko.widgets.screen.Screen
+import dev.icerock.moko.widgets.core.screen.Screen
 
 actual fun Screen<*>.createPermissionsController(): PermissionsController {
     val appContext = requireContext().applicationContext

@@ -39,7 +39,7 @@ kotlin {
         target.compilations.getByName("main") {
             val objcAddtition by cinterops.creating {
                 defFile(project.file("src/iosMain/def/objcAddtition.def"))
-                packageName("dev.icerock.moko.widgets.objc")
+                packageName("dev.icerock.moko.widgets.core.objc")
             }
         }
     }

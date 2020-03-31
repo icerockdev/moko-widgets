@@ -8,19 +8,19 @@ import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.parcelize.Parcelize
 import dev.icerock.moko.resources.desc.desc
-import dev.icerock.moko.widgets.constraint
+import dev.icerock.moko.widgets.core.widget.constraint
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
-import dev.icerock.moko.widgets.progressBar
-import dev.icerock.moko.widgets.screen.Args
-import dev.icerock.moko.widgets.screen.WidgetScreen
-import dev.icerock.moko.widgets.screen.getArgument
-import dev.icerock.moko.widgets.screen.navigation.NavigationBar
-import dev.icerock.moko.widgets.screen.navigation.NavigationItem
-import dev.icerock.moko.widgets.style.view.SizeSpec
-import dev.icerock.moko.widgets.style.view.WidgetSize
-import dev.icerock.moko.widgets.visibility
-import dev.icerock.moko.widgets.webView
+import dev.icerock.moko.widgets.core.widget.progressBar
+import dev.icerock.moko.widgets.core.screen.Args
+import dev.icerock.moko.widgets.core.screen.WidgetScreen
+import dev.icerock.moko.widgets.core.screen.getArgument
+import dev.icerock.moko.widgets.core.screen.navigation.NavigationBar
+import dev.icerock.moko.widgets.core.screen.navigation.NavigationItem
+import dev.icerock.moko.widgets.core.style.view.SizeSpec
+import dev.icerock.moko.widgets.core.style.view.WidgetSize
+import dev.icerock.moko.widgets.core.widget.visibility
+import dev.icerock.moko.widgets.core.widget.webView
 
 class InfoWebViewScreen(
     private val theme: Theme

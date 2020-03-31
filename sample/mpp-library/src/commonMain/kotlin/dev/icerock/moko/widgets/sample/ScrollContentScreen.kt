@@ -4,17 +4,17 @@
 
 package dev.icerock.moko.widgets.sample
 
-import dev.icerock.moko.widgets.LinearWidget
-import dev.icerock.moko.widgets.ScrollWidget
-import dev.icerock.moko.widgets.constraint
+import dev.icerock.moko.widgets.core.widget.LinearWidget
+import dev.icerock.moko.widgets.core.widget.ScrollWidget
+import dev.icerock.moko.widgets.core.widget.constraint
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
-import dev.icerock.moko.widgets.linear
-import dev.icerock.moko.widgets.screen.Args
-import dev.icerock.moko.widgets.screen.WidgetScreen
-import dev.icerock.moko.widgets.scroll
-import dev.icerock.moko.widgets.style.view.SizeSpec
-import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.core.widget.linear
+import dev.icerock.moko.widgets.core.screen.Args
+import dev.icerock.moko.widgets.core.screen.WidgetScreen
+import dev.icerock.moko.widgets.core.widget.scroll
+import dev.icerock.moko.widgets.core.style.view.SizeSpec
+import dev.icerock.moko.widgets.core.style.view.WidgetSize
 
 abstract class ScrollContentScreen<A: Args>(
     protected val theme: Theme

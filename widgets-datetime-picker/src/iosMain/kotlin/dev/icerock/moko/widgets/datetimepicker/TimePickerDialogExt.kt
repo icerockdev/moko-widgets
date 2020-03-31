@@ -6,8 +6,8 @@ package dev.icerock.moko.widgets.datetimepicker
 
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.graphics.toUIColor
-import dev.icerock.moko.widgets.screen.Screen
-import dev.icerock.moko.widgets.utils.setEventHandler
+import dev.icerock.moko.widgets.core.screen.Screen
+import dev.icerock.moko.widgets.core.utils.setEventHandler
 import platform.Foundation.NSBundle
 import platform.Foundation.NSCalendar
 import platform.Foundation.NSCalendarUnitHour

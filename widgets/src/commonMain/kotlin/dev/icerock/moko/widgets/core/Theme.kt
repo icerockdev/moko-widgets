@@ -7,8 +7,8 @@ package dev.icerock.moko.widgets.core
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
-import dev.icerock.moko.widgets.style.view.WidgetSize
-import dev.icerock.moko.widgets.utils.asLiveData
+import dev.icerock.moko.widgets.core.style.view.WidgetSize
+import dev.icerock.moko.widgets.core.utils.asLiveData
 
 class Theme(
     private val properties: MutableMap<Any, Any>

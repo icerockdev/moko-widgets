@@ -15,16 +15,16 @@ import dev.icerock.moko.widgets.core.View
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.style.applyBackgroundIfNeeded
-import dev.icerock.moko.widgets.style.applyPaddingIfNeeded
-import dev.icerock.moko.widgets.style.background.Background
-import dev.icerock.moko.widgets.style.background.Fill
-import dev.icerock.moko.widgets.style.background.Orientation
-import dev.icerock.moko.widgets.style.view.MarginValues
-import dev.icerock.moko.widgets.style.view.PaddingValues
-import dev.icerock.moko.widgets.style.view.WidgetSize
-import dev.icerock.moko.widgets.utils.androidId
-import dev.icerock.moko.widgets.utils.bind
+import dev.icerock.moko.widgets.core.style.applyBackgroundIfNeeded
+import dev.icerock.moko.widgets.core.style.applyPaddingIfNeeded
+import dev.icerock.moko.widgets.core.style.background.Background
+import dev.icerock.moko.widgets.core.style.background.Fill
+import dev.icerock.moko.widgets.core.style.background.Orientation
+import dev.icerock.moko.widgets.core.style.view.MarginValues
+import dev.icerock.moko.widgets.core.style.view.PaddingValues
+import dev.icerock.moko.widgets.core.style.view.WidgetSize
+import dev.icerock.moko.widgets.core.utils.androidId
+import dev.icerock.moko.widgets.core.utils.bind
 
 actual class SimpleCollectionViewFactory actual constructor(
     private val orientation: Orientation,

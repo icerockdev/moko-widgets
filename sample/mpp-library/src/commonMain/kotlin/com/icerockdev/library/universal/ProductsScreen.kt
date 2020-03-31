@@ -5,19 +5,19 @@
 package com.icerockdev.library.universal
 
 import dev.icerock.moko.resources.desc.desc
-import dev.icerock.moko.widgets.ButtonWidget
-import dev.icerock.moko.widgets.button
-import dev.icerock.moko.widgets.container
+import dev.icerock.moko.widgets.core.widget.ButtonWidget
+import dev.icerock.moko.widgets.core.widget.button
+import dev.icerock.moko.widgets.core.widget.container
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Value
 import dev.icerock.moko.widgets.core.Widget
-import dev.icerock.moko.widgets.screen.Args
-import dev.icerock.moko.widgets.screen.WidgetScreen
-import dev.icerock.moko.widgets.screen.navigation.NavigationBar
-import dev.icerock.moko.widgets.screen.navigation.NavigationItem
-import dev.icerock.moko.widgets.screen.navigation.Route
-import dev.icerock.moko.widgets.style.view.SizeSpec
-import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.core.screen.Args
+import dev.icerock.moko.widgets.core.screen.WidgetScreen
+import dev.icerock.moko.widgets.core.screen.navigation.NavigationBar
+import dev.icerock.moko.widgets.core.screen.navigation.NavigationItem
+import dev.icerock.moko.widgets.core.screen.navigation.Route
+import dev.icerock.moko.widgets.core.style.view.SizeSpec
+import dev.icerock.moko.widgets.core.style.view.WidgetSize
 
 class ProductsScreen(
     private val theme: Theme,

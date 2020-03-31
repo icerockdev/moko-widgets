@@ -6,9 +6,9 @@ package dev.icerock.moko.widgets.bottomsheet
 
 import cocoapods.mokoWidgetsBottomSheet.BottomSheetController
 import dev.icerock.moko.widgets.core.Widget
-import dev.icerock.moko.widgets.screen.Screen
-import dev.icerock.moko.widgets.style.view.SizeSpec
-import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.core.screen.Screen
+import dev.icerock.moko.widgets.core.style.view.SizeSpec
+import dev.icerock.moko.widgets.core.style.view.WidgetSize
 
 actual fun Screen<*>.showBottomSheet(
     content: Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.WrapContent>>,

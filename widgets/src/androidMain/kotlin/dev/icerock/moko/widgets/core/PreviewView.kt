@@ -9,7 +9,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import dev.icerock.moko.widgets.screen.Screen
+import dev.icerock.moko.widgets.core.screen.Screen
 
 abstract class BasePreviewView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0

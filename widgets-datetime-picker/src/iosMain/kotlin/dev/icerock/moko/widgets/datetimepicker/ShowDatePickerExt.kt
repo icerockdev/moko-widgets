@@ -6,8 +6,8 @@ package dev.icerock.moko.widgets.datetimepicker
 import com.soywiz.klock.DateTime
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.graphics.toUIColor
-import dev.icerock.moko.widgets.screen.Screen
-import dev.icerock.moko.widgets.utils.setEventHandler
+import dev.icerock.moko.widgets.core.screen.Screen
+import dev.icerock.moko.widgets.core.utils.setEventHandler
 import kotlin.properties.ReadOnlyProperty
 import platform.UIKit.UIModalPresentationOverCurrentContext
 import platform.UIKit.UIViewController
