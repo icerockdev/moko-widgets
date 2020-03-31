@@ -59,6 +59,7 @@ abstract class CommonGenerator<KtFile, KtFileStub> {
 
         val importNames = input.imports
             .plus("dev.icerock.moko.widgets.core.Theme")
+            .plus("dev.icerock.moko.widgets.core.StringId")
             .distinct()
 
         val imports = importNames.joinToString("\n") { "import $it" }
@@ -110,6 +111,12 @@ $params
     ),
 $paramsSet
 )
+
+fun ${shortName}WidgetId(uniqueId: String): $widgetName.Id {
+    return object: $widgetName.Id, StringId {
+        override val uniqueId: String = uniqueId
+    }
+}
 """
     }
 }

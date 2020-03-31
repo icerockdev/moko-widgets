@@ -5,6 +5,7 @@
 package dev.icerock.moko.widgets.core.utils
 
 import dev.icerock.moko.widgets.core.BuildConfig
+import dev.icerock.moko.widgets.core.StringId
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
@@ -17,7 +18,9 @@ val <T : Widget<out WidgetSize>> Theme.Id<T>.androidId: Int
         val cachedId = classIdMap[this]
         if (cachedId != null) return cachedId
 
-        val idString = this.javaClass.name
+        val idString: String = if (this is StringId) this.uniqueId
+        else this.javaClass.name
+
         val hashCode = abs(idString.hashCode())
         val id = hashCode % 0x9000
         // 0x7F - application resources package
