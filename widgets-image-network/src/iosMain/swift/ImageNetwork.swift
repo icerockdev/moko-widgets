@@ -18,6 +18,7 @@ import SDWebImage
 
     guard let nsUrl = URL(string: url) else {
       print("can't parse url \"\(url)\"")
+      setImageBlock(placeholder)
       return
     }
     
