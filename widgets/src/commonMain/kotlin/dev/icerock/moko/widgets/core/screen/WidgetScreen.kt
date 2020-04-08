@@ -13,4 +13,5 @@ expect abstract class WidgetScreen<Arg : Args>() : Screen<Arg> {
 
     open val isKeyboardResizeContent: Boolean
     open val isDismissKeyboardOnTap: Boolean
+    open val isScrollListOnKeyboardResize: Boolean
 }
