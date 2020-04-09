@@ -29,6 +29,7 @@ import dev.icerock.moko.widgets.core.utils.identifier
 import dev.icerock.moko.widgets.core.utils.toIosPattern
 import dev.icerock.moko.widgets.core.widget.InputWidget
 import dev.icerock.moko.widgets.core.objc.setAssociatedObject
+import dev.icerock.moko.widgets.core.utils.setHandler
 import kotlinx.cinterop.CValue
 import kotlinx.cinterop.ObjCAction
 import kotlinx.cinterop.readValue
@@ -66,6 +67,8 @@ import platform.UIKit.systemRedColor
 import platform.UIKit.topAnchor
 import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
+import platform.UIKit.UITapGestureRecognizer
+import platform.UIKit.addGestureRecognizer
 
 actual class FloatingLabelInputViewFactory actual constructor(
     private val background: Background<Fill.Solid>?,
@@ -288,6 +291,15 @@ actual class FloatingLabelInputViewFactory actual constructor(
                 anchorPoint = CGPointMake(x = 0.0, y = 0.0)
                 textField.layer.addSublayer(this)
             }
+
+            val recognizer = UITapGestureRecognizer().apply {
+                setHandler(container::onTap)
+            }
+            addGestureRecognizer(recognizer)
+        }
+
+        private fun onTap() {
+            textField.becomeFirstResponder()
         }
 
         override fun layoutSublayersOfLayer(layer: CALayer) {
@@ -309,7 +321,9 @@ actual class FloatingLabelInputViewFactory actual constructor(
             layoutPlaceholder()
         }
 
-        private fun layoutPlaceholder(isPlaceholderInTopState: Boolean = text.isNullOrEmpty().not()) {
+        private fun layoutPlaceholder(
+            isPlaceholderInTopState: Boolean = text.isNullOrEmpty().not()
+        ) {
             placeholderTextLayer.fontSize = if (isPlaceholderInTopState) {
                 placeholderTextSize - 2
             } else {
