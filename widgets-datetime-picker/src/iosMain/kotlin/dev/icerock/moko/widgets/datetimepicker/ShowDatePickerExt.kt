@@ -3,14 +3,13 @@
  */
 package dev.icerock.moko.widgets.datetimepicker
 
+import cocoapods.mokoWidgetsDateTimePicker.DateBottomSheetController
 import com.soywiz.klock.DateTime
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.graphics.toUIColor
 import dev.icerock.moko.widgets.core.screen.Screen
 import dev.icerock.moko.widgets.core.utils.setEventHandler
 import kotlin.properties.ReadOnlyProperty
-import platform.UIKit.UIModalPresentationOverCurrentContext
-import platform.UIKit.UIViewController
 import platform.UIKit.UIColor
 import platform.UIKit.UIView
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
@@ -31,6 +30,7 @@ import platform.UIKit.UIApplication
 import platform.Foundation.NSBundle
 import platform.Foundation.NSDate
 import platform.Foundation.NSTimeIntervalSince1970
+import platform.CoreGraphics.CGRectMake
 
 actual class DatePickerDialogHandler(
     val positive: ((dialogId: Int, date: DateTime) -> Unit)?,
@@ -71,17 +71,19 @@ actual class DatePickerDialogBuilder {
         selectedDate = date
     }
 
-    fun createViewController(
+    fun createView(
         handler: DatePickerDialogHandler,
-        dialogId: Int
-    ): DatePickerController {
-        return DatePickerController(
+        dialogId: Int,
+        onDismiss: () -> Unit
+    ): DatePickerView {
+        return DatePickerView(
             accentColor = accentColor,
             startDate = startDate,
             endDate = endDate,
             selectedDate = selectedDate,
             handler = handler,
-            dialogId = dialogId
+            dialogId = dialogId,
+            onDismiss = onDismiss
         )
     }
 
@@ -94,50 +96,54 @@ actual fun Screen<*>.showDatePickerDialog(
 ) {
     val builder = DatePickerDialogBuilder()
     factory(builder)
-    val controller = builder.createViewController(handler = handler, dialogId = dialogId)
-    controller.modalPresentationStyle = UIModalPresentationOverCurrentContext
-    this.viewController.presentViewController(controller, animated = true, completion = null)
+    val controller = DateBottomSheetController()
+    val view = builder.createView(handler = handler, dialogId = dialogId) {
+        controller.dismiss()
+    }
+    controller.showOnViewController(
+        vc = this.viewController,
+        withContent = view,
+        onDismiss = { handler.negative?.invoke(dialogId) }
+    )
 }
 
-class DatePickerController(
+class DatePickerView(
     private val accentColor: Color?,
     private val startDate: DateTime?,
     private val endDate: DateTime?,
     private val selectedDate: DateTime?,
     private val handler: DatePickerDialogHandler,
-    private val dialogId: Int
-) : UIViewController(nibName = null, bundle = null) {
-    override fun viewDidLoad() {
-        super.viewDidLoad()
+    private val dialogId: Int,
+    onDismiss: () -> Unit
+) : UIView(frame = CGRectMake(0.0, 0.0, 0.0, 276.0)) {
 
-        view.backgroundColor = UIColor.blackColor.colorWithAlphaComponent(0.7)
-
+    init {
         val pickerBackground = UIView()
-        view.addSubview(pickerBackground)
+        addSubview(pickerBackground)
         pickerBackground.translatesAutoresizingMaskIntoConstraints = false
         pickerBackground.backgroundColor = UIColor.whiteColor
         pickerBackground.leadingAnchor.constraintEqualToAnchor(
-            anchor = view.leadingAnchor
+            anchor = this.leadingAnchor
         ).active = true
         pickerBackground.trailingAnchor.constraintEqualToAnchor(
-            anchor = view.trailingAnchor
+            anchor = this.trailingAnchor
         ).active = true
         pickerBackground.bottomAnchor.constraintEqualToAnchor(
-            anchor = view.bottomAnchor
+            anchor = this.bottomAnchor
         ).active = true
 
         val datePicker = UIDatePicker()
         datePicker.translatesAutoresizingMaskIntoConstraints = false
         datePicker.datePickerMode = UIDatePickerMode.UIDatePickerModeDate
-        view.addSubview(datePicker)
+        addSubview(datePicker)
         datePicker.leadingAnchor.constraintEqualToAnchor(
-            anchor = view.leadingAnchor
+            anchor = this.leadingAnchor
         ).active = true
         datePicker.trailingAnchor.constraintEqualToAnchor(
-            anchor = view.trailingAnchor
+            anchor = this.trailingAnchor
         ).active = true
         datePicker.bottomAnchor.constraintEqualToAnchor(
-            anchor = view.safeAreaLayoutGuide.bottomAnchor
+            anchor = this.safeAreaLayoutGuide.bottomAnchor
         ).active = true
         datePicker.heightAnchor.constraintEqualToConstant(232.0)
 
@@ -150,12 +156,12 @@ class DatePickerController(
         val controlPanel = UIView()
         controlPanel.translatesAutoresizingMaskIntoConstraints = false
         controlPanel.backgroundColor = UIColor(red = 0.97, green = 0.97, blue = 0.97, alpha = 1.0)
-        view.addSubview(controlPanel)
+        addSubview(controlPanel)
         controlPanel.leadingAnchor.constraintEqualToAnchor(
-            anchor = view.leadingAnchor
+            anchor = this.leadingAnchor
         ).active = true
         controlPanel.trailingAnchor.constraintEqualToAnchor(
-            anchor = view.trailingAnchor
+            anchor = this.trailingAnchor
         ).active = true
         controlPanel.bottomAnchor.constraintEqualToAnchor(
             anchor = datePicker.topAnchor
@@ -221,14 +227,14 @@ class DatePickerController(
         }
 
         doneButton.setEventHandler(UIControlEventTouchUpInside) {
-            this.dismissViewControllerAnimated(flag = true, completion = null)
+            onDismiss.invoke()
             handler.positive?.invoke(
                 dialogId,
                 datePicker.date.toKlock()
             )
         }
         cancelButton.setEventHandler(UIControlEventTouchUpInside) {
-            this.dismissViewControllerAnimated(flag = true, completion = null)
+            onDismiss.invoke()
             handler.negative?.invoke(dialogId)
         }
     }
