@@ -17,6 +17,7 @@ import platform.Foundation.NSNotificationCenter
 import platform.Foundation.NSNumber
 import platform.Foundation.NSSelectorFromString
 import platform.Foundation.NSValue
+import platform.CoreGraphics.CGPointMake
 import platform.UIKit.CGRectValue
 import platform.UIKit.NSLayoutConstraint
 import platform.UIKit.UIApplication
@@ -48,6 +49,10 @@ import platform.UIKit.leadingAnchor
 import platform.UIKit.topAnchor
 import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
+import platform.UIKit.UITableViewCell
+import platform.UIKit.UITableViewScrollPosition
+import platform.UIKit.UITableView
+import platform.UIKit.subviews
 import kotlin.math.max
 
 @ExportObjCClass
@@ -59,6 +64,8 @@ class WidgetViewController(
 
     lateinit var bottomConstraint: NSLayoutConstraint
 
+    private var isScrollListOnKeyboardResize = false
+
     override fun viewDidLoad() {
         super.viewDidLoad()
 
@@ -66,6 +73,7 @@ class WidgetViewController(
         val viewBundle = widget.buildView(this)
         val widgetView = viewBundle.view
         widgetView.translatesAutoresizingMaskIntoConstraints = false
+        isScrollListOnKeyboardResize = screen.isScrollListOnKeyboardResize
 
         with(view) {
             backgroundColor = UIColor.safeSystemBackgroundColor
@@ -146,11 +154,50 @@ class WidgetViewController(
 
         val endConstant = max(screenHeight - endY, 0.0)
 
+        val tableView = if (isScrollListOnKeyboardResize) {
+            findTableView(view)
+        } else {
+            null
+        }
+        val tableViewContentYOffset = tableView?.contentOffset?.useContents {
+            this.y
+        } ?: 0.0
+        val tableViewOldMaxY =
+            tableView?.frame?.useContents { this.origin.y + this.size.height } ?: 0.0
+        val tableViewHeight = tableView?.frame?.useContents { this.size.height } ?: 0.0
+
         bottomConstraint.constant = startConstant
         view.layoutIfNeeded()
         UIView.animateWithDuration(duration = duration) {
             bottomConstraint.constant = endConstant
             view.layoutIfNeeded()
+        }
+
+        if (isScrollListOnKeyboardResize && tableView != null && notification.name == UIKeyboardWillChangeFrameNotification) {
+
+            val contentHeight = tableView.contentSize.useContents { this.height }
+            val tableMaxY = tableView.frame.useContents { this.origin.y + this.size.height }
+
+            val newContentOffset = tableViewContentYOffset + (tableViewOldMaxY - tableMaxY)
+
+            // cant use setContentOffset if newContentOffset greater then current max contentOffset(contentHeight - tableViewHeight)
+            if (contentHeight - tableViewHeight > newContentOffset) {
+                tableView.setContentOffset(
+                    CGPointMake(
+                        x = 0.0,
+                        y = tableViewContentYOffset + (tableViewOldMaxY - tableMaxY)
+                    )
+                )
+            } else {
+                val lastCell = tableView.visibleCells.lastOrNull() as? UITableViewCell
+                if (lastCell != null) {
+                    tableView.scrollToRowAtIndexPath(
+                        tableView.indexPathForCell(lastCell)!!,
+                        animated = true,
+                        atScrollPosition = UITableViewScrollPosition.UITableViewScrollPositionBottom
+                    )
+                }
+            }
         }
     }
 
@@ -162,5 +209,20 @@ class WidgetViewController(
     override fun preferredStatusBarStyle(): UIStatusBarStyle {
         val light = isLightStatusBar ?: BaseApplication.sharedInstance.isLightStatusBar
         return getStatusBarStyle(light) ?: super.preferredStatusBarStyle()
+    }
+
+    private fun findTableView(view: UIView): UITableView? {
+        return when (view) {
+            is UITableView -> view
+            else -> {
+                view.subviews.forEach {
+                    if (it is UIView) {
+                        val tableView = findTableView(it)
+                        if (tableView != null) return tableView
+                    }
+                }
+                null
+            }
+        }
     }
 }

@@ -20,4 +20,5 @@ actual abstract class WidgetScreen<Arg : Args> actual constructor() : Screen<Arg
 
     actual open val isKeyboardResizeContent: Boolean = false
     actual open val isDismissKeyboardOnTap: Boolean = false
+    actual open val isScrollListOnKeyboardResize: Boolean = false
 }

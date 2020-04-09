@@ -7,9 +7,11 @@ package dev.icerock.moko.widgets.core.screen
 import android.app.Service
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import androidx.recyclerview.widget.RecyclerView
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.style.view.SizeSpec
@@ -55,6 +57,26 @@ actual abstract class WidgetScreen<Arg : Args> actual constructor() : Screen<Arg
 
         if (isKeyboardResizeContent) {
             requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+            if (isScrollListOnKeyboardResize) {
+                var lastRecyclerOffset = 0
+                val recyclerView = view?.let { findRecyclerView(it) }
+                recyclerView?.setOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrolled(
+                        recyclerView: RecyclerView,
+                        dx: Int,
+                        dy: Int
+                    ) {
+                        super.onScrolled(recyclerView, dx, dy)
+                        if (dy != 0) {
+                            lastRecyclerOffset = recyclerView.computeVerticalScrollOffset()
+                        }
+                    }
+                })
+                recyclerView?.addOnLayoutChangeListener(View.OnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+                    val currentOffset = recyclerView.computeVerticalScrollOffset()
+                    recyclerView.scrollBy(0, (lastRecyclerOffset - currentOffset) + oldBottom - bottom)
+                })
+            }
         }
     }
 
@@ -66,6 +88,24 @@ actual abstract class WidgetScreen<Arg : Args> actual constructor() : Screen<Arg
         }
     }
 
+    private fun findRecyclerView(view: View): RecyclerView? {
+        return when (view) {
+            is RecyclerView -> view
+            is ViewGroup -> {
+                for (i in 0 until view.childCount) {
+                    val childView = view.getChildAt(i)
+
+                    val rv = findRecyclerView(childView)
+                    if (rv != null) return rv
+                }
+
+                null
+            }
+            else -> null
+        }
+    }
+
     actual open val isKeyboardResizeContent: Boolean = false
     actual open val isDismissKeyboardOnTap: Boolean = false
+    actual open val isScrollListOnKeyboardResize: Boolean = false
 }
