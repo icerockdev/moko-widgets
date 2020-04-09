@@ -19,4 +19,5 @@ target 'TestProj' do
   pod 'moko-widgets-bottomsheet', :path => '../../'
   pod 'moko-widgets-collection', :path => '../../'
   pod 'moko-widgets-image-network', :path => '../../'
+  pod 'moko-widgets-datetime-picker', :path => '../../'
 end

@@ -22,3 +22,9 @@ dependencies {
     androidLibrary(Deps.Libs.Android.appCompat)
     androidLibrary(Deps.Libs.Android.lifecycle)
 }
+
+cocoaPods {
+    podsProject = file("../sample/ios-app/Pods/Pods.xcodeproj")
+
+    pod("moko-widgets-datetime-picker", "mokoWidgetsDateTimePicker")
+}
