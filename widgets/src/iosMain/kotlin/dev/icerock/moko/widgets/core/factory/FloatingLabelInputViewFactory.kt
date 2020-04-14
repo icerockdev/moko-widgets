@@ -72,7 +72,6 @@ import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 import platform.UIKit.UITapGestureRecognizer
 import platform.UIKit.addGestureRecognizer
-import platform.UIKit.UIResponder
 
 actual class FloatingLabelInputViewFactory actual constructor(
     private val background: Background<Fill.Solid>?,
@@ -82,7 +81,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
     private val labelTextStyle: TextStyle<Color>?,
     private val errorTextStyle: TextStyle<Color>?,
     private val underLineColor: FocusableState<Color>?,
-    private val textHorizontalAlignment: TextHorizontalAlignment?,
+    private val textHorizontalAlignment: TextHorizontalAlignment?
 ) : ViewFactory<InputWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
