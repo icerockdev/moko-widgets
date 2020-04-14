@@ -54,11 +54,14 @@ import platform.UIKit.UIColor
 import platform.UIKit.UIControlEventEditingChanged
 import platform.UIKit.UIFont
 import platform.UIKit.UILabel
+import platform.UIKit.UIReturnKeyType
 import platform.UIKit.UIScreen
 import platform.UIKit.UITextField
 import platform.UIKit.UITextFieldDelegateProtocol
 import platform.UIKit.UIView
 import platform.UIKit.addSubview
+import platform.UIKit.superview
+import platform.UIKit.subviews
 import platform.UIKit.bottomAnchor
 import platform.UIKit.leadingAnchor
 import platform.UIKit.systemFontSize
@@ -78,7 +81,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
     private val labelTextStyle: TextStyle<Color>?,
     private val errorTextStyle: TextStyle<Color>?,
     private val underLineColor: FocusableState<Color>?,
-    private val textHorizontalAlignment: TextHorizontalAlignment?
+    private val textHorizontalAlignment: TextHorizontalAlignment?,
 ) : ViewFactory<InputWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
@@ -350,11 +353,31 @@ actual class FloatingLabelInputViewFactory actual constructor(
         }
 
         override fun textFieldShouldBeginEditing(textField: UITextField): Boolean {
+            textField.returnKeyType =
+                if (nextTextField(textField) == null) {
+                    UIReturnKeyType.UIReturnKeyDone
+                } else {
+                    UIReturnKeyType.UIReturnKeyNext
+                }
             animate(
                 duration = placeholderAnimationDuration,
                 underlineColor = selectedColor,
                 isPlaceholderInTopState = true
             )
+            return true
+        }
+
+        private fun nextTextField(textField: UITextField): UITextField? {
+            val fields = textField.superview?.subviews.orEmpty().filter { it as? UITextField != null }
+            val index = fields.indexOf(textField)
+            if (index < 0 || index == (fields.count() - 1)) {
+                return null
+            }
+            return fields[index+1] as? UITextField
+        }
+
+        override fun textFieldShouldReturn(textField: UITextField): Boolean {
+            nextTextField(textField)?.becomeFirstResponder()
             return true
         }
 
