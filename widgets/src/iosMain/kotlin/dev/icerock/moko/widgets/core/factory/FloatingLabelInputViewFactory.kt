@@ -301,6 +301,10 @@ actual class FloatingLabelInputViewFactory actual constructor(
             addGestureRecognizer(recognizer)
         }
 
+        override fun becomeFirstResponder(): Boolean {
+            return textField.becomeFirstResponder()
+        }
+
         private fun onTap() {
             textField.becomeFirstResponder()
         }
@@ -367,13 +371,13 @@ actual class FloatingLabelInputViewFactory actual constructor(
             return true
         }
 
-        private fun nextTextField(textField: UITextField): UITextField? {
-            val fields = textField.superview?.subviews.orEmpty().filter { it as? UITextField != null }
+        private fun nextTextField(textField: UITextField): InputWidgetView? {
+            val fields = textField.superview?.superview?.subviews.orEmpty().filter { it as? InputWidgetView != null }
             val index = fields.indexOf(textField)
             if (index < 0 || index == (fields.count() - 1)) {
                 return null
             }
-            return fields[index+1] as? UITextField
+            return fields[index+1] as? InputWidgetView
         }
 
         override fun textFieldShouldReturn(textField: UITextField): Boolean {
