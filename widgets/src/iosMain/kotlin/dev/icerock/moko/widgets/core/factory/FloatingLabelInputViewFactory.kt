@@ -378,7 +378,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
 
         private fun nextResponder(textField: UITextField): UIView? {
             val fields = textField.superview?.superview?.subviews.orEmpty()
-                .filter { (it as? UIView)?.canBecomeFirstResponder() ?: false }
+                .filter { (it as? InputWidgetView) != null }
             val index = fields.indexOf(this)
             if (index < 0 || index == (fields.count() - 1)) {
                 return null

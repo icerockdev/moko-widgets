@@ -96,7 +96,7 @@ class DefaultFormatterUITextFieldDelegate(
 
     private fun nextResponder(textField: UITextField): UIView? {
         val fields = textField.superview?.subviews.orEmpty()
-            .filter { (it as? UIView)?.canBecomeFirstResponder() ?: false }
+            .filter { (it as? UITextField)?.canBecomeFirstResponder() ?: false }
         val index = fields.indexOf(textField)
         if (index < 0 || index == (fields.count() - 1)) {
             return null
