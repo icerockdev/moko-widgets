@@ -12,9 +12,12 @@ import platform.Foundation.NSString
 import platform.Foundation.stringByReplacingCharactersInRange
 import platform.CoreGraphics.CGRectZero
 import platform.UIKit.UIControlEventEditingChanged
+import platform.UIKit.UIReturnKeyType
 import platform.UIKit.UITextField
 import platform.UIKit.UIView
 import platform.UIKit.UITextFieldDelegateProtocol
+import platform.UIKit.subviews
+import platform.UIKit.superview
 
 
 class DefaultTextFormatter(val textPattern: String, val patternSymbol: Char = '#') {
@@ -68,7 +71,7 @@ fun String.toIosPattern(): String {
 }
 
 class DefaultFormatterUITextFieldDelegate(
-    private val inputFormatter: DefaultTextFormatter
+    private val inputFormatter: DefaultTextFormatter?
 ) : UIView(frame = CGRectZero.readValue()), UITextFieldDelegateProtocol {
 
     override fun textField(
@@ -76,6 +79,9 @@ class DefaultFormatterUITextFieldDelegate(
         shouldChangeCharactersInRange: CValue<NSRange>,
         replacementString: String
     ): Boolean {
+        if (inputFormatter == null) {
+            return true
+        }
         val nsString = NSString.create(string = textField.text ?: "")
         val newText = nsString.stringByReplacingCharactersInRange(
             range = shouldChangeCharactersInRange,
@@ -86,5 +92,26 @@ class DefaultFormatterUITextFieldDelegate(
         textField.text = inputFormatter.format(unformattedText)
         textField.sendActionsForControlEvents(UIControlEventEditingChanged)
         return false
+    }
+
+    private fun nextResponder(textField: UITextField): UIView? {
+        val fields = textField.superview?.subviews.orEmpty()
+            .filter { (it as? UIView)?.canBecomeFirstResponder() ?: false }
+        val index = fields.indexOf(textField)
+        if (index < 0 || index == (fields.count() - 1)) {
+            return null
+        }
+        return fields[index+1] as? UIView
+    }
+
+    override fun textFieldDidBeginEditing(textField: UITextField) {
+        if (nextResponder(textField) != null) {
+            textField.returnKeyType = UIReturnKeyType.UIReturnKeyNext
+        }
+    }
+
+    override fun textFieldShouldReturn(textField: UITextField): Boolean {
+        nextResponder(textField)?.becomeFirstResponder()
+        return true
     }
 }

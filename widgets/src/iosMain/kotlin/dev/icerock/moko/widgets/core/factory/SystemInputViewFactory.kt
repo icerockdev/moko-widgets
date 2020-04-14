@@ -6,6 +6,7 @@ package dev.icerock.moko.widgets.core.factory
 
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.graphics.toUIColor
+import dev.icerock.moko.widgets.core.View
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
@@ -42,6 +43,7 @@ import platform.UIKit.UIControlContentVerticalAlignmentTop
 import platform.UIKit.UIControlEventEditingChanged
 import platform.UIKit.UITextBorderStyle
 import platform.UIKit.UITextField
+import platform.UIKit.UITextFieldDelegateProtocol
 import platform.UIKit.clipsToBounds
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
@@ -118,12 +120,13 @@ actual class SystemInputViewFactory actual constructor(
                 mask.toIosPattern(),
                 patternSymbol = '#'
             )
-            val delegate = DefaultFormatterUITextFieldDelegate(
-                inputFormatter = valueFormatter!!
-            )
-            textField.delegate = delegate
-            setAssociatedObject(textField, delegate)
         }
+
+        val delegate = DefaultFormatterUITextFieldDelegate(
+            inputFormatter = valueFormatter
+        )
+        textField.delegate = delegate
+        setAssociatedObject(textField, delegate)
 
         textField.setEventHandler(UIControlEventEditingChanged) {
             val currentValue = widget.field.data.value

@@ -72,6 +72,7 @@ import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 import platform.UIKit.UITapGestureRecognizer
 import platform.UIKit.addGestureRecognizer
+import platform.UIKit.UIResponder
 
 actual class FloatingLabelInputViewFactory actual constructor(
     private val background: Background<Fill.Solid>?,
@@ -305,9 +306,14 @@ actual class FloatingLabelInputViewFactory actual constructor(
             return textField.becomeFirstResponder()
         }
 
+        override fun canBecomeFirstResponder(): Boolean {
+            return textField.canBecomeFirstResponder()
+        }
+
         private fun onTap() {
             textField.becomeFirstResponder()
         }
+
 
         override fun layoutSublayersOfLayer(layer: CALayer) {
             super.layoutSublayersOfLayer(layer)
@@ -358,7 +364,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
 
         override fun textFieldShouldBeginEditing(textField: UITextField): Boolean {
             textField.returnKeyType =
-                if (nextTextField(textField) == null) {
+                if (nextResponder(textField) == null) {
                     UIReturnKeyType.UIReturnKeyDone
                 } else {
                     UIReturnKeyType.UIReturnKeyNext
@@ -371,17 +377,18 @@ actual class FloatingLabelInputViewFactory actual constructor(
             return true
         }
 
-        private fun nextTextField(textField: UITextField): InputWidgetView? {
-            val fields = textField.superview?.superview?.subviews.orEmpty().filter { it as? InputWidgetView != null }
-            val index = fields.indexOf(textField)
+        private fun nextResponder(textField: UITextField): UIView? {
+            val fields = textField.superview?.superview?.subviews.orEmpty()
+                .filter { (it as? UIView)?.canBecomeFirstResponder() ?: false }
+            val index = fields.indexOf(this)
             if (index < 0 || index == (fields.count() - 1)) {
                 return null
             }
-            return fields[index+1] as? InputWidgetView
+            return fields[index+1] as? UIView
         }
 
         override fun textFieldShouldReturn(textField: UITextField): Boolean {
-            nextTextField(textField)?.becomeFirstResponder()
+            nextResponder(textField)?.becomeFirstResponder()
             return true
         }
 
