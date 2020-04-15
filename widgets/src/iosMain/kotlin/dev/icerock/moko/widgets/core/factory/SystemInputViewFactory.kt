@@ -118,12 +118,13 @@ actual class SystemInputViewFactory actual constructor(
                 mask.toIosPattern(),
                 patternSymbol = '#'
             )
-            val delegate = DefaultFormatterUITextFieldDelegate(
-                inputFormatter = valueFormatter!!
-            )
-            textField.delegate = delegate
-            setAssociatedObject(textField, delegate)
         }
+
+        val delegate = DefaultFormatterUITextFieldDelegate(
+            inputFormatter = valueFormatter
+        )
+        textField.delegate = delegate
+        setAssociatedObject(textField, delegate)
 
         textField.setEventHandler(UIControlEventEditingChanged) {
             val currentValue = widget.field.data.value

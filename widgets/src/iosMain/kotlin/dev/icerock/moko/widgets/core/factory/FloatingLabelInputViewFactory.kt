@@ -54,11 +54,14 @@ import platform.UIKit.UIColor
 import platform.UIKit.UIControlEventEditingChanged
 import platform.UIKit.UIFont
 import platform.UIKit.UILabel
+import platform.UIKit.UIReturnKeyType
 import platform.UIKit.UIScreen
 import platform.UIKit.UITextField
 import platform.UIKit.UITextFieldDelegateProtocol
 import platform.UIKit.UIView
 import platform.UIKit.addSubview
+import platform.UIKit.superview
+import platform.UIKit.subviews
 import platform.UIKit.bottomAnchor
 import platform.UIKit.leadingAnchor
 import platform.UIKit.systemFontSize
@@ -298,9 +301,18 @@ actual class FloatingLabelInputViewFactory actual constructor(
             addGestureRecognizer(recognizer)
         }
 
+        override fun becomeFirstResponder(): Boolean {
+            return textField.becomeFirstResponder()
+        }
+
+        override fun canBecomeFirstResponder(): Boolean {
+            return textField.canBecomeFirstResponder()
+        }
+
         private fun onTap() {
             textField.becomeFirstResponder()
         }
+
 
         override fun layoutSublayersOfLayer(layer: CALayer) {
             super.layoutSublayersOfLayer(layer)
@@ -350,11 +362,32 @@ actual class FloatingLabelInputViewFactory actual constructor(
         }
 
         override fun textFieldShouldBeginEditing(textField: UITextField): Boolean {
+            textField.returnKeyType =
+                if (nextResponder(textField) == null) {
+                    UIReturnKeyType.UIReturnKeyDone
+                } else {
+                    UIReturnKeyType.UIReturnKeyNext
+                }
             animate(
                 duration = placeholderAnimationDuration,
                 underlineColor = selectedColor,
                 isPlaceholderInTopState = true
             )
+            return true
+        }
+
+        private fun nextResponder(textField: UITextField): UIView? {
+            val fields = textField.superview?.superview?.subviews.orEmpty()
+                .filter { (it as? InputWidgetView) != null }
+            val index = fields.indexOf(this)
+            if (index < 0 || index == (fields.count() - 1)) {
+                return null
+            }
+            return fields[index+1] as? UIView
+        }
+
+        override fun textFieldShouldReturn(textField: UITextField): Boolean {
+            nextResponder(textField)?.becomeFirstResponder()
             return true
         }
 

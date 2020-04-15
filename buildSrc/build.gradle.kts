@@ -17,7 +17,7 @@ repositories {
 val devPublishing: Boolean = properties.containsKey("devPublish")
 val mokoWidgetsVersion: String = when (devPublishing) {
     true -> getGitCommit()
-    false -> "0.1.0-dev-19"
+    false -> "0.1.0-dev-20"
 }
 
 buildConfigKotlin {
