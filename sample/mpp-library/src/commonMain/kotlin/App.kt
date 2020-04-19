@@ -144,7 +144,15 @@ class App() : BaseApplication() {
                 inputs = listOf(
                     InputWidgetGalleryScreen.InputInfo(
                         id = SystemInputId,
-                        label = "SystemInputViewFactory".desc()
+                        label = "SystemInputViewFactory 1".desc()
+                    ),
+                    InputWidgetGalleryScreen.InputInfo(
+                        id = SystemInputId,
+                        label = "SystemInputViewFactory 2".desc()
+                    ),
+                    InputWidgetGalleryScreen.InputInfo(
+                        id = SystemInputId,
+                        label = "SystemInputViewFactory 3".desc()
                     ),
                     InputWidgetGalleryScreen.InputInfo(
                         id = FloatingLabelInputId,

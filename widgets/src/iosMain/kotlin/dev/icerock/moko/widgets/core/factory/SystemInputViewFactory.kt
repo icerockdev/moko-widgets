@@ -6,9 +6,11 @@ package dev.icerock.moko.widgets.core.factory
 
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.graphics.toUIColor
+import dev.icerock.moko.mvvm.livedata.readOnly
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.core.behaviours.FocusableWidget
 import dev.icerock.moko.widgets.core.style.applyInputTypeIfNeeded
 import dev.icerock.moko.widgets.core.style.background.Background
 import dev.icerock.moko.widgets.core.style.background.Fill
@@ -28,10 +30,14 @@ import dev.icerock.moko.widgets.core.utils.setEventHandler
 import dev.icerock.moko.widgets.core.utils.toIosPattern
 import dev.icerock.moko.widgets.core.widget.InputWidget
 import dev.icerock.moko.widgets.core.objc.setAssociatedObject
+import kotlinx.cinterop.CValue
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGRectZero
 import platform.Foundation.NSMutableAttributedString
+import platform.Foundation.NSRange
+import platform.Foundation.NSString
 import platform.Foundation.create
+import platform.Foundation.stringByReplacingCharactersInRange
 import platform.UIKit.NSForegroundColorAttributeName
 import platform.UIKit.NSTextAlignmentCenter
 import platform.UIKit.NSTextAlignmentLeft
@@ -40,10 +46,17 @@ import platform.UIKit.UIControlContentVerticalAlignmentBottom
 import platform.UIKit.UIControlContentVerticalAlignmentCenter
 import platform.UIKit.UIControlContentVerticalAlignmentTop
 import platform.UIKit.UIControlEventEditingChanged
+import platform.UIKit.UIReturnKeyType
 import platform.UIKit.UITextBorderStyle
 import platform.UIKit.UITextField
+import platform.UIKit.UITextFieldDelegateProtocol
+import platform.UIKit.UIView
 import platform.UIKit.clipsToBounds
+import platform.UIKit.subviews
+import platform.UIKit.superview
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
+import platform.darwin.NSObject
+import platform.darwin.setfsent
 
 actual class SystemInputViewFactory actual constructor(
     private val background: Background<Fill.Solid>?,
@@ -119,10 +132,13 @@ actual class SystemInputViewFactory actual constructor(
                 patternSymbol = '#'
             )
         }
+        //TODO: Rework with this delegate usage (breaks current behaviour, should be used in sample only)
 
-        val delegate = DefaultFormatterUITextFieldDelegate(
-            inputFormatter = valueFormatter
-        )
+        val delegate = InputFocusableDelegate(widget, textField, valueFormatter)
+
+//        val delegate = DefaultFormatterUITextFieldDelegate(
+//            inputFormatter = valueFormatter
+//        )
         textField.delegate = delegate
         setAssociatedObject(textField, delegate)
 
@@ -144,5 +160,58 @@ actual class SystemInputViewFactory actual constructor(
             size = size,
             margins = margins
         )
+    }
+}
+
+//TODO: Relocate to separate file
+private class InputFocusableDelegate(
+    widget: InputWidget<*>,
+    private val textField: UITextField,
+    private val inputFormatter: DefaultTextFormatter?
+): NSObject(), UITextFieldDelegateProtocol {
+    private val hasNext = widget.hasNext
+    private val hasPrev = widget.hasPrev
+    private val setFocused = widget.setFocused.readOnly()
+    private val getFocused = widget.mGetFocused
+
+    init {
+        setFocused.addObserver { isFocused -> Unit
+            with(this.textField) {
+                if (isFocused) becomeFirstResponder() else resignFirstResponder()
+            }
+        }
+    }
+
+    override fun textField(
+        textField: UITextField,
+        shouldChangeCharactersInRange: CValue<NSRange>,
+        replacementString: String
+    ): Boolean {
+        if (inputFormatter == null) {
+            return true
+        }
+        val nsString = NSString.create(string = textField.text ?: "")
+        val newText = nsString.stringByReplacingCharactersInRange(
+            range = shouldChangeCharactersInRange,
+            withString = replacementString
+        )
+        val unformattedText = inputFormatter.unformat(newText)
+
+        textField.text = inputFormatter.format(unformattedText)
+        textField.sendActionsForControlEvents(UIControlEventEditingChanged)
+        return false
+    }
+
+    override fun textFieldDidBeginEditing(textField: UITextField) {
+        getFocused.postValue(true)
+        if (hasNext) {
+            textField.returnKeyType = UIReturnKeyType.UIReturnKeyNext
+        }
+        //TODO: Work with accessory view here depending on keyboard type and previous button enabled?
+    }
+
+    override fun textFieldShouldReturn(textField: UITextField): Boolean {
+        getFocused.postValue(false)
+        return true
     }
 }
