@@ -11,7 +11,6 @@ import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.objc.setAssociatedObject
-import dev.icerock.moko.widgets.core.style.applyInputTypeIfNeeded
 import dev.icerock.moko.widgets.core.style.background.Background
 import dev.icerock.moko.widgets.core.style.background.Fill
 import dev.icerock.moko.widgets.core.style.view.MarginValues
@@ -57,7 +56,7 @@ actual class MultilineInputViewFactory actual constructor(
 
             applyBackgroundIfNeeded(background)
             applyTextStyleIfNeeded(textStyle)
-            applyInputTypeIfNeeded(widget.inputType)
+            widget.inputType?.applyTo(this)
 
             padding?.also {
                 contentInset = UIEdgeInsetsMake(

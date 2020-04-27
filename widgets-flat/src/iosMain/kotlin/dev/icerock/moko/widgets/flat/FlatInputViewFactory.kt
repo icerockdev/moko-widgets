@@ -59,21 +59,9 @@ actual class FlatInputViewFactory actual constructor(
             textField.placeholder = it.localized()
         }
 
-        when (widget.inputType) {
-            is InputType.Email -> textField.keyboardType = UIKeyboardTypeEmailAddress
-            is InputType.Plain -> {
-            }
-            is InputType.Password -> textField.setSecureTextEntry(true)
-            is InputType.Date -> {
-            }
-            is InputType.Phone -> textField.keyboardType = UIKeyboardTypePhonePad
-            is InputType.Digits -> textField.keyboardType = UIKeyboardTypeNumberPad
-            null -> {
-            }
-        }
-
-        widget.inputType?.mask?.also {
-            flatInputField.setFormat(it)
+        widget.inputType?.let { inputType ->
+            inputType.applyTo(textField)
+            flatInputField.setFormat(inputType.mask)
         }
 
         flatInputField.backgroundColor = backgroundColor?.toUIColor()

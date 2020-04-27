@@ -9,7 +9,6 @@ import dev.icerock.moko.graphics.toUIColor
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.core.style.applyInputTypeIfNeeded
 import dev.icerock.moko.widgets.core.style.background.Background
 import dev.icerock.moko.widgets.core.style.background.Fill
 import dev.icerock.moko.widgets.core.style.input.InputType
@@ -109,7 +108,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
                 applyTextStyleIfNeeded(textStyle)
                 applyErrorStyleIfNeeded(errorTextStyle)
                 applyLabelStyleIfNeeded(labelTextStyle)
-                applyInputTypeIfNeeded(widget.inputType)
+                widget.inputType?.applyTo(this.textField)
 
                 underLineColor?.also {
                     deselectedColor = it.unfocused.toUIColor()
@@ -203,7 +202,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
                 underlineLayer.fillColor =
                     (if (textField.isFocused()) selectedColor else value).CGColor
             }
-        private val textField: UITextField
+        internal val textField: UITextField
 
         private val errorLabel: UILabel
         private val underlineLayer: CAShapeLayer
@@ -435,16 +434,10 @@ actual class FloatingLabelInputViewFactory actual constructor(
         }
 
         fun applyInputTypeIfNeeded(inputType: InputType?) {
-            textField.applyInputTypeIfNeeded(inputType)
-
-            inputType?.mask?.let { mask ->
-                val delegate =
-                    DefaultFormatterUITextFieldDelegate(
-                        inputFormatter = DefaultTextFormatter(
-                            mask.toIosPattern(),
-                            patternSymbol = '#'
-                        )
-                    )
+            if(inputType == null) return
+            inputType.applyTo(textField)
+            inputType.getValueFormatter()?.let { formatter ->
+                val delegate = DefaultFormatterUITextFieldDelegate(inputFormatter = formatter)
                 textField.delegate = delegate
                 setAssociatedObject(textField, delegate)
             }

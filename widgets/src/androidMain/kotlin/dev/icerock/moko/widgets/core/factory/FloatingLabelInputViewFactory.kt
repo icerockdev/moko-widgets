@@ -23,7 +23,6 @@ import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.style.applyBackgroundIfNeeded
-import dev.icerock.moko.widgets.core.style.applyInputType
 import dev.icerock.moko.widgets.core.style.applyPaddingIfNeeded
 import dev.icerock.moko.widgets.core.style.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.core.style.background.Background
@@ -82,7 +81,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
             }
 
             applyTextStyleIfNeeded(textStyle)
-            widget.inputType?.also { applyInputType(it) }
+            widget.inputType?.applyTo(this)
 
             this@FloatingLabelInputViewFactory.textHorizontalAlignment?.let {
                 gravity = it.getGravity()

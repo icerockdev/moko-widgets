@@ -9,7 +9,6 @@ import dev.icerock.moko.graphics.toUIColor
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.core.style.applyInputTypeIfNeeded
 import dev.icerock.moko.widgets.core.style.background.Background
 import dev.icerock.moko.widgets.core.style.background.Fill
 import dev.icerock.moko.widgets.core.style.view.IOSFieldBorderStyle
@@ -68,7 +67,7 @@ actual class SystemInputViewFactory actual constructor(
             translatesAutoresizingMaskIntoConstraints = false
             applyBackgroundIfNeeded(backgroundConfig)
             applyTextStyleIfNeeded(textStyle)
-            applyInputTypeIfNeeded(widget.inputType)
+            widget.inputType?.applyTo(this)
 
             clipsToBounds = true
 
@@ -111,14 +110,14 @@ actual class SystemInputViewFactory actual constructor(
             }
         }
 
-        var valueFormatter: DefaultTextFormatter? = null
+        val valueFormatter: DefaultTextFormatter? = widget.inputType?.getValueFormatter()
 
-        widget.inputType?.mask?.let { mask ->
-            valueFormatter = DefaultTextFormatter(
-                mask.toIosPattern(),
-                patternSymbol = '#'
-            )
-        }
+//        widget.inputType?.mask?.let { mask ->
+//            valueFormatter = DefaultTextFormatter(
+//                mask.toIosPattern(),
+//                patternSymbol = '#'
+//            )
+//        }
 
         val delegate = DefaultFormatterUITextFieldDelegate(
             inputFormatter = valueFormatter
