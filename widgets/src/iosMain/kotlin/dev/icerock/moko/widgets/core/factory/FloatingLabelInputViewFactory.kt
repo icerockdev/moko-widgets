@@ -433,16 +433,6 @@ actual class FloatingLabelInputViewFactory actual constructor(
             textField.applyTextStyleIfNeeded(textStyle)
         }
 
-        fun applyInputTypeIfNeeded(inputType: InputType?) {
-            if(inputType == null) return
-            inputType.applyTo(textField)
-            inputType.getValueFormatter()?.let { formatter ->
-                val delegate = DefaultFormatterUITextFieldDelegate(inputFormatter = formatter)
-                textField.delegate = delegate
-                setAssociatedObject(textField, delegate)
-            }
-        }
-
         fun applyLabelStyleIfNeeded(textStyle: TextStyle<Color>?) {
             placeholderTextLayer.applyTextStyleIfNeeded(textStyle)
         }

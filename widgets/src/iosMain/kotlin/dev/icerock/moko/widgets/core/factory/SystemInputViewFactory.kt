@@ -110,13 +110,14 @@ actual class SystemInputViewFactory actual constructor(
             }
         }
 
-        val valueFormatter: DefaultTextFormatter? = widget.inputType?.getValueFormatter()
+        // TODO: need to get Formatter ref from InputType
+        /*val valueFormatter: DefaultTextFormatter? = widget.inputType?.getValueFormatter()
 
         val delegate = DefaultFormatterUITextFieldDelegate(
             inputFormatter = valueFormatter
         )
         textField.delegate = delegate
-        setAssociatedObject(textField, delegate)
+        setAssociatedObject(textField, delegate)*/
 
         textField.setEventHandler(UIControlEventEditingChanged) {
             val currentValue = widget.field.data.value
@@ -129,7 +130,7 @@ actual class SystemInputViewFactory actual constructor(
 
         widget.enabled?.bind { textField.enabled = it }
         widget.label.bind { textField.placeholder = it.localized() }
-        widget.field.data.bind { textField.text = valueFormatter?.format(it) ?: it }
+        //widget.field.data.bind { textField.text = valueFormatter?.format(it) ?: it }
 
         return ViewBundle(
             view = textField,

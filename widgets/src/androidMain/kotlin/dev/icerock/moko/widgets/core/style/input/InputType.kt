@@ -5,6 +5,7 @@
 package dev.icerock.moko.widgets.core.style.input
 
 import android.widget.EditText
+// TODO move to separated additions module to reduce external dependencies count in core
 import com.redmadrobot.inputmask.MaskedTextChangedListener
 
 actual interface InputType {

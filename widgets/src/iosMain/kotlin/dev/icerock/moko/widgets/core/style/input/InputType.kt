@@ -4,6 +4,8 @@
 
 package dev.icerock.moko.widgets.core.style.input
 
+import dev.icerock.moko.widgets.core.objc.setAssociatedObject
+import dev.icerock.moko.widgets.core.utils.DefaultFormatterUITextFieldDelegate
 import dev.icerock.moko.widgets.core.utils.DefaultTextFormatter
 import dev.icerock.moko.widgets.core.utils.toIosPattern
 import platform.UIKit.UIKeyboardTypeDecimalPad
@@ -16,26 +18,20 @@ import platform.UIKit.UITextView
 
 actual interface InputType {
 
-    val mask: String
-
     fun applyTo(textField: UITextField)
 
     fun applyTo(textView: UITextView)
-
-    fun getValueFormatter(): DefaultTextFormatter {
-        return createDefaultTextFormatter(mask)
-    }
 
     actual companion object
 }
 
 actual fun InputType.Companion.plain(mask: String): InputType {
     return object : InputType {
-        override val mask: String = mask
 
         override fun applyTo(textField: UITextField) {
             textField.keyboardType = UIKeyboardTypeDefault
             textField.secureTextEntry = false
+            applyFormatter(mask, textField)
         }
 
         override fun applyTo(textView: UITextView) {
@@ -47,11 +43,11 @@ actual fun InputType.Companion.plain(mask: String): InputType {
 
 actual fun InputType.Companion.email(mask: String): InputType {
     return object : InputType {
-        override val mask: String = mask
 
         override fun applyTo(textField: UITextField) {
             textField.keyboardType = UIKeyboardTypeEmailAddress
             textField.secureTextEntry = false
+            applyFormatter(mask, textField)
         }
 
         override fun applyTo(textView: UITextView) {
@@ -63,11 +59,11 @@ actual fun InputType.Companion.email(mask: String): InputType {
 
 actual fun InputType.Companion.phone(mask: String): InputType {
     return object : InputType {
-        override val mask: String = mask
 
         override fun applyTo(textField: UITextField) {
             textField.keyboardType = UIKeyboardTypePhonePad
             textField.secureTextEntry = false
+            applyFormatter(mask, textField)
         }
 
         override fun applyTo(textView: UITextView) {
@@ -79,11 +75,11 @@ actual fun InputType.Companion.phone(mask: String): InputType {
 
 actual fun InputType.Companion.password(mask: String): InputType {
     return object : InputType {
-        override val mask: String = mask
 
         override fun applyTo(textField: UITextField) {
             textField.keyboardType = UIKeyboardTypeDefault
             textField.secureTextEntry = true
+            applyFormatter(mask, textField)
         }
 
         override fun applyTo(textView: UITextView) {
@@ -95,34 +91,41 @@ actual fun InputType.Companion.password(mask: String): InputType {
 
 actual fun InputType.Companion.date(mask: String): InputType {
     return object : InputType {
-        override val mask: String = mask
 
         override fun applyTo(textField: UITextField) {
             textField.keyboardType = UIKeyboardTypeDecimalPad
-            textField.secureTextEntry = true
+            textField.secureTextEntry = false
+            applyFormatter(mask, textField)
         }
 
         override fun applyTo(textView: UITextView) {
             textView.keyboardType = UIKeyboardTypeDecimalPad
-            textView.secureTextEntry = true
+            textView.secureTextEntry = false
         }
     }
 }
 
 actual fun InputType.Companion.digits(mask: String): InputType {
     return object : InputType {
-        override val mask: String = mask
 
         override fun applyTo(textField: UITextField) {
             textField.keyboardType = UIKeyboardTypeNumberPad
-            textField.secureTextEntry = true
+            textField.secureTextEntry = false
+            applyFormatter(mask, textField)
         }
 
         override fun applyTo(textView: UITextView) {
             textView.keyboardType = UIKeyboardTypeNumberPad
-            textView.secureTextEntry = true
+            textView.secureTextEntry = false
         }
     }
+}
+
+private fun applyFormatter(mask: String, textField: UITextField) {
+    val formatter = createDefaultTextFormatter(mask)
+    val delegate = DefaultFormatterUITextFieldDelegate(inputFormatter = formatter)
+    textField.delegate = delegate
+    setAssociatedObject(textField, delegate)
 }
 
 internal fun createDefaultTextFormatter(mask: String) = DefaultTextFormatter(
