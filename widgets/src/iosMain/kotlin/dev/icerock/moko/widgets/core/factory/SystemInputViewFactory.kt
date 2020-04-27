@@ -112,13 +112,6 @@ actual class SystemInputViewFactory actual constructor(
 
         val valueFormatter: DefaultTextFormatter? = widget.inputType?.getValueFormatter()
 
-//        widget.inputType?.mask?.let { mask ->
-//            valueFormatter = DefaultTextFormatter(
-//                mask.toIosPattern(),
-//                patternSymbol = '#'
-//            )
-//        }
-
         val delegate = DefaultFormatterUITextFieldDelegate(
             inputFormatter = valueFormatter
         )
