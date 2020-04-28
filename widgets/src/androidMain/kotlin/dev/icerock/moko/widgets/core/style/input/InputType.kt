@@ -15,7 +15,7 @@ actual interface InputType {
     actual companion object
 }
 
-actual fun InputType.Companion.plain(mask: String): InputType {
+actual fun InputType.Companion.plain(mask: String?): InputType {
     return object : InputType {
         override fun applyTo(editText: EditText) {
             editText.applyMask(
@@ -26,7 +26,7 @@ actual fun InputType.Companion.plain(mask: String): InputType {
     }
 }
 
-actual fun InputType.Companion.digits(mask: String): InputType {
+actual fun InputType.Companion.digits(mask: String?): InputType {
     return object : InputType {
         override fun applyTo(editText: EditText) {
             editText.applyMask(
@@ -37,7 +37,7 @@ actual fun InputType.Companion.digits(mask: String): InputType {
     }
 }
 
-actual fun InputType.Companion.date(mask: String): InputType {
+actual fun InputType.Companion.date(mask: String?): InputType {
     return object : InputType {
         override fun applyTo(editText: EditText) {
             editText.applyMask(
@@ -48,7 +48,7 @@ actual fun InputType.Companion.date(mask: String): InputType {
     }
 }
 
-actual fun InputType.Companion.password(mask: String): InputType {
+actual fun InputType.Companion.password(mask: String?): InputType {
     return object : InputType {
         override fun applyTo(editText: EditText) {
             editText.applyMask(
@@ -59,7 +59,7 @@ actual fun InputType.Companion.password(mask: String): InputType {
     }
 }
 
-actual fun InputType.Companion.phone(mask: String): InputType {
+actual fun InputType.Companion.phone(mask: String?): InputType {
     return object : InputType {
         override fun applyTo(editText: EditText) {
             editText.applyMask(
@@ -70,7 +70,7 @@ actual fun InputType.Companion.phone(mask: String): InputType {
     }
 }
 
-actual fun InputType.Companion.email(mask: String): InputType {
+actual fun InputType.Companion.email(mask: String?): InputType {
     return object : InputType {
         override fun applyTo(editText: EditText) {
             editText.applyMask(
@@ -83,20 +83,25 @@ actual fun InputType.Companion.email(mask: String): InputType {
 
 private fun EditText.applyMask(
     platformInputType: Int,
-    mask: String,
+    mask: String?,
     maskFilledListener: ((String, Boolean) -> Unit) = { _, _ -> }
 ) {
     inputType = platformInputType
-    val maskedInputListener =
-        MaskedTextChangedListener(mask, this, object : MaskedTextChangedListener.ValueListener {
-            override fun onTextChanged(
-                maskFilled: Boolean,
-                extractedValue: String,
-                formattedValue: String
-            ) {
-                maskFilledListener(formattedValue, maskFilled)
+    if (mask != null) {
+        val maskedInputListener = MaskedTextChangedListener(
+            format = mask,
+            field = this,
+            valueListener = object : MaskedTextChangedListener.ValueListener {
+                override fun onTextChanged(
+                    maskFilled: Boolean,
+                    extractedValue: String,
+                    formattedValue: String
+                ) {
+                    maskFilledListener(formattedValue, maskFilled)
+                }
             }
-        })
+        )
 
-    addTextChangedListener(maskedInputListener)
+        addTextChangedListener(maskedInputListener)
+    }
 }

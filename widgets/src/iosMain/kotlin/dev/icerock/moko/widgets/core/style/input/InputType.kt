@@ -25,7 +25,7 @@ actual interface InputType {
     actual companion object
 }
 
-actual fun InputType.Companion.plain(mask: String): InputType {
+actual fun InputType.Companion.plain(mask: String?): InputType {
     return object : InputType {
 
         override fun applyTo(textField: UITextField) {
@@ -41,7 +41,7 @@ actual fun InputType.Companion.plain(mask: String): InputType {
     }
 }
 
-actual fun InputType.Companion.email(mask: String): InputType {
+actual fun InputType.Companion.email(mask: String?): InputType {
     return object : InputType {
 
         override fun applyTo(textField: UITextField) {
@@ -57,7 +57,7 @@ actual fun InputType.Companion.email(mask: String): InputType {
     }
 }
 
-actual fun InputType.Companion.phone(mask: String): InputType {
+actual fun InputType.Companion.phone(mask: String?): InputType {
     return object : InputType {
 
         override fun applyTo(textField: UITextField) {
@@ -73,7 +73,7 @@ actual fun InputType.Companion.phone(mask: String): InputType {
     }
 }
 
-actual fun InputType.Companion.password(mask: String): InputType {
+actual fun InputType.Companion.password(mask: String?): InputType {
     return object : InputType {
 
         override fun applyTo(textField: UITextField) {
@@ -89,7 +89,7 @@ actual fun InputType.Companion.password(mask: String): InputType {
     }
 }
 
-actual fun InputType.Companion.date(mask: String): InputType {
+actual fun InputType.Companion.date(mask: String?): InputType {
     return object : InputType {
 
         override fun applyTo(textField: UITextField) {
@@ -105,7 +105,7 @@ actual fun InputType.Companion.date(mask: String): InputType {
     }
 }
 
-actual fun InputType.Companion.digits(mask: String): InputType {
+actual fun InputType.Companion.digits(mask: String?): InputType {
     return object : InputType {
 
         override fun applyTo(textField: UITextField) {
@@ -121,7 +121,8 @@ actual fun InputType.Companion.digits(mask: String): InputType {
     }
 }
 
-private fun applyFormatter(mask: String, textField: UITextField) {
+private fun applyFormatter(mask: String?, textField: UITextField) {
+    if(mask == null) return
     val formatter = createDefaultTextFormatter(mask)
     val delegate = DefaultFormatterUITextFieldDelegate(inputFormatter = formatter)
     textField.delegate = delegate
