@@ -11,7 +11,6 @@ import platform.Foundation.NSString
 import platform.Foundation.create
 import platform.Foundation.stringByReplacingCharactersInRange
 import platform.UIKit.UIControlEventEditingChanged
-import platform.UIKit.UIResponder
 import platform.UIKit.UIReturnKeyType
 import platform.UIKit.UITextField
 import platform.UIKit.UITextFieldDelegateProtocol
@@ -67,33 +66,32 @@ class DefaultFormatterUITextFieldDelegate(
     private fun nextResponder(textField: UITextField): UIView? {
         val window = textField.window ?: return null
         val fields = fillRespondersList(window)
-            .filter { it.canBecomeFirstResponder() }
             .toList()
 
         val index = fields.indexOf(textField)
         if (index < 0 || index == (fields.count() - 1)) {
             return null
         }
-        return fields[index + 1] as? UIView
+        return fields[index + 1]
     }
 
-    private fun fillRespondersList(window: UIWindow): Sequence<UIResponder> {
+    private fun fillRespondersList(window: UIWindow): Sequence<UIView> {
         val rootView = window.subviews.firstOrNull() as? UIView ?: return emptySequence()
-        return respondersSubviews(rootView).sortedBy { item ->
-            item as UIView
-            item.convertRect(item.frame, toView = rootView).useContents { this.origin.y }
-        }.onEach { item ->
-            item as UIView
-            if(item.canBecomeFirstResponder) {
+        return respondersSubviews(rootView)
+            .filter { it.canBecomeFirstResponder }
+            .sortedBy { item ->
+                item.convertRect(item.frame, toView = rootView).useContents { this.origin.y }
+            }
+            .onEach { item ->
                 val yPos = item.convertRect(item.frame, toView = rootView).useContents { this.origin.y }
                 println("$item at pos $yPos")
             }
-        }
     }
 
-    private fun respondersSubviews(view: UIView): Sequence<UIResponder> {
+    private fun respondersSubviews(view: UIView): Sequence<UIView> {
         val sequence = view.subviews.asSequence()
-        return sequence.filterIsInstance<UIResponder>() +
-                sequence.flatMap { respondersSubviews(it as UIView) }
+        return sequence
+            .flatMap { respondersSubviews(it as UIView) }
+            .plus(view.subviews.asSequence().map { it as UIView })
     }
 }

@@ -22,7 +22,6 @@ import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.utils.Edges
 import dev.icerock.moko.widgets.core.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.core.utils.applyTextStyleIfNeeded
-import dev.icerock.moko.widgets.core.utils.identifier
 import dev.icerock.moko.widgets.core.utils.setHandler
 import dev.icerock.moko.widgets.core.widget.InputWidget
 import kotlinx.cinterop.ObjCAction
@@ -41,7 +40,6 @@ import platform.QuartzCore.kCAAlignmentLeft
 import platform.UIKit.NSTextAlignmentCenter
 import platform.UIKit.NSTextAlignmentLeft
 import platform.UIKit.NSTextAlignmentRight
-import platform.UIKit.UIAccessibilityIdentificationProtocol
 import platform.UIKit.UIBezierPath
 import platform.UIKit.UIColor
 import platform.UIKit.UIControlEventEditingDidBegin
@@ -87,7 +85,6 @@ actual class FloatingLabelInputViewFactory actual constructor(
 
         val inputView = InputWidgetView(paddingEdges).apply {
             translatesAutoresizingMaskIntoConstraints = false
-            accessibilityIdentifier = widget.identifier()
             applyBackgroundIfNeeded(this@FloatingLabelInputViewFactory.background)
 
             applyTextStyleIfNeeded(textStyle)
@@ -128,8 +125,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
 
     class InputWidgetView(
         private val padding: Edges<CGFloat>
-    ) : UIView(frame = CGRectZero.readValue()),
-        UIAccessibilityIdentificationProtocol {
+    ) : UIView(frame = CGRectZero.readValue()) {
 
         var placeholder: String?
             get() = placeholderTextLayer.string as? String
@@ -188,8 +184,6 @@ actual class FloatingLabelInputViewFactory actual constructor(
                 field = value
                 placeholderTextLayer.fontSize = value
             }
-
-        private var _accessibilityIdentifier: String? = null
 
         init {
             translatesAutoresizingMaskIntoConstraints = false
@@ -272,14 +266,6 @@ actual class FloatingLabelInputViewFactory actual constructor(
             addGestureRecognizer(recognizer)
         }
 
-        override fun becomeFirstResponder(): Boolean {
-            return textField.becomeFirstResponder()
-        }
-
-        override fun canBecomeFirstResponder(): Boolean {
-            return textField.canBecomeFirstResponder()
-        }
-
         private fun onTap() {
             textField.becomeFirstResponder()
         }
@@ -350,65 +336,6 @@ actual class FloatingLabelInputViewFactory actual constructor(
                 isPlaceholderInTopState = textField.text.isNullOrEmpty().not()
             )
             onFocusLost?.invoke()
-        }
-
-//        override fun textFieldShouldBeginEditing(textField: UITextField): Boolean {
-////            textField.returnKeyType =
-////                if (nextResponder(textField) == null) {
-////                    UIReturnKeyType.UIReturnKeyDone
-////                } else {
-////                    UIReturnKeyType.UIReturnKeyNext
-////                }
-//            return true
-//        }
-
-//        private fun nextResponder(textField: UITextField): UIView? {
-//            val fields = textField.superview?.superview?.subviews.orEmpty()
-//                .filter { (it as? InputWidgetView) != null }
-//            val index = fields.indexOf(this)
-//            if (index < 0 || index == (fields.count() - 1)) {
-//                return null
-//            }
-//            return fields[index + 1] as? UIView
-//        }
-//
-//        override fun textFieldShouldReturn(textField: UITextField): Boolean {
-//            nextResponder(textField)?.becomeFirstResponder()
-//            return true
-//        }
-
-//        override fun textFieldDidEndEditing(textField: UITextField) {
-//
-//        }
-
-//        override fun textField(
-//            textField: UITextField,
-//            shouldChangeCharactersInRange: CValue<NSRange>,
-//            replacementString: String
-//        ): Boolean {
-//            if (formatterDelegate != null) {
-//                formatterDelegate?.textField(
-//                    textField = textField,
-//                    shouldChangeCharactersInRange = shouldChangeCharactersInRange,
-//                    replacementString = replacementString
-//                )
-//                return false
-//            } else {
-//                return true
-//            }
-//        }
-
-        //        @ObjCAction
-//        private fun textDidChanged() {
-//            textChanged?.invoke(textField.text.orEmpty())
-//        }
-
-        override fun accessibilityIdentifier(): String? {
-            return _accessibilityIdentifier
-        }
-
-        override fun setAccessibilityIdentifier(accessibilityIdentifier: String?) {
-            _accessibilityIdentifier = accessibilityIdentifier
         }
 
         fun applyTextStyleIfNeeded(textStyle: TextStyle<Color>?) {
