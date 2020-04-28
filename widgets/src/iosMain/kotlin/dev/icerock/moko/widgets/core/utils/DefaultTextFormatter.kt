@@ -94,6 +94,19 @@ class DefaultFormatterUITextFieldDelegate(
         return false
     }
 
+    override fun textFieldDidBeginEditing(textField: UITextField) {
+        textField.returnKeyType = if (nextResponder(textField) != null) {
+            UIReturnKeyType.UIReturnKeyNext
+        } else {
+            UIReturnKeyType.UIReturnKeyDone
+        }
+    }
+
+    override fun textFieldShouldReturn(textField: UITextField): Boolean {
+        nextResponder(textField)?.becomeFirstResponder()
+        return true
+    }
+
     private fun nextResponder(textField: UITextField): UIView? {
         val fields = textField.superview?.subviews.orEmpty()
             .filter { (it as? UITextField)?.canBecomeFirstResponder() ?: false }
@@ -102,16 +115,5 @@ class DefaultFormatterUITextFieldDelegate(
             return null
         }
         return fields[index+1] as? UIView
-    }
-
-    override fun textFieldDidBeginEditing(textField: UITextField) {
-        if (nextResponder(textField) != null) {
-            textField.returnKeyType = UIReturnKeyType.UIReturnKeyNext
-        }
-    }
-
-    override fun textFieldShouldReturn(textField: UITextField): Boolean {
-        nextResponder(textField)?.becomeFirstResponder()
-        return true
     }
 }
