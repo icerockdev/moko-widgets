@@ -6,6 +6,7 @@ package dev.icerock.moko.widgets.core.utils
 
 import kotlinx.cinterop.CValue
 import kotlinx.cinterop.useContents
+import platform.Foundation.NSNotificationCenter
 import platform.Foundation.NSRange
 import platform.Foundation.NSString
 import platform.Foundation.create
@@ -14,6 +15,9 @@ import platform.UIKit.UIControlEventEditingChanged
 import platform.UIKit.UIReturnKeyType
 import platform.UIKit.UITextField
 import platform.UIKit.UITextFieldDelegateProtocol
+import platform.UIKit.UITextView
+import platform.UIKit.UITextViewDelegateProtocol
+import platform.UIKit.UITextViewTextDidChangeNotification
 import platform.UIKit.UIView
 import platform.UIKit.UIWindow
 import platform.UIKit.convertRect
@@ -23,7 +27,27 @@ import platform.darwin.NSObject
 
 class DefaultFormatterUITextFieldDelegate(
     private val inputFormatter: DefaultTextFormatter?
-) : NSObject(), UITextFieldDelegateProtocol {
+) : NSObject(), UITextFieldDelegateProtocol, UITextViewDelegateProtocol {
+
+    override fun textView(
+        textView: UITextView,
+        shouldChangeTextInRange: CValue<NSRange>,
+        replacementText: String
+    ): Boolean {
+        if (inputFormatter == null) {
+            return true
+        }
+        val nsString = NSString.create(string = textView.text)
+        val newText = nsString.stringByReplacingCharactersInRange(
+            range = shouldChangeTextInRange,
+            withString = replacementText
+        )
+        val unformattedText = inputFormatter.unformat(newText)
+
+        textView.text = inputFormatter.format(unformattedText)
+        NSNotificationCenter.defaultCenter.postNotificationName(UITextViewTextDidChangeNotification, textView)
+        return false
+    }
 
     override fun textField(
         textField: UITextField,
