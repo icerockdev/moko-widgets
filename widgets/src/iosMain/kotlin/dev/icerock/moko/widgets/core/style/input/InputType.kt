@@ -122,9 +122,7 @@ actual fun InputType.Companion.digits(mask: String?): InputType {
 }
 
 private fun applyFormatter(mask: String?, textField: UITextField) {
-    if(mask == null) return
-    val formatter = createDefaultTextFormatter(mask)
-    val delegate = DefaultFormatterUITextFieldDelegate(inputFormatter = formatter)
+    val delegate = DefaultFormatterUITextFieldDelegate(inputFormatter = mask?.let { createDefaultTextFormatter(it) })
     textField.delegate = delegate
     setAssociatedObject(textField, delegate)
 }

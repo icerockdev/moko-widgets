@@ -4,21 +4,6 @@
 
 package dev.icerock.moko.widgets.core.utils
 
-import kotlinx.cinterop.CValue
-import kotlinx.cinterop.readValue
-import platform.Foundation.create
-import platform.Foundation.NSRange
-import platform.Foundation.NSString
-import platform.Foundation.stringByReplacingCharactersInRange
-import platform.CoreGraphics.CGRectZero
-import platform.UIKit.UIControlEventEditingChanged
-import platform.UIKit.UIReturnKeyType
-import platform.UIKit.UITextField
-import platform.UIKit.UIView
-import platform.UIKit.UITextFieldDelegateProtocol
-import platform.UIKit.subviews
-import platform.UIKit.superview
-
 
 class DefaultTextFormatter(val textPattern: String, val patternSymbol: Char = '#') {
 
@@ -68,52 +53,6 @@ fun String.toIosPattern(): String {
     return this.replace("0", "#")
         .replace("[", "")
         .replace("]", "")
-}
-
-class DefaultFormatterUITextFieldDelegate(
-    private val inputFormatter: DefaultTextFormatter?
-) : UIView(frame = CGRectZero.readValue()), UITextFieldDelegateProtocol {
-
-    override fun textField(
-        textField: UITextField,
-        shouldChangeCharactersInRange: CValue<NSRange>,
-        replacementString: String
-    ): Boolean {
-        if (inputFormatter == null) {
-            return true
-        }
-        val nsString = NSString.create(string = textField.text ?: "")
-        val newText = nsString.stringByReplacingCharactersInRange(
-            range = shouldChangeCharactersInRange,
-            withString = replacementString
-        )
-        val unformattedText = inputFormatter.unformat(newText)
-
-        textField.text = inputFormatter.format(unformattedText)
-        textField.sendActionsForControlEvents(UIControlEventEditingChanged)
-        return false
-    }
-
-    override fun textFieldDidBeginEditing(textField: UITextField) {
-        textField.returnKeyType = if (nextResponder(textField) != null) {
-            UIReturnKeyType.UIReturnKeyNext
-        } else {
-            UIReturnKeyType.UIReturnKeyDone
-        }
-    }
-
-    override fun textFieldShouldReturn(textField: UITextField): Boolean {
-        nextResponder(textField)?.becomeFirstResponder()
-        return true
-    }
-
-    private fun nextResponder(textField: UITextField): UIView? {
-        val fields = textField.superview?.subviews.orEmpty()
-            .filter { (it as? UITextField)?.canBecomeFirstResponder() ?: false }
-        val index = fields.indexOf(textField)
-        if (index < 0 || index == (fields.count() - 1)) {
-            return null
-        }
-        return fields[index+1] as? UIView
-    }
+        .replace("{", "")
+        .replace("}", "")
 }

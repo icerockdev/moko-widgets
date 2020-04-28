@@ -4,6 +4,7 @@
 
 package dev.icerock.moko.widgets.core.factory
 
+import dev.icerock.moko.fields.FormField
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.graphics.toUIColor
 import dev.icerock.moko.mvvm.livedata.LiveData
@@ -87,7 +88,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
         val inputView = InputWidgetView(paddingEdges).apply {
             translatesAutoresizingMaskIntoConstraints = false
             accessibilityIdentifier = widget.identifier()
-            applyBackgroundIfNeeded(background)
+            applyBackgroundIfNeeded(this@FloatingLabelInputViewFactory.background)
 
             applyTextStyleIfNeeded(textStyle)
             applyErrorStyleIfNeeded(errorTextStyle)
@@ -113,6 +114,16 @@ actual class FloatingLabelInputViewFactory actual constructor(
 
     override fun bindLabel(label: LiveData<StringDesc>, rootView: InputWidgetView, textField: UITextField) {
         label.bind(rootView) { placeholder = it.localized() }
+    }
+
+    override fun bindFieldToTextField(
+        field: FormField<String, StringDesc>,
+        rootView: InputWidgetView,
+        textField: UITextField
+    ) {
+        super.bindFieldToTextField(field, rootView, textField)
+
+        field.error.bind(rootView) { error = it?.localized() }
     }
 
     class InputWidgetView(
@@ -285,7 +296,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
                     width = width,
                     height = 1.0
                 ).let {
-                    UIBezierPath.bezierPathWithRect(bounds).CGPath
+                    UIBezierPath.bezierPathWithRect(it).CGPath
                 }
             }
 
