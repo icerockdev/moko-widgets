@@ -23,6 +23,9 @@ import dev.icerock.moko.widgets.core.widget.input
 import dev.icerock.moko.widgets.core.widget.linear
 import dev.icerock.moko.widgets.core.widget.scroll
 import dev.icerock.moko.widgets.core.style.input.InputType
+import dev.icerock.moko.widgets.core.style.input.email
+import dev.icerock.moko.widgets.core.style.input.password
+import dev.icerock.moko.widgets.core.style.input.phone
 import dev.icerock.moko.widgets.core.style.view.SizeSpec
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.widget.text
@@ -49,28 +52,28 @@ class CryptoProfileScreen(
                         id = Id.PhoneInput,
                         label = const("Phone number"),
                         field = viewModel.phoneField,
-                        inputType = InputType.Phone()
+                        inputType = InputType.phone()
                     )
                     +input(
                         size = WidgetSize.WidthAsParentHeightWrapContent,
                         id = Id.EmailInput,
                         label = const("Email"),
                         field = viewModel.emailField,
-                        inputType = InputType.Email()
+                        inputType = InputType.email()
                     )
                     +input(
                         size = WidgetSize.WidthAsParentHeightWrapContent,
                         id = Id.PasswordInput,
                         label = const("Password"),
                         field = viewModel.passwordField,
-                        inputType = InputType.Password()
+                        inputType = InputType.password()
                     )
                     +input(
                         size = WidgetSize.WidthAsParentHeightWrapContent,
                         id = Id.RepeatPasswordInput,
                         label = const("Repeat password"),
                         field = viewModel.repeatPasswordField,
-                        inputType = InputType.Password()
+                        inputType = InputType.password()
                     )
                     +button(
                         size = WidgetSize.WidthAsParentHeightWrapContent,

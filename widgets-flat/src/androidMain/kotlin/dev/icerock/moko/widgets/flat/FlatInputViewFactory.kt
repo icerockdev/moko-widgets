@@ -12,7 +12,6 @@ import dev.icerock.moko.widgets.core.widget.InputWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.core.style.applyInputType
 import dev.icerock.moko.widgets.core.style.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.core.style.view.MarginValues
 import dev.icerock.moko.widgets.core.style.view.TextStyle
@@ -36,7 +35,7 @@ actual class FlatInputViewFactory actual constructor(
             id = widget.id::javaClass.name.hashCode()
 
             applyTextStyleIfNeeded(textStyle)
-            widget.inputType?.also { applyInputType(it) }
+            widget.inputType?.applyTo(this)
 
             setOnFocusChangeListener { _, hasFocus ->
                 if (!hasFocus) widget.field.validate()

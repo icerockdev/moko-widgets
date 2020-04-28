@@ -4,33 +4,26 @@
 
 package dev.icerock.moko.widgets.core.factory
 
+import dev.icerock.moko.fields.FormField
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.graphics.toUIColor
-import dev.icerock.moko.widgets.core.ViewBundle
+import dev.icerock.moko.mvvm.livedata.LiveData
+import dev.icerock.moko.mvvm.utils.bind
+import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.core.ViewFactory
-import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.core.style.applyInputTypeIfNeeded
 import dev.icerock.moko.widgets.core.style.background.Background
 import dev.icerock.moko.widgets.core.style.background.Fill
-import dev.icerock.moko.widgets.core.style.input.InputType
 import dev.icerock.moko.widgets.core.style.state.FocusableState
 import dev.icerock.moko.widgets.core.style.view.MarginValues
 import dev.icerock.moko.widgets.core.style.view.PaddingValues
 import dev.icerock.moko.widgets.core.style.view.TextHorizontalAlignment
 import dev.icerock.moko.widgets.core.style.view.TextStyle
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
-import dev.icerock.moko.widgets.core.utils.DefaultFormatterUITextFieldDelegate
-import dev.icerock.moko.widgets.core.utils.DefaultTextFormatter
 import dev.icerock.moko.widgets.core.utils.Edges
 import dev.icerock.moko.widgets.core.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.core.utils.applyTextStyleIfNeeded
-import dev.icerock.moko.widgets.core.utils.bind
-import dev.icerock.moko.widgets.core.utils.identifier
-import dev.icerock.moko.widgets.core.utils.toIosPattern
-import dev.icerock.moko.widgets.core.widget.InputWidget
-import dev.icerock.moko.widgets.core.objc.setAssociatedObject
 import dev.icerock.moko.widgets.core.utils.setHandler
-import kotlinx.cinterop.CValue
+import dev.icerock.moko.widgets.core.widget.InputWidget
 import kotlinx.cinterop.ObjCAction
 import kotlinx.cinterop.readValue
 import kotlinx.cinterop.useContents
@@ -38,7 +31,6 @@ import platform.CoreGraphics.CGFloat
 import platform.CoreGraphics.CGPointMake
 import platform.CoreGraphics.CGRectMake
 import platform.CoreGraphics.CGRectZero
-import platform.Foundation.NSRange
 import platform.Foundation.NSSelectorFromString
 import platform.QuartzCore.CALayer
 import platform.QuartzCore.CAShapeLayer
@@ -48,20 +40,18 @@ import platform.QuartzCore.kCAAlignmentLeft
 import platform.UIKit.NSTextAlignmentCenter
 import platform.UIKit.NSTextAlignmentLeft
 import platform.UIKit.NSTextAlignmentRight
-import platform.UIKit.UIAccessibilityIdentificationProtocol
 import platform.UIKit.UIBezierPath
 import platform.UIKit.UIColor
-import platform.UIKit.UIControlEventEditingChanged
+import platform.UIKit.UIControlEventEditingDidBegin
+import platform.UIKit.UIControlEventEditingDidEnd
 import platform.UIKit.UIFont
 import platform.UIKit.UILabel
-import platform.UIKit.UIReturnKeyType
 import platform.UIKit.UIScreen
+import platform.UIKit.UITapGestureRecognizer
 import platform.UIKit.UITextField
-import platform.UIKit.UITextFieldDelegateProtocol
 import platform.UIKit.UIView
+import platform.UIKit.addGestureRecognizer
 import platform.UIKit.addSubview
-import platform.UIKit.superview
-import platform.UIKit.subviews
 import platform.UIKit.bottomAnchor
 import platform.UIKit.leadingAnchor
 import platform.UIKit.systemFontSize
@@ -70,27 +60,22 @@ import platform.UIKit.systemRedColor
 import platform.UIKit.topAnchor
 import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
-import platform.UIKit.UITapGestureRecognizer
-import platform.UIKit.addGestureRecognizer
 
 actual class FloatingLabelInputViewFactory actual constructor(
     private val background: Background<Fill.Solid>?,
-    private val margins: MarginValues?,
+    override val margins: MarginValues?,
     private val padding: PaddingValues?,
     private val textStyle: TextStyle<Color>?,
     private val labelTextStyle: TextStyle<Color>?,
     private val errorTextStyle: TextStyle<Color>?,
     private val underLineColor: FocusableState<Color>?,
     private val textHorizontalAlignment: TextHorizontalAlignment?
-) : ViewFactory<InputWidget<out WidgetSize>> {
+) : BaseInputViewFactory<FloatingLabelInputViewFactory.InputWidgetView>(),
+    ViewFactory<InputWidget<out WidgetSize>> {
 
-    override fun <WS : WidgetSize> build(
-        widget: InputWidget<out WidgetSize>,
-        size: WS,
-        viewFactoryContext: ViewFactoryContext
-    ): ViewBundle<WS> {
+    override fun createTextField(widget: InputWidget<out WidgetSize>): Pair<InputWidgetView, UITextField> {
         val paddingEdges = padding.run {
-            Edges<CGFloat>(
+            Edges(
                 top = this?.top?.toDouble() ?: 0.0,
                 leading = this?.start?.toDouble() ?: 0.0,
                 bottom = this?.bottom?.toDouble() ?: 0.0,
@@ -98,57 +83,49 @@ actual class FloatingLabelInputViewFactory actual constructor(
             )
         }
 
-        val textField =
-            InputWidgetView(
-                paddingEdges
-            ).apply {
-                translatesAutoresizingMaskIntoConstraints = false
-                accessibilityIdentifier = widget.identifier()
-                applyBackgroundIfNeeded(background)
+        val inputView = InputWidgetView(paddingEdges).apply {
+            translatesAutoresizingMaskIntoConstraints = false
+            applyBackgroundIfNeeded(this@FloatingLabelInputViewFactory.background)
 
-                applyTextStyleIfNeeded(textStyle)
-                applyErrorStyleIfNeeded(errorTextStyle)
-                applyLabelStyleIfNeeded(labelTextStyle)
-                applyInputTypeIfNeeded(widget.inputType)
+            applyTextStyleIfNeeded(textStyle)
+            applyErrorStyleIfNeeded(errorTextStyle)
+            applyLabelStyleIfNeeded(labelTextStyle)
+            widget.inputType?.applyTo(this.textField)
 
-                underLineColor?.also {
-                    deselectedColor = it.unfocused.toUIColor()
-                    selectedColor = it.focused.toUIColor()
-                }
-
-                textChanged = { newValue ->
-                    val currentValue = widget.field.data.value
-
-                    if (currentValue != newValue) {
-                        widget.field.data.value = newValue
-                    }
-                }
-
-                onFocusLost = {
-                    widget.field.validate()
-                }
-
-                if (textHorizontalAlignment != null) {
-                    horizontalAlignment = textHorizontalAlignment
-                }
+            underLineColor?.also {
+                deselectedColor = it.unfocused.toUIColor()
+                selectedColor = it.focused.toUIColor()
             }
 
-        widget.enabled?.bind { textField.enabled = it }
-        widget.label.bind { textField.placeholder = it.localized() }
-        widget.field.data.bind { textField.text = it }
-        widget.field.error.bind { textField.error = it?.localized() }
+            onFocusLost = {
+                widget.field.validate()
+            }
 
-        return ViewBundle(
-            view = textField,
-            size = size,
-            margins = margins
-        )
+            if (textHorizontalAlignment != null) {
+                horizontalAlignment = textHorizontalAlignment
+            }
+        }
+
+        return inputView to inputView.textField
+    }
+
+    override fun bindLabel(label: LiveData<StringDesc>, rootView: InputWidgetView, textField: UITextField) {
+        label.bind(rootView) { placeholder = it.localized() }
+    }
+
+    override fun bindFieldToTextField(
+        field: FormField<String, StringDesc>,
+        rootView: InputWidgetView,
+        textField: UITextField
+    ) {
+        super.bindFieldToTextField(field, rootView, textField)
+
+        field.error.bind(rootView) { error = it?.localized() }
     }
 
     class InputWidgetView(
         private val padding: Edges<CGFloat>
-    ) : UIView(frame = CGRectZero.readValue()), UITextFieldDelegateProtocol,
-        UIAccessibilityIdentificationProtocol {
+    ) : UIView(frame = CGRectZero.readValue()) {
 
         var placeholder: String?
             get() = placeholderTextLayer.string as? String
@@ -170,11 +147,8 @@ actual class FloatingLabelInputViewFactory actual constructor(
                 field = value
                 when (value) {
                     TextHorizontalAlignment.LEFT -> textField.textAlignment = NSTextAlignmentLeft
-                    TextHorizontalAlignment.CENTER -> textField.textAlignment =
-                        NSTextAlignmentCenter
+                    TextHorizontalAlignment.CENTER -> textField.textAlignment = NSTextAlignmentCenter
                     TextHorizontalAlignment.RIGHT -> textField.textAlignment = NSTextAlignmentRight
-                    null -> {
-                    }
                 }
             }
 
@@ -183,12 +157,6 @@ actual class FloatingLabelInputViewFactory actual constructor(
             set(value) {
                 errorLabel.text = value
             }
-        var enabled: Boolean
-            get() = textField.enabled
-            set(value) {
-                textField.enabled = value
-            }
-        var textChanged: ((text: String) -> Unit)? = null
         var onFocusLost: (() -> Unit)? = null
 
         var selectedColor: UIColor = UIColor.blackColor
@@ -203,7 +171,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
                 underlineLayer.fillColor =
                     (if (textField.isFocused()) selectedColor else value).CGColor
             }
-        private val textField: UITextField
+        val textField: UITextField
 
         private val errorLabel: UILabel
         private val underlineLayer: CAShapeLayer
@@ -216,10 +184,6 @@ actual class FloatingLabelInputViewFactory actual constructor(
                 field = value
                 placeholderTextLayer.fontSize = value
             }
-
-        private var _accessibilityIdentifier: String? = null
-
-        private var formatterDelegate: DefaultFormatterUITextFieldDelegate? = null
 
         init {
             translatesAutoresizingMaskIntoConstraints = false
@@ -234,8 +198,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
                 topAnchor.constraintEqualToAnchor(
                     container.topAnchor,
                     constant = 18.0 + padding.top
-                ).active =
-                    true
+                ).active = true
                 leadingAnchor.constraintEqualToAnchor(
                     container.leadingAnchor,
                     constant = padding.leading
@@ -243,15 +206,17 @@ actual class FloatingLabelInputViewFactory actual constructor(
                 trailingAnchor.constraintEqualToAnchor(
                     container.trailingAnchor,
                     constant = -padding.trailing
-                ).active =
-                    true
-
-                delegate = this@InputWidgetView
+                ).active = true
 
                 addTarget(
                     this@InputWidgetView,
-                    NSSelectorFromString("textDidChanged"),
-                    UIControlEventEditingChanged
+                    NSSelectorFromString("textFieldBeginEditing"),
+                    UIControlEventEditingDidBegin
+                )
+                addTarget(
+                    this@InputWidgetView,
+                    NSSelectorFromString("textFieldEndEditing"),
+                    UIControlEventEditingDidEnd
                 )
             }
             errorLabel = UILabel(frame = CGRectZero.readValue()).apply {
@@ -301,25 +266,16 @@ actual class FloatingLabelInputViewFactory actual constructor(
             addGestureRecognizer(recognizer)
         }
 
-        override fun becomeFirstResponder(): Boolean {
-            return textField.becomeFirstResponder()
-        }
-
-        override fun canBecomeFirstResponder(): Boolean {
-            return textField.canBecomeFirstResponder()
-        }
-
         private fun onTap() {
             textField.becomeFirstResponder()
         }
-
 
         override fun layoutSublayersOfLayer(layer: CALayer) {
             super.layoutSublayersOfLayer(layer)
 
             underlineLayer.frame = textField.layer.bounds
-            underlineLayer.path = underlineLayer.bounds.let {
-                val (width, height) = it.useContents { this.size.width to this.size.height }
+            underlineLayer.path = underlineLayer.bounds.let { bounds ->
+                val (width, height) = bounds.useContents { this.size.width to this.size.height }
                 CGRectMake(
                     x = 0.0,
                     y = height - 1,
@@ -361,37 +317,19 @@ actual class FloatingLabelInputViewFactory actual constructor(
             }
         }
 
-        override fun textFieldShouldBeginEditing(textField: UITextField): Boolean {
-            textField.returnKeyType =
-                if (nextResponder(textField) == null) {
-                    UIReturnKeyType.UIReturnKeyDone
-                } else {
-                    UIReturnKeyType.UIReturnKeyNext
-                }
+        @Suppress("unused")
+        @ObjCAction
+        private fun textFieldBeginEditing() {
             animate(
                 duration = placeholderAnimationDuration,
                 underlineColor = selectedColor,
                 isPlaceholderInTopState = true
             )
-            return true
         }
 
-        private fun nextResponder(textField: UITextField): UIView? {
-            val fields = textField.superview?.superview?.subviews.orEmpty()
-                .filter { (it as? InputWidgetView) != null }
-            val index = fields.indexOf(this)
-            if (index < 0 || index == (fields.count() - 1)) {
-                return null
-            }
-            return fields[index+1] as? UIView
-        }
-
-        override fun textFieldShouldReturn(textField: UITextField): Boolean {
-            nextResponder(textField)?.becomeFirstResponder()
-            return true
-        }
-
-        override fun textFieldDidEndEditing(textField: UITextField) {
+        @Suppress("unused")
+        @ObjCAction
+        private fun textFieldEndEditing() {
             animate(
                 duration = placeholderAnimationDuration,
                 underlineColor = deselectedColor,
@@ -400,54 +338,8 @@ actual class FloatingLabelInputViewFactory actual constructor(
             onFocusLost?.invoke()
         }
 
-        override fun textField(
-            textField: UITextField,
-            shouldChangeCharactersInRange: CValue<NSRange>,
-            replacementString: String
-        ): Boolean {
-            if (formatterDelegate != null) {
-                formatterDelegate?.textField(
-                    textField = textField,
-                    shouldChangeCharactersInRange = shouldChangeCharactersInRange,
-                    replacementString = replacementString
-                )
-                return false
-            } else {
-                return true
-            }
-        }
-
-        override fun accessibilityIdentifier(): String? {
-            return _accessibilityIdentifier
-        }
-
-        override fun setAccessibilityIdentifier(accessibilityIdentifier: String?) {
-            _accessibilityIdentifier = accessibilityIdentifier
-        }
-
-        @ObjCAction
-        private fun textDidChanged() {
-            textChanged?.invoke(textField.text.orEmpty())
-        }
-
         fun applyTextStyleIfNeeded(textStyle: TextStyle<Color>?) {
             textField.applyTextStyleIfNeeded(textStyle)
-        }
-
-        fun applyInputTypeIfNeeded(inputType: InputType?) {
-            textField.applyInputTypeIfNeeded(inputType)
-
-            inputType?.mask?.let { mask ->
-                val delegate =
-                    DefaultFormatterUITextFieldDelegate(
-                        inputFormatter = DefaultTextFormatter(
-                            mask.toIosPattern(),
-                            patternSymbol = '#'
-                        )
-                    )
-                textField.delegate = delegate
-                setAssociatedObject(textField, delegate)
-            }
         }
 
         fun applyLabelStyleIfNeeded(textStyle: TextStyle<Color>?) {

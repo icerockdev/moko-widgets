@@ -30,6 +30,9 @@ import dev.icerock.moko.widgets.core.widget.linear
 import dev.icerock.moko.widgets.core.widget.scroll
 import dev.icerock.moko.widgets.core.widget.singleChoice
 import dev.icerock.moko.widgets.core.style.input.InputType
+import dev.icerock.moko.widgets.core.style.input.date
+import dev.icerock.moko.widgets.core.style.input.email
+import dev.icerock.moko.widgets.core.style.input.phone
 import dev.icerock.moko.widgets.core.style.view.SizeSpec
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.widget.switchLabeled
@@ -75,21 +78,21 @@ class SocialProfileScreen(
                         id = Id.EmailInput,
                         label = const("Email"),
                         field = viewModel.emailField,
-                        inputType = InputType.Email()
+                        inputType = InputType.email()
                     )
                     +input(
                         size = WidgetSize.WidthAsParentHeightWrapContent,
                         id = Id.PhoneInput,
                         label = const("Телефон"),
                         field = viewModel.phoneField,
-                        inputType = InputType.Phone()
+                        inputType = InputType.phone()
                     )
                     +input(
                         size = WidgetSize.WidthAsParentHeightWrapContent,
                         id = Id.BirthdayInput,
                         label = const("Дата рождения"),
                         field = viewModel.birthdayField,
-                        inputType = InputType.Date()
+                        inputType = InputType.date()
                     )
                     +singleChoice(
                         size = WidgetSize.WidthAsParentHeightWrapContent,

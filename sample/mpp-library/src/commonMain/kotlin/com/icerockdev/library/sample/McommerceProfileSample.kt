@@ -21,6 +21,8 @@ import dev.icerock.moko.widgets.core.widget.input
 import dev.icerock.moko.widgets.core.widget.linear
 import dev.icerock.moko.widgets.core.widget.scroll
 import dev.icerock.moko.widgets.core.style.input.InputType
+import dev.icerock.moko.widgets.core.style.input.date
+import dev.icerock.moko.widgets.core.style.input.phone
 import dev.icerock.moko.widgets.core.style.view.SizeSpec
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 
@@ -45,14 +47,14 @@ class McommerceProfileScreen(
                         id = Id.BirthdayInput,
                         label = const("Дата рождения"),
                         field = viewModel.birthdayField,
-                        inputType = InputType.Date()
+                        inputType = InputType.date()
                     )
                     +input(
                         size = WidgetSize.WidthAsParentHeightWrapContent,
                         id = Id.PhoneInput,
                         label = const("Телефон"),
                         field = viewModel.phoneField,
-                        inputType = InputType.Phone()
+                        inputType = InputType.phone()
                     )
                     +button(
                         size = WidgetSize.WidthAsParentHeightWrapContent,

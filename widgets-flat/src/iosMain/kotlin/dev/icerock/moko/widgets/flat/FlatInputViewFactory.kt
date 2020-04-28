@@ -11,7 +11,6 @@ import dev.icerock.moko.widgets.core.widget.InputWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.core.style.input.InputType
 import dev.icerock.moko.widgets.core.style.view.MarginValues
 import dev.icerock.moko.widgets.core.style.view.TextStyle
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
@@ -21,9 +20,6 @@ import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGRectZero
 import platform.UIKit.UIControlEventEditingChanged
 import platform.UIKit.UIFont
-import platform.UIKit.UIKeyboardTypeEmailAddress
-import platform.UIKit.UIKeyboardTypeNumberPad
-import platform.UIKit.UIKeyboardTypePhonePad
 import platform.UIKit.backgroundColor
 
 actual class FlatInputViewFactory actual constructor(
@@ -59,22 +55,9 @@ actual class FlatInputViewFactory actual constructor(
             textField.placeholder = it.localized()
         }
 
-        when (widget.inputType) {
-            is InputType.Email -> textField.keyboardType = UIKeyboardTypeEmailAddress
-            is InputType.Plain -> {
-            }
-            is InputType.Password -> textField.setSecureTextEntry(true)
-            is InputType.Date -> {
-            }
-            is InputType.Phone -> textField.keyboardType = UIKeyboardTypePhonePad
-            is InputType.Digits -> textField.keyboardType = UIKeyboardTypeNumberPad
-            null -> {
-            }
-        }
-
-        widget.inputType?.mask?.also {
-            flatInputField.setFormat(it)
-        }
+        widget.inputType?.applyTo(textField)
+        // TODO: broken formatting
+        //flatInputField.setFormat(widget.inputType?.mask)
 
         flatInputField.backgroundColor = backgroundColor?.toUIColor()
 
