@@ -6,9 +6,7 @@ package dev.icerock.moko.widgets.core.factory
 
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.graphics.toUIColor
-import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
-import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.style.background.Background
 import dev.icerock.moko.widgets.core.style.background.Fill
 import dev.icerock.moko.widgets.core.style.view.IOSFieldBorderStyle
@@ -18,15 +16,9 @@ import dev.icerock.moko.widgets.core.style.view.TextHorizontalAlignment
 import dev.icerock.moko.widgets.core.style.view.TextStyle
 import dev.icerock.moko.widgets.core.style.view.TextVerticalAlignment
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
-import dev.icerock.moko.widgets.core.utils.DefaultFormatterUITextFieldDelegate
-import dev.icerock.moko.widgets.core.utils.DefaultTextFormatter
 import dev.icerock.moko.widgets.core.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.core.utils.applyTextStyleIfNeeded
-import dev.icerock.moko.widgets.core.utils.bind
-import dev.icerock.moko.widgets.core.utils.setEventHandler
-import dev.icerock.moko.widgets.core.utils.toIosPattern
 import dev.icerock.moko.widgets.core.widget.InputWidget
-import dev.icerock.moko.widgets.core.objc.setAssociatedObject
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGRectZero
 import platform.Foundation.NSMutableAttributedString
@@ -38,34 +30,26 @@ import platform.UIKit.NSTextAlignmentRight
 import platform.UIKit.UIControlContentVerticalAlignmentBottom
 import platform.UIKit.UIControlContentVerticalAlignmentCenter
 import platform.UIKit.UIControlContentVerticalAlignmentTop
-import platform.UIKit.UIControlEventEditingChanged
 import platform.UIKit.UITextBorderStyle
 import platform.UIKit.UITextField
 import platform.UIKit.clipsToBounds
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
-actual class SystemInputViewFactory actual constructor(
+actual open class SystemInputViewFactory actual constructor(
     private val background: Background<Fill.Solid>?,
-    private val margins: MarginValues?,
+    override val margins: MarginValues?,
     private val padding: PaddingValues?,
     private val textStyle: TextStyle<Color>?,
     private val labelTextColor: Color?,
     private val textHorizontalAlignment: TextHorizontalAlignment?,
     private val textVerticalAlignment: TextVerticalAlignment?,
     private val iosFieldBorderStyle: IOSFieldBorderStyle?
-) : ViewFactory<InputWidget<out WidgetSize>> {
+) : BaseInputViewFactory<UITextField>(), ViewFactory<InputWidget<out WidgetSize>> {
 
-    override fun <WS : WidgetSize> build(
-        widget: InputWidget<out WidgetSize>,
-        size: WS,
-        viewFactoryContext: ViewFactoryContext
-    ): ViewBundle<WS> {
-
-        val backgroundConfig = background
-
+    override fun createTextField(widget: InputWidget<out WidgetSize>): Pair<UITextField, UITextField> {
         val textField = UITextField(frame = CGRectZero.readValue()).apply {
             translatesAutoresizingMaskIntoConstraints = false
-            applyBackgroundIfNeeded(backgroundConfig)
+            applyBackgroundIfNeeded(this@SystemInputViewFactory.background)
             applyTextStyleIfNeeded(textStyle)
             widget.inputType?.applyTo(this)
 
@@ -109,33 +93,7 @@ actual class SystemInputViewFactory actual constructor(
                 )
             }
         }
-
-        // TODO: need to get Formatter ref from InputType
-        /*val valueFormatter: DefaultTextFormatter? = widget.inputType?.getValueFormatter()
-
-        val delegate = DefaultFormatterUITextFieldDelegate(
-            inputFormatter = valueFormatter
-        )
-        textField.delegate = delegate
-        setAssociatedObject(textField, delegate)*/
-
-        textField.setEventHandler(UIControlEventEditingChanged) {
-            val currentValue = widget.field.data.value
-            val newValue = textField.text
-
-            if (currentValue != newValue) {
-                widget.field.data.value = newValue.orEmpty()
-            }
-        }
-
-        widget.enabled?.bind { textField.enabled = it }
-        widget.label.bind { textField.placeholder = it.localized() }
-        //widget.field.data.bind { textField.text = valueFormatter?.format(it) ?: it }
-
-        return ViewBundle(
-            view = textField,
-            size = size,
-            margins = margins
-        )
+        // no hierarchy
+        return textField to textField
     }
 }
