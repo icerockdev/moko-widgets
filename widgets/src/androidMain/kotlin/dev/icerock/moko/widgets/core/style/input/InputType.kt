@@ -63,7 +63,7 @@ actual fun InputType.Companion.phone(mask: String?): InputType {
     return object : InputType {
         override fun applyTo(editText: EditText) {
             editText.applyMask(
-                platformInputType = android.text.InputType.TYPE_CLASS_TEXT + android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD,
+                platformInputType = android.text.InputType.TYPE_CLASS_PHONE,
                 mask = mask
             )
         }
