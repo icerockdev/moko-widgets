@@ -54,6 +54,7 @@ import platform.UIKit.addGestureRecognizer
 import platform.UIKit.addSubview
 import platform.UIKit.bottomAnchor
 import platform.UIKit.leadingAnchor
+import platform.UIKit.setNeedsLayout
 import platform.UIKit.systemFontSize
 import platform.UIKit.systemGrayColor
 import platform.UIKit.systemRedColor
@@ -119,7 +120,11 @@ actual class FloatingLabelInputViewFactory actual constructor(
         textField: UITextField
     ) {
         super.bindFieldToTextField(field, rootView, textField)
-
+        field.data.bind(rootView) {
+            if (!textField.isEditing()) {
+                rootView.layoutPlaceholder()
+            }
+        }
         field.error.bind(rootView) { error = it?.localized() }
     }
 
@@ -137,7 +142,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
             get() = textField.text
             set(value) {
                 textField.text = value
-                if (!isFirstResponder) {
+                if (!textField.isFirstResponder) {
                     layoutPlaceholder()
                 }
             }
@@ -289,9 +294,12 @@ actual class FloatingLabelInputViewFactory actual constructor(
             layoutPlaceholder()
         }
 
-        private fun layoutPlaceholder(
+        internal fun layoutPlaceholder(
             isPlaceholderInTopState: Boolean = text.isNullOrEmpty().not()
         ) {
+            if (placeholder.isNullOrBlank()) {
+                return
+            }
             placeholderTextLayer.fontSize = if (isPlaceholderInTopState) {
                 placeholderTextSize - 2
             } else {
@@ -315,6 +323,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
                     height = height
                 )
             }
+            textField.setNeedsLayout()
         }
 
         @Suppress("unused")
