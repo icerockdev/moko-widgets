@@ -120,7 +120,11 @@ actual class FloatingLabelInputViewFactory actual constructor(
         textField: UITextField
     ) {
         super.bindFieldToTextField(field, rootView, textField)
-
+        field.data.bind(rootView) {
+            if (!textField.isEditing()) {
+                rootView.layoutPlaceholder()
+            }
+        }
         field.error.bind(rootView) { error = it?.localized() }
     }
 
@@ -290,7 +294,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
             layoutPlaceholder()
         }
 
-        private fun layoutPlaceholder(
+        internal fun layoutPlaceholder(
             isPlaceholderInTopState: Boolean = text.isNullOrEmpty().not()
         ) {
             if (placeholder.isNullOrBlank()) {
@@ -319,8 +323,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
                     height = height
                 )
             }
-            println("== Floating input (PL: ${placeholder?.orEmpty()}, T: ${text?.orEmpty()}) - try to set placeholder frame: ${placeholderTextLayer.frame().useContents { debugDescription?.orEmpty() }}")
-            this.setNeedsLayout()
+            textField.setNeedsLayout()
         }
 
         @Suppress("unused")
