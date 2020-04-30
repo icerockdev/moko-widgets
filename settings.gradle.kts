@@ -21,7 +21,7 @@ if (!pluginPublish) {
     if(!corePublish) {
         include(":widgets-flat")
         include(":widgets-sms")
-        include(":widgets-bottomSheet")
+        include(":widgets-bottomsheet")
         include(":widgets-collection")
         include(":widgets-datetime-picker")
         include(":widgets-image-network")
