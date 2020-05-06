@@ -48,8 +48,7 @@ jobs:
           :widgets-media:build
       - name: Publish all to bintray
         run: |
-          ./gradlew --no-parallel -PdevPublish \
-          -Dorg.gradle.internal.publish.checksums.insecure=true \
+          ./gradlew -PdevPublish \
           publishPluginPublicationToBintrayDevRepository \
           :widgets:publishAllPublicationsToBintrayDevRepository \
           :widgets-flat:publishAllPublicationsToBintrayDevRepository \
@@ -58,7 +57,7 @@ jobs:
           :widgets-datetime-picker:publishAllPublicationsToBintrayDevRepository \
           :widgets-collection:publishAllPublicationsToBintrayDevRepository \
           :widgets-image-network:publishAllPublicationsToBintrayDevRepository \
-          :widgets-permissions:publishAllPublicationsToBintrayRepository \
-          :widgets-media:publishAllPublicationsToBintrayRepository \
+          :widgets-permissions:publishAllPublicationsToBintrayDevRepository \
+          :widgets-media:publishAllPublicationsToBintrayDevRepository \
           -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }} \
           --stacktrace

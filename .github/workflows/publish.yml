@@ -45,8 +45,7 @@ jobs:
           :widgets-media:build
       - name: Publish all to bintray
         run: |
-          ./gradlew --no-parallel \
-          -Dorg.gradle.internal.publish.checksums.insecure=true \
+          ./gradlew \
           publishPluginPublicationToBintrayRepository \
           :widgets:publishAllPublicationsToBintrayRepository \
           :widgets-flat:publishAllPublicationsToBintrayRepository \
