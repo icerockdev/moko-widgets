@@ -21,7 +21,7 @@ expect abstract class Screen<Arg : Args>() {
 }
 
 inline fun <Arg : Args, reified VM : ViewModel> Screen<Arg>.getViewModel(crossinline viewModelFactory: () -> VM): VM {
-    return getViewModel("${Unit}:${VM::class}", viewModelFactory)
+    return getViewModel("dev.icerock.moko.widgets.core.screen.DefaultKey:${VM::class.simpleName}", viewModelFactory)
 }
 
 expect fun <T : Parcelable> Screen<Args.Parcel<T>>.getArgument(): T
