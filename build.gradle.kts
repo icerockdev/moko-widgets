@@ -60,54 +60,57 @@ allprojects {
         }
     }
 
-    if (this.name.startsWith("widgets")) {
-        this.group = "dev.icerock.moko"
-        this.version = Versions.Libs.MultiPlatform.mokoWidgets
+    val project = this
+    val bintrayPath: Pair<String, String>?
+    when {
+        this.name.startsWith("widgets") -> {
+            bintrayPath = "moko" to "moko-widgets"
 
-        this.plugins.withType<MavenPublishPlugin> {
-            this@allprojects.configure<PublishingExtension> {
-                registerBintrayMaven(
-                    name = "bintray",
-                    url = "https://api.bintray.com/maven/icerockdev/moko/moko-widgets/;publish=1"
-                )
-                registerBintrayMaven(
-                    name = "bintrayDev",
-                    url = "https://api.bintray.com/maven/icerockdev/moko-dev/moko-widgets/;publish=1"
-                )
-            }
-        }
+            this.group = "dev.icerock.moko"
+            this.version = Versions.Libs.MultiPlatform.mokoWidgets
 
-        this.plugins.withType<com.android.build.gradle.LibraryPlugin> {
-            this@allprojects.configure<com.android.build.gradle.LibraryExtension> {
-                compileSdkVersion(Versions.Android.compileSdk)
+            this.plugins.withType<com.android.build.gradle.LibraryPlugin> {
+                this@allprojects.configure<com.android.build.gradle.LibraryExtension> {
+                    compileSdkVersion(Versions.Android.compileSdk)
 
-                defaultConfig {
-                    minSdkVersion(Versions.Android.minSdk)
-                    targetSdkVersion(Versions.Android.targetSdk)
+                    defaultConfig {
+                        minSdkVersion(Versions.Android.minSdk)
+                        targetSdkVersion(Versions.Android.targetSdk)
+                    }
                 }
             }
         }
-    } else if (this.name.endsWith("-plugin")) {
-        this.group = "dev.icerock.moko.widgets"
-        this.version = Versions.Plugins.mokoWidgets
+        this.name.endsWith("-plugin") -> {
+            bintrayPath = "plugins" to "moko-widgets-generator"
 
-        this.plugins.withType<MavenPublishPlugin> {
-            this@allprojects.configure<PublishingExtension> {
+            this.group = "dev.icerock.moko.widgets"
+            this.version = Versions.Plugins.mokoWidgets
+
+            this.plugins.withType<JavaPlugin> {
+                this@allprojects.configure<JavaPluginExtension> {
+                    sourceCompatibility = JavaVersion.VERSION_1_6
+                    targetCompatibility = JavaVersion.VERSION_1_6
+                }
+            }
+        }
+        else -> {
+            bintrayPath = null
+        }
+    }
+
+    if (bintrayPath != null) {
+        project.plugins.withType<MavenPublishPlugin> {
+            project.configure<PublishingExtension> {
+                val repo = bintrayPath.first
+                val artifact = bintrayPath.second
                 registerBintrayMaven(
                     name = "bintray",
-                    url = "https://api.bintray.com/maven/icerockdev/plugins/moko-widgets-generator/;publish=1"
+                    url = "https://api.bintray.com/maven/icerockdev/$repo/$artifact/;publish=1"
                 )
                 registerBintrayMaven(
                     name = "bintrayDev",
-                    url = "https://api.bintray.com/maven/icerockdev/plugins-dev/moko-widgets-generator/;publish=1"
+                    url = "https://api.bintray.com/maven/icerockdev/$repo-dev/$artifact/;publish=1;override=1"
                 )
-            }
-        }
-
-        this.plugins.withType<JavaPlugin> {
-            this@allprojects.configure<JavaPluginExtension> {
-                sourceCompatibility = JavaVersion.VERSION_1_6
-                targetCompatibility = JavaVersion.VERSION_1_6
             }
         }
     }
