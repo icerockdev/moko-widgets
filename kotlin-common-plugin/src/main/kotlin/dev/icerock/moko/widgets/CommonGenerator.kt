@@ -95,11 +95,22 @@ abstract class CommonGenerator<KtFile, KtFileStub> {
             .let { listOf("WS: WidgetSize").plus(it) }
             .joinToString(",")
 
+        // Build generic string with star-projection like ",*,*", e.g. ViewFactory<StatefulWidget<out WidgetSize,*,*>>
+        val factoryGenericString = if(input.genericTypes.size - 1 > 0) { // do not count WidgetSize, this is a required argument for all factories
+            (0 until input.genericTypes.size - 1).joinToString(
+                separator = "",
+                transform = { ",*" }
+            )
+        } else {
+            ""
+        }
+
         return """package ${input.packageName}
 
 $imports
 
 fun <$generics> Theme.$shortName(
+    widgetFactory: ViewFactory<$widgetName<out WidgetSize$factoryGenericString>>? = null,
     category: $widgetName.Category? = null,
 $params
 ) = $widgetName(
@@ -107,7 +118,7 @@ $params
         id = id,
         category = category,
         defaultCategory = $widgetName.DefaultCategory,
-        fallback = { ${input.factoryClass}() }
+        fallback = { widgetFactory ?: ${input.factoryClass}() }
     ),
 $paramsSet
 )

@@ -10,26 +10,35 @@ import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Value
+import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.style.view.SizeSpec
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 
 fun <WS : WidgetSize> Theme.flatAlert(
+    constraintWidgetFactory: ViewFactory<ConstraintWidget<out WidgetSize>>? = null,
+    textWidgetFactory: ViewFactory<TextWidget<out WidgetSize>>? = null,
+    buttonWidgetFactory: ViewFactory<ButtonWidget<out WidgetSize>>? = null,
     size: WS,
     message: LiveData<StringDesc?>,
     buttonText: LiveData<StringDesc?>,
     onTap: () -> Unit
-): Widget<WS> = constraint(size = size) {
+): Widget<WS> = constraint(
+    size = size,
+    widgetFactory = constraintWidgetFactory
+) {
     val msg = +text(
         id = FlatAlertIds.Message,
         size = WidgetSize.Const(width = SizeSpec.MatchConstraint, height = SizeSpec.WrapContent),
-        text = message.map { it ?: "".desc() }
+        text = message.map { it ?: "".desc() },
+        widgetFactory = textWidgetFactory
     )
     val submitBtn = +button(
         id = FlatAlertIds.Button,
         size = WidgetSize.WrapContent,
         content = ButtonWidget.Content.Text(Value.liveData(buttonText)),
-        onTap = onTap
+        onTap = onTap,
+        widgetFactory = buttonWidgetFactory
     )
 
     constraints {
