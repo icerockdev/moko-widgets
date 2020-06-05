@@ -16,13 +16,17 @@ import dev.icerock.moko.widgets.core.style.view.SizeSpec
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 
 fun <WS : WidgetSize> Theme.flatAlert(
+    constraintWidgetFactory: ViewFactory<ConstraintWidget<out WidgetSize>>? = null,
+    textWidgetFactory: ViewFactory<TextWidget<out WidgetSize>>? = null,
+    buttonWidgetFactory: ViewFactory<ButtonWidget<out WidgetSize>>? = null,
     size: WS,
     message: LiveData<StringDesc?>,
     buttonText: LiveData<StringDesc?>,
-    textWidgetFactory: ViewFactory<TextWidget<out WidgetSize>>? = null,
-    buttonWidgetFactory: ViewFactory<ButtonWidget<out WidgetSize>>? = null,
     onTap: () -> Unit
-): Widget<WS> = constraint(size = size) {
+): Widget<WS> = constraint(
+    size = size,
+    widgetFactory = constraintWidgetFactory
+) {
     val msg = +text(
         id = FlatAlertIds.Message,
         size = WidgetSize.Const(width = SizeSpec.MatchConstraint, height = SizeSpec.WrapContent),
