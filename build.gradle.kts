@@ -9,6 +9,7 @@ buildscript {
         jcenter()
         google()
 
+        maven { url = uri("https://plugins.gradle.org/m2/") }
         maven { url = uri("https://dl.bintray.com/kotlin/kotlin") }
         maven { url = uri("https://kotlin.bintray.com/kotlinx") }
         maven { url = uri("https://plugins.gradle.org/m2/") }
@@ -18,6 +19,7 @@ buildscript {
     }
     if (!properties.containsKey("pluginPublish")) {
         dependencies {
+            classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5")
             Deps.plugins.values.forEach { classpath(it) }
         }
     }
@@ -60,66 +62,96 @@ allprojects {
         }
     }
 
-    if (this.name.startsWith("widgets")) {
-        this.group = "dev.icerock.moko"
-        this.version = Versions.Libs.MultiPlatform.mokoWidgets
+    val project = this
+    val bintrayRepository: Pair<String, String>?
+    when {
+        this.name.startsWith("widgets") -> {
+            apply(plugin = "com.jfrog.bintray")
 
-        this.plugins.withType<MavenPublishPlugin> {
-            this@allprojects.configure<PublishingExtension> {
-                registerBintrayMaven(
-                    name = "bintray",
-                    url = "https://api.bintray.com/maven/icerockdev/moko/moko-widgets/;publish=1"
-                )
-                registerBintrayMaven(
-                    name = "bintrayDev",
-                    url = "https://api.bintray.com/maven/icerockdev/moko-dev/moko-widgets/;publish=1"
-                )
-            }
-        }
+            bintrayRepository = "moko" to "moko-widgets"
 
-        this.plugins.withType<com.android.build.gradle.LibraryPlugin> {
-            this@allprojects.configure<com.android.build.gradle.LibraryExtension> {
-                compileSdkVersion(Versions.Android.compileSdk)
+            this.group = "dev.icerock.moko"
+            this.version = Versions.Libs.MultiPlatform.mokoWidgets
 
-                defaultConfig {
-                    minSdkVersion(Versions.Android.minSdk)
-                    targetSdkVersion(Versions.Android.targetSdk)
+            this.plugins.withType<com.android.build.gradle.LibraryPlugin> {
+                this@allprojects.configure<com.android.build.gradle.LibraryExtension> {
+                    compileSdkVersion(Versions.Android.compileSdk)
+
+                    defaultConfig {
+                        minSdkVersion(Versions.Android.minSdk)
+                        targetSdkVersion(Versions.Android.targetSdk)
+                    }
                 }
             }
         }
-    } else if (this.name.endsWith("-plugin")) {
-        this.group = "dev.icerock.moko.widgets"
-        this.version = Versions.Plugins.mokoWidgets
+        this.name.endsWith("-plugin") -> {
+            apply(plugin = "com.jfrog.bintray")
 
-        this.plugins.withType<MavenPublishPlugin> {
-            this@allprojects.configure<PublishingExtension> {
-                registerBintrayMaven(
-                    name = "bintray",
-                    url = "https://api.bintray.com/maven/icerockdev/plugins/moko-widgets-generator/;publish=1"
-                )
-                registerBintrayMaven(
-                    name = "bintrayDev",
-                    url = "https://api.bintray.com/maven/icerockdev/plugins-dev/moko-widgets-generator/;publish=1"
-                )
+            bintrayRepository = "plugins" to "moko-widgets-generator"
+
+            this.group = "dev.icerock.moko.widgets"
+            this.version = Versions.Plugins.mokoWidgets
+
+            this.plugins.withType<JavaPlugin> {
+                this@allprojects.configure<JavaPluginExtension> {
+                    sourceCompatibility = JavaVersion.VERSION_1_6
+                    targetCompatibility = JavaVersion.VERSION_1_6
+                }
+            }
+        }
+        else -> {
+            bintrayRepository = null
+        }
+    }
+
+    fun setupBintray(repo: String, name: String, publications: List<MavenPublication>) {
+        project.plugins.withType<com.jfrog.bintray.gradle.BintrayPlugin> {
+            project.configure<com.jfrog.bintray.gradle.BintrayExtension> {
+                user = System.getProperty("BINTRAY_USER")
+                key = System.getProperty("BINTRAY_KEY")
+                isPublish = true
+
+                setPublications(*publications.map { it.name }.toTypedArray())
+
+                val devPublish = project.properties.containsKey("devPublish")
+                pkg = PackageConfig()
+                pkg.repo = repo + (if (devPublish) "-dev" else "")
+                pkg.name = name
+                pkg.userOrg = "icerockdev"
+
+                isOverride = devPublish
             }
         }
 
-        this.plugins.withType<JavaPlugin> {
-            this@allprojects.configure<JavaPluginExtension> {
-                sourceCompatibility = JavaVersion.VERSION_1_6
-                targetCompatibility = JavaVersion.VERSION_1_6
+        tasks.withType<com.jfrog.bintray.gradle.tasks.BintrayUploadTask> {
+            doFirst {
+                publications.forEach { publication ->
+                    val moduleFile = buildDir.resolve("publications/${publication.name}/module.json")
+                    if (moduleFile.exists()) {
+                        publication.artifact(object :
+                            org.gradle.api.publish.maven.internal.artifact.FileBasedMavenArtifact(moduleFile) {
+                            override fun getDefaultExtension() = "module"
+                        })
+                    }
+                }
             }
         }
     }
-}
 
-fun PublishingExtension.registerBintrayMaven(name: String, url: String) {
-    repositories.maven(url) {
-        this.name = name
+    if (bintrayRepository != null) {
+        project.plugins.withType<MavenPublishPlugin> {
+            project.afterEvaluate {
+                val mavenPublications = project.extensions
+                    .getByType<PublishingExtension>()
+                    .publications
+                    .filterIsInstance<MavenPublication>()
 
-        credentials {
-            username = System.getProperty("BINTRAY_USER")
-            password = System.getProperty("BINTRAY_KEY")
+                setupBintray(
+                    repo = bintrayRepository.first,
+                    name = bintrayRepository.second,
+                    publications = mavenPublications
+                )
+            }
         }
     }
 }
