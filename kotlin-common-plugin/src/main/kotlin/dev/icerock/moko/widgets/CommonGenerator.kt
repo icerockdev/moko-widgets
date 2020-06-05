@@ -100,6 +100,7 @@ abstract class CommonGenerator<KtFile, KtFileStub> {
 $imports
 
 fun <$generics> Theme.$shortName(
+    widgetFactory: ViewFactory<$widgetName<out WidgetSize>>? = null,
     category: $widgetName.Category? = null,
 $params
 ) = $widgetName(
@@ -107,7 +108,7 @@ $params
         id = id,
         category = category,
         defaultCategory = $widgetName.DefaultCategory,
-        fallback = { ${input.factoryClass}() }
+        fallback = { widgetFactory ?: ${input.factoryClass}() }
     ),
 $paramsSet
 )
