@@ -103,27 +103,51 @@ allprojects {
             project.configure<PublishingExtension> {
                 val repo = bintrayPath.first
                 val artifact = bintrayPath.second
-                registerBintrayMaven(
-                    name = "bintray",
-                    url = "https://api.bintray.com/maven/icerockdev/$repo/$artifact/;publish=1"
-                )
-                registerBintrayMaven(
-                    name = "bintrayDev",
-                    url = "https://api.bintray.com/maven/icerockdev/$repo-dev/$artifact/;publish=1;override=1"
-                )
+                val isDevPublish = project.properties.containsKey("devPublish")
+                val fullRepoName = if(isDevPublish) "$repo-dev" else repo
+                val mavenUrl = "https://api.bintray.com/maven/icerockdev/$fullRepoName/$artifact/;publish=1"
+
+                repositories.maven(mavenUrl) {
+                    this.name = "bintray"
+
+                    credentials {
+                        username = System.getProperty("BINTRAY_USER")
+                        password = System.getProperty("BINTRAY_KEY")
+                    }
+                }
             }
+        }
+
+        project.afterEvaluate {
+            val fixedPublish = tasks.filterIsInstance<PublishToMavenRepository>()
+                .map { publishTask ->
+                    val newName = publishTask.name.replace("publish", "publishNoValidation")
+                    val newTask = tasks.create(newName, PublishWithoutValidationToMavenRepository::class)
+
+                    newTask.group = PublishingPlugin.PUBLISH_TASK_GROUP + " no validation"
+                    newTask.publication = publishTask.publication
+                    newTask.repository = publishTask.repository
+                    newTask.setDependsOn(publishTask.dependsOn)
+
+                    newTask
+                }
+
+            fixedPublish
+                .groupBy { it.repository }
+                .forEach { (repo, publishTasks) ->
+                    tasks.create("publishNoValidationTo${repo.name.capitalize()}") {
+                        group = PublishingPlugin.PUBLISH_TASK_GROUP + " no validation"
+                        setDependsOn(publishTasks)
+                    }
+                }
         }
     }
 }
 
-fun PublishingExtension.registerBintrayMaven(name: String, url: String) {
-    repositories.maven(url) {
-        this.name = name
-
-        credentials {
-            username = System.getProperty("BINTRAY_USER")
-            password = System.getProperty("BINTRAY_KEY")
-        }
+open class PublishWithoutValidationToMavenRepository : PublishToMavenRepository() {
+    override fun publish() {
+        val remotePublisher = mavenPublishers.getRemotePublisher(temporaryDirFactory)
+        remotePublisher.publish(publicationInternal.asNormalisedPublication(), repository)
     }
 }
 
