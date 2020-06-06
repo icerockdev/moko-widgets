@@ -105,7 +105,8 @@ allprojects {
                 val artifact = bintrayPath.second
                 val isDevPublish = project.properties.containsKey("devPublish")
                 val fullRepoName = if(isDevPublish) "$repo-dev" else repo
-                val mavenUrl = "https://api.bintray.com/maven/icerockdev/$fullRepoName/$artifact/;publish=1"
+                val extraOptions = if(isDevPublish) ";override=1" else ""
+                val mavenUrl = "https://api.bintray.com/maven/icerockdev/$fullRepoName/$artifact/;publish=1" + extraOptions
 
                 repositories.maven(mavenUrl) {
                     this.name = "bintray"
