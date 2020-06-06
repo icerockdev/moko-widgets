@@ -60,67 +60,94 @@ allprojects {
         }
     }
 
-    if (this.name.startsWith("widgets")) {
-        this.group = "dev.icerock.moko"
-        this.version = Versions.Libs.MultiPlatform.mokoWidgets
+    val project = this
+    val bintrayPath: Pair<String, String>?
+    when {
+        this.name.startsWith("widgets") -> {
+            bintrayPath = "moko" to "moko-widgets"
 
-        this.plugins.withType<MavenPublishPlugin> {
-            this@allprojects.configure<PublishingExtension> {
-                registerBintrayMaven(
-                    name = "bintray",
-                    url = "https://api.bintray.com/maven/icerockdev/moko/moko-widgets/;publish=1"
-                )
-                registerBintrayMaven(
-                    name = "bintrayDev",
-                    url = "https://api.bintray.com/maven/icerockdev/moko-dev/moko-widgets/;publish=1"
-                )
-            }
-        }
+            this.group = "dev.icerock.moko"
+            this.version = Versions.Libs.MultiPlatform.mokoWidgets
 
-        this.plugins.withType<com.android.build.gradle.LibraryPlugin> {
-            this@allprojects.configure<com.android.build.gradle.LibraryExtension> {
-                compileSdkVersion(Versions.Android.compileSdk)
+            this.plugins.withType<com.android.build.gradle.LibraryPlugin> {
+                this@allprojects.configure<com.android.build.gradle.LibraryExtension> {
+                    compileSdkVersion(Versions.Android.compileSdk)
 
-                defaultConfig {
-                    minSdkVersion(Versions.Android.minSdk)
-                    targetSdkVersion(Versions.Android.targetSdk)
+                    defaultConfig {
+                        minSdkVersion(Versions.Android.minSdk)
+                        targetSdkVersion(Versions.Android.targetSdk)
+                    }
                 }
             }
         }
-    } else if (this.name.endsWith("-plugin")) {
-        this.group = "dev.icerock.moko.widgets"
-        this.version = Versions.Plugins.mokoWidgets
+        this.name.endsWith("-plugin") -> {
+            bintrayPath = "plugins" to "moko-widgets-generator"
 
-        this.plugins.withType<MavenPublishPlugin> {
-            this@allprojects.configure<PublishingExtension> {
-                registerBintrayMaven(
-                    name = "bintray",
-                    url = "https://api.bintray.com/maven/icerockdev/plugins/moko-widgets-generator/;publish=1"
-                )
-                registerBintrayMaven(
-                    name = "bintrayDev",
-                    url = "https://api.bintray.com/maven/icerockdev/plugins-dev/moko-widgets-generator/;publish=1"
-                )
+            this.group = "dev.icerock.moko.widgets"
+            this.version = Versions.Plugins.mokoWidgets
+
+            this.plugins.withType<JavaPlugin> {
+                this@allprojects.configure<JavaPluginExtension> {
+                    sourceCompatibility = JavaVersion.VERSION_1_6
+                    targetCompatibility = JavaVersion.VERSION_1_6
+                }
+            }
+        }
+        else -> {
+            bintrayPath = null
+        }
+    }
+
+    if (bintrayPath != null) {
+        project.plugins.withType<MavenPublishPlugin> {
+            project.configure<PublishingExtension> {
+                val repo = bintrayPath.first
+                val artifact = bintrayPath.second
+                val isDevPublish = project.properties.containsKey("devPublish")
+                val fullRepoName = if(isDevPublish) "$repo-dev" else repo
+                val mavenUrl = "https://api.bintray.com/maven/icerockdev/$fullRepoName/$artifact/;publish=1"
+
+                repositories.maven(mavenUrl) {
+                    this.name = "bintray"
+
+                    credentials {
+                        username = System.getProperty("BINTRAY_USER")
+                        password = System.getProperty("BINTRAY_KEY")
+                    }
+                }
             }
         }
 
-        this.plugins.withType<JavaPlugin> {
-            this@allprojects.configure<JavaPluginExtension> {
-                sourceCompatibility = JavaVersion.VERSION_1_6
-                targetCompatibility = JavaVersion.VERSION_1_6
-            }
+        project.afterEvaluate {
+            val fixedPublish = tasks.filterIsInstance<PublishToMavenRepository>()
+                .map { publishTask ->
+                    val newName = publishTask.name.replace("publish", "publishNoValidation")
+                    val newTask = tasks.create(newName, PublishWithoutValidationToMavenRepository::class)
+
+                    newTask.group = PublishingPlugin.PUBLISH_TASK_GROUP + " no validation"
+                    newTask.publication = publishTask.publication
+                    newTask.repository = publishTask.repository
+                    newTask.setDependsOn(publishTask.dependsOn)
+
+                    newTask
+                }
+
+            fixedPublish
+                .groupBy { it.repository }
+                .forEach { (repo, publishTasks) ->
+                    tasks.create("publishNoValidationTo${repo.name.capitalize()}") {
+                        group = PublishingPlugin.PUBLISH_TASK_GROUP + " no validation"
+                        setDependsOn(publishTasks)
+                    }
+                }
         }
     }
 }
 
-fun PublishingExtension.registerBintrayMaven(name: String, url: String) {
-    repositories.maven(url) {
-        this.name = name
-
-        credentials {
-            username = System.getProperty("BINTRAY_USER")
-            password = System.getProperty("BINTRAY_KEY")
-        }
+open class PublishWithoutValidationToMavenRepository : PublishToMavenRepository() {
+    override fun publish() {
+        val remotePublisher = mavenPublishers.getRemotePublisher(temporaryDirFactory)
+        remotePublisher.publish(publicationInternal.asNormalisedPublication(), repository)
     }
 }
 

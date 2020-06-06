@@ -49,15 +49,6 @@ jobs:
       - name: Publish all to bintray
         run: |
           ./gradlew -PdevPublish \
-          publishPluginPublicationToBintrayDevRepository \
-          :widgets:publishAllPublicationsToBintrayDevRepository \
-          :widgets-flat:publishAllPublicationsToBintrayDevRepository \
-          :widgets-bottomsheet:publishAllPublicationsToBintrayDevRepository \
-          :widgets-sms:publishAllPublicationsToBintrayDevRepository \
-          :widgets-datetime-picker:publishAllPublicationsToBintrayDevRepository \
-          :widgets-collection:publishAllPublicationsToBintrayDevRepository \
-          :widgets-image-network:publishAllPublicationsToBintrayDevRepository \
-          :widgets-permissions:publishAllPublicationsToBintrayDevRepository \
-          :widgets-media:publishAllPublicationsToBintrayDevRepository \
+          publishNoValidationToBintray \
           -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }} \
           --stacktrace
