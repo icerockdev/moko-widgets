@@ -29,7 +29,7 @@ jobs:
           key: ${{ runner.os }}-kn-${{ hashFiles('buildSrc/build.gradle.kts') }}
           restore-keys: ${{ runner.os }}-kn
       - name: Check plugin
-        run: ./gradlew -PpluginPublish publishPluginPublicationToMavenLocal
+        run: ./gradlew -PpluginPublish publishToMavenLocal
       - name: Check core
         run: ./gradlew -PcorePublish :widgets:publishToMavenLocal
       - name: Cocoapods install
