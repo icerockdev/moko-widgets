@@ -118,38 +118,7 @@ allprojects {
             }
         }
 
-        project.afterEvaluate {
-            val publishNoValidationTasks = tasks.filterIsInstance<PublishToMavenRepository>()
-                .map { publishTask ->
-                    val newName = publishTask.name.replace("publish", "publishNoValidation")
-                    val newTask = tasks.create(newName, PublishWithoutValidationToMavenRepository::class)
-
-                    newTask.group = PublishingPlugin.PUBLISH_TASK_GROUP + " no validation"
-                    newTask.publication = publishTask.publication
-                    newTask.repository = publishTask.repository
-                    newTask.setDependsOn(publishTask.dependsOn)
-
-                    newTask
-                }
-
-            publishNoValidationTasks
-                .groupBy { it.repository }
-                .forEach { (repo, publishTasks) ->
-                    tasks.create("publishNoValidationTo${repo.name.capitalize()}") {
-                        group = PublishingPlugin.PUBLISH_TASK_GROUP + " no validation"
-                        setDependsOn(publishTasks)
-                    }
-                }
-        }
-    }
-}
-
-open class PublishWithoutValidationToMavenRepository : PublishToMavenRepository() {
-    override fun publish() {
-        val remotePublisher =
-            org.gradle.api.publish.maven.internal.publisher.BintrayPublisher(temporaryDirFactory)
-        val normalizedPublication = publicationInternal.asNormalisedPublication()
-        remotePublisher.publish(normalizedPublication, repository)
+        apply<dev.icerock.moko.widgets.gradle.BintrayPublishingPlugin>()
     }
 }
 
