@@ -57,17 +57,21 @@ open class BintrayPublisher : MavenRemotePublisher {
                     return ExternalResourceWriteResult(0)
                 }
 
-                return try {
-                    resource.put(source).also { println("$displayName success") }
-                } catch (httpExc: HttpErrorStatusCodeException) {
-                    if (httpExc.statusCode == 409) {
-                        println("$displayName failed with 409 - skip")
-                        ExternalResourceWriteResult(0)
-                    } else {
-                        println("$displayName failed with ${httpExc.statusCode} - error")
-                        throw httpExc
+                for(retryCounter in 1 .. 3) {
+                    try {
+                        return resource.put(source).also { println("$displayName success") }
+                    } catch (httpExc: HttpErrorStatusCodeException) {
+                        if (httpExc.statusCode == 409) {
+                            println("$displayName failed with 409 - retry $retryCounter")
+                        } else {
+                            println("$displayName failed with ${httpExc.statusCode} - error")
+                            throw httpExc
+                        }
                     }
                 }
+
+                println("$displayName failed with 409 - skip")
+                return ExternalResourceWriteResult(0)
             }
         }
     }
