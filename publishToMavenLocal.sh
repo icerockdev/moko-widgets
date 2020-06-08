@@ -1,7 +1,7 @@
 # exit when any command fails
 set -e
 
-./gradlew -PpluginPublish $@ publishPluginPublicationToMavenLocal
+./gradlew -PpluginPublish $@ publishToMavenLocal
 ./gradlew -PcorePublish $@ :widgets:publishToMavenLocal
 (cd sample/ios-app && pod install)
 ./gradlew -PadditionsPublish $@ :widgets-flat:publishToMavenLocal \
