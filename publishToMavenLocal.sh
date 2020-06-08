@@ -1,3 +1,6 @@
+# exit when any command fails
+set -e
+
 ./gradlew -PpluginPublish $@ publishPluginPublicationToMavenLocal
 ./gradlew -PcorePublish $@ :widgets:publishToMavenLocal
 (cd sample/ios-app && pod install)

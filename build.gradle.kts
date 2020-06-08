@@ -104,9 +104,8 @@ allprojects {
                 val repo = bintrayPath.first
                 val artifact = bintrayPath.second
                 val isDevPublish = project.properties.containsKey("devPublish")
-                val fullRepoName = if(isDevPublish) "$repo-dev" else repo
-                val extraOptions = if(isDevPublish) ";override=1" else ""
-                val mavenUrl = "https://api.bintray.com/maven/icerockdev/$fullRepoName/$artifact/;publish=1" + extraOptions
+                val fullRepoName = if (isDevPublish) "$repo-dev" else repo
+                val mavenUrl = "https://api.bintray.com/maven/icerockdev/$fullRepoName/$artifact/;publish=1"
 
                 repositories.maven(mavenUrl) {
                     this.name = "bintray"
@@ -119,36 +118,7 @@ allprojects {
             }
         }
 
-        project.afterEvaluate {
-            val fixedPublish = tasks.filterIsInstance<PublishToMavenRepository>()
-                .map { publishTask ->
-                    val newName = publishTask.name.replace("publish", "publishNoValidation")
-                    val newTask = tasks.create(newName, PublishWithoutValidationToMavenRepository::class)
-
-                    newTask.group = PublishingPlugin.PUBLISH_TASK_GROUP + " no validation"
-                    newTask.publication = publishTask.publication
-                    newTask.repository = publishTask.repository
-                    newTask.setDependsOn(publishTask.dependsOn)
-
-                    newTask
-                }
-
-            fixedPublish
-                .groupBy { it.repository }
-                .forEach { (repo, publishTasks) ->
-                    tasks.create("publishNoValidationTo${repo.name.capitalize()}") {
-                        group = PublishingPlugin.PUBLISH_TASK_GROUP + " no validation"
-                        setDependsOn(publishTasks)
-                    }
-                }
-        }
-    }
-}
-
-open class PublishWithoutValidationToMavenRepository : PublishToMavenRepository() {
-    override fun publish() {
-        val remotePublisher = mavenPublishers.getRemotePublisher(temporaryDirFactory)
-        remotePublisher.publish(publicationInternal.asNormalisedPublication(), repository)
+        apply<dev.icerock.moko.widgets.gradle.BintrayPublishingPlugin>()
     }
 }
 
