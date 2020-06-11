@@ -1,6 +1,7 @@
 /*
  * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
+import java.io.ByteArrayOutputStream
 
 plugins {
     kotlin("jvm") version "1.3.71"
@@ -33,7 +34,7 @@ dependencies {
 }
 
 fun getGitCommit(): String {
-    val stdout = com.sun.xml.internal.messaging.saaj.util.ByteOutputStream()
+    val stdout = ByteArrayOutputStream()
     exec {
         commandLine = listOf("git", "rev-parse", "--short", "HEAD")
         standardOutput = stdout
