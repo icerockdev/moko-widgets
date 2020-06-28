@@ -109,6 +109,7 @@ fun NavigationBar.Search.apply(
         styles?.tintColor?.also { searchBar.tintColor = it.toUIColor() }
     }
 
+    viewController.navigationItem.hidesSearchBarWhenScrolling = iosHidesSearchBarWhenScrolling
     viewController.navigationItem.searchController = searchController
     viewController.definesPresentationContext = true
 }
