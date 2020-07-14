@@ -4,8 +4,11 @@
 
 package dev.icerock.moko.widgets.core.style.view
 
+import dev.icerock.moko.resources.FontResource
+
 data class TextStyle<C>(
     val size: Int? = null,
     val color: C? = null,
-    val fontStyle: FontStyle? = null
+    val fontStyle: FontStyle? = null,
+    val font: FontResource? = null
 )

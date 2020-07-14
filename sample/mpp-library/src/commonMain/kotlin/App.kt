@@ -283,7 +283,8 @@ class App() : BaseApplication() {
             factory[LoginScreen.Id.EmailInputId] = FlatInputViewFactory(
                 textStyle = TextStyle(
                     size = 16,
-                    color = Color(0x16171AFF)
+                    color = Color(0x16171AFF),
+                    font = MR.fonts.GrenzeGotisch.regular
                 ),
                 backgroundColor = Color(0xF5F5F5FF)
             )
@@ -310,7 +311,8 @@ class App() : BaseApplication() {
             factory[InputWidget.DefaultCategory] = SystemInputViewFactory(
                 textStyle = TextStyle(
                     size = 16,
-                    color = Color(0x16171AFF)
+                    color = Color(0x16171AFF),
+                    font = MR.fonts.GrenzeGotisch.regular
                 )
             )
             factory[TabsWidget.DefaultCategory] = SystemTabsViewFactory(

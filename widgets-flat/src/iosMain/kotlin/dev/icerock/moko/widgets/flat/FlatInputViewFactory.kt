@@ -14,6 +14,7 @@ import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.style.view.MarginValues
 import dev.icerock.moko.widgets.core.style.view.TextStyle
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
+import dev.icerock.moko.widgets.core.utils.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.core.utils.bind
 import dev.icerock.moko.widgets.core.utils.setEventHandler
 import kotlinx.cinterop.readValue
@@ -36,13 +37,8 @@ actual class FlatInputViewFactory actual constructor(
         val flatInputField = FlatInputField(frame = CGRectZero.readValue())
         val textField = flatInputField.textField()!!
 
-        textStyle?.color?.also {
-            textField.textColor = it.toUIColor()
-        }
-        textStyle?.size?.also {
-            textField.font = UIFont.systemFontOfSize(it.toDouble())
-        }
-
+        textField.applyTextStyleIfNeeded(textStyle)
+        
         widget.field.data.bind {
             if (textField.text == it) return@bind
             textField.text = it
