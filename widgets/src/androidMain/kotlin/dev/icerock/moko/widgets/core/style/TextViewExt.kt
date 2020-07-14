@@ -30,5 +30,6 @@ fun TextView.applyCommonTextStyleIfNeeded(textStyle: TextStyle<*>?) {
     if (textStyle == null) return
 
     textStyle.size?.also { textSize = it.toFloat() }
+    textStyle.font?.also { this.setTypeface( it.getTypeface(context))  }
     textStyle.fontStyle?.also { applyFontStyle(it) }
 }

@@ -27,7 +27,11 @@ import platform.UIKit.UITextView
 fun TextStyle<*>.toUIFont(defaultFontSize: Double = 17.0): UIFont? {
     val styleSize = size?.toDouble()
     val fontStyle = fontStyle
-    if (fontStyle != null || styleSize != null) {
+    if(font != null){
+        val fontSize = styleSize ?: defaultFontSize
+        return font.uiFont(fontSize)
+    }
+    else if (fontStyle != null || styleSize != null) {
         val fontSize = styleSize ?: defaultFontSize
         return when (fontStyle) {
             FontStyle.BOLD -> UIFont.boldSystemFontOfSize(fontSize = fontSize)
