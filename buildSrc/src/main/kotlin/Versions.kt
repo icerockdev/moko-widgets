@@ -9,9 +9,9 @@ object Versions {
         const val minSdk = 16
     }
 
-    const val kotlin = "1.3.71"
+    const val kotlin = "1.3.72"
     private const val mokoWidgets = BuildConfig.widgetsVersion
-    private const val mokoResources = "0.9.0"
+    private const val mokoResources = "0.11.0"
 
     object Plugins {
         const val mokoWidgets = Versions.mokoWidgets
@@ -39,7 +39,7 @@ object Versions {
 
             const val mokoWidgets = Versions.mokoWidgets
             const val mokoResources = Versions.mokoResources
-            const val mokoMvvm = "0.6.0"
+            const val mokoMvvm = "0.7.1"
             const val mokoFields = "0.3.0"
             const val mokoUnits = "0.3.1"
             const val mokoMedia = "0.4.1"
