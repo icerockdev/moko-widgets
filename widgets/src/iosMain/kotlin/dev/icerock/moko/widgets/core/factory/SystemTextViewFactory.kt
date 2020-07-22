@@ -40,6 +40,7 @@ import platform.UIKit.NSCharacterEncodingDocumentAttribute
 import platform.UIKit.NSDocumentTypeDocumentAttribute
 import platform.UIKit.NSForegroundColorAttributeName
 import platform.UIKit.NSHTMLTextDocumentType
+import platform.UIKit.NSLineBreakByWordWrapping
 import platform.UIKit.NSLinkAttributeName
 import platform.UIKit.NSParagraphStyleAttributeName
 import platform.UIKit.NSStrokeColorAttributeName
@@ -71,6 +72,8 @@ actual class SystemTextViewFactory actual constructor(
             translatesAutoresizingMaskIntoConstraints = false
             applyTextStyleIfNeeded(textStyle)
             applyBackgroundIfNeeded(background)
+
+            lineBreakMode = NSLineBreakByWordWrapping
 
             numberOfLines = 0
 
