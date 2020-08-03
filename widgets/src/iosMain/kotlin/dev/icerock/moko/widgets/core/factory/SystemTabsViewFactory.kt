@@ -201,9 +201,7 @@ actual class SystemTabsViewFactory actual constructor(
             container.trailingAnchor.constraintEqualToAnchor(trailingAnchor).active = true
             container.bottomAnchor.constraintEqualToAnchor(bottomAnchor).active = true
         }
-
-
-
+        
         return ViewBundle(
             view = view,
             size = size,
