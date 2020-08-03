@@ -55,6 +55,20 @@ actual class SystemTabsViewFactory actual constructor(
 
             applyBackgroundIfNeeded(this@SystemTabsViewFactory.tabsBackground)
         }
+        tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                //no need
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                //no need
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                widget.onTabSelected?.let { it(tab?.position ?: 0) }
+            }
+
+        })
 
         container.addView(
             tabLayout,
@@ -104,6 +118,7 @@ actual class SystemTabsViewFactory actual constructor(
             id = android.R.id.tabcontent
 
             applyPaddingIfNeeded(contentPadding)
+
 
             adapter = viewPagerAdapter
         }

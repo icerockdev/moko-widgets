@@ -157,6 +157,7 @@ actual class SystemTabsViewFactory actual constructor(
 
                 subview.hidden = index != segmentedControl.selectedSegmentIndex.toInt()
             }
+            widget.onTabSelected?.let { it(segmentedControl.selectedSegmentIndex.toInt()) }
         }
 
         segmentedControl.selectedSegmentIndex = 0
@@ -194,6 +195,8 @@ actual class SystemTabsViewFactory actual constructor(
             container.trailingAnchor.constraintEqualToAnchor(trailingAnchor).active = true
             container.bottomAnchor.constraintEqualToAnchor(bottomAnchor).active = true
         }
+
+
 
         return ViewBundle(
             view = view,

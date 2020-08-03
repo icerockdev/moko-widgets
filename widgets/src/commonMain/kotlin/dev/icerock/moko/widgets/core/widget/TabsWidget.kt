@@ -20,6 +20,7 @@ import dev.icerock.moko.widgets.core.style.view.WidgetSize
 @WidgetDef(SystemTabsViewFactory::class)
 class TabsWidget<WS : WidgetSize>(
     private val factory: ViewFactory<TabsWidget<out WidgetSize>>,
+    val onTabSelected: ((Int) -> Unit)? = null,
     override val size: WS,
     override val id: Id?,
     @Suppress("RemoveRedundantQualifierName")
