@@ -55,7 +55,6 @@ actual class SystemTabsViewFactory actual constructor(
             id = android.R.id.tabs
 
             applyBackgroundIfNeeded(this@SystemTabsViewFactory.tabsBackground)
-            
         }
         tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
@@ -117,8 +116,9 @@ actual class SystemTabsViewFactory actual constructor(
         }
         val viewPager = ViewPager(context).apply {
             id = android.R.id.tabcontent
-            
+
             applyPaddingIfNeeded(contentPadding)
+
             adapter = viewPagerAdapter
         }
 
