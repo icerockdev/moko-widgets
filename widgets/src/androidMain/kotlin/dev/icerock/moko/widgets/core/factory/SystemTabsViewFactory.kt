@@ -25,6 +25,7 @@ import dev.icerock.moko.widgets.core.style.view.MarginValues
 import dev.icerock.moko.widgets.core.style.view.PaddingValues
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.utils.ThemeAttrs
+import dev.icerock.moko.widgets.core.utils.bind
 
 actual class SystemTabsViewFactory actual constructor(
     private val tabsTintColor: Color?,
@@ -65,9 +66,8 @@ actual class SystemTabsViewFactory actual constructor(
             }
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                widget.onTabSelected?.let { it(tab?.position ?: 0) }
+                widget.selectedTab?.postValue(tab?.position ?: 0)
             }
-
         })
 
         container.addView(
@@ -116,10 +116,8 @@ actual class SystemTabsViewFactory actual constructor(
         }
         val viewPager = ViewPager(context).apply {
             id = android.R.id.tabcontent
-
+            
             applyPaddingIfNeeded(contentPadding)
-
-
             adapter = viewPagerAdapter
         }
 
@@ -146,6 +144,14 @@ actual class SystemTabsViewFactory actual constructor(
         }
 
         tabLayout.setupWithViewPager(viewPager)
+        widget.selectedTab?.bind(lifecycleOwner) { tabIndex ->
+            if (tabIndex == null) return@bind
+            if (tabLayout.selectedTabPosition != tabIndex) {
+                val tab = tabLayout.getTabAt(tabIndex)
+                tabLayout.selectTab(tab)
+                viewPager.setCurrentItem(tabIndex, true)
+            }
+        }
 
         return ViewBundle(
             view = container,
