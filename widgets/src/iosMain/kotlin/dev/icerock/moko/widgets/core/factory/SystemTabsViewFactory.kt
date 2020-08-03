@@ -149,6 +149,12 @@ actual class SystemTabsViewFactory actual constructor(
 
                 fillChildView(view, edges)
             }
+
+            widget.selectedTab?.addObserver { tabIndex ->
+                if (segmentedControl.selectedSegmentIndex.toInt() != tabIndex) {
+                    segmentedControl.setSelectedSegmentIndex(tabIndex.toLong())
+                }
+            }
         }
 
         fun syncSelectedPage() {
@@ -157,6 +163,7 @@ actual class SystemTabsViewFactory actual constructor(
 
                 subview.hidden = index != segmentedControl.selectedSegmentIndex.toInt()
             }
+            widget.selectedTab?.postValue(segmentedControl.selectedSegmentIndex.toInt())
         }
 
         segmentedControl.selectedSegmentIndex = 0
@@ -194,7 +201,7 @@ actual class SystemTabsViewFactory actual constructor(
             container.trailingAnchor.constraintEqualToAnchor(trailingAnchor).active = true
             container.bottomAnchor.constraintEqualToAnchor(bottomAnchor).active = true
         }
-
+        
         return ViewBundle(
             view = view,
             size = size,

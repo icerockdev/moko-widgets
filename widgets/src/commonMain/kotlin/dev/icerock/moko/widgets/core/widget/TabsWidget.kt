@@ -5,6 +5,7 @@
 package dev.icerock.moko.widgets.core.widget
 
 import dev.icerock.moko.mvvm.livedata.LiveData
+import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.core.OptionalId
 import dev.icerock.moko.widgets.core.Theme
@@ -20,6 +21,7 @@ import dev.icerock.moko.widgets.core.style.view.WidgetSize
 @WidgetDef(SystemTabsViewFactory::class)
 class TabsWidget<WS : WidgetSize>(
     private val factory: ViewFactory<TabsWidget<out WidgetSize>>,
+    val selectedTab: MutableLiveData<Int>? = null,
     override val size: WS,
     override val id: Id?,
     @Suppress("RemoveRedundantQualifierName")
