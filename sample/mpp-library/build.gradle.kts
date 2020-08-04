@@ -28,14 +28,18 @@ val deps = listOf(
     Deps.Libs.MultiPlatform.mokoResources,
     Deps.Libs.MultiPlatform.mokoMvvm,
     Deps.Libs.MultiPlatform.mokoUnits,
-    Deps.Libs.MultiPlatform.mokoGraphics,
-    Deps.Libs.MultiPlatform.mokoWidgets,
-    Deps.Libs.MultiPlatform.mokoWidgetsFlat,
-    Deps.Libs.MultiPlatform.mokoWidgetsBottomSheet,
-    Deps.Libs.MultiPlatform.mokoWidgetsCollection,
-    Deps.Libs.MultiPlatform.mokoWidgetsImageNetwork,
-    Deps.Libs.MultiPlatform.mokoWidgetsPermissions,
-    Deps.Libs.MultiPlatform.mokoWidgetsMedia
+    Deps.Libs.MultiPlatform.mokoGraphics
+)
+val mppModules = listOf(
+    MultiPlatformModule(name = ":widgets"),
+    MultiPlatformModule(name = ":widgets-bottomsheet"),
+    MultiPlatformModule(name = ":widgets-collection"),
+    MultiPlatformModule(name = ":widgets-datetime-picker"),
+    MultiPlatformModule(name = ":widgets-flat"),
+    MultiPlatformModule(name = ":widgets-image-network"),
+    MultiPlatformModule(name = ":widgets-media"),
+    MultiPlatformModule(name = ":widgets-permissions"),
+    MultiPlatformModule(name = ":widgets-sms")
 )
 
 setupFramework(exports = emptyList())
@@ -45,6 +49,7 @@ dependencies {
     mppLibrary(Deps.Libs.MultiPlatform.coroutines)
 
     deps.forEach { mppLibrary(it) }
+    mppModules.forEach { mppModule(it) }
 
     androidLibrary(Deps.Libs.Android.recyclerView)
     androidLibrary(Deps.Libs.Android.appCompat)
@@ -58,9 +63,10 @@ multiplatformResources {
 cocoaPods {
     podsProject = file("../ios-app/Pods/Pods.xcodeproj")
 
-    pod("moko-widgets-flat", "mokoWidgetsFlat", onlyLink = true)
     pod("moko-widgets-bottomsheet", "mokoWidgetsBottomSheet", onlyLink = true)
     pod("moko-widgets-collection", "mokoWidgetsCollection", onlyLink = true)
+    pod("moko-widgets-datetime-picker", "mokoWidgetsDateTimePicker", onlyLink = true)
+    pod("moko-widgets-flat", "mokoWidgetsFlat", onlyLink = true)
     pod("moko-widgets-image-network", "mokoWidgetsImageNetwork", onlyLink = true)
     pod("mppLibraryIos")
 }

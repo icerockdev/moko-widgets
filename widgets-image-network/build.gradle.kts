@@ -13,7 +13,8 @@ dependencies {
     mppLibrary(Deps.Libs.MultiPlatform.kotlinStdLib)
     mppLibrary(Deps.Libs.MultiPlatform.coroutines)
 
-    mppLibrary(Deps.Libs.MultiPlatform.mokoWidgets)
+//    mppLibrary(Deps.Libs.MultiPlatform.mokoWidgets)
+    commonMainImplementation(project(":widgets"))
 
     androidLibrary(Deps.Libs.Android.lifecycle)
     androidLibrary(Deps.Libs.Android.glide)
