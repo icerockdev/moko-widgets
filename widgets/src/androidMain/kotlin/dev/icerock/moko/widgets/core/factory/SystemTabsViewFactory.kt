@@ -4,15 +4,18 @@
 
 package dev.icerock.moko.widgets.core.factory
 
+import android.content.Context
 import android.content.res.ColorStateList
+import android.os.Parcelable
+import android.util.SparseArray
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.lifecycle.LifecycleOwner
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import dev.icerock.moko.graphics.Color
-import dev.icerock.moko.widgets.core.widget.TabsWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
@@ -26,6 +29,8 @@ import dev.icerock.moko.widgets.core.style.view.PaddingValues
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.utils.ThemeAttrs
 import dev.icerock.moko.widgets.core.utils.bind
+import dev.icerock.moko.widgets.core.widget.TabsWidget
+import kotlinx.android.parcel.Parcelize
 
 actual class SystemTabsViewFactory actual constructor(
     private val tabsTintColor: Color?,
@@ -56,7 +61,7 @@ actual class SystemTabsViewFactory actual constructor(
 
             applyBackgroundIfNeeded(this@SystemTabsViewFactory.tabsBackground)
         }
-        tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
                 //no need
             }
@@ -84,36 +89,11 @@ actual class SystemTabsViewFactory actual constructor(
             mlp.rightMargin = it.end.toInt()
         }
 
-        val viewPagerAdapter = object : PagerAdapter() {
-            override fun isViewFromObject(view: View, `object`: Any): Boolean {
-                return view == `object`
-            }
-
-            override fun getCount(): Int {
-                return widget.tabs.size
-            }
-
-            override fun instantiateItem(container: ViewGroup, position: Int): Any {
-                val viewBundle = widget.tabs[position].body.buildView(
-                    ViewFactoryContext(
-                        context = context,
-                        lifecycleOwner = lifecycleOwner,
-                        parent = container
-                    )
-                )
-                val view = viewBundle.view
-                container.addView(view)
-                return view
-            }
-
-            override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-                container.removeView(`object` as View?)
-            }
-
-            override fun getPageTitle(position: Int): CharSequence? {
-                return widget.tabs[position].title.value.toString(context)
-            }
-        }
+        val viewPagerAdapter = TabsPagerAdapter(
+            tabs = widget.tabs,
+            context = context,
+            lifecycleOwner = lifecycleOwner
+        )
         val viewPager = ViewPager(context).apply {
             id = android.R.id.tabcontent
 
@@ -159,5 +139,73 @@ actual class SystemTabsViewFactory actual constructor(
             size = size,
             margins = margins
         )
+    }
+
+    class TabsPagerAdapter(
+        private val tabs: List<TabsWidget.Tab>,
+        private val context: Context,
+        private val lifecycleOwner: LifecycleOwner
+    ) : PagerAdapter() {
+        private val savedState = mutableMapOf<Int, SparseArray<Parcelable>>()
+        private val viewsPositions = mutableMapOf<View, Int>()
+
+        override fun isViewFromObject(view: View, `object`: Any): Boolean {
+            return view == `object`
+        }
+
+        override fun getCount(): Int {
+            return tabs.size
+        }
+
+        override fun instantiateItem(container: ViewGroup, position: Int): Any {
+            val viewBundle = tabs[position].body.buildView(
+                ViewFactoryContext(
+                    context = context,
+                    lifecycleOwner = lifecycleOwner,
+                    parent = container
+                )
+            )
+            val view = viewBundle.view
+            container.addView(view)
+            savedState[position]?.let { stateContainer ->
+                view.restoreHierarchyState(stateContainer)
+            }
+            viewsPositions[view] = position
+            return view
+        }
+
+        override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
+            val view = `object` as View
+            val stateContainer = SparseArray<Parcelable>()
+            view.saveHierarchyState(stateContainer)
+            savedState[position] = stateContainer
+            viewsPositions.remove(view)
+            container.removeView(view)
+        }
+
+        override fun getPageTitle(position: Int): CharSequence? {
+            return tabs[position].title.value.toString(context)
+        }
+
+        override fun saveState(): Parcelable? {
+            viewsPositions.forEach { (view, position) ->
+                val stateContainer = SparseArray<Parcelable>()
+                view.saveHierarchyState(stateContainer)
+                savedState[position] = stateContainer
+            }
+            return SavedState(savedState)
+        }
+
+        override fun restoreState(state: Parcelable?, loader: ClassLoader?) {
+            if (state is SavedState) {
+                savedState.clear()
+                savedState.putAll(state.pagesState)
+            }
+        }
+
+        @Parcelize
+        data class SavedState(
+            val pagesState: Map<Int, SparseArray<Parcelable>>
+        ) : Parcelable
     }
 }
