@@ -10,10 +10,11 @@ plugins {
 }
 
 dependencies {
+    commonMainApi(project(":widgets"))
+
     mppLibrary(Deps.Libs.MultiPlatform.kotlinStdLib)
     mppLibrary(Deps.Libs.MultiPlatform.coroutines)
 
-    mppLibrary(Deps.Libs.MultiPlatform.mokoWidgets)
     mppLibrary(Deps.Libs.MultiPlatform.mokoPermissions)
 
     androidLibrary(Deps.Libs.Android.lifecycle)

@@ -16,32 +16,11 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Cache ~/.m2/repository
-        uses: actions/cache@v1
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('buildSrc/src/main/kotlin/**/*') }}
-          restore-keys: ${{ runner.os }}-maven
-      - name: Cache ~/.konan
-        uses: actions/cache@v1
-        with:
-          path: ~/.konan
-          key: ${{ runner.os }}-kn-${{ hashFiles('buildSrc/build.gradle.kts') }}
-          restore-keys: ${{ runner.os }}-kn
-      - name: Check plugin
-        run: ./gradlew -PpluginPublish publishToMavenLocal
-      - name: Check core
-        run: ./gradlew -PcorePublish :widgets:publishToMavenLocal
       - name: Cocoapods install
         run: (cd sample/ios-app && pod install)
-      - name: Check additions
-        run: |
-          ./gradlew -PadditionsPublish \
-          :widgets-flat:build \
-          :widgets-bottomsheet:build \
-          :widgets-sms:build \
-          :widgets-datetime-picker:build \
-          :widgets-collection:build \
-          :widgets-image-network:build \
-          :widgets-permissions:build \
-          :widgets-media:build
+      - name: Check build
+        run: ./gradlew build
+      - name: Check plugin publication
+        run: ./gradlew -p plugin publishToMavenLocal
+      - name: Check runtime publication
+        run: ./gradlew publishToMavenLocal

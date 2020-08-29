@@ -22,6 +22,10 @@ android {
     dataBinding {
         isEnabled = true
     }
+
+    lintOptions {
+        disable("ImpliedQuantity")
+    }
 }
 
 val deps = listOf(
@@ -30,12 +34,14 @@ val deps = listOf(
     Deps.Libs.MultiPlatform.mokoUnits,
     Deps.Libs.MultiPlatform.mokoGraphics,
     Deps.Libs.MultiPlatform.mokoWidgets,
-    Deps.Libs.MultiPlatform.mokoWidgetsFlat,
     Deps.Libs.MultiPlatform.mokoWidgetsBottomSheet,
     Deps.Libs.MultiPlatform.mokoWidgetsCollection,
+    Deps.Libs.MultiPlatform.mokoWidgetsDateTimePicker,
+    Deps.Libs.MultiPlatform.mokoWidgetsFlat,
     Deps.Libs.MultiPlatform.mokoWidgetsImageNetwork,
+    Deps.Libs.MultiPlatform.mokoWidgetsMedia,
     Deps.Libs.MultiPlatform.mokoWidgetsPermissions,
-    Deps.Libs.MultiPlatform.mokoWidgetsMedia
+    Deps.Libs.MultiPlatform.mokoWidgetsSms
 )
 
 setupFramework(exports = emptyList())
@@ -58,9 +64,10 @@ multiplatformResources {
 cocoaPods {
     podsProject = file("../ios-app/Pods/Pods.xcodeproj")
 
-    pod("moko-widgets-flat", "mokoWidgetsFlat", onlyLink = true)
     pod("moko-widgets-bottomsheet", "mokoWidgetsBottomSheet", onlyLink = true)
     pod("moko-widgets-collection", "mokoWidgetsCollection", onlyLink = true)
+    pod("moko-widgets-datetime-picker", "mokoWidgetsDateTimePicker", onlyLink = true)
+    pod("moko-widgets-flat", "mokoWidgetsFlat", onlyLink = true)
     pod("moko-widgets-image-network", "mokoWidgetsImageNetwork", onlyLink = true)
     pod("mppLibraryIos")
 }

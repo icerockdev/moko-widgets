@@ -17,36 +17,15 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Cache ~/.m2/repository
-        uses: actions/cache@v1
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('buildSrc/src/main/kotlin/**/*') }}
-          restore-keys: ${{ runner.os }}-maven
-      - name: Cache ~/.konan
-        uses: actions/cache@v1
-        with:
-          path: ~/.konan
-          key: ${{ runner.os }}-kn-${{ hashFiles('buildSrc/build.gradle.kts') }}
-          restore-keys: ${{ runner.os }}-kn
-      - name: Compile plugin
-        run: ./gradlew -PdevPublish -PpluginPublish publishToMavenLocal
-      - name: Compile core
-        run: ./gradlew -PdevPublish -PcorePublish :widgets:publishToMavenLocal
       - name: Cocoapods install
         run: (cd sample/ios-app && pod install)
-      - name: Compile additions
+      - name: Plugin publication
         run: |
-          ./gradlew -PdevPublish -PadditionsPublish \
-          :widgets-flat:build \
-          :widgets-bottomsheet:build \
-          :widgets-sms:build \
-          :widgets-datetime-picker:build \
-          :widgets-collection:build \
-          :widgets-image-network:build \
-          :widgets-permissions:build \
-          :widgets-media:build
-      - name: Publish all to bintray
+          ./gradlew -p plugin -PdevPublish \
+          publishNoValidationToBintray \
+          -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }} \
+          --stacktrace
+      - name: Runtime publication
         run: |
           ./gradlew -PdevPublish \
           publishNoValidationToBintray \
