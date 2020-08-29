@@ -57,29 +57,6 @@ allprojects {
             }
         }
 
-    configurations.configureEach {
-        resolutionStrategy.dependencySubstitution {
-            listOf(
-                "widgets",
-                "widgets-bottomsheet",
-                "widgets-collection",
-                "widgets-datetime-picker",
-                "widgets-flat",
-                "widgets-image-network",
-                "widgets-media",
-                "widgets-permissions",
-                "widgets-sms"
-            ).forEach { library ->
-                substitute(module("dev.icerock.moko:$library"))
-                    .with(project(":$library"))
-                substitute(module("dev.icerock.moko:$library-iosarm64"))
-                    .with(project(":$library"))
-                substitute(module("dev.icerock.moko:$library-iosx64"))
-                    .with(project(":$library"))
-            }
-        }
-    }
-
     val project = this
     val bintrayPath: Pair<String, String>?
     when {
@@ -97,19 +74,6 @@ allprojects {
                         minSdkVersion(Versions.Android.minSdk)
                         targetSdkVersion(Versions.Android.targetSdk)
                     }
-                }
-            }
-        }
-        this.name.endsWith("-plugin") -> {
-            bintrayPath = "plugins" to "moko-widgets-generator"
-
-            this.group = "dev.icerock.moko.widgets"
-            this.version = Versions.Plugins.mokoWidgets
-
-            this.plugins.withType<JavaPlugin> {
-                this@allprojects.configure<JavaPluginExtension> {
-                    sourceCompatibility = JavaVersion.VERSION_1_6
-                    targetCompatibility = JavaVersion.VERSION_1_6
                 }
             }
         }

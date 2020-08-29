@@ -19,8 +19,8 @@ jobs:
       - name: Cocoapods install
         run: (cd sample/ios-app && pod install)
       - name: Check build
-          run: ./gradlew build
+        run: ./gradlew build
       - name: Check plugin publication
-          run: ./gradlew -p plugin publishToMavenLocal
+        run: ./gradlew -p plugin publishToMavenLocal
       - name: Check runtime publication
-          run: ./gradlew publishToMavenLocal
+        run: ./gradlew publishToMavenLocal
