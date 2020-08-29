@@ -14,10 +14,8 @@ buildscript {
 
         maven { url = uri("https://dl.bintray.com/icerockdev/plugins-dev") }
     }
-    if (!properties.containsKey("pluginPublish")) {
-        dependencies {
-            Deps.plugins.values.forEach { classpath(it) }
-        }
+    dependencies {
+        Deps.plugins.values.forEach { classpath(it) }
     }
 }
 
@@ -43,15 +41,41 @@ allprojects {
         val uniqueName = "${project.group}.${project.name}"
 
         kotlinExtension.targets.withType(org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget::class.java) {
-            compilations["main"].kotlinOptions.freeCompilerArgs += listOf("-module-name", uniqueName)
+            compilations["main"].kotlinOptions.freeCompilerArgs += listOf(
+                "-module-name",
+                uniqueName
+            )
         }
     }
 
-    afterEvaluate {
-        dependencies {
-            if (configurations.map { it.name }.contains("compileOnly")) {
+    configurations
+        .matching { it.name == "compileOnly" }
+        .configureEach {
+            dependencies {
                 // fix of package javax.annotation does not exist import javax.annotation.Generated in DataBinding code
                 "compileOnly"("javax.annotation:jsr250-api:1.0")
+            }
+        }
+
+    configurations.configureEach {
+        resolutionStrategy.dependencySubstitution {
+            listOf(
+                "widgets",
+                "widgets-bottomsheet",
+                "widgets-collection",
+                "widgets-datetime-picker",
+                "widgets-flat",
+                "widgets-image-network",
+                "widgets-media",
+                "widgets-permissions",
+                "widgets-sms"
+            ).forEach { library ->
+                substitute(module("dev.icerock.moko:$library"))
+                    .with(project(":$library"))
+                substitute(module("dev.icerock.moko:$library-iosarm64"))
+                    .with(project(":$library"))
+                substitute(module("dev.icerock.moko:$library-iosx64"))
+                    .with(project(":$library"))
             }
         }
     }
@@ -101,7 +125,8 @@ allprojects {
                 val artifact = bintrayPath.second
                 val isDevPublish = project.properties.containsKey("devPublish")
                 val fullRepoName = if (isDevPublish) "$repo-dev" else repo
-                val mavenUrl = "https://api.bintray.com/maven/icerockdev/$fullRepoName/$artifact/;publish=1"
+                val mavenUrl =
+                    "https://api.bintray.com/maven/icerockdev/$fullRepoName/$artifact/;publish=1"
 
                 repositories.maven(mavenUrl) {
                     this.name = "bintray"

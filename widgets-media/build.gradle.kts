@@ -14,8 +14,7 @@ dependencies {
     mppLibrary(Deps.Libs.MultiPlatform.coroutines)
 
     mppLibrary(Deps.Libs.MultiPlatform.mokoMedia)
-//    mppLibrary(Deps.Libs.MultiPlatform.mokoWidgets)
-    commonMainImplementation(project(":widgets"))
+    mppLibrary(Deps.Libs.MultiPlatform.mokoWidgets)
 
     androidLibrary(Deps.Libs.Android.lifecycle)
 }

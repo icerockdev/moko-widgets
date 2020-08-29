@@ -3,7 +3,7 @@
  */
 
 plugins {
-    id("kotlin")
+    id("org.jetbrains.kotlin.jvm")
     id("maven-publish")
     id("kotlin-kapt")
 }
@@ -35,9 +35,7 @@ tasks.jar {
 publishing {
     publications {
         register("pluginMaven", MavenPublication::class) {
-            groupId = project.group.toString()
-            artifactId = project.name
-            version = project.version.toString()
+            from(components["java"])
         }
     }
 }

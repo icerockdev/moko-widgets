@@ -98,6 +98,11 @@ object Deps {
                 iosX64 = "dev.icerock.moko:widgets-media-iosx64:${Versions.Libs.MultiPlatform.mokoWidgets}",
                 iosArm64 = "dev.icerock.moko:widgets-media-iosarm64:${Versions.Libs.MultiPlatform.mokoWidgets}"
             )
+            val mokoWidgetsSms = MultiPlatformLibrary(
+                common = "dev.icerock.moko:widgets-sms:${Versions.Libs.MultiPlatform.mokoWidgets}",
+                iosX64 = "dev.icerock.moko:widgets-sms-iosx64:${Versions.Libs.MultiPlatform.mokoWidgets}",
+                iosArm64 = "dev.icerock.moko:widgets-sms-iosarm64:${Versions.Libs.MultiPlatform.mokoWidgets}"
+            )
             val mokoResources = MultiPlatformLibrary(
                 common = "dev.icerock.moko:resources:${Versions.Libs.MultiPlatform.mokoResources}",
                 iosX64 = "dev.icerock.moko:resources-iosx64:${Versions.Libs.MultiPlatform.mokoResources}",

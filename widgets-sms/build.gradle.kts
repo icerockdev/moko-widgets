@@ -16,8 +16,7 @@ dependencies {
     mppLibrary(Deps.Libs.MultiPlatform.mokoMvvm)
     mppLibrary(Deps.Libs.MultiPlatform.mokoResources)
     mppLibrary(Deps.Libs.MultiPlatform.mokoFields)
-//    mppLibrary(Deps.Libs.MultiPlatform.mokoWidgets)
-    commonMainImplementation(project(":widgets"))
+    mppLibrary(Deps.Libs.MultiPlatform.mokoWidgets)
 
     androidLibrary(Deps.Libs.Android.lifecycle)
     androidLibrary(Deps.Libs.Android.playServiceAuth)
