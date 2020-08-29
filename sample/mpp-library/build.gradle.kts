@@ -22,6 +22,10 @@ android {
     dataBinding {
         isEnabled = true
     }
+
+    lintOptions {
+        disable("ImpliedQuantity")
+    }
 }
 
 val deps = listOf(
