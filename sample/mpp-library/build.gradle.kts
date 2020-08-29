@@ -28,18 +28,16 @@ val deps = listOf(
     Deps.Libs.MultiPlatform.mokoResources,
     Deps.Libs.MultiPlatform.mokoMvvm,
     Deps.Libs.MultiPlatform.mokoUnits,
-    Deps.Libs.MultiPlatform.mokoGraphics
-)
-val mppModules = listOf(
-    MultiPlatformModule(name = ":widgets"),
-    MultiPlatformModule(name = ":widgets-bottomsheet"),
-    MultiPlatformModule(name = ":widgets-collection"),
-    MultiPlatformModule(name = ":widgets-datetime-picker"),
-    MultiPlatformModule(name = ":widgets-flat"),
-    MultiPlatformModule(name = ":widgets-image-network"),
-    MultiPlatformModule(name = ":widgets-media"),
-    MultiPlatformModule(name = ":widgets-permissions"),
-    MultiPlatformModule(name = ":widgets-sms")
+    Deps.Libs.MultiPlatform.mokoGraphics,
+    Deps.Libs.MultiPlatform.mokoWidgets,
+    Deps.Libs.MultiPlatform.mokoWidgetsBottomSheet,
+    Deps.Libs.MultiPlatform.mokoWidgetsCollection,
+    Deps.Libs.MultiPlatform.mokoWidgetsDateTimePicker,
+    Deps.Libs.MultiPlatform.mokoWidgetsFlat,
+    Deps.Libs.MultiPlatform.mokoWidgetsImageNetwork,
+    Deps.Libs.MultiPlatform.mokoWidgetsMedia,
+    Deps.Libs.MultiPlatform.mokoWidgetsPermissions,
+    Deps.Libs.MultiPlatform.mokoWidgetsSms
 )
 
 setupFramework(exports = emptyList())
@@ -49,7 +47,6 @@ dependencies {
     mppLibrary(Deps.Libs.MultiPlatform.coroutines)
 
     deps.forEach { mppLibrary(it) }
-    mppModules.forEach { mppModule(it) }
 
     androidLibrary(Deps.Libs.Android.recyclerView)
     androidLibrary(Deps.Libs.Android.appCompat)

@@ -56,6 +56,6 @@ dependencies {
     implementation(Deps.Libs.Android.material.name)
     implementation(Deps.Libs.Android.constraintLayout.name)
 
-    implementation(project(":widgets"))
+    implementation(Deps.Libs.MultiPlatform.mokoWidgets.common!!)
     implementation(project(":sample:mpp-library"))
 }
