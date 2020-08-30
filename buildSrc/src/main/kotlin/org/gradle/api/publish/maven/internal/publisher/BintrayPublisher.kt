@@ -4,6 +4,7 @@
 
 package org.gradle.api.publish.maven.internal.publisher
 
+import org.apache.http.NoHttpResponseException
 import org.gradle.internal.Factory
 import org.gradle.internal.resource.ExternalResource
 import org.gradle.internal.resource.ExternalResourceName
@@ -67,6 +68,8 @@ open class BintrayPublisher : MavenRemotePublisher {
                             println("$displayName failed with ${httpExc.statusCode} - error")
                             throw httpExc
                         }
+                    } catch(noResponseExc: NoHttpResponseException) {
+                        println("$displayName failed with $noResponseExc - retry $retryCounter")
                     }
                 }
 
