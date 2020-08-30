@@ -1,3 +1,7 @@
+/*
+ * Copyright 2020 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
+ */
+
 subprojects {
     configurations.configureEach {
         resolutionStrategy.dependencySubstitution {
@@ -6,7 +10,6 @@ subprojects {
                 "widgets-bottomsheet",
                 "widgets-collection",
                 "widgets-datetime-picker",
-                "widgets-flat",
                 "widgets-image-network",
                 "widgets-media",
                 "widgets-permissions",

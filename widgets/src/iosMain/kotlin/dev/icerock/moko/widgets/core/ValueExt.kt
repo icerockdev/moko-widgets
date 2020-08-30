@@ -7,10 +7,12 @@ package dev.icerock.moko.widgets.core
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.widgets.core.utils.bind
 
+@Suppress("UNCHECKED_CAST")
 fun <T> Value<T>.bind(lambda: (T) -> Unit) {
-    if (value is LiveData<*>) {
-        value.bind { lambda(it as T) }
+    val localValue = value
+    if (localValue is LiveData<*>) {
+        localValue.bind { lambda(it as T) }
     } else {
-        lambda(value as T)
+        lambda(localValue as T)
     }
 }

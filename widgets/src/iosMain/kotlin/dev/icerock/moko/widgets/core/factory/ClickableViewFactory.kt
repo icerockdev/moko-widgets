@@ -21,6 +21,7 @@ actual class ClickableViewFactory actual constructor(
         size: WS,
         viewFactoryContext: ViewFactoryContext
     ): ViewBundle<WS> {
+        @Suppress("UNCHECKED_CAST")
         val childViewBundle =
             widget.child.buildView(viewFactoryContext) as ViewBundle<WS>
 

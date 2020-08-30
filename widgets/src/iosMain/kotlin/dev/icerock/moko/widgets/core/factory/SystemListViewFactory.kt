@@ -103,8 +103,9 @@ actual class SystemListViewFactory actual constructor(
         }
 
         widget.items.bind { items ->
-            unitDataSource.unitItems = if (widget.onReachEnd != null) {
-                items.observedEnd(widget.onReachEnd)
+            val onReachEnd = widget.onReachEnd
+            unitDataSource.unitItems = if (onReachEnd != null) {
+                items.observedEnd(onReachEnd)
             } else {
                 items
             }
@@ -132,8 +133,8 @@ actual class SystemListViewFactory actual constructor(
         private val item: TableUnitItem,
         private val onBind: () -> Unit
     ) : TableUnitItem by item {
-        override fun bind(cell: UITableViewCell) {
-            item.bind(cell)
+        override fun bind(tableViewCell: UITableViewCell) {
+            item.bind(tableViewCell)
             onBind()
         }
     }

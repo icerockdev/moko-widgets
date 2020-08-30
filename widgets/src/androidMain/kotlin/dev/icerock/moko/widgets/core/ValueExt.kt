@@ -8,12 +8,14 @@ import androidx.lifecycle.LifecycleOwner
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.widgets.core.utils.bind
 
+@Suppress("UNCHECKED_CAST")
 fun <T> Value<T>.bind(lifecycleOwner: LifecycleOwner, lambda: (T) -> Unit) {
-    if (value is LiveData<*>) {
-        value.bind(lifecycleOwner) {
+    val localValue = value
+    if (localValue is LiveData<*>) {
+        localValue.bind(lifecycleOwner) {
             lambda(it as T)
         }
     } else {
-        lambda(value as T)
+        lambda(localValue as T)
     }
 }

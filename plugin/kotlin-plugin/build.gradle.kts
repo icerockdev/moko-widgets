@@ -3,9 +3,9 @@
  */
 
 plugins {
-    id("org.jetbrains.kotlin.jvm")
-    id("maven-publish")
-    id("kotlin-kapt")
+    plugin(Deps.Plugins.kotlinJvm)
+    plugin(Deps.Plugins.mavenPublish)
+    plugin(Deps.Plugins.kotlinKapt)
 }
 
 val embedImplementationConfig = "embedImplementation"
@@ -15,8 +15,6 @@ configurations {
 }
 
 dependencies {
-    implementation(Deps.Libs.Jvm.kotlinStdLib)
-
     embedImplementationConfig(project(":kotlin-common-plugin"))
 
     compileOnly("org.jetbrains.kotlin:kotlin-compiler-embeddable")

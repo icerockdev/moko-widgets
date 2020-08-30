@@ -9,7 +9,7 @@ import org.gradle.api.publish.maven.tasks.PublishToMavenRepository
 
 open class PublishToBintrayRepository : PublishToMavenRepository() {
     override fun publish() {
-        val remotePublisher = BintrayPublisher(temporaryDirFactory)
+        val remotePublisher = BintrayPublisher(temporaryDirFactory, project.gradle.startParameter)
         val normalizedPublication = publicationInternal.asNormalisedPublication()
         remotePublisher.publish(normalizedPublication, repository)
     }

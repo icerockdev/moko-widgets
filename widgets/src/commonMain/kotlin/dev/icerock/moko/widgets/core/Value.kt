@@ -6,7 +6,7 @@ package dev.icerock.moko.widgets.core
 
 import dev.icerock.moko.mvvm.livedata.LiveData
 
-@Suppress("NON_PUBLIC_PRIMARY_CONSTRUCTOR_OF_INLINE_CLASS")
+@Suppress("NON_PUBLIC_PRIMARY_CONSTRUCTOR_OF_INLINE_CLASS", "EXPERIMENTAL_FEATURE_WARNING")
 inline class Value<T> private constructor(val value: Any?) {
     companion object {
         fun <T> data(data: T) = Value<T>(value = data)

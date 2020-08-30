@@ -73,9 +73,9 @@ actual class ButtonWithIconViewFactory actual constructor(
             }
         }
 
-        when (widget.content) {
+        when (val content = widget.content) {
             is ButtonWidget.Content.Text -> {
-                widget.content.text.bind { text ->
+                content.text.bind { text ->
                     val localizedText = text?.localized()
                     val processedText = if (isAllCaps == true) {
                         localizedText?.toUpperCase()
@@ -127,12 +127,12 @@ actual class ButtonWithIconViewFactory actual constructor(
         button.displayLink {
             val icPadding: Double = iconPadding?.toDouble() ?: 0.0
 
-            val newButtonWidth = button.bounds.useContents { this.size.width }
+            val newButtonWidth = button.bounds().useContents { this.size.width }
             if (buttonWidth == newButtonWidth) return@displayLink
             buttonWidth = newButtonWidth
 
-            val iconWidth = button.imageView?.frame?.useContents { this.size.width } ?: 0.0
-            val titleWidth = button.titleLabel?.frame?.useContents { this.size.width } ?: 0.0
+            val iconWidth = button.imageView?.frame()?.useContents { this.size.width } ?: 0.0
+            val titleWidth = button.titleLabel?.frame()?.useContents { this.size.width } ?: 0.0
 
             val paddingTop = padding?.top?.toDouble() ?: 0.0
             var paddingLeft = padding?.start?.toDouble() ?: 0.0

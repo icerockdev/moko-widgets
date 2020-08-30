@@ -3,15 +3,15 @@
  */
 
 plugins {
-    `kotlin-dsl`
-    id("maven-publish")
-    id("kotlin-kapt")
-    id("com.github.kukuhyoniatmoko.buildconfigkotlin") version "1.0.5"
+    plugin(Deps.Plugins.kotlinJvm)
+    plugin(Deps.Plugins.mavenPublish)
+    plugin(Deps.Plugins.kotlinKapt)
+    plugin(Deps.Plugins.buildKonfig)
 }
 
 dependencies {
-    implementation(Deps.Libs.Jvm.kotlinStdLib)
-
+    implementation(gradleApi())
+    implementation(gradleKotlinDsl())
     compileOnly(Deps.Libs.Jvm.kotlinGradlePlugin)
     implementation(Deps.Libs.Jvm.kotlinGradlePluginApi)
 

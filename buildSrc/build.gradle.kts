@@ -1,37 +1,39 @@
 /*
  * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
-import java.io.ByteArrayOutputStream
+
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.io.ByteArrayOutputStream
 
 plugins {
-    kotlin("jvm") version "1.3.72"
+    id("org.jetbrains.kotlin.jvm") version ("1.4.0")
     id("com.github.kukuhyoniatmoko.buildconfigkotlin") version "1.0.5"
 }
 
 repositories {
+    mavenLocal()
+
     jcenter()
     google()
 
     maven { url = uri("https://dl.bintray.com/icerockdev/plugins") }
 }
 
-val devPublishing: Boolean = properties.containsKey("devPublish")
-val mokoWidgetsVersion: String = when (devPublishing) {
+dependencies {
+    implementation("dev.icerock:mobile-multiplatform:0.7.0")
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.0")
+    implementation("com.android.tools.build:gradle:4.0.1")
+}
+
+val mokoWidgetsVersion: String = when (properties.containsKey("devPublish")) {
     true -> getGitCommit()
-    false -> "0.1.0-dev-20"
+    false -> "0.1.0-dev-21"
 }
 
 buildConfigKotlin {
     sourceSet("main") {
         buildConfig(name = "widgetsVersion", value = mokoWidgetsVersion)
     }
-}
-
-dependencies {
-    implementation("dev.icerock:mobile-multiplatform:0.6.1")
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72")
-    implementation("com.android.tools.build:gradle:3.6.4")
 }
 
 fun getGitCommit(): String {

@@ -3,23 +3,24 @@
  */
 
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.multiplatform")
-    id("dev.icerock.mobile.multiplatform")
-    id("maven-publish")
+    plugin(Deps.Plugins.androidLibrary)
+    plugin(Deps.Plugins.kotlinMultiplatform)
+    plugin(Deps.Plugins.mobileMultiplatform)
+    plugin(Deps.Plugins.mavenPublish)
 }
 
 dependencies {
     commonMainApi(project(":widgets"))
 
-    mppLibrary(Deps.Libs.MultiPlatform.kotlinStdLib)
-    mppLibrary(Deps.Libs.MultiPlatform.coroutines)
+    commonMainImplementation(Deps.Libs.MultiPlatform.coroutines)
 
-    mppLibrary(Deps.Libs.MultiPlatform.mokoMvvm)
-    mppLibrary(Deps.Libs.MultiPlatform.mokoResources)
-    mppLibrary(Deps.Libs.MultiPlatform.mokoFields)
+    commonMainApi(Deps.Libs.MultiPlatform.mokoMvvm.common)
+    commonMainApi(Deps.Libs.MultiPlatform.mokoResources.common)
+    commonMainApi(Deps.Libs.MultiPlatform.mokoFields.common)
+    commonMainApi(Deps.Libs.MultiPlatform.mokoGraphics.common)
+    commonMainApi(Deps.Libs.MultiPlatform.mokoParcelize.common)
 
-    androidLibrary(Deps.Libs.Android.lifecycle)
-    androidLibrary(Deps.Libs.Android.playServiceAuth)
-    androidLibrary(Deps.Libs.Android.playServiceAuthSms)
+    androidMainImplementation(Deps.Libs.Android.lifecycle)
+    androidMainImplementation(Deps.Libs.Android.playServiceAuth)
+    androidMainImplementation(Deps.Libs.Android.playServiceAuthSms)
 }

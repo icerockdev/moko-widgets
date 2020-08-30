@@ -3,12 +3,10 @@
  */
 
 plugins {
-    id("kotlin")
+    plugin(Deps.Plugins.kotlinJvm)
 }
 
 dependencies {
-    compileOnly(Deps.Libs.Jvm.kotlinStdLib)
-
     compileOnly("org.jetbrains.kotlin:kotlin-script-runtime")
     compileOnly("org.jetbrains.kotlin:kotlin-reflect")
     compileOnly("org.jetbrains.intellij.deps:trove4j:1.0.20181211")

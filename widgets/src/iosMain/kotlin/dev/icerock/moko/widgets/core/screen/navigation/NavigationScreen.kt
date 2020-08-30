@@ -105,6 +105,7 @@ actual abstract class NavigationScreen<S> actual constructor(
                     }
                 }
 
+                @Suppress("UNCHECKED_CAST")
                 override val resultMapper: (Parcelable) -> OT = { outputMapper(it as R) }
             }
         }

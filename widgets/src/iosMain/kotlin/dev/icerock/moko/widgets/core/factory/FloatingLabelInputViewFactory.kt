@@ -307,7 +307,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
             }
             val size = placeholderTextLayer.preferredFrameSize()
             val (width, height) = size.useContents { this.width to this.height }
-            val textFieldHeight = textField.bounds.useContents { this.size.height }
+            val textFieldHeight = textField.bounds().useContents { this.size.height }
             if (isPlaceholderInTopState) {
                 placeholderTextLayer.frame = CGRectMake(
                     x = 0.0,

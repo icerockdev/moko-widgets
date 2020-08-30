@@ -5,10 +5,10 @@
 package com.icerockdev
 
 import App
-import android.app.Application
+import androidx.multidex.MultiDexApplication
 import dev.icerock.moko.widgets.core.screen.BaseApplication
 
-class MainApplication : Application() {
+class MainApplication : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
 

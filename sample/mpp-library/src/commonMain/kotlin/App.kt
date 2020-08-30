@@ -69,7 +69,6 @@ import dev.icerock.moko.widgets.core.widget.InputWidget
 import dev.icerock.moko.widgets.core.widget.TabsWidget
 import dev.icerock.moko.widgets.core.widget.button
 import dev.icerock.moko.widgets.core.widget.container
-import dev.icerock.moko.widgets.flat.FlatInputViewFactory
 import dev.icerock.moko.widgets.sample.CollectionImageUnitItem
 import dev.icerock.moko.widgets.sample.CollectionScreen
 import dev.icerock.moko.widgets.sample.InputWidgetGalleryScreen
@@ -84,7 +83,6 @@ class App() : BaseApplication() {
 
     object SystemInputId : InputWidget.Id
     object FloatingLabelInputId : InputWidget.Id
-    object FlatInputId : InputWidget.Id
     object MultilineInputId : InputWidget.Id
 
     override val androidStatusBarColor: Color? = Color(0x4444AAFF)
@@ -96,7 +94,6 @@ class App() : BaseApplication() {
             )
             factory[SystemInputId] = SystemInputViewFactory(margins = MarginValues(bottom = 16.0f))
             factory[FloatingLabelInputId] = FloatingLabelInputViewFactory(margins = MarginValues(bottom = 16.0f))
-            factory[FlatInputId] = FlatInputViewFactory(margins = MarginValues(bottom = 16.0f))
             factory[MultilineInputId] = MultilineInputViewFactory(margins = MarginValues(bottom = 16.0f))
         }
 
@@ -153,10 +150,6 @@ class App() : BaseApplication() {
                     InputWidgetGalleryScreen.InputInfo(
                         id = MultilineInputId,
                         label = "MultilineInputViewFactory".desc()
-                    ),
-                    InputWidgetGalleryScreen.InputInfo(
-                        id = FlatInputId,
-                        label = "FlatInputViewFactory".desc()
                     )
                 )
             )
@@ -280,12 +273,14 @@ class App() : BaseApplication() {
         val theme = AppTheme.baseTheme
 
         val loginTheme = Theme(AppTheme.loginScreen) {
-            factory[LoginScreen.Id.EmailInputId] = FlatInputViewFactory(
+            factory[LoginScreen.Id.EmailInputId] = FloatingLabelInputViewFactory(
                 textStyle = TextStyle(
                     size = 16,
                     color = Color(0x16171AFF)
                 ),
-                backgroundColor = Color(0xF5F5F5FF)
+                background = Background(
+                    fill = Fill.Solid(color = Color(0xF5F5F5FF))
+                )
             )
             factory[LoginScreen.Id.RegistrationButtonId] = ButtonWithIconViewFactory(
                 icon = PressableState(all = MR.images.stars_black_18),

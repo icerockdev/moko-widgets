@@ -17,12 +17,18 @@ allprojects {
     val project = this
 
     project.group = "dev.icerock.moko.widgets"
-    project.version = Versions.Plugins.mokoWidgets
+    project.version = Deps.mokoWidgetsVersion
 
     project.plugins.withType<JavaPlugin> {
         project.configure<JavaPluginExtension> {
             sourceCompatibility = JavaVersion.VERSION_1_6
             targetCompatibility = JavaVersion.VERSION_1_6
+        }
+    }
+
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().all {
+        kotlinOptions {
+            jvmTarget = "1.8"
         }
     }
 
@@ -32,7 +38,8 @@ allprojects {
             val artifact = bintrayPath.second
             val isDevPublish = project.properties.containsKey("devPublish")
             val fullRepoName = if (isDevPublish) "$repo-dev" else repo
-            val mavenUrl = "https://api.bintray.com/maven/icerockdev/$fullRepoName/$artifact/;publish=1"
+            val mavenUrl =
+                "https://api.bintray.com/maven/icerockdev/$fullRepoName/$artifact/;publish=1"
 
             repositories.maven(mavenUrl) {
                 this.name = "bintray"

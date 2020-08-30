@@ -12,13 +12,15 @@ import dev.icerock.moko.widgets.core.utils.bind
 import dev.icerock.moko.widgets.core.widget.VisibilityWidget
 import platform.UIKit.hidden
 
-actual class VisibilityViewFactory actual constructor() : ViewFactory<VisibilityWidget<out WidgetSize>> {
+actual class VisibilityViewFactory actual constructor() :
+    ViewFactory<VisibilityWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
         widget: VisibilityWidget<out WidgetSize>,
         size: WS,
         viewFactoryContext: ViewFactoryContext
     ): ViewBundle<WS> {
+        @Suppress("UNCHECKED_CAST")
         val bundle = widget.child.buildView(viewFactoryContext) as ViewBundle<WS>
 
         widget.showed.bind { bundle.view.hidden = it.not() }

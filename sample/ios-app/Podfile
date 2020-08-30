@@ -15,7 +15,6 @@ target 'TestProj' do
   pod 'MultiPlatformLibrary', :path => '../mpp-library'
 
   pod 'mppLibraryIos', :path => '../mpp-library'
-  pod 'moko-widgets-flat', :path => '../../'
   pod 'moko-widgets-bottomsheet', :path => '../../'
   pod 'moko-widgets-collection', :path => '../../'
   pod 'moko-widgets-image-network', :path => '../../'
