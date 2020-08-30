@@ -20,14 +20,20 @@ private var AssociatedDelegateHandle: UInt8 = 0
     view.updateConstraints()
     view.layoutSubviews()
     
-    let maxSize = CGSize(width: UIScreen.main.bounds.width, height: UIView.layoutFittingCompressedSize.height)
+    let maxSize = CGSize(
+      width: UIScreen.main.bounds.width,
+      height: UIView.layoutFittingCompressedSize.height
+    )
     view.frame = UIScreen.main.bounds
     
+    let prefSize = view.systemLayoutSizeFitting(
+      maxSize,
+      withHorizontalFittingPriority: UILayoutPriority.required,
+      verticalFittingPriority: .defaultHigh
+    )
+    
     let floatLayout = BottomSheetLayout(
-      preferredHeight: view.systemLayoutSizeFitting(
-        UIView.layoutFittingCompressedSize,
-        withHorizontalFittingPriority: UILayoutPriority.required,
-        verticalFittingPriority: .defaultLow).height
+      preferredHeight: prefSize.height
     )
     
     let delegate = FloatingDelegate(
@@ -88,7 +94,7 @@ class FloatingDelegate: FloatingPanelControllerDelegate {
 }
 
 class BottomSheetLayout: FloatingPanelLayout {
-  var initialPosition: FloatingPanelPosition = .half
+  var initialPosition: FloatingPanelPosition = .full
   
   private let preferredHeight: CGFloat
   
@@ -98,14 +104,14 @@ class BottomSheetLayout: FloatingPanelLayout {
   
   func insetFor(position: FloatingPanelPosition) -> CGFloat? {
     switch (position) {
-    case .half: return preferredHeight
-    case .full: return 0
+    case .half: return 0
+    case .full: return UIScreen.main.bounds.size.height - preferredHeight - 30.0
     case .tip: return 0
     case .hidden: return 0
     }
   }
   
-  var supportedPositions: Set<FloatingPanelPosition> = [.half, .hidden]
+  var supportedPositions: Set<FloatingPanelPosition> = [.full, .hidden]
   
   func backdropAlphaFor(position: FloatingPanelPosition) -> CGFloat {
     return 0.3

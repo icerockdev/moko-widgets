@@ -4,7 +4,7 @@
 
 package dev.icerock.moko.widgets.core
 
-import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.core.style.view.WidgetSize
 
 abstract class Widget<WS : WidgetSize> {
     abstract val size: WS

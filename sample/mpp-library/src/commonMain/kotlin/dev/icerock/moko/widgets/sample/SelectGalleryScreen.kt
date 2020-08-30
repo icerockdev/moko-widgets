@@ -7,17 +7,17 @@ package dev.icerock.moko.widgets.sample
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
-import dev.icerock.moko.widgets.ButtonWidget
-import dev.icerock.moko.widgets.LinearWidget
-import dev.icerock.moko.widgets.button
+import dev.icerock.moko.widgets.core.widget.ButtonWidget
+import dev.icerock.moko.widgets.core.widget.LinearWidget
+import dev.icerock.moko.widgets.core.widget.button
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Value
-import dev.icerock.moko.widgets.screen.Args
-import dev.icerock.moko.widgets.screen.navigation.NavigationBar
-import dev.icerock.moko.widgets.screen.navigation.NavigationItem
-import dev.icerock.moko.widgets.screen.navigation.Route
-import dev.icerock.moko.widgets.screen.navigation.route
-import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.core.screen.Args
+import dev.icerock.moko.widgets.core.screen.navigation.NavigationBar
+import dev.icerock.moko.widgets.core.screen.navigation.NavigationItem
+import dev.icerock.moko.widgets.core.screen.navigation.Route
+import dev.icerock.moko.widgets.core.screen.navigation.route
+import dev.icerock.moko.widgets.core.style.view.WidgetSize
 
 class SelectGalleryScreen(
     theme: Theme,

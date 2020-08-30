@@ -11,21 +11,24 @@ import dev.icerock.moko.mvvm.livedata.mergeWith
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
-import dev.icerock.moko.widgets.ButtonWidget
-import dev.icerock.moko.widgets.InputWidget
-import dev.icerock.moko.widgets.ScrollWidget
-import dev.icerock.moko.widgets.TextWidget
-import dev.icerock.moko.widgets.button
+import dev.icerock.moko.widgets.core.widget.ButtonWidget
+import dev.icerock.moko.widgets.core.widget.InputWidget
+import dev.icerock.moko.widgets.core.widget.ScrollWidget
+import dev.icerock.moko.widgets.core.widget.TextWidget
+import dev.icerock.moko.widgets.core.widget.button
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Value
 import dev.icerock.moko.widgets.core.Widget
-import dev.icerock.moko.widgets.input
-import dev.icerock.moko.widgets.linear
-import dev.icerock.moko.widgets.scroll
-import dev.icerock.moko.widgets.style.input.InputType
-import dev.icerock.moko.widgets.style.view.SizeSpec
-import dev.icerock.moko.widgets.style.view.WidgetSize
-import dev.icerock.moko.widgets.text
+import dev.icerock.moko.widgets.core.widget.input
+import dev.icerock.moko.widgets.core.widget.linear
+import dev.icerock.moko.widgets.core.widget.scroll
+import dev.icerock.moko.widgets.core.style.input.InputType
+import dev.icerock.moko.widgets.core.style.input.email
+import dev.icerock.moko.widgets.core.style.input.password
+import dev.icerock.moko.widgets.core.style.input.phone
+import dev.icerock.moko.widgets.core.style.view.SizeSpec
+import dev.icerock.moko.widgets.core.style.view.WidgetSize
+import dev.icerock.moko.widgets.core.widget.text
 
 class CryptoProfileScreen(
     private val theme: Theme,
@@ -49,28 +52,28 @@ class CryptoProfileScreen(
                         id = Id.PhoneInput,
                         label = const("Phone number"),
                         field = viewModel.phoneField,
-                        inputType = InputType.Phone()
+                        inputType = InputType.phone()
                     )
                     +input(
                         size = WidgetSize.WidthAsParentHeightWrapContent,
                         id = Id.EmailInput,
                         label = const("Email"),
                         field = viewModel.emailField,
-                        inputType = InputType.Email()
+                        inputType = InputType.email()
                     )
                     +input(
                         size = WidgetSize.WidthAsParentHeightWrapContent,
                         id = Id.PasswordInput,
                         label = const("Password"),
                         field = viewModel.passwordField,
-                        inputType = InputType.Password()
+                        inputType = InputType.password()
                     )
                     +input(
                         size = WidgetSize.WidthAsParentHeightWrapContent,
                         id = Id.RepeatPasswordInput,
                         label = const("Repeat password"),
                         field = viewModel.repeatPasswordField,
-                        inputType = InputType.Password()
+                        inputType = InputType.password()
                     )
                     +button(
                         size = WidgetSize.WidthAsParentHeightWrapContent,

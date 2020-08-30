@@ -18,14 +18,14 @@ import com.icerockdev.library.sample.StateViewModel
 import com.icerockdev.library.sample.UsersScreen
 import com.icerockdev.library.sample.UsersViewModel
 import dev.icerock.moko.widgets.collection.CollectionWidget
-import dev.icerock.moko.widgets.constraint
+import dev.icerock.moko.widgets.core.widget.constraint
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Widget
-import dev.icerock.moko.widgets.screen.Args
-import dev.icerock.moko.widgets.screen.WidgetScreen
-import dev.icerock.moko.widgets.style.view.SizeSpec
-import dev.icerock.moko.widgets.style.view.WidgetSize
-import dev.icerock.moko.widgets.tabs
+import dev.icerock.moko.widgets.core.screen.Args
+import dev.icerock.moko.widgets.core.screen.WidgetScreen
+import dev.icerock.moko.widgets.core.style.view.SizeSpec
+import dev.icerock.moko.widgets.core.style.view.WidgetSize
+import dev.icerock.moko.widgets.core.widget.tabs
 
 class WidgetsScreen(
     private val sharedFactory: SharedFactory,

@@ -13,7 +13,7 @@ import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.WidgetDef
-import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.core.style.view.WidgetSize
 
 @WidgetDef(SimpleCollectionViewFactory::class)
 class CollectionWidget<WS : WidgetSize>(

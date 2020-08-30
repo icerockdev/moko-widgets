@@ -8,7 +8,7 @@ import com.icerockdev.library.SharedFactory
 import com.icerockdev.library.universal.WidgetsScreen
 import dev.icerock.moko.widgets.core.BasePreviewView
 import dev.icerock.moko.widgets.core.Theme
-import dev.icerock.moko.widgets.screen.Screen
+import dev.icerock.moko.widgets.core.screen.Screen
 
 class PreviewView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0

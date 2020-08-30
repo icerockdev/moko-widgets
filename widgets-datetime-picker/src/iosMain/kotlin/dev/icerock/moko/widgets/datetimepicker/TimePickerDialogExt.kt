@@ -4,10 +4,12 @@
 
 package dev.icerock.moko.widgets.datetimepicker
 
+import cocoapods.mokoWidgetsDateTimePicker.DateBottomSheetController
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.graphics.toUIColor
-import dev.icerock.moko.widgets.screen.Screen
-import dev.icerock.moko.widgets.utils.setEventHandler
+import dev.icerock.moko.widgets.core.screen.Screen
+import dev.icerock.moko.widgets.core.utils.setEventHandler
+import platform.CoreGraphics.CGRectMake
 import platform.Foundation.NSBundle
 import platform.Foundation.NSCalendar
 import platform.Foundation.NSCalendarUnitHour
@@ -53,12 +55,14 @@ actual fun Screen<*>.showTimePickerDialog(
 ) {
     TimePickerDialogBuilder().apply {
         factory(this)
-        val controller = createViewController(handler, dialogId)
-        controller.modalPresentationStyle = UIModalPresentationOverCurrentContext
-        this@showTimePickerDialog.viewController.presentViewController(
-            controller,
-            animated = true,
-            completion = null
+        val controller = DateBottomSheetController()
+        val view = createView(handler = handler, dialogId = dialogId) {
+            controller.dismiss()
+        }
+        controller.showOnViewController(
+            vc = this@showTimePickerDialog.viewController,
+            withContent = view,
+            onDismiss = { handler.negative?.invoke(dialogId) }
         )
     }
 }
@@ -85,51 +89,49 @@ actual class TimePickerDialogBuilder {
      */
     actual fun is24HoursFormat(flag: Boolean) {}
 
-    internal fun createViewController(
+    internal fun createView(
         handler: TimePickerDialogHandler,
-        dialogId: Int
-    ) = TimePickerController(accentColor, initialHour, initialMinute, handler, dialogId)
+        dialogId: Int,
+        onDismiss: () -> Unit
+    ) = TimePickerView(accentColor, initialHour, initialMinute, handler, dialogId, onDismiss)
 }
 
-class TimePickerController(
+class TimePickerView(
     private val accentColor: Color?,
     private val initialHour: Int,
     private val initialMinute: Int,
     private val handler: TimePickerDialogHandler,
-    private val dialogId: Int
-) : UIViewController(nibName = null, bundle = null) {
+    private val dialogId: Int,
+    onDismiss: () -> Unit
+) : UIView(frame = CGRectMake(0.0, 0.0, 0.0, 276.0)) {
 
-    override fun viewDidLoad() {
-        super.viewDidLoad()
-
-        view.backgroundColor = UIColor.blackColor.colorWithAlphaComponent(0.7)
-
+    init {
         val pickerBackground = UIView()
-        view.addSubview(pickerBackground)
+        addSubview(pickerBackground)
         pickerBackground.translatesAutoresizingMaskIntoConstraints = false
         pickerBackground.backgroundColor = UIColor.whiteColor
         pickerBackground.leadingAnchor.constraintEqualToAnchor(
-            anchor = view.leadingAnchor
+            anchor = this.leadingAnchor
         ).active = true
         pickerBackground.trailingAnchor.constraintEqualToAnchor(
-            anchor = view.trailingAnchor
+            anchor = this.trailingAnchor
         ).active = true
         pickerBackground.bottomAnchor.constraintEqualToAnchor(
-            anchor = view.bottomAnchor
+            anchor = this.bottomAnchor
         ).active = true
 
         val datePicker = UIDatePicker()
         datePicker.translatesAutoresizingMaskIntoConstraints = false
         datePicker.datePickerMode = UIDatePickerMode.UIDatePickerModeTime
-        view.addSubview(datePicker)
+        addSubview(datePicker)
         datePicker.leadingAnchor.constraintEqualToAnchor(
-            anchor = view.leadingAnchor
+            anchor = this.leadingAnchor
         ).active = true
         datePicker.trailingAnchor.constraintEqualToAnchor(
-            anchor = view.trailingAnchor
+            anchor = this.trailingAnchor
         ).active = true
         datePicker.bottomAnchor.constraintEqualToAnchor(
-            anchor = view.safeAreaLayoutGuide.bottomAnchor
+            anchor = this.safeAreaLayoutGuide.bottomAnchor
         ).active = true
         datePicker.heightAnchor.constraintEqualToConstant(232.0)
 
@@ -140,12 +142,12 @@ class TimePickerController(
         val controlPanel = UIView()
         controlPanel.translatesAutoresizingMaskIntoConstraints = false
         controlPanel.backgroundColor = UIColor(red = 0.97, green = 0.97, blue = 0.97, alpha = 1.0)
-        view.addSubview(controlPanel)
+        addSubview(controlPanel)
         controlPanel.leadingAnchor.constraintEqualToAnchor(
-            anchor = view.leadingAnchor
+            anchor = this.leadingAnchor
         ).active = true
         controlPanel.trailingAnchor.constraintEqualToAnchor(
-            anchor = view.trailingAnchor
+            anchor = this.trailingAnchor
         ).active = true
         controlPanel.bottomAnchor.constraintEqualToAnchor(
             anchor = datePicker.topAnchor
@@ -215,7 +217,7 @@ class TimePickerController(
         }
 
         doneButton.setEventHandler(UIControlEventTouchUpInside) {
-            this.dismissViewControllerAnimated(flag = true, completion = null)
+            onDismiss.invoke()
             val hour =
                 NSCalendar.currentCalendar.components(NSCalendarUnitHour, datePicker.date).hour
             val minute =
@@ -223,9 +225,8 @@ class TimePickerController(
             handler.positive?.invoke(dialogId, hour.toInt(), minute.toInt())
         }
         cancelButton.setEventHandler(UIControlEventTouchUpInside) {
-            this.dismissViewControllerAnimated(flag = true, completion = null)
+            onDismiss.invoke()
             handler.negative?.invoke(dialogId)
         }
     }
-
 }

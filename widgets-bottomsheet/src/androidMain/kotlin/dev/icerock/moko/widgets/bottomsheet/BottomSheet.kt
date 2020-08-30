@@ -8,9 +8,9 @@ import android.content.Context
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.Widget
-import dev.icerock.moko.widgets.screen.Screen
-import dev.icerock.moko.widgets.style.view.SizeSpec
-import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.core.screen.Screen
+import dev.icerock.moko.widgets.core.style.view.SizeSpec
+import dev.icerock.moko.widgets.core.style.view.WidgetSize
 
 actual fun Screen<*>.showBottomSheet(
     content: Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.WrapContent>>,
@@ -32,7 +32,8 @@ actual fun Screen<*>.showBottomSheet(
     return dialog
 }
 
-private class DismissedBottomSheetDialog(context: Context, val onDismiss: (Boolean) -> Unit): BottomSheetDialog(context), SelfDismisser {
+private class DismissedBottomSheetDialog(context: Context, val onDismiss: (Boolean) -> Unit) :
+    BottomSheetDialog(context), SelfDismisser {
     override fun dismissSelf() {
         this.dismiss()
         onDismiss(true)

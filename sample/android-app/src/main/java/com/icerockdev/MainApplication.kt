@@ -6,7 +6,7 @@ package com.icerockdev
 
 import App
 import android.app.Application
-import dev.icerock.moko.widgets.screen.BaseApplication
+import dev.icerock.moko.widgets.core.screen.BaseApplication
 
 class MainApplication : Application() {
     override fun onCreate() {

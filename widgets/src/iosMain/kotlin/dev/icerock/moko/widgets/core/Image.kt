@@ -4,83 +4,21 @@
 
 package dev.icerock.moko.widgets.core
 
-import dev.icerock.moko.media.Bitmap
 import dev.icerock.moko.resources.ImageResource
-import dev.icerock.moko.widgets.objc.dataTask
-import platform.Foundation.NSURL
-import platform.Foundation.NSURLSession
-import platform.Foundation.NSURLSessionConfiguration
 import platform.UIKit.UIImage
 import platform.UIKit.UIView
 
 actual abstract class Image {
-
     abstract fun apply(view: UIView, block: (UIImage?) -> Unit)
 
-    actual companion object {
-        actual fun resource(imageResource: ImageResource): Image {
-            return ResourceImage(imageResource)
-        }
-
-        actual fun network(url: String, placeholder: ImageResource?): Image {
-            return NetworkImage(url, placeholder)
-        }
-
-        actual fun bitmap(bitmap: Bitmap): Image {
-            return BitmapImage(bitmap)
-        }
-    }
+    actual companion object
 }
 
-class ResourceImage(
-    private val imageResource: ImageResource
-) : Image() {
-    override fun apply(view: UIView, block: (UIImage?) -> Unit) {
-        val image = requireNotNull(imageResource.toUIImage()) { "resource not found" }
-        block(image)
-    }
-}
-
-class BitmapImage(
-    private val bitmap: Bitmap
-) : Image() {
-    override fun apply(view: UIView, block: (UIImage?) -> Unit) {
-        block(bitmap.image)
-    }
-}
-
-// TODO add https://github.com/SDWebImage/SDWebImage to cache images
-class NetworkImage(
-    private val url: String,
-    private val placeholder: ImageResource?
-) : Image() {
-    override fun apply(view: UIView, block: (UIImage?) -> Unit) {
-        block(placeholder?.toUIImage())
-
-        try {
-            val tag = url.hashCode().toLong()
-            view.tag = tag
-            val nsUrl = NSURL.URLWithString(url) ?: return
-
-            val config = NSURLSessionConfiguration.defaultSessionConfiguration().apply {
-                timeoutIntervalForRequest = 60.0
-            }
-            dataTask(
-                session = NSURLSession.sessionWithConfiguration(config),
-                url = nsUrl
-            ) { data, _, error ->
-                if (error != null) {
-                    println(error)
-                    return@dataTask
-                }
-                if (data == null) return@dataTask
-
-                if (view.tag != tag) return@dataTask
-
-                block(UIImage.imageWithData(data))
-            }?.resume()
-        } catch (error: Throwable) {
-            error.printStackTrace()
+actual fun Image.Companion.resource(imageResource: ImageResource): Image {
+    return object : Image() {
+        override fun apply(view: UIView, block: (UIImage?) -> Unit) {
+            val image = requireNotNull(imageResource.toUIImage()) { "resource not found" }
+            block(image)
         }
     }
 }

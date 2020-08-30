@@ -20,68 +20,72 @@ import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.parcelize.Parcelize
 import dev.icerock.moko.resources.desc.desc
-import dev.icerock.moko.widgets.ButtonWidget
-import dev.icerock.moko.widgets.FlatAlertIds
-import dev.icerock.moko.widgets.ImageWidget
-import dev.icerock.moko.widgets.InputWidget
-import dev.icerock.moko.widgets.TabsWidget
-import dev.icerock.moko.widgets.button
 import dev.icerock.moko.widgets.collection.CollectionWidget
 import dev.icerock.moko.widgets.collection.SimpleCollectionViewFactory
-import dev.icerock.moko.widgets.container
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Value
-import dev.icerock.moko.widgets.factory.ButtonWithIconViewFactory
-import dev.icerock.moko.widgets.factory.FloatingLabelInputViewFactory
-import dev.icerock.moko.widgets.factory.IconGravity
-import dev.icerock.moko.widgets.factory.LinearViewFactory
-import dev.icerock.moko.widgets.factory.SystemImageViewFactory
-import dev.icerock.moko.widgets.factory.SystemInputViewFactory
-import dev.icerock.moko.widgets.factory.SystemTabsViewFactory
-import dev.icerock.moko.widgets.factory.SystemTextViewFactory
+import dev.icerock.moko.widgets.core.factory.ButtonWithIconViewFactory
+import dev.icerock.moko.widgets.core.factory.FloatingLabelInputViewFactory
+import dev.icerock.moko.widgets.core.factory.IconGravity
+import dev.icerock.moko.widgets.core.factory.LinearViewFactory
+import dev.icerock.moko.widgets.core.factory.MultilineInputViewFactory
+import dev.icerock.moko.widgets.core.factory.SystemImageViewFactory
+import dev.icerock.moko.widgets.core.factory.SystemInputViewFactory
+import dev.icerock.moko.widgets.core.factory.SystemTabsViewFactory
+import dev.icerock.moko.widgets.core.factory.SystemTextViewFactory
+import dev.icerock.moko.widgets.core.screen.Args
+import dev.icerock.moko.widgets.core.screen.BaseApplication
+import dev.icerock.moko.widgets.core.screen.Screen
+import dev.icerock.moko.widgets.core.screen.ScreenDesc
+import dev.icerock.moko.widgets.core.screen.TemplateScreen
+import dev.icerock.moko.widgets.core.screen.TypedScreenDesc
+import dev.icerock.moko.widgets.core.screen.WidgetScreen
+import dev.icerock.moko.widgets.core.screen.navigation.BottomNavigationItem
+import dev.icerock.moko.widgets.core.screen.navigation.BottomNavigationScreen
+import dev.icerock.moko.widgets.core.screen.navigation.NavigationBar
+import dev.icerock.moko.widgets.core.screen.navigation.NavigationItem
+import dev.icerock.moko.widgets.core.screen.navigation.NavigationScreen
+import dev.icerock.moko.widgets.core.screen.navigation.Resultable
+import dev.icerock.moko.widgets.core.screen.navigation.Route
+import dev.icerock.moko.widgets.core.screen.navigation.createPushResultRoute
+import dev.icerock.moko.widgets.core.screen.navigation.createPushRoute
+import dev.icerock.moko.widgets.core.screen.navigation.createRouter
+import dev.icerock.moko.widgets.core.screen.navigation.route
+import dev.icerock.moko.widgets.core.style.background.Background
+import dev.icerock.moko.widgets.core.style.background.Fill
+import dev.icerock.moko.widgets.core.style.background.Orientation
+import dev.icerock.moko.widgets.core.style.state.PressableState
+import dev.icerock.moko.widgets.core.style.state.SelectableState
+import dev.icerock.moko.widgets.core.style.view.MarginValues
+import dev.icerock.moko.widgets.core.style.view.PaddingValues
+import dev.icerock.moko.widgets.core.style.view.TextHorizontalAlignment
+import dev.icerock.moko.widgets.core.style.view.TextStyle
+import dev.icerock.moko.widgets.core.style.view.WidgetSize
+import dev.icerock.moko.widgets.core.utils.platformSpecific
+import dev.icerock.moko.widgets.core.widget.ButtonWidget
+import dev.icerock.moko.widgets.core.widget.FlatAlertIds
+import dev.icerock.moko.widgets.core.widget.ImageWidget
+import dev.icerock.moko.widgets.core.widget.InputWidget
+import dev.icerock.moko.widgets.core.widget.TabsWidget
+import dev.icerock.moko.widgets.core.widget.button
+import dev.icerock.moko.widgets.core.widget.container
 import dev.icerock.moko.widgets.flat.FlatInputViewFactory
 import dev.icerock.moko.widgets.sample.CollectionImageUnitItem
 import dev.icerock.moko.widgets.sample.CollectionScreen
 import dev.icerock.moko.widgets.sample.InputWidgetGalleryScreen
+import dev.icerock.moko.widgets.sample.MediaScreen
+import dev.icerock.moko.widgets.sample.PermissionsScreen
 import dev.icerock.moko.widgets.sample.ProductsSearchScreen
 import dev.icerock.moko.widgets.sample.ScrollContentScreen
 import dev.icerock.moko.widgets.sample.SelectGalleryScreen
 import dev.icerock.moko.widgets.sample.TabsSampleScreen
-import dev.icerock.moko.widgets.screen.Args
-import dev.icerock.moko.widgets.screen.BaseApplication
-import dev.icerock.moko.widgets.screen.Screen
-import dev.icerock.moko.widgets.screen.ScreenDesc
-import dev.icerock.moko.widgets.screen.TemplateScreen
-import dev.icerock.moko.widgets.screen.TypedScreenDesc
-import dev.icerock.moko.widgets.screen.WidgetScreen
-import dev.icerock.moko.widgets.screen.navigation.BottomNavigationItem
-import dev.icerock.moko.widgets.screen.navigation.BottomNavigationScreen
-import dev.icerock.moko.widgets.screen.navigation.NavigationBar
-import dev.icerock.moko.widgets.screen.navigation.NavigationItem
-import dev.icerock.moko.widgets.screen.navigation.NavigationScreen
-import dev.icerock.moko.widgets.screen.navigation.Resultable
-import dev.icerock.moko.widgets.screen.navigation.Route
-import dev.icerock.moko.widgets.screen.navigation.createPushResultRoute
-import dev.icerock.moko.widgets.screen.navigation.createPushRoute
-import dev.icerock.moko.widgets.screen.navigation.createRouter
-import dev.icerock.moko.widgets.screen.navigation.route
-import dev.icerock.moko.widgets.style.background.Background
-import dev.icerock.moko.widgets.style.background.Fill
-import dev.icerock.moko.widgets.style.background.Orientation
-import dev.icerock.moko.widgets.style.state.PressableState
-import dev.icerock.moko.widgets.style.state.SelectableState
-import dev.icerock.moko.widgets.style.view.MarginValues
-import dev.icerock.moko.widgets.style.view.PaddingValues
-import dev.icerock.moko.widgets.style.view.TextHorizontalAlignment
-import dev.icerock.moko.widgets.style.view.TextStyle
-import dev.icerock.moko.widgets.style.view.WidgetSize
-import dev.icerock.moko.widgets.utils.platformSpecific
 
 class App() : BaseApplication() {
 
     object SystemInputId : InputWidget.Id
     object FloatingLabelInputId : InputWidget.Id
     object FlatInputId : InputWidget.Id
+    object MultilineInputId : InputWidget.Id
 
     override val androidStatusBarColor: Color? = Color(0x4444AAFF)
 
@@ -93,6 +97,7 @@ class App() : BaseApplication() {
             factory[SystemInputId] = SystemInputViewFactory(margins = MarginValues(bottom = 16.0f))
             factory[FloatingLabelInputId] = FloatingLabelInputViewFactory(margins = MarginValues(bottom = 16.0f))
             factory[FlatInputId] = FlatInputViewFactory(margins = MarginValues(bottom = 16.0f))
+            factory[MultilineInputId] = MultilineInputViewFactory(margins = MarginValues(bottom = 16.0f))
         }
 
         return registerScreen(RootNavigationScreen::class) {
@@ -118,6 +123,8 @@ class App() : BaseApplication() {
                     buildTabsRouteInfo(theme, router),
                     buildCollectionRouteInfo(theme, router),
                     buildPostsRouteInfo(theme, router),
+                    buildPermissionsRouteInfo(theme, router),
+                    buildMediaRouteInfo(theme, router),
                     SelectGalleryScreen.RouteInfo(
                         name = "Old Demo".desc(),
                         route = router.createPushRoute(oldDemo(router))
@@ -142,6 +149,10 @@ class App() : BaseApplication() {
                     InputWidgetGalleryScreen.InputInfo(
                         id = FloatingLabelInputId,
                         label = "FloatingLabelInputViewFactory".desc()
+                    ),
+                    InputWidgetGalleryScreen.InputInfo(
+                        id = MultilineInputId,
+                        label = "MultilineInputViewFactory".desc()
                     ),
                     InputWidgetGalleryScreen.InputInfo(
                         id = FlatInputId,
@@ -231,6 +242,34 @@ class App() : BaseApplication() {
         return SelectGalleryScreen.RouteInfo(
             name = "Posts Collection".desc(),
             route = router.createPushRoute(postsScreen)
+        )
+    }
+
+    private fun buildPermissionsRouteInfo(
+        theme: Theme,
+        router: NavigationScreen.Router
+    ): SelectGalleryScreen.RouteInfo {
+        val screen = registerScreen(PermissionsScreen::class) {
+            PermissionsScreen(theme)
+        }
+
+        return SelectGalleryScreen.RouteInfo(
+            name = "Permissions".desc(),
+            route = router.createPushRoute(screen)
+        )
+    }
+
+    private fun buildMediaRouteInfo(
+        theme: Theme,
+        router: NavigationScreen.Router
+    ): SelectGalleryScreen.RouteInfo {
+        val screen = registerScreen(MediaScreen::class) {
+            MediaScreen(theme)
+        }
+
+        return SelectGalleryScreen.RouteInfo(
+            name = "Media".desc(),
+            route = router.createPushRoute(screen)
         )
     }
 

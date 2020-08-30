@@ -11,33 +11,35 @@ import dev.icerock.moko.mvvm.dispatcher.EventsDispatcherOwner
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
-import dev.icerock.moko.widgets.ButtonWidget
-import dev.icerock.moko.widgets.ImageWidget
-import dev.icerock.moko.widgets.InputWidget
+import dev.icerock.moko.widgets.core.widget.ButtonWidget
+import dev.icerock.moko.widgets.core.widget.ImageWidget
+import dev.icerock.moko.widgets.core.widget.InputWidget
 import dev.icerock.moko.widgets.bottomsheet.showBottomSheet
-import dev.icerock.moko.widgets.button
-import dev.icerock.moko.widgets.constraint
+import dev.icerock.moko.widgets.core.widget.button
+import dev.icerock.moko.widgets.core.widget.constraint
 import dev.icerock.moko.widgets.core.Image
 import dev.icerock.moko.widgets.core.Theme
 import dev.icerock.moko.widgets.core.Value
-import dev.icerock.moko.widgets.image
-import dev.icerock.moko.widgets.input
-import dev.icerock.moko.widgets.linear
-import dev.icerock.moko.widgets.screen.Args
-import dev.icerock.moko.widgets.screen.WidgetScreen
-import dev.icerock.moko.widgets.screen.getViewModel
-import dev.icerock.moko.widgets.screen.listen
-import dev.icerock.moko.widgets.screen.navigation.NavigationBar
-import dev.icerock.moko.widgets.screen.navigation.NavigationItem
-import dev.icerock.moko.widgets.screen.navigation.Route
-import dev.icerock.moko.widgets.screen.navigation.RouteWithResult
-import dev.icerock.moko.widgets.screen.navigation.registerRouteHandler
-import dev.icerock.moko.widgets.screen.navigation.route
-import dev.icerock.moko.widgets.screen.showToast
-import dev.icerock.moko.widgets.style.input.InputType
-import dev.icerock.moko.widgets.style.view.SizeSpec
-import dev.icerock.moko.widgets.style.view.WidgetSize
-import dev.icerock.moko.widgets.text
+import dev.icerock.moko.widgets.core.widget.image
+import dev.icerock.moko.widgets.imagenetwork.network
+import dev.icerock.moko.widgets.core.widget.input
+import dev.icerock.moko.widgets.core.widget.linear
+import dev.icerock.moko.widgets.core.screen.Args
+import dev.icerock.moko.widgets.core.screen.WidgetScreen
+import dev.icerock.moko.widgets.core.screen.getViewModel
+import dev.icerock.moko.widgets.core.screen.listen
+import dev.icerock.moko.widgets.core.screen.navigation.NavigationBar
+import dev.icerock.moko.widgets.core.screen.navigation.NavigationItem
+import dev.icerock.moko.widgets.core.screen.navigation.Route
+import dev.icerock.moko.widgets.core.screen.navigation.RouteWithResult
+import dev.icerock.moko.widgets.core.screen.navigation.registerRouteHandler
+import dev.icerock.moko.widgets.core.screen.navigation.route
+import dev.icerock.moko.widgets.core.screen.showToast
+import dev.icerock.moko.widgets.core.style.input.InputType
+import dev.icerock.moko.widgets.core.style.input.phone
+import dev.icerock.moko.widgets.core.style.view.SizeSpec
+import dev.icerock.moko.widgets.core.style.view.WidgetSize
+import dev.icerock.moko.widgets.core.widget.text
 
 class LoginScreen(
     private val theme: Theme,
@@ -74,7 +76,7 @@ class LoginScreen(
                 id = Id.EmailInputId,
                 label = const("Email".desc() as StringDesc),
                 field = viewModel.emailField,
-                inputType = InputType.Phone()
+                inputType = InputType.phone()
             )
             val passwordInput = +input(
                 size = WidgetSize.WidthAsParentHeightWrapContent,

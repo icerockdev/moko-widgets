@@ -16,19 +16,11 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Check plugin
-        run: ./gradlew -PpluginPublish publishPluginPublicationToMavenLocal
-      - name: Check core
-        run: ./gradlew -PcorePublish :widgets:publishToMavenLocal
       - name: Cocoapods install
         run: (cd sample/ios-app && pod install)
-      - name: Check flat
-        run: ./gradlew -PadditionsPublish :widgets-flat:publishToMavenLocal 
-      - name: Check bottomsheet
-        run: ./gradlew -PadditionsPublish :widgets-bottomsheet:publishToMavenLocal 
-      - name: Check sms
-        run: ./gradlew -PadditionsPublish :widgets-sms:publishToMavenLocal 
-      - name: Check datetime-picker
-        run: ./gradlew -PadditionsPublish :widgets-datetime-picker:publishToMavenLocal 
-      - name: Check collection
-        run: ./gradlew -PadditionsPublish :widgets-collection:publishToMavenLocal 
+      - name: Check build
+        run: ./gradlew build
+      - name: Check plugin publication
+        run: ./gradlew -p plugin publishToMavenLocal
+      - name: Check runtime publication
+        run: ./gradlew publishToMavenLocal

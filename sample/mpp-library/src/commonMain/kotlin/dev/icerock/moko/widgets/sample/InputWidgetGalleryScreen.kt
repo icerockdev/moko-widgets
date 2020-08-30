@@ -8,14 +8,14 @@ import dev.icerock.moko.fields.FormField
 import dev.icerock.moko.fields.liveBlock
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
-import dev.icerock.moko.widgets.InputWidget
-import dev.icerock.moko.widgets.LinearWidget
+import dev.icerock.moko.widgets.core.widget.InputWidget
+import dev.icerock.moko.widgets.core.widget.LinearWidget
 import dev.icerock.moko.widgets.core.Theme
-import dev.icerock.moko.widgets.input
-import dev.icerock.moko.widgets.screen.Args
-import dev.icerock.moko.widgets.screen.navigation.NavigationBar
-import dev.icerock.moko.widgets.screen.navigation.NavigationItem
-import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.core.widget.input
+import dev.icerock.moko.widgets.core.screen.Args
+import dev.icerock.moko.widgets.core.screen.navigation.NavigationBar
+import dev.icerock.moko.widgets.core.screen.navigation.NavigationItem
+import dev.icerock.moko.widgets.core.style.view.WidgetSize
 
 class InputWidgetGalleryScreen(
     theme: Theme,

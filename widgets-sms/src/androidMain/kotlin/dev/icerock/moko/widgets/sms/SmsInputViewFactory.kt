@@ -14,11 +14,11 @@ import android.widget.TextView
 import com.google.android.gms.auth.api.phone.SmsRetriever
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.common.api.Status
-import dev.icerock.moko.widgets.InputWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.core.style.view.WidgetSize
+import dev.icerock.moko.widgets.core.widget.InputWidget
 
 actual class SmsInputViewFactory actual constructor(private val wrapped: ViewFactory<InputWidget<out WidgetSize>>) :
     ViewFactory<InputWidget<out WidgetSize>> {
@@ -41,7 +41,7 @@ actual class SmsInputViewFactory actual constructor(private val wrapped: ViewFac
                     override fun onReceive(context: Context?, intent: Intent?) {
                         if (!SmsRetriever.SMS_RETRIEVED_ACTION.equals(intent?.action)) return
                         val extras = intent?.extras
-                        val status = extras?.get(SmsRetriever.EXTRA_SMS_MESSAGE) as Status
+                        val status = extras?.get(SmsRetriever.EXTRA_STATUS) as Status
                         when (status.statusCode) {
                             CommonStatusCodes.SUCCESS -> {
                                 val message =

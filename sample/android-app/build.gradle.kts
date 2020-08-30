@@ -28,6 +28,8 @@ android {
         versionName = Versions.Libs.MultiPlatform.mokoWidgets
 
         vectorDrawables.useSupportLibrary = true
+
+        multiDexEnabled = true
     }
 
     buildTypes {
@@ -53,7 +55,7 @@ dependencies {
     implementation(Deps.Libs.Android.recyclerView.name)
     implementation(Deps.Libs.Android.material.name)
     implementation(Deps.Libs.Android.constraintLayout.name)
-    implementation(Deps.Libs.MultiPlatform.mokoWidgets.common!!)
 
+    implementation(Deps.Libs.MultiPlatform.mokoWidgets.common!!)
     implementation(project(":sample:mpp-library"))
 }

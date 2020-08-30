@@ -4,8 +4,8 @@
 
 package com.icerockdev
 
-import dev.icerock.moko.widgets.screen.BaseApplication
-import dev.icerock.moko.widgets.screen.HostActivity
+import dev.icerock.moko.widgets.core.screen.BaseApplication
+import dev.icerock.moko.widgets.core.screen.HostActivity
 
 class MainActivity : HostActivity() {
     override val application: BaseApplication get() = MainApplication.mppApp

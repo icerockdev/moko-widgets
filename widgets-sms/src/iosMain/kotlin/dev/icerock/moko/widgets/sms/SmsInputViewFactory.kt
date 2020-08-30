@@ -4,11 +4,11 @@
 
 package dev.icerock.moko.widgets.sms
 
-import dev.icerock.moko.widgets.InputWidget
+import dev.icerock.moko.widgets.core.widget.InputWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.style.view.WidgetSize
+import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import platform.UIKit.UITextField
 import platform.UIKit.UITextContentTypeOneTimeCode
 import platform.UIKit.UIView

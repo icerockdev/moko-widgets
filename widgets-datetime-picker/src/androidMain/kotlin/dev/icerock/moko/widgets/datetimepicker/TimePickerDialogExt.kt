@@ -11,7 +11,7 @@ import android.os.Parcelable
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import dev.icerock.moko.graphics.Color
-import dev.icerock.moko.widgets.screen.Screen
+import dev.icerock.moko.widgets.core.screen.Screen
 import kotlinx.android.parcel.Parcelize
 import kotlin.properties.ReadOnlyProperty
 
