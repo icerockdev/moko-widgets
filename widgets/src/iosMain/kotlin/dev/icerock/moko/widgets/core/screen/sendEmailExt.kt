@@ -4,7 +4,8 @@
 
 package dev.icerock.moko.widgets.core.screen
 
-import dev.icerock.moko.widgets.core.objc.setAssociatedObject
+import dev.icerock.moko.widgets.core.associatedObject
+import dev.icerock.moko.widgets.core.utils.DismissMailControllerDelegate
 import platform.Foundation.NSError
 import platform.MessageUI.MFMailComposeResult
 import platform.MessageUI.MFMailComposeViewController
@@ -22,22 +23,12 @@ actual fun Screen<*>.sendEmail(
     }
 
     val mail = MFMailComposeViewController()
-    val manager = EmailManager()
+    val manager = DismissMailControllerDelegate()
     mail.mailComposeDelegate = manager
-    setAssociatedObject(mail, manager)
+    mail.associatedObject = manager
     mail.setToRecipients(listOf(email))
     mail.setSubject(subject)
     mail.setMessageBody(body, false)
 
     viewController.presentViewController(mail, true, null)
-}
-
-private class EmailManager : NSObject(), MFMailComposeViewControllerDelegateProtocol {
-    override fun mailComposeController(
-        controller: MFMailComposeViewController,
-        didFinishWithResult: MFMailComposeResult,
-        error: NSError?
-    ) {
-        controller.dismissViewControllerAnimated(true, null)
-    }
 }

@@ -4,27 +4,21 @@
 
 package dev.icerock.moko.widgets.core.factory
 
-import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.core.associatedObject
 import dev.icerock.moko.widgets.core.style.background.Background
 import dev.icerock.moko.widgets.core.style.background.Fill
 import dev.icerock.moko.widgets.core.style.view.MarginValues
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
-import dev.icerock.moko.widgets.core.utils.WebViewRedirectUrlHandler
 import dev.icerock.moko.widgets.core.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.core.widget.WebViewWidget
-import dev.icerock.moko.widgets.core.objc.setAssociatedObject
+import dev.icerock.moko.widgets.core.utils.WebViewNavigationDelegate
 import platform.Foundation.NSURL
 import platform.Foundation.NSURLRequest
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
-import platform.WebKit.WKNavigation
-import platform.WebKit.WKNavigationAction
-import platform.WebKit.WKNavigationActionPolicy
-import platform.WebKit.WKNavigationDelegateProtocol
 import platform.WebKit.WKWebView
-import platform.darwin.NSObject
 
 actual class WebViewFactory actual constructor(
     private val margins: MarginValues?,
@@ -42,12 +36,12 @@ actual class WebViewFactory actual constructor(
 
             configuration.preferences.javaScriptEnabled = widget.isJavaScriptEnabled
 
-            val webViewNavDelegate = NavigationDelegate(
+            val webViewNavDelegate = WebViewNavigationDelegate(
                 successRedirectConfig = widget.successRedirectConfig,
                 failureRedirectConfig = widget.failureRedirectConfig,
                 isPageLoading = widget.isWebPageLoading
             )
-            setAssociatedObject(this, webViewNavDelegate)
+            associatedObject = webViewNavDelegate
 
             setNavigationDelegate(webViewNavDelegate)
             loadRequest(request = NSURLRequest(uRL = NSURL(string = widget.targetUrl)))
@@ -59,53 +53,4 @@ actual class WebViewFactory actual constructor(
             margins = margins
         )
     }
-
-    @Suppress("CONFLICTING_OVERLOADS")
-    private class NavigationDelegate(
-        successRedirectConfig: WebViewWidget.RedirectConfig?,
-        failureRedirectConfig: WebViewWidget.RedirectConfig?,
-        private val isPageLoading: MutableLiveData<Boolean>?
-    ) : NSObject(), WKNavigationDelegateProtocol {
-
-        private val redirectUrlHandler = WebViewRedirectUrlHandler(
-            successRedirectConfig = successRedirectConfig,
-            failureRedirectConfig = failureRedirectConfig
-        )
-
-        override fun webView(webView: WKWebView, didStartProvisionalNavigation: WKNavigation?) {
-            isPageLoading?.value = true
-        }
-
-        override fun webView(webView: WKWebView, didFinishNavigation: WKNavigation?) {
-            isPageLoading?.value = false
-        }
-
-        override fun webView(
-            webView: WKWebView,
-            decidePolicyForNavigationAction: WKNavigationAction,
-            decisionHandler: (WKNavigationActionPolicy) -> Unit
-        ) {
-            val requestUrl = decidePolicyForNavigationAction.request.URL
-            if (requestUrl == null) {
-                decisionHandler(WKNavigationActionPolicy.WKNavigationActionPolicyCancel)
-                return
-            }
-
-            val strRequestUrl = requestUrl.absoluteString
-            if (strRequestUrl == null) {
-                decisionHandler(WKNavigationActionPolicy.WKNavigationActionPolicyCancel)
-                return
-            }
-
-            if (redirectUrlHandler.handleUrl(strRequestUrl)) {
-                // If strRequestUrl contains success or failure token, then cancel navigation.
-                decisionHandler(WKNavigationActionPolicy.WKNavigationActionPolicyCancel)
-            } else {
-                decisionHandler(WKNavigationActionPolicy.WKNavigationActionPolicyAllow)
-            }
-
-        }
-
-    }
-
 }

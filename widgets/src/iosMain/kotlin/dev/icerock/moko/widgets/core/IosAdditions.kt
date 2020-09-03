@@ -4,8 +4,10 @@
 
 package dev.icerock.moko.widgets.core
 
+import dev.icerock.moko.graphics.Color
 import kotlinx.cinterop.CValue
 import platform.Foundation.NSRange
+import platform.UIKit.UIColor
 import platform.UIKit.UITextField
 import platform.UIKit.UITextFieldDelegateProtocol
 
@@ -15,4 +17,6 @@ expect fun UITextFieldDelegateProtocol.shouldChangeCharacters(
     text: String
 ): Boolean
 
-expect var Any.associatedObject: Any
+expect var Any.associatedObject: Any?
+
+expect fun List<UIColor>.toCGColor(): List<*>?

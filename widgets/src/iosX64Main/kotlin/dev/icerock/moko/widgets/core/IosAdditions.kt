@@ -4,8 +4,12 @@
 
 package dev.icerock.moko.widgets.core
 
+import dev.icerock.moko.widgets.core.objc.cgColors
+import dev.icerock.moko.widgets.core.objc.getAssociatedObject
+import dev.icerock.moko.widgets.core.objc.setAssociatedObject
 import kotlinx.cinterop.CValue
 import platform.Foundation.NSRange
+import platform.UIKit.UIColor
 import platform.UIKit.UITextField
 import platform.UIKit.UITextFieldDelegateProtocol
 
@@ -21,10 +25,12 @@ actual fun UITextFieldDelegateProtocol.shouldChangeCharacters(
     )
 }
 
-actual var Any.associatedObject: Any
+actual var Any.associatedObject: Any?
     get() {
-
+        return getAssociatedObject(this)
     }
     set(value) {
-
+        setAssociatedObject(this, value)
     }
+
+actual fun List<UIColor>.toCGColor(): List<*>? = cgColors(this)

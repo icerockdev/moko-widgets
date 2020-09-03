@@ -7,11 +7,10 @@ package dev.icerock.moko.widgets.core.units
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.widgets.core.Widget
+import dev.icerock.moko.widgets.core.associatedObject
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.utils.Edges
 import dev.icerock.moko.widgets.core.utils.applySize
-import dev.icerock.moko.widgets.core.objc.getAssociatedObject
-import dev.icerock.moko.widgets.core.objc.setAssociatedObject
 import kotlinx.cinterop.useContents
 import platform.UIKit.UIApplication
 import platform.UIKit.UILayoutPriorityDefaultHigh
@@ -25,11 +24,12 @@ import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
 private fun <T> UIView.getWidgetLiveData(): MutableLiveData<T>? {
-    return getAssociatedObject(this) as? MutableLiveData<T>
+    @Suppress("UNCHECKED_CAST")
+    return associatedObject as? MutableLiveData<T>
 }
 
 private fun <T> UIView.setWidgetLiveData(liveData: MutableLiveData<T>) {
-    setAssociatedObject(this, liveData)
+    associatedObject = liveData
 }
 
 internal fun <T> UIView.setupWidgetContent(
@@ -51,7 +51,7 @@ internal fun <T> UIView.setupWidgetContent(
 
         addSubview(view)
 
-        val (margin_left, margin_right) = layoutMargins.useContents { left to right }
+//        val (margin_left, margin_right) = layoutMargins.useContents { left to right }
 
         val childSize = viewBundle.size
         val childMargins = viewBundle.margins
