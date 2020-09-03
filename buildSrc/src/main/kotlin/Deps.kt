@@ -46,6 +46,7 @@ object Deps {
         val androidLibrary = GradlePlugin(id = "com.android.library")
         val kotlinJvm = GradlePlugin(id = "org.jetbrains.kotlin.jvm")
         val kotlinMultiplatform = GradlePlugin(id = "org.jetbrains.kotlin.multiplatform")
+        val kotlinCocoapods = GradlePlugin(id = "org.jetbrains.kotlin.native.cocoapods")
         val kotlinKapt = GradlePlugin(id = "kotlin-kapt")
         val kotlinAndroid = GradlePlugin(id = "kotlin-android")
         val kotlinAndroidExtensions = GradlePlugin(id = "kotlin-android-extensions")
