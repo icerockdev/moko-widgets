@@ -5,7 +5,6 @@
 plugins {
     plugin(Deps.Plugins.androidLibrary)
     plugin(Deps.Plugins.kotlinMultiplatform)
-    plugin(Deps.Plugins.kotlinCocoapods)
     plugin(Deps.Plugins.mobileMultiplatform)
     plugin(Deps.Plugins.mavenPublish)
 }
@@ -25,22 +24,8 @@ dependencies {
     androidMainImplementation(Deps.Libs.Android.material)
 }
 
-kotlin {
-    cocoapods {
-        noPodspec()
+cocoaPods {
+    podsProject = file("../sample/ios-app/Pods/Pods.xcodeproj")
 
-        ios.deploymentTarget = "11.0"
-
-        pod(
-            name = "mokoWidgetsBottomSheet",
-            version = "0.1.0",
-            podspec = rootProject.file("mokoWidgetsBottomSheet.podspec")
-        )
-    }
+    pod("moko-widgets-bottomsheet", "mokoWidgetsBottomSheet")
 }
-
-//cocoaPods {
-//    podsProject = file("../sample/ios-app/Pods/Pods.xcodeproj")
-//
-//    pod("moko-widgets-bottomsheet", "mokoWidgetsBottomSheet")
-//}

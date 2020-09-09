@@ -6,7 +6,6 @@ plugins {
     plugin(Deps.Plugins.androidLibrary)
     plugin(Deps.Plugins.mokoWidgets)
     plugin(Deps.Plugins.kotlinMultiplatform)
-    plugin(Deps.Plugins.kotlinCocoapods)
     plugin(Deps.Plugins.mobileMultiplatform)
     plugin(Deps.Plugins.mavenPublish)
 }
@@ -28,25 +27,8 @@ dependencies {
     androidMainImplementation(Deps.Libs.Android.swipeRefreshLayout)
 }
 
-//kotlin {
-//    cocoapods {
-//        summary = "CocoaPods test library"
-//        homepage = "https://github.com/JetBrains/kotlin"
-//
-////        noPodspec()
-//
-//        ios.deploymentTarget = "11.0"
-//
-//        pod(
-//            name = "mokoWidgetsCollection",
-//            version = "0.1.0",
-//            podspec = rootProject.file("mokoWidgetsCollection.podspec")
-//        )
-//    }
-//}
+cocoaPods {
+    podsProject = file("../sample/ios-app/Pods/Pods.xcodeproj")
 
-//cocoaPods {
-//    podsProject = file("../sample/ios-app/Pods/Pods.xcodeproj")
-//
-//    pod(scheme = "moko-widgets-collection", module = "mokoWidgetsCollection")
-//}
+    pod(scheme = "moko-widgets-collection", module = "mokoWidgetsCollection")
+}
