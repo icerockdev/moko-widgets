@@ -7,23 +7,23 @@ package dev.icerock.moko.widgets.core.screen
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.style.view.SizeSpec
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
-import dev.icerock.moko.widgets.core.utils.UITapGestureRecognizerDelegate
 import dev.icerock.moko.widgets.core.utils.getStatusBarStyle
 import dev.icerock.moko.widgets.core.utils.safeSystemBackgroundColor
 import kotlinx.cinterop.ExportObjCClass
 import kotlinx.cinterop.ObjCAction
 import kotlinx.cinterop.useContents
-import platform.CoreGraphics.CGPointMake
 import platform.Foundation.NSNotification
 import platform.Foundation.NSNotificationCenter
 import platform.Foundation.NSNumber
 import platform.Foundation.NSSelectorFromString
 import platform.Foundation.NSValue
+import platform.CoreGraphics.CGPointMake
 import platform.UIKit.CGRectValue
 import platform.UIKit.NSLayoutConstraint
 import platform.UIKit.UIApplication
 import platform.UIKit.UIColor
 import platform.UIKit.UIControl
+import platform.UIKit.UIGestureRecognizer
 import platform.UIKit.UIGestureRecognizerDelegateProtocol
 import platform.UIKit.UIKeyboardAnimationDurationUserInfoKey
 import platform.UIKit.UIKeyboardFrameBeginUserInfoKey
@@ -32,10 +32,8 @@ import platform.UIKit.UIKeyboardWillChangeFrameNotification
 import platform.UIKit.UIKeyboardWillHideNotification
 import platform.UIKit.UIKeyboardWillShowNotification
 import platform.UIKit.UIStatusBarStyle
-import platform.UIKit.UITableView
-import platform.UIKit.UITableViewCell
-import platform.UIKit.UITableViewScrollPosition
 import platform.UIKit.UITapGestureRecognizer
+import platform.UIKit.UITouch
 import platform.UIKit.UIView
 import platform.UIKit.UIViewController
 import platform.UIKit.addGestureRecognizer
@@ -48,10 +46,13 @@ import platform.UIKit.endEditing
 import platform.UIKit.isDescendantOfView
 import platform.UIKit.layoutIfNeeded
 import platform.UIKit.leadingAnchor
-import platform.UIKit.subviews
 import platform.UIKit.topAnchor
 import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
+import platform.UIKit.UITableViewCell
+import platform.UIKit.UITableViewScrollPosition
+import platform.UIKit.UITableView
+import platform.UIKit.subviews
 import kotlin.math.max
 
 @ExportObjCClass
@@ -64,15 +65,6 @@ class WidgetViewController(
     lateinit var bottomConstraint: NSLayoutConstraint
 
     private var isScrollListOnKeyboardResize = false
-
-    private val dismissKeyboardRecognizerDelegate = UITapGestureRecognizerDelegate { _, touch ->
-        touch.view?.let { touchView ->
-            if (touchView.isKindOfClass(UIControl.`class`()) && touchView.isDescendantOfView(view)) {
-                return@UITapGestureRecognizerDelegate false
-            }
-        }
-        return@UITapGestureRecognizerDelegate true
-    }
 
     override fun viewDidLoad() {
         super.viewDidLoad()
@@ -124,10 +116,22 @@ class WidgetViewController(
                 action = NSSelectorFromString("onContentViewTap")
             )
             tapGesture.cancelsTouchesInView = false
-            tapGesture.delegate = dismissKeyboardRecognizerDelegate
+            tapGesture.delegate = this
             view.userInteractionEnabled = true
             view.addGestureRecognizer(tapGesture)
         }
+    }
+
+    override fun gestureRecognizer(
+        gestureRecognizer: UIGestureRecognizer,
+        shouldReceiveTouch: UITouch
+    ): Boolean {
+        shouldReceiveTouch.view?.let { touchView ->
+            if (touchView.isKindOfClass(UIControl.`class`()) && touchView.isDescendantOfView(view)) {
+                return false
+            }
+        }
+        return true
     }
 
     @ObjCAction
@@ -143,7 +147,7 @@ class WidgetViewController(
             .useContents { origin.y }
         val endY = rootView.convertRect(rect = endFrameValue.CGRectValue, toView = view)
             .useContents { origin.y }
-        val screenHeight = view.bounds().useContents { size.height }
+        val screenHeight = view.bounds.useContents { size.height }
         val duration = durationNumber.doubleValue
 
         val startConstant = max(screenHeight - startY, 0.0)
@@ -155,12 +159,12 @@ class WidgetViewController(
         } else {
             null
         }
-        val tableViewContentYOffset = tableView?.contentOffset()?.useContents {
+        val tableViewContentYOffset = tableView?.contentOffset?.useContents {
             this.y
         } ?: 0.0
         val tableViewOldMaxY =
-            tableView?.frame()?.useContents { this.origin.y + this.size.height } ?: 0.0
-        val tableViewHeight = tableView?.frame()?.useContents { this.size.height } ?: 0.0
+            tableView?.frame?.useContents { this.origin.y + this.size.height } ?: 0.0
+        val tableViewHeight = tableView?.frame?.useContents { this.size.height } ?: 0.0
 
         bottomConstraint.constant = startConstant
         view.layoutIfNeeded()
@@ -171,8 +175,8 @@ class WidgetViewController(
 
         if (isScrollListOnKeyboardResize && tableView != null && notification.name == UIKeyboardWillChangeFrameNotification) {
 
-            val contentHeight = tableView.contentSize().useContents { this.height }
-            val tableMaxY = tableView.frame().useContents { this.origin.y + this.size.height }
+            val contentHeight = tableView.contentSize.useContents { this.height }
+            val tableMaxY = tableView.frame.useContents { this.origin.y + this.size.height }
 
             val newContentOffset = tableViewContentYOffset + (tableViewOldMaxY - tableMaxY)
 

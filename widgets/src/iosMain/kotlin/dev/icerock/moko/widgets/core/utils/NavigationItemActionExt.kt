@@ -3,8 +3,8 @@
  */
 package dev.icerock.moko.widgets.core.utils
 
-import dev.icerock.moko.widgets.core.associatedObject
 import dev.icerock.moko.widgets.core.screen.navigation.NavigationBar
+import dev.icerock.moko.widgets.core.objc.setAssociatedObject
 import platform.Foundation.NSSelectorFromString
 import platform.UIKit.UIBarButtonItem
 import platform.UIKit.UIBarButtonItemStyle
@@ -17,6 +17,6 @@ fun NavigationBar.BarButton.toUIBarButtonItem(): UIBarButtonItem {
         target = actionHandler,
         action = NSSelectorFromString("action")
     )
-    button.associatedObject = actionHandler
+    setAssociatedObject(button, actionHandler)
     return button
 }

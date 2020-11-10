@@ -5,10 +5,10 @@ package dev.icerock.moko.widgets.core.style
 
 import dev.icerock.moko.graphics.toUIColor
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
-import dev.icerock.moko.widgets.core.associatedObject
 import dev.icerock.moko.widgets.core.screen.navigation.NavigationBar
 import dev.icerock.moko.widgets.core.utils.toUIBarButtonItem
 import dev.icerock.moko.widgets.core.utils.toUIFont
+import dev.icerock.moko.widgets.core.objc.setAssociatedObject
 import platform.UIKit.NSFontAttributeName
 import platform.UIKit.NSForegroundColorAttributeName
 import platform.UIKit.UIApplication
@@ -27,11 +27,12 @@ import platform.darwin.NSObject
 fun UINavigationBar.applyNavigationBarStyle(style: NavigationBar.Styles?) {
     val textAttributes: Map<Any?, *>? = style?.textStyle?.let { ts ->
         val attributes = mutableMapOf<Any?, Any?>()
-        ts.color?.also {
-            attributes[NSForegroundColorAttributeName] = it.toUIColor()
+        if (ts.color != null) {
+            attributes[NSForegroundColorAttributeName] = ts.color.toUIColor()
         }
-        ts.toUIFont()?.also {
-            attributes[NSFontAttributeName] = it
+        val font = ts.toUIFont()
+        if (font != null) {
+            attributes[NSFontAttributeName] = font
         }
         attributes
     }
@@ -77,8 +78,8 @@ fun NavigationBar.Normal.apply(
     viewController.navigationItem.title = title.localized()
     navigationController?.navigationBar?.applyNavigationBarStyle(styles)
 
-    backButton?.also {
-        viewController.navigationItem.leftBarButtonItem = it.toUIBarButtonItem()
+    if (backButton != null) {
+        viewController.navigationItem.leftBarButtonItem = backButton.toUIBarButtonItem()
     }
 
     val rightButtons: List<UIBarButtonItem>? = actions?.map {
@@ -95,13 +96,13 @@ fun NavigationBar.Search.apply(
     viewController.navigationItem.title = title.localized()
     navigationController?.navigationBar?.applyNavigationBarStyle(styles)
 
-    backButton?.also {
-        viewController.navigationItem.leftBarButtonItem = it.toUIBarButtonItem()
+    if (backButton != null) {
+        viewController.navigationItem.leftBarButtonItem = backButton.toUIBarButtonItem()
     }
 
     val searchController = UISearchController(searchResultsController = null).apply {
         searchResultsUpdater = SearchResultsLiveDataUpdater(searchQuery).also {
-            associatedObject = it
+            setAssociatedObject(this, it)
         }
         obscuresBackgroundDuringPresentation = false
         searchBar.placeholder = searchPlaceholder?.localized()

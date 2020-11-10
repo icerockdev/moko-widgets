@@ -55,7 +55,7 @@ fun NSObject.displayLink(action: () -> Unit): CADisplayLink {
 
     return CADisplayLink.displayLinkWithTarget(
         target = target,
-        selector = NSSelectorFromString("action")
+        selector = NSSelectorFromString("displayLink:")
     ).apply {
         frameInterval = 1
         addToRunLoop(NSRunLoop.currentRunLoop, NSDefaultRunLoopMode)
@@ -66,6 +66,11 @@ class LambdaTarget(val lambda: () -> Unit) : NSObject() {
 
     @ObjCAction
     fun action() {
+        lambda()
+    }
+
+    @ObjCAction
+    fun displayLink(link: CADisplayLink) {
         lambda()
     }
 }

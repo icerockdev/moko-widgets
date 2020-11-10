@@ -46,6 +46,8 @@ actual class ContainerViewFactory actual constructor(
         val root = UIViewWithIdentifier().apply {
             translatesAutoresizingMaskIntoConstraints = false
             applyBackgroundIfNeeded(background)
+
+            accessibilityIdentifier = widget.identifier()
         }
 
         widget.children.forEach { (childWidget, childAlignment) ->

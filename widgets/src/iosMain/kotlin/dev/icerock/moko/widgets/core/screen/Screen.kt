@@ -7,7 +7,8 @@ package dev.icerock.moko.widgets.core.screen
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcher
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
-import dev.icerock.moko.widgets.core.associatedObject
+import dev.icerock.moko.widgets.core.objc.getAssociatedObject
+import dev.icerock.moko.widgets.core.objc.setAssociatedObject
 import platform.UIKit.UIViewController
 import kotlin.native.ref.WeakReference
 import kotlin.properties.ReadOnlyProperty
@@ -50,7 +51,7 @@ actual abstract class Screen<Arg : Args> {
             if (current != null) return current
 
             val vc = createViewController(isLightStatusBar).also {
-                it.associatedObject = this
+                setAssociatedObject(it, this)
             }
             onViewCreated()
             _viewController = WeakReference(vc)
@@ -66,4 +67,4 @@ actual abstract class Screen<Arg : Args> {
     }
 }
 
-fun UIViewController.getAssociatedScreen(): Screen<*>? = associatedObject as? Screen<*>
+fun UIViewController.getAssociatedScreen(): Screen<*>? = getAssociatedObject(this) as? Screen<*>

@@ -9,7 +9,7 @@ import dev.icerock.moko.widgets.core.style.background.Background
 import dev.icerock.moko.widgets.core.style.background.Direction
 import dev.icerock.moko.widgets.core.style.background.Fill
 import dev.icerock.moko.widgets.core.style.state.PressableState
-import dev.icerock.moko.widgets.core.toCGColor
+import dev.icerock.moko.widgets.core.objc.cgColors
 import kotlinx.cinterop.useContents
 import platform.CoreGraphics.CGPointMake
 import platform.CoreGraphics.CGRectMake
@@ -24,7 +24,6 @@ import platform.UIKit.backgroundColor
 fun Background<out Fill>.caLayer(): CALayer {
 
     val backgroundLayer: CALayer
-    val fill = this.fill
 
     when (fill) {
         is Fill.Solid -> backgroundLayer = CALayer().apply {
@@ -32,9 +31,9 @@ fun Background<out Fill>.caLayer(): CALayer {
         }
         is Fill.Gradient -> {
             backgroundLayer = CAGradientLayer().apply {
-                colors = fill.colors.map {
+                colors = cgColors(fill.colors.map {
                     it.toUIColor()
-                }.toCGColor()
+                })
 
                 masksToBounds = true
 

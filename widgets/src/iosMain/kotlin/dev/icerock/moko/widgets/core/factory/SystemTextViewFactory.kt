@@ -131,7 +131,7 @@ private fun String.stringFromHtml(textStyle: TextStyle<Color>?): NSAttributedStr
 }
 
 private fun NSMutableAttributedString.changeUrlColor(textStyle: TextStyle<Color>?) {
-    val color = textStyle?.color ?: return
+    if (textStyle?.color == null) return
 
     this.enumerateAttribute(attrName = NSLinkAttributeName,
         inRange = NSMakeRange(0U, this.string.length.toULong()),
@@ -142,9 +142,9 @@ private fun NSMutableAttributedString.changeUrlColor(textStyle: TextStyle<Color>
             this.removeAttribute(name = NSLinkAttributeName, range = range)
             this.addAttributes(
                 attrs = mapOf(
-                    NSForegroundColorAttributeName to color.toUIColor(),
-                    NSUnderlineColorAttributeName to color.toUIColor(),
-                    NSStrokeColorAttributeName to color.toUIColor(),
+                    NSForegroundColorAttributeName to textStyle.color.toUIColor(),
+                    NSUnderlineColorAttributeName to textStyle.color.toUIColor(),
+                    NSStrokeColorAttributeName to textStyle.color.toUIColor(),
                     NSAttachmentAttributeName to url
                 ),
                 range = range

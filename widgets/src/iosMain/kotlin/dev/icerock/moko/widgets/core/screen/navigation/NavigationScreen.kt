@@ -30,7 +30,7 @@ actual abstract class NavigationScreen<S> actual constructor(
     }
 
     private var navigationController: UINavigationController? = null
-    private val controllerDelegate = NavigationControllerDelegate(this)
+    private val controllerDelegate = ControllerDelegate(this)
 
     override fun createViewController(isLightStatusBar: Boolean?): UIViewController {
         val controller = NavigationController(isLightStatusBar).also {
@@ -44,7 +44,7 @@ actual abstract class NavigationScreen<S> actual constructor(
         return controller
     }
 
-    internal fun updateNavigation(
+    private fun updateNavigation(
         navigationItem: NavigationItem,
         viewController: UIViewController
     ) {
@@ -105,7 +105,6 @@ actual abstract class NavigationScreen<S> actual constructor(
                     }
                 }
 
-                @Suppress("UNCHECKED_CAST")
                 override val resultMapper: (Parcelable) -> OT = { outputMapper(it as R) }
             }
         }
@@ -142,6 +141,31 @@ actual abstract class NavigationScreen<S> actual constructor(
                 override fun route(arg: Unit) {
                     navigationScreen!!.navigationController!!.popToRootViewControllerAnimated(true)
                 }
+            }
+        }
+    }
+
+    private class ControllerDelegate(navigationScreen: NavigationScreen<*>) : NSObject(),
+        UINavigationControllerDelegateProtocol {
+        private val navigationScreen = WeakReference(navigationScreen)
+        val resultCallbacks = mutableMapOf<UIViewController, Runnable>()
+
+        override fun navigationController(
+            navigationController: UINavigationController,
+            willShowViewController: UIViewController,
+            animated: Boolean
+        ) {
+            val stack = navigationController.viewControllers
+            resultCallbacks.filterKeys { stack.contains(it).not() }
+                .forEach { (vc, runnable) ->
+                    runnable.run()
+                    resultCallbacks.remove(vc)
+                }
+            val controller = willShowViewController
+            val screen = controller.getAssociatedScreen() ?: return
+
+            if (screen is NavigationItem) {
+                navigationScreen.get()?.updateNavigation(screen, controller)
             }
         }
     }

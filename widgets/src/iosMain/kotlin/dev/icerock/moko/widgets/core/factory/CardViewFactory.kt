@@ -16,6 +16,7 @@ import dev.icerock.moko.widgets.core.utils.Edges
 import dev.icerock.moko.widgets.core.utils.UIViewWithIdentifier
 import dev.icerock.moko.widgets.core.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.core.utils.applySizeToChild
+import dev.icerock.moko.widgets.core.utils.identifier
 import dev.icerock.moko.widgets.core.widget.CardWidget
 import platform.CoreGraphics.CGFloat
 import platform.CoreGraphics.CGSizeMake
@@ -52,6 +53,8 @@ actual class CardViewFactory actual constructor(
             layer.cornerRadius = background?.cornerRadius?.toDouble() ?: 0.0
             clipsToBounds = true
             backgroundColor = UIColor.whiteColor
+
+            accessibilityIdentifier = widget.identifier()
         }
 
         val childViewBundle = widget.child.buildView(viewController)
@@ -91,7 +94,7 @@ actual class CardViewFactory actual constructor(
             constant = edges.bottom
         ).active = true
 
-        val shadowContainerView = UIView(frame = root.frame()).apply {
+        val shadowContainerView = UIView(frame = root.frame).apply {
             translatesAutoresizingMaskIntoConstraints = false
             layer.cornerRadius = background?.cornerRadius?.toDouble() ?: 0.0
 
@@ -103,8 +106,7 @@ actual class CardViewFactory actual constructor(
 
         shadowContainerView.addSubview(root)
         root.leadingAnchor.constraintEqualToAnchor(shadowContainerView.leadingAnchor).active = true
-        shadowContainerView.trailingAnchor.constraintEqualToAnchor(root.trailingAnchor).active =
-            true
+        shadowContainerView.trailingAnchor.constraintEqualToAnchor(root.trailingAnchor).active = true
         root.topAnchor.constraintEqualToAnchor(shadowContainerView.topAnchor).active = true
         shadowContainerView.bottomAnchor.constraintEqualToAnchor(root.bottomAnchor).active = true
 

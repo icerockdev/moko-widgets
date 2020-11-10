@@ -67,9 +67,9 @@ actual class SystemButtonViewFactory actual constructor(
             }
         }
 
-        when (val content = widget.content) {
+        when (widget.content) {
             is ButtonWidget.Content.Text -> {
-                content.text.bind { text ->
+                widget.content.text.bind { text ->
                     val localizedText = text?.localized()
                     val processedText = if (isAllCaps == true) {
                         localizedText?.toUpperCase()
@@ -80,7 +80,7 @@ actual class SystemButtonViewFactory actual constructor(
                 }
             }
             is ButtonWidget.Content.Icon -> {
-                content.image.bind { image ->
+                widget.content.image.bind { image ->
                     image.apply(button) {
                         button.setImage(it, forState = UIControlStateNormal)
                     }
