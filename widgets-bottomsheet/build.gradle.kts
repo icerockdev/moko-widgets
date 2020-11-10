@@ -25,7 +25,5 @@ dependencies {
 }
 
 cocoaPods {
-    podsProject = file("../sample/ios-app/Pods/Pods.xcodeproj")
-
     pod("moko-widgets-bottomsheet", "mokoWidgetsBottomSheet")
 }

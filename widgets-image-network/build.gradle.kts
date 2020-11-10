@@ -19,7 +19,5 @@ dependencies {
 }
 
 cocoaPods {
-    podsProject = file("../sample/ios-app/Pods/Pods.xcodeproj")
-
     pod("moko-widgets-image-network", "mokoWidgetsImageNetwork")
 }

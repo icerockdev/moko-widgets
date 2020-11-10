@@ -28,7 +28,5 @@ dependencies {
 }
 
 cocoaPods {
-    podsProject = file("../sample/ios-app/Pods/Pods.xcodeproj")
-
     pod(scheme = "moko-widgets-collection", module = "mokoWidgetsCollection")
 }
