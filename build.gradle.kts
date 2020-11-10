@@ -55,19 +55,6 @@ allprojects {
         }
     }
 
-//    afterEvaluate {
-//        plugins.withId(Deps.Plugins.kotlinMultiplatform.id) {
-//            configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension> {
-//                sourceSets {
-//                    val iosArm64Main by getting
-//                    val iosX64Main by getting
-//
-//                    iosArm64Main.dependsOn(iosX64Main)
-//                }
-//            }
-//        }
-//    }
-
     val project = this
     val bintrayPath: Pair<String, String>?
     when {
