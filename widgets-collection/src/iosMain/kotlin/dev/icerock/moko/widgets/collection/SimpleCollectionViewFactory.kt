@@ -4,6 +4,7 @@
 
 package dev.icerock.moko.widgets.collection
 
+import cocoapods.mokoWidgetsCollection.ALCollectionFlowLayout
 import dev.icerock.moko.units.createUnitCollectionViewDataSource
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
@@ -41,7 +42,7 @@ actual class SimpleCollectionViewFactory actual constructor(
         size: WS,
         viewFactoryContext: ViewFactoryContext
     ): ViewBundle<WS> {
-        val layoutAndDelegate = createCollectionFlowLayout().apply {
+        val layoutAndDelegate = ALCollectionFlowLayout().apply {
             sectionInset = UIEdgeInsetsZero.readValue()
             minimumInteritemSpacing = 0.0
             minimumLineSpacing = 0.0
