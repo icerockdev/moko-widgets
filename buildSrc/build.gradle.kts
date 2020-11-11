@@ -22,7 +22,7 @@ repositories {
 dependencies {
     implementation("dev.icerock:mobile-multiplatform:0.8.0")
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.10")
-    implementation("com.android.tools.build:gradle:4.1.0")
+    implementation("com.android.tools.build:gradle:4.0.1")
 }
 
 val mokoWidgetsVersion: String = when (properties.containsKey("devPublish")) {
