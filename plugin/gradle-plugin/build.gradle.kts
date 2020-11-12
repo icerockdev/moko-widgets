@@ -24,3 +24,11 @@ buildConfigKotlin {
         buildConfig(name = "compilerPluginVersion", value = project.version.toString())
     }
 }
+
+publishing {
+    publications {
+        register("maven", MavenPublication::class) {
+            from(components["java"])
+        }
+    }
+}
