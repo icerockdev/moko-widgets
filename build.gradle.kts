@@ -98,3 +98,18 @@ tasks.register("clean", Delete::class).configure {
     group = "build"
     delete(rootProject.buildDir)
 }
+
+allprojects {
+    plugins.withId(Deps.Plugins.kotlinMultiplatform.id) {
+        configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension> {
+            targets.withType(org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget::class.java) {
+                compilations.all {
+                    kotlinOptions.freeCompilerArgs += "-Xdisable-fake-override-validator"
+                }
+                binaries.all {
+                    freeCompilerArgs += "-Xdisable-fake-override-validator"
+                }
+            }
+        }
+    }
+}
