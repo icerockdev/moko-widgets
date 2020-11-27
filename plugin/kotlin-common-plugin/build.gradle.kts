@@ -3,7 +3,7 @@
  */
 
 plugins {
-    plugin(Deps.Plugins.kotlinJvm)
+    id("org.jetbrains.kotlin.jvm")
 }
 
 dependencies {

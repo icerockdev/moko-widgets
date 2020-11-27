@@ -3,9 +3,9 @@
  */
 
 plugins {
-    plugin(Deps.Plugins.kotlinJvm)
-    plugin(Deps.Plugins.mavenPublish)
-    plugin(Deps.Plugins.kotlinKapt)
+    id("org.jetbrains.kotlin.jvm")
+    id("org.gradle.maven-publish")
+    id("kotlin-kapt")
 }
 
 val embedImplementationConfig = "embedImplementation"

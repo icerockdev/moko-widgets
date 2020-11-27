@@ -11,8 +11,6 @@ plugins {
 }
 
 repositories {
-    mavenLocal()
-
     jcenter()
     google()
 
@@ -20,10 +18,14 @@ repositories {
 }
 
 dependencies {
-    implementation("dev.icerock:mobile-multiplatform:0.8.0")
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.20-RC")
-    implementation("com.android.tools.build:gradle:4.0.1")
+    api(gradleApi())
+    api("dev.icerock:mobile-multiplatform:0.8.0")
+    api("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.20")
+    api("com.android.tools.build:gradle:4.0.2")
 }
+
+group = "gradle"
+version = "1"
 
 val mokoWidgetsVersion: String = when (properties.containsKey("devPublish")) {
     true -> getGitCommit()

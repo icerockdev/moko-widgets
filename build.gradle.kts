@@ -11,12 +11,11 @@ buildscript {
         maven { url = uri("https://kotlin.bintray.com/kotlinx") }
         maven { url = uri("https://plugins.gradle.org/m2/") }
         maven { url = uri("https://dl.bintray.com/icerockdev/plugins") }
-
-        maven { url = uri("https://dl.bintray.com/icerockdev/plugins-dev") }
     }
     dependencies {
-        plugin(Deps.Plugins.mokoResources)
-        plugin(Deps.Plugins.mokoWidgets)
+        classpath("gradle:moko-widgets-deps:1")
+        classpath("dev.icerock.moko:resources-generator:0.13.1")
+        classpath("dev.icerock.moko.widgets:gradle-plugin:0.1.0-dev-21")
     }
 }
 

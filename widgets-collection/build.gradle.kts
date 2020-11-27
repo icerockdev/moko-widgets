@@ -3,11 +3,11 @@
  */
 
 plugins {
-    plugin(Deps.Plugins.androidLibrary)
-    plugin(Deps.Plugins.mokoWidgets)
-    plugin(Deps.Plugins.kotlinMultiplatform)
-    plugin(Deps.Plugins.mobileMultiplatform)
-    plugin(Deps.Plugins.mavenPublish)
+    id("com.android.library")
+    id("org.jetbrains.kotlin.multiplatform")
+    id("dev.icerock.mobile.multiplatform")
+    id("dev.icerock.mobile.multiplatform-widgets-generator")
+    id("org.gradle.maven-publish")
 }
 
 dependencies {

@@ -3,13 +3,13 @@
  */
 
 plugins {
-    plugin(Deps.Plugins.androidLibrary)
-    plugin(Deps.Plugins.kotlinMultiplatform)
-    plugin(Deps.Plugins.mobileMultiplatform)
-    plugin(Deps.Plugins.kotlinAndroidExtensions)
-    plugin(Deps.Plugins.mokoResources)
-    plugin(Deps.Plugins.kotlinKapt)
-    plugin(Deps.Plugins.iosFramework)
+    id("com.android.library")
+    id("org.jetbrains.kotlin.multiplatform")
+    id("dev.icerock.mobile.multiplatform")
+    id("kotlin-kapt")
+    id("kotlin-android-extensions")
+    id("dev.icerock.mobile.multiplatform-resources")
+    id("dev.icerock.mobile.multiplatform.ios-framework")
 }
 
 android {
