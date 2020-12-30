@@ -69,8 +69,13 @@ actual class StatefulViewFactory actual constructor(
                 is State.Error -> errorView
             }
 
-            views.forEach { it.view.visibility = View.GONE }
-            currentView.view.visibility = View.VISIBLE
+            views.asSequence()
+                .filter { it.view.visibility != View.GONE && it.view.id != currentView.view.id }
+                .forEach { it.view.visibility = View.GONE }
+
+            if (currentView.view.visibility != View.VISIBLE) {
+                currentView.view.visibility = View.VISIBLE
+            }
         }
 
         return ViewBundle(
