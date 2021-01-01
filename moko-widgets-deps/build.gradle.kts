@@ -6,7 +6,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.ByteArrayOutputStream
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version ("1.4.20")
+    id("org.jetbrains.kotlin.jvm") version ("1.4.30-M1")
     id("com.github.kukuhyoniatmoko.buildconfigkotlin") version "1.0.5"
 }
 
@@ -19,9 +19,9 @@ repositories {
 
 dependencies {
     api(gradleApi())
-    api("dev.icerock:mobile-multiplatform:0.8.0")
-    api("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.20")
-    api("com.android.tools.build:gradle:4.0.2")
+    api("dev.icerock:mobile-multiplatform:0.9.0")
+    api("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.30-M1")
+    api("com.android.tools.build:gradle:4.1.1")
 }
 
 group = "gradle"
