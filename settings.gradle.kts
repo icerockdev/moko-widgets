@@ -13,5 +13,9 @@ include(":widgets-datetime-picker")
 include(":widgets-image-network")
 include(":widgets-permissions")
 include(":widgets-media")
-include(":sample:android-app")
-include(":sample:mpp-library")
+
+// allow to use moko-widgets as composite build in other projects with `android-app`/`mpp-library` modules
+if (gradle.parent == null) {
+    include(":sample:android-app")
+    include(":sample:mpp-library")
+}
