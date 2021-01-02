@@ -7,7 +7,7 @@ plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("dev.icerock.mobile.multiplatform")
     id("kotlin-kapt")
-    id("kotlin-android-extensions")
+    id("kotlin-parcelize")
     id("dev.icerock.mobile.multiplatform-resources")
     id("dev.icerock.mobile.multiplatform.ios-framework")
 }

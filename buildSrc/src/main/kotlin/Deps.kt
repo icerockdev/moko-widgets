@@ -3,7 +3,7 @@
  */
 
 object Deps {
-    private const val kotlinVersion = "1.4.20"
+    private const val kotlinVersion = "1.4.30-M1"
     private const val autoServiceVersion = "1.0-rc6"
 
     private const val androidAppCompatVersion = "1.1.0"
@@ -18,26 +18,25 @@ object Deps {
     private const val roundedImageViewVersion = "2.3.0"
     private const val playServiceAuthVersion = "17.0.0"
     private const val playServiceAuthSmsVersion = "17.1.0"
-    private const val multiDexVersion = "2.0.1"
 
-    private const val detektVersion = "1.7.4"
+    private const val detektVersion = "1.15.0"
 
     private const val klockVersion = "1.12.0"
-    private const val coroutinesVersion = "1.3.9"
-    private const val mokoGraphicsVersion = "0.4.0"
-    private const val mokoParcelizeVersion = "0.4.0"
-    private const val mokoResourcesVersion = "0.13.1"
-    private const val mokoMvvmVersion = "0.8.0"
+    private const val coroutinesVersion = "1.4.2"
+    private const val mokoGraphicsVersion = "0.5.0"
+    private const val mokoParcelizeVersion = "0.5.0"
+    private const val mokoResourcesVersion = "0.13.2"
+    private const val mokoMvvmVersion = "0.8.1"
     private const val mokoFieldsVersion = "0.5.0"
     private const val mokoUnitsVersion = "0.4.1"
-    private const val mokoMediaVersion = "0.5.0"
-    private const val mokoPermissionsVersion = "0.6.0"
+    private const val mokoMediaVersion = "0.6.0"
+    private const val mokoPermissionsVersion = "0.7.0"
     const val mokoWidgetsVersion = BuildConfig.widgetsVersion
 
     object Android {
         const val compileSdk = 28
         const val targetSdk = 28
-        const val minSdk = 16
+        const val minSdk = 21
     }
 
     object Plugins {
@@ -49,7 +48,7 @@ object Deps {
         val kotlinCocoapods = GradlePlugin(id = "org.jetbrains.kotlin.native.cocoapods")
         val kotlinKapt = GradlePlugin(id = "kotlin-kapt")
         val kotlinAndroid = GradlePlugin(id = "kotlin-android")
-        val kotlinAndroidExtensions = GradlePlugin(id = "kotlin-android-extensions")
+        val kotlinParcelize = GradlePlugin(id = "kotlin-parcelize")
         val kotlinSerialization = GradlePlugin(id = "kotlin-serialization")
         val mavenPublish = GradlePlugin(id = "org.gradle.maven-publish")
 
@@ -102,8 +101,6 @@ object Deps {
                 "com.google.android.gms:play-services-auth:$playServiceAuthVersion"
             const val playServiceAuthSms =
                 "com.google.android.gms:play-services-auth-api-phone:$playServiceAuthSmsVersion"
-            const val multiDex =
-                "androidx.multidex:multidex:$multiDexVersion"
         }
 
         object MultiPlatform {

@@ -26,8 +26,6 @@ android {
         versionName = Deps.mokoWidgetsVersion
 
         vectorDrawables.useSupportLibrary = true
-
-        multiDexEnabled = true
     }
 
     buildTypes {
@@ -44,6 +42,11 @@ android {
     packagingOptions {
         exclude("META-INF/*.kotlin_module")
     }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -51,7 +54,6 @@ dependencies {
     implementation(Deps.Libs.Android.recyclerView)
     implementation(Deps.Libs.Android.material)
     implementation(Deps.Libs.Android.constraintLayout)
-    implementation(Deps.Libs.Android.multiDex)
 
     implementation(Deps.Libs.MultiPlatform.mokoWidgets.common)
     implementation(project(":sample:mpp-library"))
