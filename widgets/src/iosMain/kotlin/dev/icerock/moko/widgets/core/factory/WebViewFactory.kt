@@ -8,6 +8,7 @@ import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
+import dev.icerock.moko.widgets.core.objc.setAssociatedObject
 import dev.icerock.moko.widgets.core.style.background.Background
 import dev.icerock.moko.widgets.core.style.background.Fill
 import dev.icerock.moko.widgets.core.style.view.MarginValues
@@ -15,7 +16,6 @@ import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.utils.WebViewRedirectUrlHandler
 import dev.icerock.moko.widgets.core.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.core.widget.WebViewWidget
-import dev.icerock.moko.widgets.core.objc.setAssociatedObject
 import platform.Foundation.NSURL
 import platform.Foundation.NSURLRequest
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
@@ -24,6 +24,7 @@ import platform.WebKit.WKNavigationAction
 import platform.WebKit.WKNavigationActionPolicy
 import platform.WebKit.WKNavigationDelegateProtocol
 import platform.WebKit.WKWebView
+import platform.WebKit.javaScriptEnabled
 import platform.darwin.NSObject
 
 actual class WebViewFactory actual constructor(

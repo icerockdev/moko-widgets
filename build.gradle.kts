@@ -13,9 +13,8 @@ buildscript {
         maven { url = uri("https://dl.bintray.com/icerockdev/plugins") }
     }
     dependencies {
-        classpath("gradle:moko-widgets-deps:1")
-        classpath("dev.icerock.moko:resources-generator:0.13.1")
-        classpath("dev.icerock.moko.widgets:gradle-plugin:0.1.0-dev-21")
+        plugin(Deps.Plugins.mokoResources)
+        plugin(Deps.Plugins.mokoWidgets)
     }
 }
 
@@ -96,4 +95,19 @@ allprojects {
 tasks.register("clean", Delete::class).configure {
     group = "build"
     delete(rootProject.buildDir)
+}
+
+allprojects {
+    plugins.withId(Deps.Plugins.kotlinMultiplatform.id) {
+        configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension> {
+            targets.withType(org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget::class.java) {
+                compilations.all {
+                    kotlinOptions.freeCompilerArgs += "-Xdisable-fake-override-validator"
+                }
+                binaries.all {
+                    freeCompilerArgs += "-Xdisable-fake-override-validator"
+                }
+            }
+        }
+    }
 }

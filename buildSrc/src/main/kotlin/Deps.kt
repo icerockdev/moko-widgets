@@ -3,7 +3,7 @@
  */
 
 object Deps {
-    private const val kotlinVersion = "1.4.10"
+    private const val kotlinVersion = "1.4.30-M1"
     private const val autoServiceVersion = "1.0-rc6"
 
     private const val androidAppCompatVersion = "1.1.0"
@@ -49,7 +49,7 @@ object Deps {
         val kotlinCocoapods = GradlePlugin(id = "org.jetbrains.kotlin.native.cocoapods")
         val kotlinKapt = GradlePlugin(id = "kotlin-kapt")
         val kotlinAndroid = GradlePlugin(id = "kotlin-android")
-        val kotlinAndroidExtensions = GradlePlugin(id = "kotlin-android-extensions")
+        val kotlinParcelize = GradlePlugin(id = "kotlin-parcelize")
         val kotlinSerialization = GradlePlugin(id = "kotlin-serialization")
         val mavenPublish = GradlePlugin(id = "org.gradle.maven-publish")
 
