@@ -8,6 +8,7 @@ import kotlinx.cinterop.ObjCAction
 import kotlinx.cinterop.cstr
 import platform.Foundation.NSDefaultRunLoopMode
 import platform.Foundation.NSRunLoop
+import platform.Foundation.NSRunLoopCommonModes
 import platform.Foundation.NSSelectorFromString
 import platform.QuartzCore.CADisplayLink
 import platform.UIKit.UIControl
@@ -58,7 +59,7 @@ fun NSObject.displayLink(action: () -> Unit): CADisplayLink {
         selector = NSSelectorFromString("displayLink:")
     ).apply {
         frameInterval = 1
-        addToRunLoop(NSRunLoop.currentRunLoop, NSDefaultRunLoopMode)
+        addToRunLoop(NSRunLoop.currentRunLoop, NSRunLoopCommonModes)
     }
 }
 
