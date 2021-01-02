@@ -6,7 +6,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.multiplatform")
     id("dev.icerock.mobile.multiplatform")
-    id("kotlin-android-extensions")
+    id("kotlin-parcelize")
     id("org.gradle.maven-publish")
 }
 

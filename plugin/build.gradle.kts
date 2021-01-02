@@ -2,21 +2,6 @@
  * Copyright 2020 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
 
-buildscript {
-    repositories {
-        jcenter()
-        google()
-
-        maven { url = uri("https://dl.bintray.com/kotlin/kotlin") }
-        maven { url = uri("https://kotlin.bintray.com/kotlinx") }
-        maven { url = uri("https://plugins.gradle.org/m2/") }
-        maven { url = uri("https://dl.bintray.com/icerockdev/plugins") }
-    }
-    dependencies {
-        classpath("gradle:moko-widgets-deps:1")
-    }
-}
-
 allprojects {
     repositories {
         google()
