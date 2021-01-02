@@ -41,6 +41,14 @@ allprojects {
                 "compileOnly"("javax.annotation:jsr250-api:1.0")
             }
         }
+    
+    configurations.all {
+        resolutionStrategy.dependencySubstitution {
+            substitute(module("com.nbsp:library"))
+                .using(module("com.nbsp:materialfilepicker:1.9.1"))
+                .because("androidx support in new artifact")
+        }
+    }
 
     plugins.withType<com.android.build.gradle.LibraryPlugin> {
         configure<com.android.build.gradle.LibraryExtension> {
@@ -95,19 +103,4 @@ allprojects {
 tasks.register("clean", Delete::class).configure {
     group = "build"
     delete(rootProject.buildDir)
-}
-
-allprojects {
-    plugins.withId(Deps.Plugins.kotlinMultiplatform.id) {
-        configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension> {
-            targets.withType(org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget::class.java) {
-                compilations.all {
-                    kotlinOptions.freeCompilerArgs += "-Xdisable-fake-override-validator"
-                }
-                binaries.all {
-                    freeCompilerArgs += "-Xdisable-fake-override-validator"
-                }
-            }
-        }
-    }
 }
