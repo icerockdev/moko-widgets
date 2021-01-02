@@ -5,6 +5,7 @@
 package org.gradle.api.publish.maven.internal.publisher
 
 import org.apache.http.NoHttpResponseException
+import org.gradle.StartParameter
 import org.gradle.internal.Factory
 import org.gradle.internal.resource.ExternalResource
 import org.gradle.internal.resource.ExternalResourceName
@@ -18,7 +19,10 @@ import java.net.URI
 
 open class BintrayPublisher : MavenRemotePublisher {
 
-    constructor(factory: Factory<File>) : super(factory, BuildCommencedTimeProvider())
+    constructor(
+        factory: Factory<File>,
+        startParameter: StartParameter
+    ) : super(factory, BuildCommencedTimeProvider(startParameter))
 
     override fun publish(
         publication: MavenNormalizedPublication,
@@ -35,7 +39,10 @@ open class BintrayPublisher : MavenRemotePublisher {
                 return repository.resource(resource).let(::createWrappedResource)
             }
 
-            override fun resource(resource: ExternalResourceName?, revalidate: Boolean): ExternalResource {
+            override fun resource(
+                resource: ExternalResourceName?,
+                revalidate: Boolean
+            ): ExternalResource {
                 return repository.resource(resource, revalidate).let(::createWrappedResource)
             }
         }
@@ -53,12 +60,12 @@ open class BintrayPublisher : MavenRemotePublisher {
                     file.endsWith(".sha1") -> true
                     else -> false
                 }
-                if(skip) {
+                if (skip) {
                     println("$displayName skip")
                     return ExternalResourceWriteResult(0)
                 }
 
-                for(retryCounter in 1 .. 3) {
+                for (retryCounter in 1..3) {
                     try {
                         return resource.put(source).also { println("$displayName success") }
                     } catch (httpExc: HttpErrorStatusCodeException) {
@@ -68,7 +75,7 @@ open class BintrayPublisher : MavenRemotePublisher {
                             println("$displayName failed with ${httpExc.statusCode} - error")
                             throw httpExc
                         }
-                    } catch(noResponseExc: NoHttpResponseException) {
+                    } catch (noResponseExc: NoHttpResponseException) {
                         println("$displayName failed with $noResponseExc - retry $retryCounter")
                     }
                 }

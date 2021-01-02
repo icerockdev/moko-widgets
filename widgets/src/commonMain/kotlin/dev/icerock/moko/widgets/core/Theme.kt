@@ -53,6 +53,7 @@ class Theme(
         operator fun <T : Widget<out WidgetSize>> set(clazz: Category<T>, factory: ViewFactory<T>)
     }
 
+    @Suppress("UNCHECKED_CAST")
     private inner class ReadFactoryImpl : ReadFactory {
         override operator fun <T : Widget<out WidgetSize>> get(id: Id<T>): ViewFactory<T>? {
             return properties[id] as? ViewFactory<T>

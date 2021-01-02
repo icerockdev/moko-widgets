@@ -11,11 +11,10 @@ buildscript {
         maven { url = uri("https://kotlin.bintray.com/kotlinx") }
         maven { url = uri("https://plugins.gradle.org/m2/") }
         maven { url = uri("https://dl.bintray.com/icerockdev/plugins") }
-
-        maven { url = uri("https://dl.bintray.com/icerockdev/plugins-dev") }
     }
     dependencies {
-        Deps.plugins.values.forEach { classpath(it) }
+        plugin(Deps.Plugins.mokoResources)
+        plugin(Deps.Plugins.mokoWidgets)
     }
 }
 
@@ -34,20 +33,6 @@ allprojects {
         maven { url = uri("https://dl.bintray.com/icerockdev/plugins-dev") }
     }
 
-    // Workaround for https://youtrack.jetbrains.com/issue/KT-36721.
-    pluginManager.withPlugin("kotlin-multiplatform") {
-        val kotlinExtension = project.extensions.getByName("kotlin")
-                as org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-        val uniqueName = "${project.group}.${project.name}"
-
-        kotlinExtension.targets.withType(org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget::class.java) {
-            compilations["main"].kotlinOptions.freeCompilerArgs += listOf(
-                "-module-name",
-                uniqueName
-            )
-        }
-    }
-
     configurations
         .matching { it.name == "compileOnly" }
         .configureEach {
@@ -56,6 +41,25 @@ allprojects {
                 "compileOnly"("javax.annotation:jsr250-api:1.0")
             }
         }
+    
+    configurations.all {
+        resolutionStrategy.dependencySubstitution {
+            substitute(module("com.nbsp:library"))
+                .using(module("com.nbsp:materialfilepicker:1.9.1"))
+                .because("androidx support in new artifact")
+        }
+    }
+
+    plugins.withType<com.android.build.gradle.LibraryPlugin> {
+        configure<com.android.build.gradle.LibraryExtension> {
+            compileSdkVersion(Deps.Android.compileSdk)
+
+            defaultConfig {
+                minSdkVersion(Deps.Android.minSdk)
+                targetSdkVersion(Deps.Android.targetSdk)
+            }
+        }
+    }
 
     val project = this
     val bintrayPath: Pair<String, String>?
@@ -64,18 +68,7 @@ allprojects {
             bintrayPath = "moko" to "moko-widgets"
 
             this.group = "dev.icerock.moko"
-            this.version = Versions.Libs.MultiPlatform.mokoWidgets
-
-            this.plugins.withType<com.android.build.gradle.LibraryPlugin> {
-                this@allprojects.configure<com.android.build.gradle.LibraryExtension> {
-                    compileSdkVersion(Versions.Android.compileSdk)
-
-                    defaultConfig {
-                        minSdkVersion(Versions.Android.minSdk)
-                        targetSdkVersion(Versions.Android.targetSdk)
-                    }
-                }
-            }
+            this.version = Deps.mokoWidgetsVersion
         }
         else -> {
             bintrayPath = null

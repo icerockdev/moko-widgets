@@ -3,168 +3,204 @@
  */
 
 object Deps {
+    private const val kotlinVersion = "1.4.30-M1"
+    private const val autoServiceVersion = "1.0-rc6"
+
+    private const val androidAppCompatVersion = "1.1.0"
+    private const val fragmentVersion = "1.2.2"
+    private const val swipeRefreshLayoutVersion = "1.0.0"
+    private const val materialVersion = "1.1.0"
+    private const val constraintLayoutVersion = "1.1.3"
+    private const val lifecycleVersion = "2.0.0"
+    private const val recyclerViewVersion = "1.0.0"
+    private const val inputMaskVersion = "5.0.0"
+    private const val glideVersion = "4.10.0"
+    private const val roundedImageViewVersion = "2.3.0"
+    private const val playServiceAuthVersion = "17.0.0"
+    private const val playServiceAuthSmsVersion = "17.1.0"
+
+    private const val detektVersion = "1.15.0"
+
+    private const val klockVersion = "1.12.0"
+    private const val coroutinesVersion = "1.4.2"
+    private const val mokoGraphicsVersion = "0.5.0"
+    private const val mokoParcelizeVersion = "0.5.0"
+    private const val mokoResourcesVersion = "0.13.2"
+    private const val mokoMvvmVersion = "0.8.1"
+    private const val mokoFieldsVersion = "0.5.0"
+    private const val mokoUnitsVersion = "0.4.1"
+    private const val mokoMediaVersion = "0.6.0"
+    private const val mokoPermissionsVersion = "0.7.0"
+    const val mokoWidgetsVersion = BuildConfig.widgetsVersion
+
+    object Android {
+        const val compileSdk = 28
+        const val targetSdk = 28
+        const val minSdk = 21
+    }
+
     object Plugins {
-        const val mokoWidgets =
-            "dev.icerock.moko.widgets:gradle-plugin:${Versions.Plugins.mokoWidgets}"
-        const val mokoResources =
-            "dev.icerock.moko:resources-generator:${Versions.Plugins.mokoResources}"
+        val javaGradle = GradlePlugin(id = "java-gradle-plugin")
+        val androidApplication = GradlePlugin(id = "com.android.application")
+        val androidLibrary = GradlePlugin(id = "com.android.library")
+        val kotlinJvm = GradlePlugin(id = "org.jetbrains.kotlin.jvm")
+        val kotlinMultiplatform = GradlePlugin(id = "org.jetbrains.kotlin.multiplatform")
+        val kotlinCocoapods = GradlePlugin(id = "org.jetbrains.kotlin.native.cocoapods")
+        val kotlinKapt = GradlePlugin(id = "kotlin-kapt")
+        val kotlinAndroid = GradlePlugin(id = "kotlin-android")
+        val kotlinParcelize = GradlePlugin(id = "kotlin-parcelize")
+        val kotlinSerialization = GradlePlugin(id = "kotlin-serialization")
+        val mavenPublish = GradlePlugin(id = "org.gradle.maven-publish")
+
+        val mobileMultiplatform = GradlePlugin(id = "dev.icerock.mobile.multiplatform")
+        val iosFramework = GradlePlugin(id = "dev.icerock.mobile.multiplatform.ios-framework")
+
+        val mokoResources = GradlePlugin(
+            id = "dev.icerock.mobile.multiplatform-resources",
+            module = "dev.icerock.moko:resources-generator:$mokoResourcesVersion"
+        )
+        val mokoWidgets = GradlePlugin(
+            id = "dev.icerock.mobile.multiplatform-widgets-generator",
+            module = "dev.icerock.moko.widgets:gradle-plugin:$mokoWidgetsVersion"
+        )
+
+        val buildKonfig = GradlePlugin(
+            id = "com.github.kukuhyoniatmoko.buildconfigkotlin",
+            version = "1.0.5"
+        )
+
+        val detekt = GradlePlugin(
+            id = "io.gitlab.arturbosch.detekt",
+            version = detektVersion
+        )
     }
 
     object Libs {
         object Android {
-            val kotlinStdLib = AndroidLibrary(
-                name = "org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlin}"
-            )
-            val appCompat = AndroidLibrary(
-                name = "androidx.appcompat:appcompat:${Versions.Libs.Android.appCompat}"
-            )
-            val fragment = AndroidLibrary(
-                name = "androidx.fragment:fragment:${Versions.Libs.Android.fragment}"
-            )
-            val swipeRefreshLayout = AndroidLibrary(
-                name = "androidx.swiperefreshlayout:swiperefreshlayout:${Versions.Libs.Android.swipeRefreshLayout}"
-            )
-            val material = AndroidLibrary(
-                name = "com.google.android.material:material:${Versions.Libs.Android.material}"
-            )
-            val recyclerView = AndroidLibrary(
-                name = "androidx.recyclerview:recyclerview:${Versions.Libs.Android.recyclerView}"
-            )
-            val constraintLayout = AndroidLibrary(
-                name = "androidx.constraintlayout:constraintlayout:${Versions.Libs.Android.constraintLayout}"
-            )
-            val lifecycle = AndroidLibrary(
-                name = "androidx.lifecycle:lifecycle-extensions:${Versions.Libs.Android.lifecycle}"
-            )
-            val inputMask = AndroidLibrary(
-                name = "com.redmadrobot:input-mask-android:${Versions.Libs.Android.inputMask}"
-            )
-            val glide = AndroidLibrary(
-                name = "com.github.bumptech.glide:glide:${Versions.Libs.Android.glide}"
-            )
-            val roundedImageView = AndroidLibrary(
-                name = "com.makeramen:roundedimageview:${Versions.Libs.Android.roundedImageView}"
-            )
-            val playServiceAuth = AndroidLibrary(
-                name = "com.google.android.gms:play-services-auth:${Versions.Libs.Android.playServiceAuth}"
-            )
-            val playServiceAuthSms = AndroidLibrary(
-                name = "com.google.android.gms:play-services-auth-api-phone:${Versions.Libs.Android.playServiceAuthSms}"
-            )
+            const val appCompat =
+                "androidx.appcompat:appcompat:$androidAppCompatVersion"
+            const val fragment =
+                "androidx.fragment:fragment:$fragmentVersion"
+            const val swipeRefreshLayout =
+                "androidx.swiperefreshlayout:swiperefreshlayout:$swipeRefreshLayoutVersion"
+            const val material =
+                "com.google.android.material:material:$materialVersion"
+            const val recyclerView =
+                "androidx.recyclerview:recyclerview:$recyclerViewVersion"
+            const val constraintLayout =
+                "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
+            const val lifecycle =
+                "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
+            const val inputMask =
+                "com.redmadrobot:input-mask-android:$inputMaskVersion"
+            const val glide =
+                "com.github.bumptech.glide:glide:$glideVersion"
+            const val roundedImageView =
+                "com.makeramen:roundedimageview:$roundedImageViewVersion"
+            const val playServiceAuth =
+                "com.google.android.gms:play-services-auth:$playServiceAuthVersion"
+            const val playServiceAuthSms =
+                "com.google.android.gms:play-services-auth-api-phone:$playServiceAuthSmsVersion"
         }
 
         object MultiPlatform {
-            val kotlinStdLib = MultiPlatformLibrary(
-                android = Android.kotlinStdLib.name,
-                common = "org.jetbrains.kotlin:kotlin-stdlib-common:${Versions.kotlin}"
-            )
             val mokoWidgets = MultiPlatformLibrary(
-                common = "dev.icerock.moko:widgets:${Versions.Libs.MultiPlatform.mokoWidgets}",
-                iosX64 = "dev.icerock.moko:widgets-iosx64:${Versions.Libs.MultiPlatform.mokoWidgets}",
-                iosArm64 = "dev.icerock.moko:widgets-iosarm64:${Versions.Libs.MultiPlatform.mokoWidgets}"
-            )
-            val mokoWidgetsFlat = MultiPlatformLibrary(
-                common = "dev.icerock.moko:widgets-flat:${Versions.Libs.MultiPlatform.mokoWidgets}",
-                iosX64 = "dev.icerock.moko:widgets-flat-iosx64:${Versions.Libs.MultiPlatform.mokoWidgets}",
-                iosArm64 = "dev.icerock.moko:widgets-flat-iosarm64:${Versions.Libs.MultiPlatform.mokoWidgets}"
+                common = "dev.icerock.moko:widgets:$mokoWidgetsVersion",
+                iosX64 = "dev.icerock.moko:widgets-iosx64:$mokoWidgetsVersion",
+                iosArm64 = "dev.icerock.moko:widgets-iosarm64:$mokoWidgetsVersion"
             )
             val mokoWidgetsBottomSheet = MultiPlatformLibrary(
-                common = "dev.icerock.moko:widgets-bottomsheet:${Versions.Libs.MultiPlatform.mokoWidgets}",
-                iosX64 = "dev.icerock.moko:widgets-bottomsheet-iosx64:${Versions.Libs.MultiPlatform.mokoWidgets}",
-                iosArm64 = "dev.icerock.moko:widgets-bottomsheet-iosarm64:${Versions.Libs.MultiPlatform.mokoWidgets}"
+                common = "dev.icerock.moko:widgets-bottomsheet:$mokoWidgetsVersion",
+                iosX64 = "dev.icerock.moko:widgets-bottomsheet-iosx64:$mokoWidgetsVersion",
+                iosArm64 = "dev.icerock.moko:widgets-bottomsheet-iosarm64:$mokoWidgetsVersion"
             )
             val mokoWidgetsCollection = MultiPlatformLibrary(
-                common = "dev.icerock.moko:widgets-collection:${Versions.Libs.MultiPlatform.mokoWidgets}",
-                iosX64 = "dev.icerock.moko:widgets-collection-iosx64:${Versions.Libs.MultiPlatform.mokoWidgets}",
-                iosArm64 = "dev.icerock.moko:widgets-collection-iosarm64:${Versions.Libs.MultiPlatform.mokoWidgets}"
+                common = "dev.icerock.moko:widgets-collection:$mokoWidgetsVersion",
+                iosX64 = "dev.icerock.moko:widgets-collection-iosx64:$mokoWidgetsVersion",
+                iosArm64 = "dev.icerock.moko:widgets-collection-iosarm64:$mokoWidgetsVersion"
             )
             val mokoWidgetsDateTimePicker = MultiPlatformLibrary(
-                common = "dev.icerock.moko:widgets-datetime-picker:${Versions.Libs.MultiPlatform.mokoWidgets}",
-                iosX64 = "dev.icerock.moko:widgets-datetime-picker-iosx64:${Versions.Libs.MultiPlatform.mokoWidgets}",
-                iosArm64 = "dev.icerock.moko:widgets-datetime-picker-iosarm64:${Versions.Libs.MultiPlatform.mokoWidgets}"
+                common = "dev.icerock.moko:widgets-datetime-picker:$mokoWidgetsVersion",
+                iosX64 = "dev.icerock.moko:widgets-datetime-picker-iosx64:$mokoWidgetsVersion",
+                iosArm64 = "dev.icerock.moko:widgets-datetime-picker-iosarm64:$mokoWidgetsVersion"
             )
             val mokoWidgetsImageNetwork = MultiPlatformLibrary(
-                common = "dev.icerock.moko:widgets-image-network:${Versions.Libs.MultiPlatform.mokoWidgets}",
-                iosX64 = "dev.icerock.moko:widgets-image-network-iosx64:${Versions.Libs.MultiPlatform.mokoWidgets}",
-                iosArm64 = "dev.icerock.moko:widgets-image-network-iosarm64:${Versions.Libs.MultiPlatform.mokoWidgets}"
+                common = "dev.icerock.moko:widgets-image-network:$mokoWidgetsVersion",
+                iosX64 = "dev.icerock.moko:widgets-image-network-iosx64:$mokoWidgetsVersion",
+                iosArm64 = "dev.icerock.moko:widgets-image-network-iosarm64:$mokoWidgetsVersion"
             )
             val mokoWidgetsPermissions = MultiPlatformLibrary(
-                common = "dev.icerock.moko:widgets-permissions:${Versions.Libs.MultiPlatform.mokoWidgets}",
-                iosX64 = "dev.icerock.moko:widgets-permissions-iosx64:${Versions.Libs.MultiPlatform.mokoWidgets}",
-                iosArm64 = "dev.icerock.moko:widgets-permissions-iosarm64:${Versions.Libs.MultiPlatform.mokoWidgets}"
+                common = "dev.icerock.moko:widgets-permissions:$mokoWidgetsVersion",
+                iosX64 = "dev.icerock.moko:widgets-permissions-iosx64:$mokoWidgetsVersion",
+                iosArm64 = "dev.icerock.moko:widgets-permissions-iosarm64:$mokoWidgetsVersion"
             )
             val mokoWidgetsMedia = MultiPlatformLibrary(
-                common = "dev.icerock.moko:widgets-media:${Versions.Libs.MultiPlatform.mokoWidgets}",
-                iosX64 = "dev.icerock.moko:widgets-media-iosx64:${Versions.Libs.MultiPlatform.mokoWidgets}",
-                iosArm64 = "dev.icerock.moko:widgets-media-iosarm64:${Versions.Libs.MultiPlatform.mokoWidgets}"
+                common = "dev.icerock.moko:widgets-media:$mokoWidgetsVersion",
+                iosX64 = "dev.icerock.moko:widgets-media-iosx64:$mokoWidgetsVersion",
+                iosArm64 = "dev.icerock.moko:widgets-media-iosarm64:$mokoWidgetsVersion"
             )
             val mokoWidgetsSms = MultiPlatformLibrary(
-                common = "dev.icerock.moko:widgets-sms:${Versions.Libs.MultiPlatform.mokoWidgets}",
-                iosX64 = "dev.icerock.moko:widgets-sms-iosx64:${Versions.Libs.MultiPlatform.mokoWidgets}",
-                iosArm64 = "dev.icerock.moko:widgets-sms-iosarm64:${Versions.Libs.MultiPlatform.mokoWidgets}"
+                common = "dev.icerock.moko:widgets-sms:$mokoWidgetsVersion",
+                iosX64 = "dev.icerock.moko:widgets-sms-iosx64:$mokoWidgetsVersion",
+                iosArm64 = "dev.icerock.moko:widgets-sms-iosarm64:$mokoWidgetsVersion"
             )
             val mokoResources = MultiPlatformLibrary(
-                common = "dev.icerock.moko:resources:${Versions.Libs.MultiPlatform.mokoResources}",
-                iosX64 = "dev.icerock.moko:resources-iosx64:${Versions.Libs.MultiPlatform.mokoResources}",
-                iosArm64 = "dev.icerock.moko:resources-iosarm64:${Versions.Libs.MultiPlatform.mokoResources}"
+                common = "dev.icerock.moko:resources:$mokoResourcesVersion",
+                iosX64 = "dev.icerock.moko:resources-iosx64:$mokoResourcesVersion",
+                iosArm64 = "dev.icerock.moko:resources-iosarm64:$mokoResourcesVersion"
             )
             val mokoMvvm = MultiPlatformLibrary(
-                common = "dev.icerock.moko:mvvm:${Versions.Libs.MultiPlatform.mokoMvvm}",
-                iosX64 = "dev.icerock.moko:mvvm-iosx64:${Versions.Libs.MultiPlatform.mokoMvvm}",
-                iosArm64 = "dev.icerock.moko:mvvm-iosarm64:${Versions.Libs.MultiPlatform.mokoMvvm}"
+                common = "dev.icerock.moko:mvvm:$mokoMvvmVersion",
+                iosX64 = "dev.icerock.moko:mvvm-iosx64:$mokoMvvmVersion",
+                iosArm64 = "dev.icerock.moko:mvvm-iosarm64:$mokoMvvmVersion"
             )
             val mokoFields = MultiPlatformLibrary(
-                common = "dev.icerock.moko:fields:${Versions.Libs.MultiPlatform.mokoFields}",
-                iosX64 = "dev.icerock.moko:fields-iosx64:${Versions.Libs.MultiPlatform.mokoFields}",
-                iosArm64 = "dev.icerock.moko:fields-iosarm64:${Versions.Libs.MultiPlatform.mokoFields}"
+                common = "dev.icerock.moko:fields:$mokoFieldsVersion",
+                iosX64 = "dev.icerock.moko:fields-iosx64:$mokoFieldsVersion",
+                iosArm64 = "dev.icerock.moko:fields-iosarm64:$mokoFieldsVersion"
             )
             val mokoUnits = MultiPlatformLibrary(
-                common = "dev.icerock.moko:units:${Versions.Libs.MultiPlatform.mokoUnits}",
-                iosX64 = "dev.icerock.moko:units-iosx64:${Versions.Libs.MultiPlatform.mokoUnits}",
-                iosArm64 = "dev.icerock.moko:units-iosarm64:${Versions.Libs.MultiPlatform.mokoUnits}"
+                common = "dev.icerock.moko:units:$mokoUnitsVersion",
+                iosX64 = "dev.icerock.moko:units-iosx64:$mokoUnitsVersion",
+                iosArm64 = "dev.icerock.moko:units-iosarm64:$mokoUnitsVersion"
             )
             val mokoMedia = MultiPlatformLibrary(
-                common = "dev.icerock.moko:media:${Versions.Libs.MultiPlatform.mokoMedia}",
-                iosX64 = "dev.icerock.moko:media-iosx64:${Versions.Libs.MultiPlatform.mokoMedia}",
-                iosArm64 = "dev.icerock.moko:media-iosarm64:${Versions.Libs.MultiPlatform.mokoMedia}"
+                common = "dev.icerock.moko:media:$mokoMediaVersion",
+                iosX64 = "dev.icerock.moko:media-iosx64:$mokoMediaVersion",
+                iosArm64 = "dev.icerock.moko:media-iosarm64:$mokoMediaVersion"
             )
             val mokoPermissions = MultiPlatformLibrary(
-                common = "dev.icerock.moko:permissions:${Versions.Libs.MultiPlatform.mokoPermissions}",
-                iosX64 = "dev.icerock.moko:permissions-iosx64:${Versions.Libs.MultiPlatform.mokoPermissions}",
-                iosArm64 = "dev.icerock.moko:permissions-iosarm64:${Versions.Libs.MultiPlatform.mokoPermissions}"
+                common = "dev.icerock.moko:permissions:$mokoPermissionsVersion",
+                iosX64 = "dev.icerock.moko:permissions-iosx64:$mokoPermissionsVersion",
+                iosArm64 = "dev.icerock.moko:permissions-iosarm64:$mokoPermissionsVersion"
             )
             val mokoGraphics = MultiPlatformLibrary(
-                common = "dev.icerock.moko:graphics:${Versions.Libs.MultiPlatform.mokoGraphics}",
-                iosX64 = "dev.icerock.moko:graphics-iosx64:${Versions.Libs.MultiPlatform.mokoGraphics}",
-                iosArm64 = "dev.icerock.moko:graphics-iosarm64:${Versions.Libs.MultiPlatform.mokoGraphics}"
+                common = "dev.icerock.moko:graphics:$mokoGraphicsVersion",
+                iosX64 = "dev.icerock.moko:graphics-iosx64:$mokoGraphicsVersion",
+                iosArm64 = "dev.icerock.moko:graphics-iosarm64:$mokoGraphicsVersion"
             )
             val mokoParcelize = MultiPlatformLibrary(
-                common = "dev.icerock.moko:parcelize:${Versions.Libs.MultiPlatform.mokoParcelize}",
-                iosX64 = "dev.icerock.moko:parcelize-iosx64:${Versions.Libs.MultiPlatform.mokoParcelize}",
-                iosArm64 = "dev.icerock.moko:parcelize-iosarm64:${Versions.Libs.MultiPlatform.mokoParcelize}"
+                common = "dev.icerock.moko:parcelize:$mokoParcelizeVersion",
+                iosX64 = "dev.icerock.moko:parcelize-iosx64:$mokoParcelizeVersion",
+                iosArm64 = "dev.icerock.moko:parcelize-iosarm64:$mokoParcelizeVersion"
             )
-            val coroutines = MultiPlatformLibrary(
-                android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.Libs.MultiPlatform.coroutines}",
-                common = "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:${Versions.Libs.MultiPlatform.coroutines}",
-                ios = "org.jetbrains.kotlinx:kotlinx-coroutines-core-native:${Versions.Libs.MultiPlatform.coroutines}"
-            )
-            val klock = MultiPlatformLibrary(
-                android = "com.soywiz.korlibs.klock:klock-android:${Versions.Libs.MultiPlatform.klock}",
-                common = "com.soywiz.korlibs.klock:klock:${Versions.Libs.MultiPlatform.klock}",
-                ios = "com.soywiz.korlibs.klock:klock:${Versions.Libs.MultiPlatform.klock}"
-            )
+            const val coroutines =
+                "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
+            const val klock =
+                "com.soywiz.korlibs.klock:klock:$klockVersion"
         }
 
         object Jvm {
-            val kotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlin}"
-            val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
-            val kotlinGradlePluginApi = "org.jetbrains.kotlin:kotlin-gradle-plugin-api:${Versions.kotlin}"
-            val autoService = "com.google.auto.service:auto-service:1.0-rc6"
+            const val detektFormatting =
+                "io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion"
+            const val kotlinGradlePlugin =
+                "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+            const val kotlinGradlePluginApi =
+                "org.jetbrains.kotlin:kotlin-gradle-plugin-api:$kotlinVersion"
+            const val autoService =
+                "com.google.auto.service:auto-service:$autoServiceVersion"
+            const val kotlinCompilerEmbeddable =
+                "org.jetbrains.kotlin:kotlin-compiler-embeddable:$kotlinVersion"
         }
     }
-
-    val plugins: Map<String, String> = mapOf(
-        "dev.icerock.mobile.multiplatform-widgets-generator" to Plugins.mokoWidgets,
-        "dev.icerock.mobile.multiplatform-resources" to Plugins.mokoResources
-    )
 }

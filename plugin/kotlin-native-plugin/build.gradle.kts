@@ -4,7 +4,7 @@
 
 plugins {
     id("org.jetbrains.kotlin.jvm")
-    id("maven-publish")
+    id("org.gradle.maven-publish")
     id("kotlin-kapt")
 }
 
@@ -15,8 +15,6 @@ configurations {
 }
 
 dependencies {
-    implementation(Deps.Libs.Jvm.kotlinStdLib)
-
     embedImplementationConfig(project(":kotlin-common-plugin"))
 
     compileOnly("org.jetbrains.kotlin:kotlin-compiler")

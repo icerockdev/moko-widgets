@@ -4,7 +4,6 @@
 
 package dev.icerock.moko.widgets.bottomsheet
 
-import cocoapods.mokoWidgetsBottomSheet.BottomSheetController
 import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.screen.Screen
 import dev.icerock.moko.widgets.core.style.view.SizeSpec
@@ -16,18 +15,10 @@ actual fun Screen<*>.showBottomSheet(
 ): SelfDismisser? {
     val view = content.buildView(viewController).view
     val holder = BottomSheetHolder()
-    holder.bottomSheet.showOnViewController(
-        vc = this.viewController,
-        withContent = view,
+    holder.show(
+        viewController = this.viewController,
+        view = view,
         onDismiss = onDismiss
     )
     return holder
-}
-
-private class BottomSheetHolder: SelfDismisser {
-    val bottomSheet = BottomSheetController()
-
-    override fun dismissSelf() {
-        bottomSheet.dismiss()
-    }
 }

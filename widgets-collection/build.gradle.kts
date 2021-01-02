@@ -4,30 +4,29 @@
 
 plugins {
     id("com.android.library")
-    id("dev.icerock.mobile.multiplatform-widgets-generator")
     id("org.jetbrains.kotlin.multiplatform")
     id("dev.icerock.mobile.multiplatform")
-    id("maven-publish")
+    id("dev.icerock.mobile.multiplatform-widgets-generator")
+    id("org.gradle.maven-publish")
 }
 
 dependencies {
     commonMainApi(project(":widgets"))
 
-    mppLibrary(Deps.Libs.MultiPlatform.kotlinStdLib)
-    mppLibrary(Deps.Libs.MultiPlatform.coroutines)
+    commonMainImplementation(Deps.Libs.MultiPlatform.coroutines)
 
-    mppLibrary(Deps.Libs.MultiPlatform.mokoMvvm)
-    mppLibrary(Deps.Libs.MultiPlatform.mokoResources)
-    mppLibrary(Deps.Libs.MultiPlatform.mokoFields)
-    mppLibrary(Deps.Libs.MultiPlatform.mokoUnits)
+    commonMainApi(Deps.Libs.MultiPlatform.mokoMvvm.common)
+    commonMainApi(Deps.Libs.MultiPlatform.mokoResources.common)
+    commonMainApi(Deps.Libs.MultiPlatform.mokoFields.common)
+    commonMainApi(Deps.Libs.MultiPlatform.mokoUnits.common)
+    commonMainApi(Deps.Libs.MultiPlatform.mokoGraphics.common)
+    commonMainApi(Deps.Libs.MultiPlatform.mokoParcelize.common)
 
-    androidLibrary(Deps.Libs.Android.lifecycle)
-    androidLibrary(Deps.Libs.Android.recyclerView)
-    androidLibrary(Deps.Libs.Android.swipeRefreshLayout)
+    androidMainImplementation(Deps.Libs.Android.lifecycle)
+    androidMainImplementation(Deps.Libs.Android.recyclerView)
+    androidMainImplementation(Deps.Libs.Android.swipeRefreshLayout)
 }
 
 cocoaPods {
-    podsProject = file("../sample/ios-app/Pods/Pods.xcodeproj")
-
     pod(scheme = "moko-widgets-collection", module = "mokoWidgetsCollection")
 }
