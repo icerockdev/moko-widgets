@@ -22,7 +22,7 @@ object Deps {
     private const val detektVersion = "1.15.0"
 
     private const val klockVersion = "1.12.0"
-    private const val coroutinesVersion = "1.3.9"
+    private const val coroutinesVersion = "1.4.2"
     private const val mokoGraphicsVersion = "0.5.0"
     private const val mokoParcelizeVersion = "0.5.0"
     private const val mokoResourcesVersion = "0.13.2"
