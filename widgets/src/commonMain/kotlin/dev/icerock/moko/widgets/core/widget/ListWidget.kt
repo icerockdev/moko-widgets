@@ -37,11 +37,11 @@ class ListWidget<WS : WidgetSize>(
 
     object DefaultCategory : Category
 
-    fun scrollToFirstItem() {
-        lastScrollView?.scrollToFirstItem()
+    fun scrollToPosition(index: Int) {
+        lastScrollView?.scrollToPosition(index)
     }
 }
 
 interface ScrollListView {
-    fun scrollToFirstItem()
+    fun scrollToPosition(index: Int)
 }

@@ -69,8 +69,8 @@ actual class ReversedListWidgetFactory actual constructor(
         }
 
         widget.lastScrollView = object : ScrollListView {
-            override fun scrollToFirstItem() {
-                // TODO: add scroll to first item
+            override fun scrollToPosition(index: Int) {
+                // TODO: add scroll
             }
         }
 

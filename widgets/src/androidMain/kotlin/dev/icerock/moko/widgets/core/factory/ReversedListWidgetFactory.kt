@@ -48,8 +48,8 @@ actual class ReversedListWidgetFactory actual constructor(
         }
 
         widget.lastScrollView = object : ScrollListView {
-            override fun scrollToFirstItem() {
-                recyclerView.scrollToPosition(0)
+            override fun scrollToPosition(index: Int) {
+                recyclerView.scrollToPosition(index)
             }
         }
         

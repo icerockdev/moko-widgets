@@ -97,8 +97,8 @@ actual class SystemListViewFactory actual constructor(
             }
 
             widget.lastScrollView = object : ScrollListView {
-                override fun scrollToFirstItem() {
-                    // TODO: scroll to first position
+                override fun scrollToPosition(index: Int) {
+                    // TODO: add scroll
                 }
             }
 
