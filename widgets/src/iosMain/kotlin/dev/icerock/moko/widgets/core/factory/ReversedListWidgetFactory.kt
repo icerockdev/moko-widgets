@@ -16,6 +16,7 @@ import dev.icerock.moko.widgets.core.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.core.utils.bind
 import dev.icerock.moko.widgets.core.utils.setEventHandler
 import dev.icerock.moko.widgets.core.widget.ListWidget
+import dev.icerock.moko.widgets.core.widget.ScrollListView
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGAffineTransformMakeRotation
 import platform.CoreGraphics.CGRectZero
@@ -64,6 +65,12 @@ actual class ReversedListWidgetFactory actual constructor(
                         onRefresh { endRefreshing() }
                     }
                 }
+            }
+        }
+
+        widget.lastScrollView = object : ScrollListView {
+            override fun scrollToFirstItem() {
+                // TODO: add scroll to first item
             }
         }
 

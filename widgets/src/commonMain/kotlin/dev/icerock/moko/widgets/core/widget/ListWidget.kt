@@ -29,9 +29,7 @@ class ListWidget<WS : WidgetSize>(
     internal var lastScrollView: ScrollListView? = null
 
     override fun buildView(viewFactoryContext: ViewFactoryContext): ViewBundle<WS> {
-        return factory.build(this, size, viewFactoryContext).also {
-            lastScrollView = it as? ScrollListView
-        }
+        return factory.build(this, size, viewFactoryContext)
     }
 
     interface Id : Theme.Id<ListWidget<out WidgetSize>>
