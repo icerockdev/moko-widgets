@@ -26,12 +26,24 @@ class ListWidget<WS : WidgetSize>(
     val onRefresh: ((completion: () -> Unit) -> Unit)?
 ) : Widget<WS>(), RequireId<ListWidget.Id> {
 
+    internal var lastScrollView: ScrollListView? = null
+
     override fun buildView(viewFactoryContext: ViewFactoryContext): ViewBundle<WS> {
-        return factory.build(this, size, viewFactoryContext)
+        return factory.build(this, size, viewFactoryContext).also {
+            lastScrollView = it as? ScrollListView
+        }
     }
 
     interface Id : Theme.Id<ListWidget<out WidgetSize>>
     interface Category : Theme.Category<ListWidget<out WidgetSize>>
 
     object DefaultCategory : Category
+
+    fun scrollToFirstItem() {
+        lastScrollView?.scrollToFirstItem()
+    }
+}
+
+interface ScrollListView {
+    fun scrollToFirstItem()
 }
