@@ -26,6 +26,8 @@ class ListWidget<WS : WidgetSize>(
     val onRefresh: ((completion: () -> Unit) -> Unit)?
 ) : Widget<WS>(), RequireId<ListWidget.Id> {
 
+    internal var lastScrollView: ScrollListView? = null
+
     override fun buildView(viewFactoryContext: ViewFactoryContext): ViewBundle<WS> {
         return factory.build(this, size, viewFactoryContext)
     }
@@ -34,4 +36,12 @@ class ListWidget<WS : WidgetSize>(
     interface Category : Theme.Category<ListWidget<out WidgetSize>>
 
     object DefaultCategory : Category
+
+    fun scrollToPosition(index: Int) {
+        lastScrollView?.scrollToPosition(index)
+    }
+}
+
+interface ScrollListView {
+    fun scrollToPosition(index: Int)
 }

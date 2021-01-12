@@ -16,16 +16,20 @@ import dev.icerock.moko.widgets.core.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.core.utils.bind
 import dev.icerock.moko.widgets.core.utils.setEventHandler
 import dev.icerock.moko.widgets.core.widget.ListWidget
+import dev.icerock.moko.widgets.core.widget.ScrollListView
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGAffineTransformMakeRotation
 import platform.CoreGraphics.CGRectZero
+import platform.Foundation.NSIndexPath
 import platform.UIKit.UIControlEventValueChanged
 import platform.UIKit.UIRefreshControl
 import platform.UIKit.UITableView
 import platform.UIKit.UITableViewAutomaticDimension
 import platform.UIKit.UITableViewCell
 import platform.UIKit.UITableViewCellSeparatorStyle
+import platform.UIKit.UITableViewScrollPosition
 import platform.UIKit.UITableViewStyle
+import platform.UIKit.indexPathForRow
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
 
@@ -64,6 +68,19 @@ actual class ReversedListWidgetFactory actual constructor(
                         onRefresh { endRefreshing() }
                     }
                 }
+            }
+        }
+
+        widget.lastScrollView = object : ScrollListView {
+            override fun scrollToPosition(index: Int) {
+                tableView.scrollToRowAtIndexPath(
+                    NSIndexPath.indexPathForRow(
+                        row = index.toLong(),
+                        inSection = 0
+                    ),
+                    animated = true,
+                    atScrollPosition = UITableViewScrollPosition.UITableViewScrollPositionBottom
+                )
             }
         }
 

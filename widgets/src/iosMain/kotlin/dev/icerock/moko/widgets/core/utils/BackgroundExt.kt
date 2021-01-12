@@ -10,6 +10,7 @@ import dev.icerock.moko.widgets.core.style.background.Direction
 import dev.icerock.moko.widgets.core.style.background.Fill
 import dev.icerock.moko.widgets.core.style.state.PressableState
 import dev.icerock.moko.widgets.core.objc.cgColors
+import dev.icerock.moko.widgets.core.style.background.Corner
 import kotlinx.cinterop.useContents
 import platform.CoreGraphics.CGPointMake
 import platform.CoreGraphics.CGRectMake
@@ -63,6 +64,10 @@ fun Background<out Fill>.caLayer(): CALayer {
     }
     cornerRadius?.also {
         backgroundLayer.cornerRadius = it.toDouble()
+    }
+
+    maskedCorners?.also { cornersList ->
+        backgroundLayer.maskedCorners = cornersList.toCACornerMask()
     }
 
     return backgroundLayer
@@ -130,6 +135,9 @@ fun UIView.applyBackgroundIfNeeded(background: Background<Fill.Solid>?) {
         layer.borderColor = it.color.toUIColor().CGColor
     }
     background.cornerRadius?.also { layer.cornerRadius = it.toDouble() }
+    background.maskedCorners?.also { cornersList ->
+        layer.maskedCorners = cornersList.toCACornerMask()
+    }
 }
 
 fun UIView.applyBackgroundIfNeeded(background: Background<out Fill>?) {

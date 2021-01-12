@@ -7,5 +7,6 @@ package dev.icerock.moko.widgets.core.style.background
 data class Background<F : Fill>(
     val fill: F? = null,
     val border: Border? = null,
-    val cornerRadius: Float? = null
+    val cornerRadius: Float? = null,
+    val maskedCorners: List<Corner>? = null
 )
