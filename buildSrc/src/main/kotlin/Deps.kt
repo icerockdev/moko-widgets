@@ -3,7 +3,7 @@
  */
 
 object Deps {
-    private const val kotlinVersion = "1.4.30-M1"
+    private const val kotlinVersion = "1.4.21"
     private const val autoServiceVersion = "1.0-rc6"
 
     private const val androidAppCompatVersion = "1.1.0"

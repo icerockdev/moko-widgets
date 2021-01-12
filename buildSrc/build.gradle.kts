@@ -5,7 +5,7 @@
 import java.io.ByteArrayOutputStream
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.4.30-M1"
+    id("org.jetbrains.kotlin.jvm") version "1.4.21"
     id("com.github.kukuhyoniatmoko.buildconfigkotlin") version "1.0.5"
 }
 
@@ -19,7 +19,7 @@ repositories {
 dependencies {
     api(gradleApi())
     api("dev.icerock:mobile-multiplatform:0.9.0")
-    api("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.30-M1")
+    api("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.21")
     api("com.android.tools.build:gradle:4.1.1")
 }
 
