@@ -55,7 +55,26 @@ fun Background<out Fill>.buildBackground(context: Context): Drawable {
     }
 
     if (cornerRadius != null) {
-        gradientDrawable.cornerRadius = cornerRadius * scale
+        var topLeftRadius = 0f
+        var topRightRadius = 0f
+        var bottomLeftRadius = 0f
+        var bottomRightRadius = 0f
+
+        (maskedCorners ?: Corner.values().toList()).onEach { corner ->
+            when (corner) {
+                Corner.TOP_LEFT -> topLeftRadius = cornerRadius * scale
+                Corner.TOP_RIGHT -> topRightRadius = cornerRadius * scale
+                Corner.BOTTOM_LEFT -> bottomLeftRadius = cornerRadius * scale
+                Corner.BOTTOM_RIGHT -> bottomRightRadius = cornerRadius * scale
+            }
+        }
+
+        gradientDrawable.cornerRadii = floatArrayOf(
+            topLeftRadius, topLeftRadius,
+            topRightRadius, topRightRadius,
+            bottomRightRadius, bottomRightRadius,
+            bottomLeftRadius, bottomLeftRadius
+        )
     }
 
     if (border != null) {
