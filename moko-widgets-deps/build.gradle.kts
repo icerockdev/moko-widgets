@@ -9,6 +9,9 @@ plugins {
     id("com.github.kukuhyoniatmoko.buildconfigkotlin") version "1.0.5"
 }
 
+group = "gradle"
+version = "1"
+
 repositories {
     jcenter()
     google()
