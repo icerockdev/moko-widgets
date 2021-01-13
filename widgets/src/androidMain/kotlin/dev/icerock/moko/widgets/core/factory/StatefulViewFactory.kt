@@ -70,7 +70,7 @@ actual class StatefulViewFactory actual constructor(
             }
 
             views.asSequence()
-                .filter { it.view.visibility != View.GONE && it.view.id != currentView.view.id }
+                .filter { it.view.visibility != View.GONE && it.view != currentView.view }
                 .forEach { it.view.visibility = View.GONE }
 
             if (currentView.view.visibility != View.VISIBLE) {
