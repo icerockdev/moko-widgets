@@ -19,6 +19,7 @@ import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.utils.androidId
 import dev.icerock.moko.widgets.core.utils.bind
 import dev.icerock.moko.widgets.core.widget.ListWidget
+import dev.icerock.moko.widgets.core.widget.ScrollListView
 
 actual class ReversedListWidgetFactory actual constructor(
     private val background: Background<Fill.Solid>?
@@ -46,6 +47,12 @@ actual class ReversedListWidgetFactory actual constructor(
             it.id = widget.id.androidId
         }
 
+        widget.lastScrollView = object : ScrollListView {
+            override fun scrollToPosition(index: Int) {
+                recyclerView.scrollToPosition(index)
+            }
+        }
+        
         val resultView: View = recyclerView
 
         widget.items.bind(lifecycleOwner) { units ->

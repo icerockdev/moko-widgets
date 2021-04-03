@@ -24,6 +24,7 @@ import dev.icerock.moko.widgets.core.style.view.PaddingValues
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.utils.androidId
 import dev.icerock.moko.widgets.core.utils.bind
+import dev.icerock.moko.widgets.core.widget.ScrollListView
 
 actual class SystemListViewFactory actual constructor(
     private val background: Background<Fill.Solid>?,
@@ -59,6 +60,12 @@ actual class SystemListViewFactory actual constructor(
             applyPaddingIfNeeded(padding)
 
             id = widget.id.androidId
+        }
+
+        widget.lastScrollView = object : ScrollListView {
+            override fun scrollToPosition(index: Int) {
+                recyclerView.scrollToPosition(index)
+            }
         }
 
         val resultView: View = if (haveSwipeRefreshListener) {

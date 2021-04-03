@@ -13,8 +13,9 @@ buildscript {
         maven { url = uri("https://dl.bintray.com/icerockdev/plugins") }
     }
     dependencies {
-        plugin(Deps.Plugins.mokoResources)
-        plugin(Deps.Plugins.mokoWidgets)
+        classpath("dev.icerock.moko:resources-generator:0.13.2")
+        classpath("dev.icerock.moko.widgets:gradle-plugin:0.1.0-dev-21")
+        classpath("gradle:moko-widgets-deps:1")
     }
 }
 
