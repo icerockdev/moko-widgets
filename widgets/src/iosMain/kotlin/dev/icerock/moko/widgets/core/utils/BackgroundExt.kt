@@ -14,13 +14,13 @@ import dev.icerock.moko.widgets.core.style.background.Corner
 import kotlinx.cinterop.useContents
 import platform.CoreGraphics.CGPointMake
 import platform.CoreGraphics.CGRectMake
+import platform.Foundation.NSRunLoop
+import platform.Foundation.NSRunLoopCommonModes
+import platform.QuartzCore.CADisplayLink
 import platform.QuartzCore.CAGradientLayer
 import platform.QuartzCore.CALayer
 import platform.QuartzCore.CATransaction
-import platform.UIKit.UIButton
-import platform.UIKit.UIColor
-import platform.UIKit.UIView
-import platform.UIKit.backgroundColor
+import platform.UIKit.*
 
 fun Background<out Fill>.caLayer(): CALayer {
 
@@ -110,19 +110,26 @@ fun UIButton.applyStateBackgroundIfNeeded(background: PressableState<Background<
     updateLayers()
 
     // FIXME memoryleak, perfomance problem !!!
-    displayLink {
-        val (width, height) = layer.bounds.useContents { size.width to size.height }
+    var link: CADisplayLink? = null
 
-        CATransaction.begin()
-        CATransaction.setDisableActions(true)
+    link = displayLink {
+        if (window != null) {
+            val (width, height) = layer.bounds.useContents { size.width to size.height }
 
-        normalBg.frame = CGRectMake(0.0, 0.0, width, height)
-        disabledBg.frame = CGRectMake(0.0, 0.0, width, height)
-        pressedBg.frame = CGRectMake(0.0, 0.0, width, height)
+            CATransaction.begin()
+            CATransaction.setDisableActions(true)
 
-        updateLayers()
+            normalBg.frame = CGRectMake(0.0, 0.0, width, height)
+            disabledBg.frame = CGRectMake(0.0, 0.0, width, height)
+            pressedBg.frame = CGRectMake(0.0, 0.0, width, height)
 
-        CATransaction.commit()
+            updateLayers()
+
+            CATransaction.commit()
+
+        } else {
+            link?.removeFromRunLoop(NSRunLoop.currentRunLoop, NSRunLoopCommonModes)
+        }
     }
 }
 
@@ -149,14 +156,20 @@ fun UIView.applyBackgroundIfNeeded(background: Background<out Fill>?) {
     layer.insertSublayer(bgLayer, 0U)
 
     // FIXME memoryleak, perfomance problem !!!
-    displayLink {
-        val (width, height) = layer.bounds.useContents { size.width to size.height }
+    var link: CADisplayLink? = null
 
-        CATransaction.begin()
-        CATransaction.setDisableActions(true)
+    link = displayLink {
+        if (window != null) {
+            val (width, height) = layer.bounds.useContents { size.width to size.height }
 
-        bgLayer.frame = CGRectMake(0.0, 0.0, width, height)
+            CATransaction.begin()
+            CATransaction.setDisableActions(true)
 
-        CATransaction.commit()
+            bgLayer.frame = CGRectMake(0.0, 0.0, width, height)
+
+            CATransaction.commit()
+        } else {
+            link?.removeFromRunLoop(NSRunLoop.currentRunLoop, NSRunLoopCommonModes)
+        }
     }
 }
