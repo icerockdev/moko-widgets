@@ -10,10 +10,10 @@ plugins {
 }
 
 dependencies {
-    implementation(Deps.Libs.Jvm.kotlinStdLib)
+    implementation(libs.kotlinStdLib)
 
-    compileOnly(Deps.Libs.Jvm.kotlinGradlePlugin)
-    implementation(Deps.Libs.Jvm.kotlinGradlePluginApi)
+    compileOnly(libs.kotlinGradlePlugin)
+    implementation(libs.kotlinGradlePluginApi)
 
     compileOnly(Deps.Libs.Jvm.autoService)
     kapt(Deps.Libs.Jvm.autoService)

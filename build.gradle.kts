@@ -6,32 +6,19 @@ buildscript {
     repositories {
         jcenter()
         google()
-
-        maven { url = uri("https://dl.bintray.com/kotlin/kotlin") }
-        maven { url = uri("https://kotlin.bintray.com/kotlinx") }
-        maven { url = uri("https://plugins.gradle.org/m2/") }
-        maven { url = uri("https://dl.bintray.com/icerockdev/plugins") }
-
-        maven { url = uri("https://dl.bintray.com/icerockdev/plugins-dev") }
+        gradlePluginPortal()
     }
     dependencies {
-        Deps.plugins.values.forEach { classpath(it) }
+        classpath("dev.icerock.moko.widgets:gradle-plugin:0.1.0")
+        classpath("dev.icerock.moko:resources-generator:0.16.1")
     }
 }
 
 allprojects {
     repositories {
+        mavenCentral()
         google()
         jcenter()
-
-        maven { url = uri("https://kotlin.bintray.com/kotlin") }
-        maven { url = uri("https://kotlin.bintray.com/kotlinx") }
-        maven { url = uri("https://dl.bintray.com/icerockdev/moko") }
-        maven { url = uri("https://dl.bintray.com/icerockdev/plugins") }
-        maven { url = uri("http://dl.bintray.com/lukaville/maven") }
-
-        maven { url = uri("https://dl.bintray.com/icerockdev/moko-dev") }
-        maven { url = uri("https://dl.bintray.com/icerockdev/plugins-dev") }
     }
 
     // Workaround for https://youtrack.jetbrains.com/issue/KT-36721.

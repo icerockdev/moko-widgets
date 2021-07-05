@@ -15,7 +15,7 @@ configurations {
 }
 
 dependencies {
-    implementation(Deps.Libs.Jvm.kotlinStdLib)
+    implementation(libs.kotlinStdLib)
 
     embedImplementationConfig(project(":kotlin-common-plugin"))
 

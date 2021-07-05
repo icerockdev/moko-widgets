@@ -7,7 +7,7 @@ plugins {
 }
 
 dependencies {
-    compileOnly(Deps.Libs.Jvm.kotlinStdLib)
+    compileOnly(libs.kotlinStdLib)
 
     compileOnly("org.jetbrains.kotlin:kotlin-script-runtime")
     compileOnly("org.jetbrains.kotlin:kotlin-reflect")

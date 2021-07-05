@@ -29,32 +29,32 @@ android {
 }
 
 val deps = listOf(
-    Deps.Libs.MultiPlatform.mokoResources,
-    Deps.Libs.MultiPlatform.mokoMvvm,
-    Deps.Libs.MultiPlatform.mokoUnits,
-    Deps.Libs.MultiPlatform.mokoGraphics,
-    Deps.Libs.MultiPlatform.mokoWidgets,
-    Deps.Libs.MultiPlatform.mokoWidgetsBottomSheet,
-    Deps.Libs.MultiPlatform.mokoWidgetsCollection,
-    Deps.Libs.MultiPlatform.mokoWidgetsDateTimePicker,
-    Deps.Libs.MultiPlatform.mokoWidgetsFlat,
-    Deps.Libs.MultiPlatform.mokoWidgetsImageNetwork,
-    Deps.Libs.MultiPlatform.mokoWidgetsMedia,
-    Deps.Libs.MultiPlatform.mokoWidgetsPermissions,
-    Deps.Libs.MultiPlatform.mokoWidgetsSms
+    libs.mokoResources,
+    libs.mokoMvvm,
+    libs.mokoUnits,
+    libs.mokoGraphics,
+    libs.mokoWidgets,
+    libs.mokoWidgetsBottomSheet,
+    libs.mokoWidgetsCollection,
+    libs.mokoWidgetsDateTimePicker,
+    libs.mokoWidgetsFlat,
+    libs.mokoWidgetsImageNetwork,
+    libs.mokoWidgetsMedia,
+    libs.mokoWidgetsPermissions,
+    libs.mokoWidgetsSms
 )
 
 setupFramework(exports = emptyList())
 
 dependencies {
-    mppLibrary(Deps.Libs.MultiPlatform.kotlinStdLib)
-    mppLibrary(Deps.Libs.MultiPlatform.coroutines)
+    commonMainImplementation(libs.kotlinStdLib)
+    commonMainImplementation(libs.coroutines)
 
-    deps.forEach { mppLibrary(it) }
+    deps.forEach { commonMainImplementation(it) }
 
-    androidLibrary(Deps.Libs.Android.recyclerView)
-    androidLibrary(Deps.Libs.Android.appCompat)
-    androidLibrary(Deps.Libs.Android.material)
+    androidMainImplementation(libs.recyclerView)
+    androidMainImplementation(libs.appCompat)
+    androidMainImplementation(libs.material)
 }
 
 multiplatformResources {
