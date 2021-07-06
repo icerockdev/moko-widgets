@@ -3,18 +3,16 @@
  */
 
 plugins {
-    id("com.android.library")
-    id("dev.icerock.mobile.multiplatform-widgets-generator")
-    id("org.jetbrains.kotlin.multiplatform")
+    id("multiplatform-library-convention")
+    id("dev.icerock.mobile.multiplatform.android-manifest")
+    id("publication-convention")
     id("kotlin-kapt")
-    id("kotlin-android-extensions")
-    id("dev.icerock.mobile.multiplatform")
-    id("maven-publish")
+    id("kotlin-parcelize")
 }
 
 dependencies {
     commonMainImplementation(libs.kotlinStdLib)
-
+    commonMainImplementation(projects.widgets)
     commonMainImplementation(libs.coroutines)
 
     commonMainImplementation(libs.mokoResources)
@@ -24,14 +22,14 @@ dependencies {
     commonMainImplementation(libs.mokoGraphics)
     commonMainImplementation(libs.mokoParcelize)
 
-    androidMainImplementation(libs.appCompat)
-    androidMainImplementation(libs.fragment)
-    androidMainImplementation(libs.recyclerView)
-    androidMainImplementation(libs.material)
-    androidMainImplementation(libs.swipeRefreshLayout)
-    androidMainImplementation(libs.constraintLayout)
-    androidMainImplementation(libs.inputMask)
-    androidMainImplementation(libs.roundedImageView)
+    "androidMainImplementation"(libs.appCompat)
+    "androidMainImplementation"(libs.fragment)
+    "androidMainImplementation"(libs.recyclerView)
+    "androidMainImplementation"(libs.material)
+    "androidMainImplementation"(libs.swipeRefreshLayout)
+    "androidMainImplementation"(libs.constraintLayout)
+    "androidMainImplementation"(libs.inputMask)
+    "androidMainImplementation"(libs.roundedImageView)
 }
 
 kotlin {

@@ -28,29 +28,24 @@ android {
     }
 }
 
-val deps = listOf(
-    libs.mokoResources,
-    libs.mokoMvvm,
-    libs.mokoUnits,
-    libs.mokoGraphics,
-    libs.mokoWidgets,
-    libs.mokoWidgetsBottomSheet,
-    libs.mokoWidgetsCollection,
-    libs.mokoWidgetsDateTimePicker,
-    libs.mokoWidgetsFlat,
-    libs.mokoWidgetsImageNetwork,
-    libs.mokoWidgetsMedia,
-    libs.mokoWidgetsPermissions,
-    libs.mokoWidgetsSms
-)
-
 setupFramework(exports = emptyList())
 
 dependencies {
     commonMainImplementation(libs.kotlinStdLib)
     commonMainImplementation(libs.coroutines)
-
-    deps.forEach { commonMainImplementation(it) }
+    commonMainImplementation(libs.mokoResources)
+    commonMainImplementation(libs.mokoMvvm)
+    commonMainImplementation(libs.mokoUnits)
+    commonMainImplementation(libs.mokoGraphics)
+    commonMainImplementation(libs.mokoWidgets)
+    commonMainImplementation(libs.mokoWidgetsBottomSheet)
+    commonMainImplementation(libs.mokoWidgetsCollection)
+    commonMainImplementation(libs.mokoWidgetsDateTimePicker)
+    commonMainImplementation(libs.mokoWidgetsFlat)
+    commonMainImplementation(libs.mokoWidgetsImageNetwork)
+    commonMainImplementation(libs.mokoWidgetsMedia)
+    commonMainImplementation(libs.mokoWidgetsPermissions)
+    commonMainImplementation(libs.mokoWidgetsSms)
 
     androidMainImplementation(libs.recyclerView)
     androidMainImplementation(libs.appCompat)
