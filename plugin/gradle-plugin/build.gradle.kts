@@ -7,17 +7,19 @@ plugins {
     id("maven-publish")
     id("kotlin-kapt")
     id("com.github.kukuhyoniatmoko.buildconfigkotlin") version "1.0.5"
+
 }
 
 dependencies {
-    implementation(Deps.Libs.Jvm.kotlinStdLib)
+    implementation(libs.kotlinStdLib)
 
-    compileOnly(Deps.Libs.Jvm.kotlinGradlePlugin)
-    implementation(Deps.Libs.Jvm.kotlinGradlePluginApi)
+    compileOnly("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.20")
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin-api:1.5.20")
 
-    compileOnly(Deps.Libs.Jvm.autoService)
-    kapt(Deps.Libs.Jvm.autoService)
+    compileOnly(libs.autoService)
+    kapt(libs.autoService)
 }
+
 
 buildConfigKotlin {
     sourceSet("main") {
