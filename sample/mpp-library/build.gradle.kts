@@ -28,33 +28,28 @@ android {
     }
 }
 
-val deps = listOf(
-    Deps.Libs.MultiPlatform.mokoResources,
-    Deps.Libs.MultiPlatform.mokoMvvm,
-    Deps.Libs.MultiPlatform.mokoUnits,
-    Deps.Libs.MultiPlatform.mokoGraphics,
-    Deps.Libs.MultiPlatform.mokoWidgets,
-    Deps.Libs.MultiPlatform.mokoWidgetsBottomSheet,
-    Deps.Libs.MultiPlatform.mokoWidgetsCollection,
-    Deps.Libs.MultiPlatform.mokoWidgetsDateTimePicker,
-    Deps.Libs.MultiPlatform.mokoWidgetsFlat,
-    Deps.Libs.MultiPlatform.mokoWidgetsImageNetwork,
-    Deps.Libs.MultiPlatform.mokoWidgetsMedia,
-    Deps.Libs.MultiPlatform.mokoWidgetsPermissions,
-    Deps.Libs.MultiPlatform.mokoWidgetsSms
-)
-
 setupFramework(exports = emptyList())
 
 dependencies {
-    mppLibrary(Deps.Libs.MultiPlatform.kotlinStdLib)
-    mppLibrary(Deps.Libs.MultiPlatform.coroutines)
+    commonMainImplementation(libs.kotlinStdLib)
+    commonMainImplementation(libs.coroutines)
+    commonMainImplementation(libs.mokoResources)
+    commonMainImplementation(libs.mokoMvvm)
+    commonMainImplementation(libs.mokoUnits)
+    commonMainImplementation(libs.mokoGraphics)
+    commonMainImplementation(libs.mokoWidgets)
+    commonMainImplementation(libs.mokoWidgetsBottomSheet)
+    commonMainImplementation(libs.mokoWidgetsCollection)
+    commonMainImplementation(libs.mokoWidgetsDateTimePicker)
+    commonMainImplementation(libs.mokoWidgetsFlat)
+    commonMainImplementation(libs.mokoWidgetsImageNetwork)
+    commonMainImplementation(libs.mokoWidgetsMedia)
+    commonMainImplementation(libs.mokoWidgetsPermissions)
+    commonMainImplementation(libs.mokoWidgetsSms)
 
-    deps.forEach { mppLibrary(it) }
-
-    androidLibrary(Deps.Libs.Android.recyclerView)
-    androidLibrary(Deps.Libs.Android.appCompat)
-    androidLibrary(Deps.Libs.Android.material)
+    androidMainImplementation(libs.recyclerView)
+    androidMainImplementation(libs.appCompat)
+    androidMainImplementation(libs.material)
 }
 
 multiplatformResources {

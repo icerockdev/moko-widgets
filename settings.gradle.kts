@@ -2,8 +2,24 @@
  * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
 
-enableFeaturePreview("GRADLE_METADATA")
+enableFeaturePreview("VERSION_CATALOGS")
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+//enableFeaturePreview("GRADLE_METADATA")
 
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+        google()
+        jcenter()
+
+
+
+        maven { url = uri("https://dl.bintray.com/icerockdev/moko-dev") }
+        maven { url = uri("https://dl.bintray.com/icerockdev/plugins-dev") }
+    }
+}
+
+includeBuild("widgets-build-logic")
 includeBuild("plugin")
 
 include(":widgets")

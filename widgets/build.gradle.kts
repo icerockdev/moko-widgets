@@ -3,35 +3,33 @@
  */
 
 plugins {
-    id("com.android.library")
-    id("dev.icerock.mobile.multiplatform-widgets-generator")
-    id("org.jetbrains.kotlin.multiplatform")
+    id("multiplatform-library-convention")
+    id("dev.icerock.mobile.multiplatform.android-manifest")
+    id("publication-convention")
     id("kotlin-kapt")
-    id("kotlin-android-extensions")
-    id("dev.icerock.mobile.multiplatform")
-    id("maven-publish")
+    id("kotlin-parcelize")
 }
 
 dependencies {
-    mppLibrary(Deps.Libs.MultiPlatform.kotlinStdLib)
+    commonMainImplementation(libs.kotlinStdLib)
+    commonMainImplementation(projects.widgets)
+    commonMainImplementation(libs.coroutines)
 
-    mppLibrary(Deps.Libs.MultiPlatform.coroutines)
+    commonMainImplementation(libs.mokoResources)
+    commonMainImplementation(libs.mokoMvvm)
+    commonMainImplementation(libs.mokoFields)
+    commonMainImplementation(libs.mokoUnits)
+    commonMainImplementation(libs.mokoGraphics)
+    commonMainImplementation(libs.mokoParcelize)
 
-    mppLibrary(Deps.Libs.MultiPlatform.mokoResources)
-    mppLibrary(Deps.Libs.MultiPlatform.mokoMvvm)
-    mppLibrary(Deps.Libs.MultiPlatform.mokoFields)
-    mppLibrary(Deps.Libs.MultiPlatform.mokoUnits)
-    mppLibrary(Deps.Libs.MultiPlatform.mokoGraphics)
-    mppLibrary(Deps.Libs.MultiPlatform.mokoParcelize)
-
-    androidLibrary(Deps.Libs.Android.appCompat)
-    androidLibrary(Deps.Libs.Android.fragment)
-    androidLibrary(Deps.Libs.Android.recyclerView)
-    androidLibrary(Deps.Libs.Android.material)
-    androidLibrary(Deps.Libs.Android.swipeRefreshLayout)
-    androidLibrary(Deps.Libs.Android.constraintLayout)
-    androidLibrary(Deps.Libs.Android.inputMask)
-    androidLibrary(Deps.Libs.Android.roundedImageView)
+    "androidMainImplementation"(libs.appCompat)
+    "androidMainImplementation"(libs.fragment)
+    "androidMainImplementation"(libs.recyclerView)
+    "androidMainImplementation"(libs.material)
+    "androidMainImplementation"(libs.swipeRefreshLayout)
+    "androidMainImplementation"(libs.constraintLayout)
+    "androidMainImplementation"(libs.inputMask)
+    "androidMainImplementation"(libs.roundedImageView)
 }
 
 kotlin {

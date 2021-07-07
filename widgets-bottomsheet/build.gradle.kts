@@ -12,15 +12,15 @@ plugins {
 dependencies {
     commonMainApi(project(":widgets"))
 
-    mppLibrary(Deps.Libs.MultiPlatform.kotlinStdLib)
-    mppLibrary(Deps.Libs.MultiPlatform.coroutines)
+    commonMainImplementation(libs.kotlinStdLib)
+    commonMainImplementation(libs.coroutines)
 
-    mppLibrary(Deps.Libs.MultiPlatform.mokoMvvm)
-    mppLibrary(Deps.Libs.MultiPlatform.mokoResources)
-    mppLibrary(Deps.Libs.MultiPlatform.mokoFields)
+    commonMainImplementation(libs.mokoMvvm)
+    commonMainImplementation(libs.mokoResources)
+    commonMainImplementation(libs.mokoFields)
 
-    androidLibrary(Deps.Libs.Android.lifecycle)
-    androidLibrary(Deps.Libs.Android.material)
+    androidMainImplementation(libs.lifecycle)
+    androidMainImplementation(libs.material)
 }
 
 cocoaPods {

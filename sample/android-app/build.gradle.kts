@@ -49,13 +49,13 @@ android {
 }
 
 dependencies {
-    implementation(Deps.Libs.Android.kotlinStdLib.name)
+    implementation(libs.kotlinStdLib)
 
-    implementation(Deps.Libs.Android.appCompat.name)
-    implementation(Deps.Libs.Android.recyclerView.name)
-    implementation(Deps.Libs.Android.material.name)
-    implementation(Deps.Libs.Android.constraintLayout.name)
+    implementation(libs.appCompat)
+    implementation(libs.recyclerView)
+    implementation(libs.material)
+    implementation(libs.constraintLayout)
 
-    implementation(Deps.Libs.MultiPlatform.mokoWidgets.common!!)
+    implementation(libs.mokoWidgets)
     implementation(project(":sample:mpp-library"))
 }

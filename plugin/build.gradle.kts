@@ -2,22 +2,21 @@
  * Copyright 2020 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
 
+plugins {
+    id("org.jetbrains.kotlin.jvm") version("1.5.20")
+}
+
 allprojects {
     repositories {
         google()
         jcenter()
-
-        maven { url = uri("https://kotlin.bintray.com/kotlin") }
-        maven { url = uri("https://kotlin.bintray.com/kotlinx") }
-        maven { url = uri("https://dl.bintray.com/icerockdev/moko") }
-        maven { url = uri("https://dl.bintray.com/icerockdev/plugins") }
     }
 
     val bintrayPath = "plugins" to "moko-widgets-generator"
     val project = this
 
     project.group = "dev.icerock.moko.widgets"
-    project.version = Versions.Plugins.mokoWidgets
+    project.version = rootProject.libs.versions.mokoWidgetsVersion.get()
 
     project.plugins.withType<JavaPlugin> {
         project.configure<JavaPluginExtension> {
@@ -45,10 +44,7 @@ allprojects {
         }
     }
 
-    apply<dev.icerock.moko.widgets.gradle.BintrayPublishingPlugin>()
+    //apply<dev.icerock.moko.widgets.gradle.BintrayPublishingPlugin>()
 }
 
-tasks.register("clean", Delete::class).configure {
-    group = "build"
-    delete(rootProject.buildDir)
-}
+
