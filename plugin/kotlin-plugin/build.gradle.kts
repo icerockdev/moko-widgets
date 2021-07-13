@@ -15,12 +15,12 @@ configurations {
 }
 
 dependencies {
-    embedImplementationConfig(project(":kotlin-common-plugin"))
+    embedImplementationConfig(projects.kotlinCommonPlugin)
 
     compileOnly("org.jetbrains.kotlin:kotlin-compiler-embeddable")
 
-    compileOnly(Deps.Libs.Jvm.autoService)
-    kapt(Deps.Libs.Jvm.autoService)
+    //compileOnly(libs.autoService)
+    kapt(libs.autoService)
 }
 
 tasks.jar {
