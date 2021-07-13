@@ -4,49 +4,51 @@
 
 plugins {
     id("com.android.library")
+    id("android-base-convention")
+    id("detekt-convention")
     id("org.jetbrains.kotlin.multiplatform")
-    id("dev.icerock.mobile.multiplatform")
+    id("dev.icerock.mobile.multiplatform.android-manifest")
     id("kotlin-kapt")
     id("kotlin-parcelize")
     id("dev.icerock.mobile.multiplatform-resources")
     id("dev.icerock.mobile.multiplatform.ios-framework")
+    id("dev.icerock.mobile.multiplatform.cocoapods")
 }
-
-android {
-    buildFeatures.dataBinding = true
-
-    lintOptions {
-        disable("ImpliedQuantity")
-    }
+kotlin {
+    android()
+    ios()
 }
-
-val deps = listOf(
-    Deps.Libs.MultiPlatform.mokoResources,
-    Deps.Libs.MultiPlatform.mokoMvvm,
-    Deps.Libs.MultiPlatform.mokoUnits,
-    Deps.Libs.MultiPlatform.mokoGraphics,
-    Deps.Libs.MultiPlatform.mokoWidgets,
-    Deps.Libs.MultiPlatform.mokoWidgetsBottomSheet,
-    Deps.Libs.MultiPlatform.mokoWidgetsCollection,
-    Deps.Libs.MultiPlatform.mokoWidgetsDateTimePicker,
-    Deps.Libs.MultiPlatform.mokoWidgetsImageNetwork,
-    Deps.Libs.MultiPlatform.mokoWidgetsMedia,
-    Deps.Libs.MultiPlatform.mokoWidgetsPermissions,
-    Deps.Libs.MultiPlatform.mokoWidgetsSms
-)
 
 dependencies {
-    commonMainImplementation(Deps.Libs.MultiPlatform.coroutines)
+    commonMainImplementation(libs.coroutines)
 
-    deps.forEach { commonMainImplementation(it.common) }
+    commonMainImplementation(libs.mokoResources)
+    commonMainImplementation(libs.mokoMvvm)
+    commonMainImplementation(libs.mokoUnits)
+    commonMainImplementation(libs.mokoGraphics)
+    commonMainImplementation(libs.mokoWidgets)
+    commonMainImplementation(libs.mokoWidgetsBottomSheet)
+    commonMainImplementation(libs.mokoWidgetsCollection)
+    commonMainImplementation(libs.mokoWidgetsDateTimePicker)
+    commonMainImplementation(libs.mokoWidgetsImageNetwork)
+    commonMainImplementation(libs.mokoWidgetsMedia)
+    commonMainImplementation(libs.mokoWidgetsPermissions)
+    commonMainImplementation(libs.mokoWidgetsSms)
 
-    androidMainImplementation(Deps.Libs.Android.recyclerView)
-    androidMainImplementation(Deps.Libs.Android.appCompat)
-    androidMainImplementation(Deps.Libs.Android.material)
+    "androidMainImplementation"(libs.recyclerView)
+    "androidMainImplementation"(libs.appCompat)
+    "androidMainImplementation"(libs.material)
 }
 
 framework {
-
+    export(libs.mokoWidgets)
+    export(libs.mokoWidgetsBottomSheet)
+    export(libs.mokoWidgetsCollection)
+    export(libs.mokoWidgetsDateTimePicker)
+    export(libs.mokoWidgetsImageNetwork)
+    export(libs.mokoWidgetsMedia)
+    export(libs.mokoWidgetsPermissions)
+    export(libs.mokoWidgetsSms)
 }
 
 multiplatformResources {

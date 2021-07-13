@@ -12,18 +12,20 @@ plugins {
 dependencies {
     implementation(gradleApi())
     implementation(gradleKotlinDsl())
-    compileOnly(Deps.Libs.Jvm.kotlinGradlePlugin)
-    implementation(Deps.Libs.Jvm.kotlinGradlePluginApi)
+    compileOnly(libs.kotlinGradlePlugin)
+    implementation(libs.kotlinGradlePluginApi)
 
-    compileOnly(Deps.Libs.Jvm.autoService)
-    kapt(Deps.Libs.Jvm.autoService)
+    compileOnly(libs.autoService)
+    kapt(libs.autoService)
 }
 
-buildConfigKotlin {
-    sourceSet("main") {
-        buildConfig(name = "compilerPluginVersion", value = project.version.toString())
-    }
-}
+
+
+//buildConfigKotlin {
+//    sourceSet("main") {
+//        buildConfig(name = "compilerPluginVersion", value = project.version.toString())
+//    }
+//} 
 
 publishing {
     publications {

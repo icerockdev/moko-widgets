@@ -3,19 +3,19 @@
  */
 
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.multiplatform")
-    id("dev.icerock.mobile.multiplatform")
-    id("org.gradle.maven-publish")
+    id("multiplatform-library-convention")
+    id("dev.icerock.mobile.multiplatform.android-manifest")
+    id("publication-convention")
 }
 
 dependencies {
-    commonMainApi(project(":widgets"))
+    commonMainApi(projects.widgets)
 
-    commonMainImplementation(Deps.Libs.MultiPlatform.coroutines)
+    commonMainImplementation(libs.coroutines)
 
-    commonMainApi(Deps.Libs.MultiPlatform.mokoMedia.common)
-    commonMainApi(Deps.Libs.MultiPlatform.mokoPermissions.common)
+    commonMainApi(libs.mokoMedia)
+    commonMainApi(libs.mokoPermissions)
 
-    androidMainImplementation(Deps.Libs.Android.lifecycle)
+    "androidMainImplementation"(libs.lifecycle)
 }
+

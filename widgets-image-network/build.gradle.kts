@@ -3,19 +3,19 @@
  */
 
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.multiplatform")
-    id("dev.icerock.mobile.multiplatform")
-    id("org.gradle.maven-publish")
+    id("multiplatform-library-convention")
+    id("dev.icerock.mobile.multiplatform.android-manifest")
+    id("publication-convention")
+    id("dev.icerock.mobile.multiplatform.cocoapods")
 }
 
 dependencies {
-    commonMainApi(project(":widgets"))
+    commonMainApi(projects.widgets)
 
-    commonMainImplementation(Deps.Libs.MultiPlatform.coroutines)
+    commonMainImplementation(libs.coroutines)
 
-    androidMainImplementation(Deps.Libs.Android.lifecycle)
-    androidMainImplementation(Deps.Libs.Android.glide)
+    androidMainImplementation(libs.lifecycle)
+    androidMainImplementation(libs.glide)
 }
 
 cocoaPods {
