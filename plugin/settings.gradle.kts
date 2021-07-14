@@ -10,6 +10,7 @@ pluginManagement {
         google()
 
         gradlePluginPortal()
+        jcenter()
     }
 }
 
@@ -23,6 +24,8 @@ dependencyResolutionManagement {
                 includeGroup("org.jetbrains.kotlinx")
             }
         }
+        jcenter()
+        
     }
 
     versionCatalogs {

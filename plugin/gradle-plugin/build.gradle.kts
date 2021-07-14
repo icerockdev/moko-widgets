@@ -6,7 +6,7 @@ plugins {
     id("org.jetbrains.kotlin.jvm")
     id("org.gradle.maven-publish")
     id("kotlin-kapt")
-    id("com.github.kukuhyoniatmoko.buildconfigkotlin") version "1.0.5"
+    id("com.github.kukuhyoniatmoko.buildconfigkotlin")
 }
 
 dependencies {
@@ -19,13 +19,11 @@ dependencies {
     kapt(libs.autoService)
 }
 
-
-
-//buildConfigKotlin {
-//    sourceSet("main") {
-//        buildConfig(name = "compilerPluginVersion", value = project.version.toString())
-//    }
-//} 
+buildConfigKotlin {
+    sourceSet("main") {
+        buildConfig(name = "compilerPluginVersion", value = project.version.toString())
+    }
+}
 
 publishing {
     publications {

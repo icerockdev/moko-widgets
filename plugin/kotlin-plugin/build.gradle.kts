@@ -19,7 +19,7 @@ dependencies {
 
     compileOnly("org.jetbrains.kotlin:kotlin-compiler-embeddable")
 
-    //compileOnly(libs.autoService)
+    compileOnly(libs.autoService)
     kapt(libs.autoService)
 }
 

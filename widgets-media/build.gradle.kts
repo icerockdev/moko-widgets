@@ -15,7 +15,6 @@ dependencies {
 
     commonMainApi(libs.mokoMedia)
     commonMainApi(libs.mokoPermissions)
-
     "androidMainImplementation"(libs.lifecycle)
 }
 

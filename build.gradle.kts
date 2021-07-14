@@ -11,21 +11,14 @@ buildscript {
     }
     dependencies {
         classpath("dev.icerock.moko:resources-generator:0.16.1")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.20-RC")
-        
-        //classpath("dev.icerock.moko.widgets:gradle-plugin:0.1.0-dev-19")
+        classpath("gradle.plugin.com.github.kukuhyoniatmoko:buildconfigkotlin:1.0.5")
+        classpath("dev.icerock.moko.widgets:gradle-plugin")
         
         classpath(":widgets-build-logic")
     }
 }
 
 allprojects {
-    repositories {
-        mavenCentral()
-        google()
-        jcenter()
-    }
-
     configurations
         .matching { it.name == "compileOnly" }
         .configureEach {
