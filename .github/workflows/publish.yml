@@ -16,15 +16,7 @@ jobs:
           java-version: 11
       - name: Cocoapods install
         run: (cd sample/ios-app && pod install)
-      - name: Plugin publication
-        run: |
-          ./gradlew -p plugin \
-          publishNoValidationToBintray \
-          -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }} \
-          --stacktrace
-      - name: Runtime publication
-        run: |
-          ./gradlew \
-          publishNoValidationToBintray \
-          -DBINTRAY_USER=${{ secrets.BINTRAY_USER }} -DBINTRAY_KEY=${{ secrets.BINTRAY_KEY }} \
-          --stacktrace
+      - name: Publish plugin
+        run: ./gradlew -p plugin publishMavenJavaPublicationToOSSRHRepository
+      - name: Publish library
+        run: ./gradlew publish

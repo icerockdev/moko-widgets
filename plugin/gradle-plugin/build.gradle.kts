@@ -22,7 +22,7 @@ dependencies {
 buildConfig {
     sourceSets.getByName("main") {
         buildConfig {
-            buildConfigField("String", "compilerPluginVersion", project.version.toString())
+            buildConfigField("String", "compilerPluginVersion", "\"${project.version}\"")
         }
     }
 }

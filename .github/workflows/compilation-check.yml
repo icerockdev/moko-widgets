@@ -22,8 +22,6 @@ jobs:
         run: ./gradlew build publishToMavenLocal syncMultiPlatformLibraryDebugFrameworkIosX64
       - name: Check plugin publication
         run: ./gradlew -p plugin publishToMavenLocal
-      - name: Check runtime publication
-        run: ./gradlew publishToMavenLocal
       - name: Install pods with kotlin
         run: cd sample/ios-app && pod install
       - name: build ios sample

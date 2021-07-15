@@ -8,7 +8,8 @@ plugins {
     id("publication-convention")
     id("kotlin-kapt")
     id("kotlin-parcelize")
-    //id("dev.icerock.mobile.multiplatform-widgets-generator")    
+    id("dev.icerock.mobile.multiplatform-widgets-generator")
+    id("detekt-convention")
 }
 
 dependencies {

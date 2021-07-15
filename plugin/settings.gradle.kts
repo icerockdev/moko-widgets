@@ -24,7 +24,6 @@ dependencyResolutionManagement {
                 includeGroup("org.jetbrains.kotlinx")
             }
         }
-        jcenter()
         
     }
 

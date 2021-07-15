@@ -7,7 +7,7 @@ plugins {
     id("dev.icerock.mobile.multiplatform.android-manifest")
     id("publication-convention")
     id("dev.icerock.mobile.multiplatform.cocoapods")
-    //id("dev.icerock.mobile.multiplatform-widgets-generator")
+    id("dev.icerock.mobile.multiplatform-widgets-generator")
 }
 
 dependencies {

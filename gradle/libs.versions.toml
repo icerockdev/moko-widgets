@@ -1,7 +1,7 @@
 [versions]
 kotlinVersion = "1.5.20"
 mokoWidgetsVersion = "0.1.0"
-mokoResourcesVersion = "0.11.0"
+mokoResourcesVersion = "0.16.1"
 appCompatVersion = "1.1.0"
 fragmentVersion = "1.2.2"
 swipeRefreshLayoutVersion = "1.0.0"
@@ -22,7 +22,7 @@ mokoMediaVersion = "0.9.0"
 mokoPermissionsVersion = "0.10.1"
 mokoGraphicsVersion = "0.7.0"
 mokoParcelizeVersion = "0.7.1"
-klockVersion = "1.9.1"
+klockVersion = "2.2.0"
 autoServiceVersion = "1.0-rc6"
 
 [libraries]

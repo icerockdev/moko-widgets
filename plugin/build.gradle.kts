@@ -23,7 +23,7 @@ buildscript {
 }
 
 allprojects {
-    group = "dev.icerock.moko"
+    group = "dev.icerock.moko.widgets"
     version = rootProject.libs.versions.mokoWidgetsVersion.get()
 
     project.plugins.withType<JavaPlugin> {
@@ -32,6 +32,9 @@ allprojects {
             targetCompatibility = JavaVersion.VERSION_1_8
         }
     }
+}
+publishing.publications.register("mavenJava", MavenPublication::class) {
+    from(components["java"])
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
