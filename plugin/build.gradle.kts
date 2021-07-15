@@ -6,7 +6,7 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version ("1.5.20")
     id("detekt-convention")
     id("publication-convention")
-    id("com.github.kukuhyoniatmoko.buildconfigkotlin") version "1.0.5"
+    id("com.github.gmazzo.buildconfig") version ("3.0.2")
 }
 
 buildscript {
@@ -18,10 +18,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath("dev.icerock:mobile-multiplatform:0.12.0")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.20")
-        classpath("com.android.tools.build:gradle:4.2.1")
-        classpath("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.15.0")
+        classpath(":widgets-build-logic")
     }
 }
 
