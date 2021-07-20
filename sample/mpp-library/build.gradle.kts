@@ -23,7 +23,7 @@ dependencies {
     commonMainImplementation(libs.coroutines)
 
     commonMainImplementation(libs.mokoResources)
-    commonMainImplementation(libs.mokoMvvm)
+    commonMainImplementation(libs.mokoMvvmCore)
     commonMainImplementation(libs.mokoUnits)
     commonMainImplementation(libs.mokoGraphics)
     commonMainImplementation(libs.mokoWidgets)

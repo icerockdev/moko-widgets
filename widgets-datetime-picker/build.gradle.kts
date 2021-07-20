@@ -15,7 +15,7 @@ dependencies {
 
     commonMainImplementation(libs.coroutines)
 
-    commonMainApi(libs.mokoMvvm)
+    commonMainApi(libs.mokoMvvmCore)
     commonMainApi(libs.mokoResources)
     commonMainApi(libs.mokoGraphics)
     commonMainApi(libs.mokoParcelize)

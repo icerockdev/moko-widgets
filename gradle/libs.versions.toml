@@ -49,7 +49,10 @@ mokoWidgetsPermissions = { module = "dev.icerock.moko:widgets-permissions", vers
 mokoWidgetsMedia = { module = "dev.icerock.moko:widgets-media", version.ref = "mokoWidgetsVersion" }
 mokoWidgetsSms = { module = "dev.icerock.moko:widgets-sms", version.ref = "mokoWidgetsVersion" }
 mokoResources = { module = "dev.icerock.moko:resources", version.ref = "mokoResourcesVersion" }
-mokoMvvm = { module = "dev.icerock.moko:mvvm", version.ref = "mokoMvvmVersion" }
+mokoMvvmCore = { module = "dev.icerock.moko:mvvm-core", version.ref = "mokoMvvmVersion" }
+mokoMvvmState = { module = "dev.icerock.moko:mvvm-state", version.ref = "mokoMvvmVersion" }
+mokoMvvmLivedata = { module = "dev.icerock.moko:mvvm-livedata", version.ref = "mokoMvvmVersion" }
+mokoMvvmStateDeprecated = { module = "dev.icerock.moko:mvvm-state-deprecated", version.ref = "mokoMvvmVersion" }
 mokoFields = { module = "dev.icerock.moko:fields", version.ref = "mokoFieldsVersion" }
 mokoUnits = { module = "dev.icerock.moko:units", version.ref = "mokoUnitsVersion" }
 mokoMedia = { module = "dev.icerock.moko:media", version.ref = "mokoMediaVersion" }

@@ -6,6 +6,8 @@ plugins {
     id("multiplatform-library-convention")
     id("dev.icerock.mobile.multiplatform.android-manifest")
     id("publication-convention")
+    
+    id("dev.icerock.mobile.multiplatform.ios-framework")
 }
 
 dependencies {
@@ -14,6 +16,14 @@ dependencies {
     commonMainImplementation(libs.coroutines)
 
     commonMainApi(libs.mokoPermissions)
+    commonMainApi(libs.mokoMvvmCore)
+
 
     "androidMainImplementation"(libs.lifecycle)
+}
+
+framework {
+    export(libs.mokoPermissions)
+    export(libs.mokoMvvmCore)
+
 }

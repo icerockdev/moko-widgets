@@ -15,7 +15,9 @@ plugins {
 dependencies {
     commonMainImplementation(libs.coroutines)
     commonMainApi(libs.mokoResources)
-    commonMainApi(libs.mokoMvvm)
+    commonMainApi(libs.mokoMvvmCore)
+    commonMainApi(libs.mokoMvvmLivedata)
+    commonMainApi(libs.mokoMvvmStateDeprecated)
     commonMainApi(libs.mokoFields)
     commonMainApi(libs.mokoUnits)
     commonMainApi(libs.mokoGraphics)
