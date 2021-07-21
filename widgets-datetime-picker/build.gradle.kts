@@ -4,7 +4,6 @@
 
 plugins {
     id("multiplatform-library-convention")
-    id("dev.icerock.mobile.multiplatform.android-manifest")
     id("publication-convention")
     id("kotlin-parcelize")
     id("dev.icerock.mobile.multiplatform.cocoapods")

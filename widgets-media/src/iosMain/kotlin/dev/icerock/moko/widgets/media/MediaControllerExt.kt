@@ -7,9 +7,10 @@ package dev.icerock.moko.widgets.media
 import dev.icerock.moko.media.picker.MediaPickerController
 import dev.icerock.moko.permissions.PermissionsController
 import dev.icerock.moko.widgets.core.screen.Screen
+import dev.icerock.moko.media.picker.ios.MediaPickerControllerProtocol
 
 actual fun Screen<*>.createMediaPickerController(permissionsController: PermissionsController): MediaPickerController {
-    return MediaPickerController(
+    return MediaPickerControllerProtocol(
         permissionsController = permissionsController,
         getViewController = { this.viewController }
     )

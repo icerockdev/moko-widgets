@@ -17,7 +17,7 @@ dependencies {
     commonMainApi(libs.mokoResources)
     commonMainApi(libs.mokoMvvmCore)
     commonMainApi(libs.mokoMvvmLivedata)
-    commonMainApi(libs.mokoMvvmStateDeprecated)
+    commonMainApi(libs.mokoMvvmState)
     commonMainApi(libs.mokoFields)
     commonMainApi(libs.mokoUnits)
     commonMainApi(libs.mokoGraphics)

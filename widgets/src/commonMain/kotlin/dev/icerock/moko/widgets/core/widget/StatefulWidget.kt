@@ -4,7 +4,7 @@
 
 package dev.icerock.moko.widgets.core.widget
 
-import dev.icerock.moko.mvvm.State
+import dev.icerock.moko.mvvm.ResourceState
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.data
 import dev.icerock.moko.mvvm.livedata.error
@@ -24,7 +24,7 @@ class StatefulWidget<WS : WidgetSize, T, E> constructor(
     private val factory: ViewFactory<StatefulWidget<out WidgetSize, *, *>>,
     override val size: WS,
     override val id: Id?,
-    val state: LiveData<State<T, E>>,
+    val state: LiveData<ResourceState<T, E>>,
     empty: () -> Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>,
     loading: () -> Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>,
     data: (LiveData<T?>) -> Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>,
