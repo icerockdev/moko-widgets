@@ -33,12 +33,14 @@ dependencies {
 }
 
 kotlin {
-    targets.filterIsInstance<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>()
-        .forEach { target ->
-            target.compilations.getByName("main") {
-                val objcAddtition by cinterops.creating {
+    targets
+        .matching { it is org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget }
+        .configureEach {
+            this as org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+
+            compilations.getByName("main") {
+                val pluralizedString by cinterops.creating {
                     defFile(project.file("src/iosMain/def/objcAddtition.def"))
-                    packageName("dev.icerock.moko.widgets.core.objc")
                 }
             }
         }
