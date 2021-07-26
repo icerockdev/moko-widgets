@@ -120,8 +120,9 @@ actual class SystemListViewFactory actual constructor(
         }
 
         widget.items.bind { items ->
-            unitDataSource.unitItems = if (widget.onReachEnd != null) {
-                items.observedEnd(widget.onReachEnd)
+            val onReachEnd = widget.onReachEnd
+            unitDataSource.unitItems = if (onReachEnd != null) {
+                items.observedEnd(onReachEnd)
             } else {
                 items
             }

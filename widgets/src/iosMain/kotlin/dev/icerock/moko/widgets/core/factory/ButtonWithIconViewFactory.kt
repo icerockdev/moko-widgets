@@ -73,9 +73,10 @@ actual class ButtonWithIconViewFactory actual constructor(
             }
         }
 
-        when (widget.content) {
+        val content = widget.content
+        when (content) {
             is ButtonWidget.Content.Text -> {
-                widget.content.text.bind { text ->
+                content.text.bind { text ->
                     val localizedText = text?.localized()
                     val processedText = if (isAllCaps == true) {
                         localizedText?.toUpperCase()

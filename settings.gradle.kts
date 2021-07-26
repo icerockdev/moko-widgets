@@ -13,9 +13,10 @@ dependencyResolutionManagement {
         jcenter {
             content {
                 includeGroup("org.jetbrains.kotlinx")
+                includeGroup("com.redmadrobot")
             }
         }
-        jcenter()
+
         maven { url = uri("https://jitpack.io") }
 
     }

@@ -22,7 +22,7 @@ mokoMediaVersion = "0.9.0"
 mokoPermissionsVersion = "0.10.1"
 mokoGraphicsVersion = "0.8.0"
 mokoParcelizeVersion = "0.7.1"
-klockVersion = "2.2.0"
+klockVersion = "2.3.1"
 autoServiceVersion = "1.0-rc6"
 
 [libraries]
@@ -52,6 +52,7 @@ mokoResources = { module = "dev.icerock.moko:resources", version.ref = "mokoReso
 mokoMvvmCore = { module = "dev.icerock.moko:mvvm-core", version.ref = "mokoMvvmVersion" }
 mokoMvvmState = { module = "dev.icerock.moko:mvvm-state", version.ref = "mokoMvvmVersion" }
 mokoMvvmLivedata = { module = "dev.icerock.moko:mvvm-livedata", version.ref = "mokoMvvmVersion" }
+mokoMvvmDataBinding = { module = "dev.icerock.moko:mvvm-databinding", version.ref = "mokoMvvmVersion" }
 mokoMvvmStateDeprecated = { module = "dev.icerock.moko:mvvm-state-deprecated", version.ref = "mokoMvvmVersion" }
 mokoFields = { module = "dev.icerock.moko:fields", version.ref = "mokoFieldsVersion" }
 mokoUnits = { module = "dev.icerock.moko:units", version.ref = "mokoUnitsVersion" }

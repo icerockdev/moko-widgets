@@ -3,20 +3,21 @@
  */
 
 plugins {
-    id("com.android.library")
-    id("android-base-convention")
+    id("multiplatform-library-convention")
     id("detekt-convention")
-    id("org.jetbrains.kotlin.multiplatform")
-    id("dev.icerock.mobile.multiplatform.android-manifest")
     id("kotlin-kapt")
     id("kotlin-parcelize")
     id("dev.icerock.mobile.multiplatform-resources")
     id("dev.icerock.mobile.multiplatform.ios-framework")
     id("dev.icerock.mobile.multiplatform.cocoapods")
 }
-kotlin {
-    android()
-    ios()
+
+android {
+    buildFeatures.dataBinding = true
+
+    lintOptions {
+        disable("ImpliedQuantity")
+    }
 }
 
 dependencies {
@@ -38,9 +39,10 @@ dependencies {
     commonMainApi(projects.widgetsPermissions)
     commonMainApi(projects.widgetsSms)
 
-    "androidMainImplementation"(libs.recyclerView)
-    "androidMainImplementation"(libs.appCompat)
-    "androidMainImplementation"(libs.material)
+    androidMainImplementation(libs.recyclerView)
+    androidMainImplementation(libs.appCompat)
+    androidMainImplementation(libs.material)
+    androidMainImplementation(libs.mokoMvvmDataBinding)
 }
 
 framework {

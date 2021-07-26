@@ -4,24 +4,10 @@
 
 package dev.icerock.moko.widgets.imagenetwork
 
-import dev.icerock.moko.resources.ImageResource
-import dev.icerock.moko.widgets.core.Image
-import platform.UIKit.UIImage
-import platform.UIKit.UIView
-import cocoapods.mokoWidgetsImageNetwork.ImageNetwork
-
-actual fun Image.Companion.network(
-    url: String,
-    placeholder: ImageResource?
-): Image {
-    return object : Image() {
-        override fun apply(view: UIView, block: (UIImage?) -> Unit) {
-            ImageNetwork.loadImageWithView(
-                view = view,
-                url = url,
-                placeholder = placeholder?.toUIImage(),
-                setImageBlock = block
-            )
-        }
-    }
-}
+//import dev.icerock.moko.resources.ImageResource
+//import dev.icerock.moko.widgets.core.Image
+//
+//expect fun Image.Companion.network(
+//    url: String,
+//    placeholder: ImageResource?
+//): Image

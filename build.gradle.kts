@@ -11,7 +11,7 @@ buildscript {
     }
     dependencies {
         classpath("dev.icerock.moko:resources-generator:0.16.1")
-        classpath("dev.icerock.moko.widgets:gradle-plugin:0.1.0")
+        classpath("dev.icerock.moko.widgets:gradle-plugin")
         
         classpath(":widgets-build-logic")
     }

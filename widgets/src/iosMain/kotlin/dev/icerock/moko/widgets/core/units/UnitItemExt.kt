@@ -10,8 +10,8 @@ import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.utils.Edges
 import dev.icerock.moko.widgets.core.utils.applySize
-import dev.icerock.moko.widgets.core.objc.getAssociatedObject
-import dev.icerock.moko.widgets.core.objc.setAssociatedObject
+import dev.icerock.moko.widgets.core.utils.getAssociatedObject
+import dev.icerock.moko.widgets.core.utils.setAssociatedObject
 import kotlinx.cinterop.useContents
 import platform.UIKit.UIApplication
 import platform.UIKit.UILayoutPriorityDefaultHigh
