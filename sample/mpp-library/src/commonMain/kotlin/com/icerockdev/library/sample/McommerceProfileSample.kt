@@ -84,6 +84,7 @@ interface McommerceProfileViewModelContract {
     fun onSavePressed()
 }
 
+@Suppress("EmptyDefaultConstructor")
 class McommerceProfileViewModel() : ViewModel(), McommerceProfileViewModelContract {
     override val nameField: FormField<String, StringDesc> = FormField("Aleksey", liveBlock { null })
     override val phoneField: FormField<String, StringDesc> =

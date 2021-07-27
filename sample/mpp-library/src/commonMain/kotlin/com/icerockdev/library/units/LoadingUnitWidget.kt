@@ -16,8 +16,9 @@ import dev.icerock.moko.widgets.core.units.WidgetsCollectionUnitItem
 import dev.icerock.moko.widgets.core.units.WidgetsTableUnitItem
 
 class LoadingUnitWidget(
-    private val theme: Theme
+    private val theme: Theme,
 ) {
+    @Suppress("MagicNumber")
     fun createWidget(data: LiveData<Unit>): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.Exact>> {
         return with(theme) {
             container(
@@ -31,7 +32,7 @@ class LoadingUnitWidget(
                         size = WidgetSize.Const(
                             width = SizeSpec.Exact(24f),
                             height = SizeSpec.Exact(24f)
-                        )//,
+                        ) // ,
 //                        factory = DefaultProgressBarWidgetViewFactory(
 //                            DefaultProgressBarWidgetViewFactoryBase.Style(
 //                                color = Colors.black
@@ -45,7 +46,7 @@ class LoadingUnitWidget(
 
     class TableUnitItem(
         theme: Theme,
-        itemId: Long
+        itemId: Long,
     ) : WidgetsTableUnitItem<Unit>(itemId, Unit) {
         private val unitWidget = LoadingUnitWidget(theme)
 
@@ -58,7 +59,7 @@ class LoadingUnitWidget(
 
     class CollectionUnitItem(
         theme: Theme,
-        itemId: Long
+        itemId: Long,
     ) : WidgetsCollectionUnitItem<Unit>(itemId, Unit) {
         private val unitWidget = LoadingUnitWidget(theme)
 

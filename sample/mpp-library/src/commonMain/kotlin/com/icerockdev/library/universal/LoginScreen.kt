@@ -41,6 +41,7 @@ import dev.icerock.moko.widgets.core.style.view.SizeSpec
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.widget.text
 
+@Suppress("MagicNumber")
 class LoginScreen(
     private val theme: Theme,
     private val mainRoute: Route<Unit>,
@@ -58,6 +59,7 @@ class LoginScreen(
     override val isKeyboardResizeContent: Boolean = true
     override val isDismissKeyboardOnTap: Boolean = true
 
+    @Suppress("LongMethod", "CommentSpacing")
     override fun createContentWidget() = with(theme) {
         val viewModel = getViewModel {
             loginViewModelFactory(createEventsDispatcher())
@@ -171,11 +173,10 @@ class LoginScreen(
     override fun routeToWebViewInfo() {
         infoWebViewRoute.route("https://icerockdev.com/")
     }
-
 }
 
 class LoginViewModel(
-    override val eventsDispatcher: EventsDispatcher<EventsListener>
+    override val eventsDispatcher: EventsDispatcher<EventsListener>,
 ) : ViewModel(), EventsDispatcherOwner<LoginViewModel.EventsListener> {
     val emailField = FormField<String, StringDesc>("", liveBlock { null })
     val passwordField = FormField<String, StringDesc>("", liveBlock { "blahbags".desc() })

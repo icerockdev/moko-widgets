@@ -8,4 +8,5 @@ import dev.icerock.moko.widgets.core.widget.ButtonWidget
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 
+@Suppress("EmptyDefaultConstructor")
 expect class MaterialButtonWidgetViewFactory() : ViewFactory<ButtonWidget<out WidgetSize>>

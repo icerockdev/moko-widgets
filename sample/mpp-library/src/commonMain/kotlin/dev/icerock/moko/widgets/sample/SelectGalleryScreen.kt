@@ -19,6 +19,7 @@ import dev.icerock.moko.widgets.core.screen.navigation.Route
 import dev.icerock.moko.widgets.core.screen.navigation.route
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 
+@Suppress("MagicNumber")
 class SelectGalleryScreen(
     theme: Theme,
     private val routes: List<RouteInfo>

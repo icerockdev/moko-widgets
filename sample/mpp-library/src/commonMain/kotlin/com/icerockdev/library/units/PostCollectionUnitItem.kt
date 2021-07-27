@@ -19,7 +19,6 @@ import dev.icerock.moko.widgets.core.widget.linear
 import dev.icerock.moko.widgets.core.style.view.SizeSpec
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.widget.text
-import dev.icerock.moko.widgets.core.units.UnitItemRoot
 import dev.icerock.moko.widgets.core.units.WidgetsCollectionUnitItem
 
 class PostCollectionUnitItem(
@@ -82,6 +81,7 @@ class PostCollectionUnitItem(
             }
         }
 
+    @Suppress("CommentSpacing")
     private fun Theme.createFooter(
         data: LiveData<PostsViewModelContract.PostItem>
     ): Widget<out WidgetSize> {
@@ -112,8 +112,9 @@ class PostCollectionUnitItem(
             )
         )
 
+        @Suppress("CommentSpacing")
         return container(
-            size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent)//,
+            size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent)
 //            factory = DefaultContainerWidgetViewFactory(
 //                DefaultContainerWidgetViewFactoryBase.Style(
 //                    background = Background(
@@ -131,7 +132,7 @@ class PostCollectionUnitItem(
         ) {
             center {
                 linear(
-                    size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent)//,
+                    size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.WrapContent) // ,
 //                    factory = DefaultLinearWidgetViewFactory(
 //                        DefaultLinearWidgetViewFactoryBase.Style(
 //                            padding = PaddingValues(8f)

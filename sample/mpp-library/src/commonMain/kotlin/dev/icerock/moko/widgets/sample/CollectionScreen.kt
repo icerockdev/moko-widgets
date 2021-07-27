@@ -61,6 +61,7 @@ class CollectionScreen(
         items = listItems()
     )
 
+    @Suppress("MagicNumber")
     private fun Theme.listItems() = List<List<String>>(10) {
         listOf<String>(
             "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg",
@@ -92,6 +93,7 @@ class ImageSliderUnit(
         return UnitItemRoot.from(theme.createUnitWidget(data))
     }
 
+    @Suppress("MagicNumber")
     private fun Theme.createUnitWidget(data: LiveData<List<Image>>) = collection(
         size = WidgetSize.Const(SizeSpec.AsParent, SizeSpec.Exact(182f)),
         id = Id.Collection,
@@ -118,6 +120,7 @@ class CollectionImageUnitItem(
 ) : WidgetsCollectionUnitItem<Image>(itemId, data) {
     override val reuseId: String = "CollectionImageUnitItem"
 
+    @Suppress("MagicNumber")
     override fun createWidget(data: LiveData<Image>): Widget<out WidgetSize> {
         return with(theme) {
             image(

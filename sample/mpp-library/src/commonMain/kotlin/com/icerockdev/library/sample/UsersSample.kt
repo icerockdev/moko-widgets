@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 
 class UsersScreen(
     private val theme: Theme,
-    private val viewModel: UsersViewModelContract
+    private val viewModel: UsersViewModelContract,
 ) {
     fun createWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         return with(theme) {
@@ -70,7 +70,7 @@ interface UsersViewModelContract {
 }
 
 class UsersViewModel(
-    private val unitsFactory: UnitsFactory
+    private val unitsFactory: UnitsFactory,
 ) : ViewModel(), UsersViewModelContract {
     private val _loadNextPage = MutableLiveData(false)
     private val _items: MutableLiveData<List<Pair<String, String>>> = MutableLiveData(
@@ -119,6 +119,7 @@ class UsersViewModel(
     private var refreshJob: Job? = null
     private var nextPageJob: Job? = null
 
+    @Suppress("MagicNumber")
     override fun refresh(completion: () -> Unit) {
         if (refreshJob?.isActive == true || nextPageJob?.isActive == true) {
             completion()
@@ -135,6 +136,7 @@ class UsersViewModel(
         }
     }
 
+    @Suppress("MagicNumber")
     override fun loadNextPage() {
         if (refreshJob?.isActive == true || nextPageJob?.isActive == true) return
 
@@ -155,22 +157,22 @@ class UsersViewModel(
             itemId: Long,
             name: String,
             avatarUrl: String,
-            onClick: () -> Unit
+            onClick: () -> Unit,
         ): TableUnitItem
 
         fun createUserCollectionUnit(
             itemId: Long,
             name: String,
             avatarUrl: String,
-            onClick: () -> Unit
+            onClick: () -> Unit,
         ): CollectionUnitItem
 
         fun createLoadingTableUnit(
-            itemId: Long
+            itemId: Long,
         ): TableUnitItem
 
         fun createLoadingCollectionUnit(
-            itemId: Long
+            itemId: Long,
         ): CollectionUnitItem
     }
 }
