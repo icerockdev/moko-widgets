@@ -6,7 +6,7 @@ plugins {
     id("org.jetbrains.kotlin.jvm")
     id("org.gradle.maven-publish")
     id("kotlin-kapt")
-    id("com.github.gmazzo.buildconfig")
+    id("com.github.gmazzo.buildconfig") version ("3.0.2")
 }
 
 dependencies {

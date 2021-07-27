@@ -6,7 +6,6 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version ("1.5.20")
     id("detekt-convention")
     id("publication-convention")
-    id("com.github.gmazzo.buildconfig") version ("3.0.2")
 }
 
 buildscript {

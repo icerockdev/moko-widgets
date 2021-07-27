@@ -5,7 +5,6 @@
 import java.util.Base64
 
 plugins {
-    id("javadoc-stub-convention")
     id("org.gradle.maven-publish")
     id("signing")
 }
