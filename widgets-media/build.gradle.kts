@@ -18,7 +18,7 @@ dependencies {
     commonMainApi(libs.mokoMvvmState)
     commonMainApi(libs.mokoMvvmLivedata)
     
-    "androidMainImplementation"(libs.lifecycle)
+    androidMainImplementation(libs.lifecycleViewModel)
 }
 
 

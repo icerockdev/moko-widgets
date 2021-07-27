@@ -46,14 +46,14 @@ dependencies {
 }
 
 framework {
-    export(libs.mokoWidgets)
-    export(libs.mokoWidgetsBottomSheet)
-    export(libs.mokoWidgetsCollection)
-    export(libs.mokoWidgetsDateTimePicker)
-    export(libs.mokoWidgetsImageNetwork)
-    export(libs.mokoWidgetsMedia)
-    export(libs.mokoWidgetsPermissions)
-    export(libs.mokoWidgetsSms)
+    export(projects.widgets)
+    export(projects.widgetsBottomsheet)
+    export(projects.widgetsCollection)
+    export(projects.widgetsDatetimePicker)
+    export(projects.widgetsImageNetwork)
+    export(projects.widgetsMedia)
+    export(projects.widgetsPermissions)
+    export(projects.widgetsSms)
 }
 
 multiplatformResources {

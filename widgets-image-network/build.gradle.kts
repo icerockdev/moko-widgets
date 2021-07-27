@@ -13,7 +13,7 @@ dependencies {
 
     commonMainImplementation(libs.coroutines)
 
-    androidMainImplementation(libs.lifecycle)
+    androidMainImplementation(libs.lifecycleViewModel)
     androidMainImplementation(libs.glide)
 }
 

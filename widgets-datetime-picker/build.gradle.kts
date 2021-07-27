@@ -22,7 +22,7 @@ dependencies {
     commonMainImplementation(libs.klock)
 
     androidMainImplementation(libs.appCompat)
-    androidMainImplementation(libs.lifecycle)
+    androidMainImplementation(libs.lifecycleViewModel)
 }
 
 cocoaPods {

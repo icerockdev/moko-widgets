@@ -22,14 +22,14 @@ dependencies {
     commonMainApi(libs.mokoUnits)
     commonMainApi(libs.mokoGraphics)
     commonMainApi(libs.mokoParcelize)
-    "androidMainImplementation"(libs.appCompat)
-    "androidMainImplementation"(libs.fragment)
-    "androidMainImplementation"(libs.recyclerView)
-    "androidMainImplementation"(libs.material)
-    "androidMainImplementation"(libs.swipeRefreshLayout)
-    "androidMainImplementation"(libs.constraintLayout)
-    "androidMainImplementation"(libs.inputMask)
-    "androidMainImplementation"(libs.roundedImageView)
+    androidMainImplementation(libs.appCompat)
+    androidMainImplementation(libs.fragment)
+    androidMainImplementation(libs.recyclerView)
+    androidMainImplementation(libs.material)
+    androidMainImplementation(libs.swipeRefreshLayout)
+    androidMainImplementation(libs.constraintLayout)
+    androidMainImplementation(libs.inputMask)
+    androidMainImplementation(libs.roundedImageView)
 }
 
 kotlin {

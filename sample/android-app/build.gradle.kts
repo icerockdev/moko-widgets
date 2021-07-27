@@ -30,6 +30,6 @@ dependencies {
     implementation(libs.material)
     implementation(libs.constraintLayout)
 
-    implementation(libs.mokoWidgets)
+    implementation(projects.widgets)
     implementation(projects.sample.mppLibrary)
 }

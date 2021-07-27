@@ -1,23 +1,23 @@
 [versions]
 kotlinVersion = "1.5.20"
 mokoWidgetsVersion = "0.1.0"
-mokoResourcesVersion = "0.16.1"
-appCompatVersion = "1.1.0"
-fragmentVersion = "1.2.2"
-swipeRefreshLayoutVersion = "1.0.0"
-materialVersion = "1.1.0"
-constraintLayoutVersion = "1.1.3"
-lifecycleVersion = "2.0.0"
-recyclerViewVersion = "1.0.0"
+mokoResourcesVersion = "0.16.2"
+appCompatVersion = "1.3.1"
+fragmentVersion = "1.3.6"
+swipeRefreshLayoutVersion = "1.1.0"
+materialVersion = "1.4.0"
+constraintLayoutVersion = "2.0.4"
+lifecycleVersion = "2.3.1"
+recyclerViewVersion = "1.2.1"
 inputMaskVersion = "6.0.0"
-glideVersion = "4.10.0"
+glideVersion = "4.12.0"
 roundedImageViewVersion = "2.3.0"
-playServiceAuthVersion = "17.0.0"
-playServiceAuthSmsVersion = "17.1.0"
-coroutinesVersion = "1.5.0-native-mt"
+playServiceAuthVersion = "19.2.0"
+playServiceAuthSmsVersion = "17.5.1"
+coroutinesVersion = "1.5.1-native-mt"
 mokoMvvmVersion = "0.11.0"
 mokoFieldsVersion = "0.8.0"
-mokoUnitsVersion = "0.6.0"
+mokoUnitsVersion = "0.6.2"
 mokoMediaVersion = "0.9.0"
 mokoPermissionsVersion = "0.10.1"
 mokoGraphicsVersion = "0.8.0"
@@ -27,33 +27,22 @@ autoServiceVersion = "1.0-rc6"
 
 [libraries]
 appCompat = { module = "androidx.appcompat:appcompat", version.ref = "appCompatVersion" }
-kotlinStdLib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlinVersion" }
 fragment = { module = "androidx.fragment:fragment", version.ref = "fragmentVersion" }
 swipeRefreshLayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swipeRefreshLayoutVersion" }
 material = { module = "com.google.android.material:material", version.ref = "materialVersion" }
 recyclerView = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerViewVersion" }
 constraintLayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintLayoutVersion" }
-lifecycle = { module = "androidx.lifecycle:lifecycle-extensions", version.ref = "lifecycleVersion" }
+lifecycleViewModel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleVersion" }
 inputMask = { module = "com.redmadrobot:input-mask-android", version.ref = "inputMaskVersion" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glideVersion" }
 roundedImageView = { module = "com.makeramen:roundedimageview", version.ref = "roundedImageViewVersion" }
 playServiceAuth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServiceAuthVersion" }
 playServiceAuthSms = { module = "com.google.android.gms:play-services-auth-api-phone", version.ref = "playServiceAuthSmsVersion" }
-mokoWidgets = { module = "dev.icerock.moko:widgets", version.ref = "mokoWidgetsVersion" }
-mokoWidgetsFlat = { module = "dev.icerock.moko:widgets-flat", version.ref = "mokoWidgetsVersion" }
-mokoWidgetsBottomSheet = { module = "dev.icerock.moko:widgets-bottomsheet", version.ref = "mokoWidgetsVersion" }
-mokoWidgetsCollection = { module = "dev.icerock.moko:widgets-collection", version.ref = "mokoWidgetsVersion" }
-mokoWidgetsDateTimePicker = { module = "dev.icerock.moko:widgets-datetime-picker", version.ref = "mokoWidgetsVersion" }
-mokoWidgetsImageNetwork = { module = "dev.icerock.moko:widgets-image-network", version.ref = "mokoWidgetsVersion" }
-mokoWidgetsPermissions = { module = "dev.icerock.moko:widgets-permissions", version.ref = "mokoWidgetsVersion" }
-mokoWidgetsMedia = { module = "dev.icerock.moko:widgets-media", version.ref = "mokoWidgetsVersion" }
-mokoWidgetsSms = { module = "dev.icerock.moko:widgets-sms", version.ref = "mokoWidgetsVersion" }
 mokoResources = { module = "dev.icerock.moko:resources", version.ref = "mokoResourcesVersion" }
 mokoMvvmCore = { module = "dev.icerock.moko:mvvm-core", version.ref = "mokoMvvmVersion" }
 mokoMvvmState = { module = "dev.icerock.moko:mvvm-state", version.ref = "mokoMvvmVersion" }
 mokoMvvmLivedata = { module = "dev.icerock.moko:mvvm-livedata", version.ref = "mokoMvvmVersion" }
 mokoMvvmDataBinding = { module = "dev.icerock.moko:mvvm-databinding", version.ref = "mokoMvvmVersion" }
-mokoMvvmStateDeprecated = { module = "dev.icerock.moko:mvvm-state-deprecated", version.ref = "mokoMvvmVersion" }
 mokoFields = { module = "dev.icerock.moko:fields", version.ref = "mokoFieldsVersion" }
 mokoUnits = { module = "dev.icerock.moko:units", version.ref = "mokoUnitsVersion" }
 mokoMedia = { module = "dev.icerock.moko:media", version.ref = "mokoMediaVersion" }
@@ -63,7 +52,5 @@ mokoParcelize = { module = "dev.icerock.moko:parcelize", version.ref = "mokoParc
 coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutinesVersion" }
 klock = { module = "com.soywiz.korlibs.klock:klock", version.ref = "klockVersion" }
 autoService = { module = "com.google.auto.service:auto-service", version.ref = "autoServiceVersion" }
-
 kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlinVersion" }
 kotlinGradlePluginApi = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin-api", version.ref = "kotlinVersion" }
-kotlinCompilerEmbeddable = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlinVersion" }

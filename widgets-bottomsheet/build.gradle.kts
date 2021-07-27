@@ -19,7 +19,7 @@ dependencies {
     commonMainApi(libs.mokoGraphics)
     commonMainApi(libs.mokoParcelize)
 
-    androidMainImplementation(libs.lifecycle)
+    androidMainImplementation(libs.lifecycleViewModel)
     androidMainImplementation(libs.material)
 }
 
