@@ -5,17 +5,6 @@
 This is a Kotlin MultiPlatform library that provides declarative UI and application screens management
  in common code. You can implement full application for Android and iOS only from common code with it.  
 
-## Current status
-Current version - `0.1.0-dev-19`. Dev version is not tested in production tasks yet, API can be changed and
- bugs may be found. But dev version is chance to test limits of API and concepts to feedback and improve lib.
- We open for any feedback and ideas (go to issues or #moko at [kotlinlang.slack.com](https://kotlinlang.slack.com))!
-
-## Roadmap
-- December-January: Test library in real project;
-- February: production usage at IceRock;
-- March: 0.1.0 release with flexible API;
-- First half of 2020: more widgets, more factories; figma template and generation of screens.
-
 ## Sample Screen
 |Android|iOS|
 |---|---|
@@ -200,41 +189,16 @@ val loginScreen = Theme(baseTheme) {
 - **reactive data handling**.
 
 ## Requirements
-- Gradle version 5.6.4+
+- Gradle version 6.8+
 - Android API 16+
-- iOS version 9.0+
-
-## Versions
-- kotlin 1.3.50
-  - 0.1.0-dev-1
-- kotlin 1.3.60
-  - 0.1.0-dev-2
-  - 0.1.0-dev-3
-  - 0.1.0-dev-4
-  - 0.1.0-dev-5
-- kotlin 1.3.61
-  - 0.1.0-dev-6
-  - 0.1.0-dev-7
-  - 0.1.0-dev-8
-  - 0.1.0-dev-9
-  - 0.1.0-dev-10
-  - 0.1.0-dev-11
-  - 0.1.0-dev-12
-  - 0.1.0-dev-13
-  - 0.1.0-dev-14
-  - 0.1.0-dev-15
-- kotlin 1.3.70
-  - 0.1.0-dev-16
-  - 0.1.0-dev-17
-  - 0.1.0-dev-18
-  - 0.1.0-dev-19
+- iOS version 11.0+
 
 ## Installation
 root build.gradle  
 ```groovy
 allprojects {
     repositories {
-        maven { url = "https://dl.bintray.com/icerockdev/moko" }
+        mavenCentral()
     }
 }
 ```
@@ -242,7 +206,7 @@ allprojects {
 project build.gradle
 ```groovy
 dependencies {
-    commonMainApi("dev.icerock.moko:widgets:0.1.0-dev-19")
+    classpath("dev.icerock.moko:widgets:0.1.0")
 }
 ```
 
@@ -251,11 +215,11 @@ root build.gradle
 ```groovy
 buildscript {
     repositories {
-        maven { url = "https://dl.bintray.com/icerockdev/plugins" } // gradle plugin
+        mavenCentral()
     }
 
     dependencies {
-        classpath "dev.icerock.moko.widgets:gradle-plugin:0.1.0-dev-19"
+        classpath "dev.icerock.moko.widgets:gradle-plugin:0.1.0"
     }
 }
 

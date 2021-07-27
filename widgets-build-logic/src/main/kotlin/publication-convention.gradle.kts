@@ -23,14 +23,14 @@ publishing {
     publications.withType<MavenPublication> {
         // Provide artifacts information requited by Maven Central
         pom {
-            name.set("MOKO errors")
-            description.set("Automated exceptions handler for mobile (android & ios) Kotlin Multiplatform development.")
+            name.set("MOKO widgets")
+            description.set("Kotlin MultiPlatform library that provides declarative UI and application screens management.")
             url.set("https://github.com/icerockdev/moko-errors")
             licenses {
                 license {
                     name.set("Apache-2.0")
                     distribution.set("repo")
-                    url.set("https://github.com/icerockdev/moko-errors/blob/master/LICENSE.md")
+                    url.set("https://github.com/icerockdev/moko-widgets/blob/master/LICENSE.md")
                 }
             }
 
@@ -43,9 +43,9 @@ publishing {
             }
 
             scm {
-                connection.set("scm:git:ssh://github.com/icerockdev/moko-errors.git")
-                developerConnection.set("scm:git:ssh://github.com/icerockdev/moko-errors.git")
-                url.set("https://github.com/icerockdev/moko-errors")
+                connection.set("scm:git:ssh://github.com/icerockdev/moko-widgets.git")
+                developerConnection.set("scm:git:ssh://github.com/icerockdev/moko-widgets.git")
+                url.set("https://github.com/icerockdev/moko-widgets")
             }
         }
     }
