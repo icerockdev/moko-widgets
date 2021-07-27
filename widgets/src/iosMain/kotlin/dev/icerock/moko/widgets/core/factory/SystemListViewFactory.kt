@@ -46,6 +46,7 @@ actual class SystemListViewFactory actual constructor(
     private val margins: MarginValues?
 ) : ViewFactory<ListWidget<out WidgetSize>> {
 
+    @Suppress("LongMethod")
     override fun <WS : WidgetSize> build(
         widget: ListWidget<out WidgetSize>,
         size: WS,

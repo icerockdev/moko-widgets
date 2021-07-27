@@ -17,13 +17,13 @@ import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.style.view.SizeSpec
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 
-actual abstract class WidgetScreen<Arg : Args> actual constructor() : Screen<Arg>() {
+actual abstract class WidgetScreen<Arg : Args> : Screen<Arg>() {
     actual abstract fun createContentWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): android.view.View? {
         val widget = createContentWidget()
         val view = widget.buildView(
@@ -64,7 +64,7 @@ actual abstract class WidgetScreen<Arg : Args> actual constructor() : Screen<Arg
                     override fun onScrolled(
                         recyclerView: RecyclerView,
                         dx: Int,
-                        dy: Int
+                        dy: Int,
                     ) {
                         super.onScrolled(recyclerView, dx, dy)
                         if (dy != 0) {
@@ -72,10 +72,14 @@ actual abstract class WidgetScreen<Arg : Args> actual constructor() : Screen<Arg
                         }
                     }
                 })
-                recyclerView?.addOnLayoutChangeListener(View.OnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
-                    val currentOffset = recyclerView.computeVerticalScrollOffset()
-                    recyclerView.scrollBy(0, (lastRecyclerOffset - currentOffset) + oldBottom - bottom)
-                })
+                recyclerView?.addOnLayoutChangeListener(
+                    { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+                        val currentOffset = recyclerView.computeVerticalScrollOffset()
+                        recyclerView.scrollBy(
+                            0,
+                            (lastRecyclerOffset - currentOffset) + oldBottom - bottom
+                        )
+                    })
             }
         }
     }

@@ -12,8 +12,7 @@ import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.utils.bind
 import dev.icerock.moko.widgets.core.widget.VisibilityWidget
 
-actual class VisibilityViewFactory actual constructor(
-) : ViewFactory<VisibilityWidget<out WidgetSize>> {
+actual class VisibilityViewFactory : ViewFactory<VisibilityWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
         widget: VisibilityWidget<out WidgetSize>,

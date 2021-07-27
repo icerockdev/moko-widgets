@@ -40,6 +40,7 @@ import dev.icerock.moko.widgets.core.utils.bind
 import dev.icerock.moko.widgets.core.utils.dp
 import dev.icerock.moko.widgets.core.utils.sp
 
+@Suppress("LongParameterList", "MagicNumber")
 actual class FloatingLabelInputViewFactory actual constructor(
     private val background: Background<Fill.Solid>?,
     private val margins: MarginValues?,
@@ -51,6 +52,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
     private val textHorizontalAlignment: TextHorizontalAlignment?
 ) : ViewFactory<InputWidget<out WidgetSize>> {
 
+    @Suppress("LongMethod", "ComplexMethod")
     @SuppressLint("RestrictedApi")
     override fun <WS : WidgetSize> build(
         widget: InputWidget<out WidgetSize>,
@@ -73,7 +75,8 @@ actual class FloatingLabelInputViewFactory actual constructor(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             ).apply {
-                // EditText's default background have paddings 4dp, while we not change background to own we just change margins
+                // EditText's default background have paddings 4dp,
+                // while we not change background to own we just change margins
                 // https://stackoverflow.com/questions/31735291/removing-the-left-padding-on-an-android-edittext/44497551
                 val dp4 = (-4).dp(context)
                 MarginLayoutParamsCompat.setMarginStart(this, dp4)
@@ -104,18 +107,14 @@ actual class FloatingLabelInputViewFactory actual constructor(
                 if (!hasFocus) widget.field.validate()
             }
             addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable?) {
-
-                }
+                override fun afterTextChanged(s: Editable?) = Unit
 
                 override fun beforeTextChanged(
                     s: CharSequence?,
                     start: Int,
                     count: Int,
                     after: Int
-                ) {
-
-                }
+                ) = Unit
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                     if (s == null) return
@@ -186,5 +185,4 @@ actual class FloatingLabelInputViewFactory actual constructor(
         field.isAccessible = true
         return field.get(this) as CollapsingTextHelper
     }
-
 }

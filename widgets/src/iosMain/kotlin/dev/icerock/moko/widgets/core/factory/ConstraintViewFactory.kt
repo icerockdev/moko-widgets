@@ -40,13 +40,13 @@ import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 actual class ConstraintViewFactory actual constructor(
     private val background: Background<out Fill>?,
     private val padding: PaddingValues?,
-    private val margins: MarginValues?
+    private val margins: MarginValues?,
 ) : ViewFactory<ConstraintWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
         widget: ConstraintWidget<out WidgetSize>,
         size: WS,
-        viewFactoryContext: ViewFactoryContext
+        viewFactoryContext: ViewFactoryContext,
     ): ViewBundle<WS> {
         val container = UIView(frame = CGRectZero.readValue()).apply {
             translatesAutoresizingMaskIntoConstraints = false
@@ -105,7 +105,7 @@ actual class ConstraintViewFactory actual constructor(
 class AutoLayoutConstraintsApi(
     private val container: UIView,
     private val widgetViewBundle: Map<out Widget<out WidgetSize>, ViewBundle<out WidgetSize>>,
-    private val padding: PaddingValues?
+    private val padding: PaddingValues?,
 ) : ConstraintsApi {
     class AnchorSet private constructor(
         val topAnchor: NSLayoutAnchor,
@@ -113,7 +113,7 @@ class AutoLayoutConstraintsApi(
         val rightAnchor: NSLayoutAnchor,
         val bottomAnchor: NSLayoutAnchor,
         val centerXAnchor: NSLayoutAnchor,
-        val centerYAnchor: NSLayoutAnchor
+        val centerYAnchor: NSLayoutAnchor,
     ) {
         constructor(view: UIView) : this(
             topAnchor = view.topAnchor,
@@ -135,12 +135,13 @@ class AutoLayoutConstraintsApi(
     }
 
     private val _widgetAdditionalMargins = mutableMapOf<Widget<out WidgetSize>, MarginValues>()
-    val widgetAdditionalMargins: Map<out Widget<out WidgetSize>, MarginValues> = _widgetAdditionalMargins
+    val widgetAdditionalMargins: Map<out Widget<out WidgetSize>, MarginValues> =
+        _widgetAdditionalMargins
 
     private fun applyAdditionalMargins(
         widget: Widget<out WidgetSize>,
         offset: Float,
-        transform: MarginValues.(Float) -> MarginValues
+        transform: MarginValues.(Float) -> MarginValues,
     ) {
         val currentMargins = _widgetAdditionalMargins[widget] ?: MarginValues()
         val newMargins = currentMargins.transform(offset)
@@ -171,7 +172,7 @@ class AutoLayoutConstraintsApi(
     private fun ConstraintItem.Child.calcConstant(
         to: ConstraintItem,
         marginGetter: MarginValues.() -> Float,
-        paddingGetter: PaddingValues.() -> Float
+        paddingGetter: PaddingValues.() -> Float,
     ): CGFloat {
         var const: CGFloat = viewBundle().margins?.let(marginGetter)?.toDouble() ?: 0.0
         if (to is ConstraintItem.Root) const += padding?.let(paddingGetter)?.toDouble() ?: 0.0
@@ -185,7 +186,7 @@ class AutoLayoutConstraintsApi(
         firstMargin: MarginValues.() -> Float = { 0.0f },
         secondPadding: PaddingValues.() -> Float = { 0.0f },
         applyExtraMargins: (MarginValues.(Float) -> MarginValues)? = null,
-        block: AutoLayoutConstraintsApi.AnchorSet.(AutoLayoutConstraintsApi.AnchorSet) -> NSLayoutConstraint
+        block: AutoLayoutConstraintsApi.AnchorSet.(AutoLayoutConstraintsApi.AnchorSet) -> NSLayoutConstraint,
     ): Constraint {
         val firstView = firstItem.anchorSet()
         val secondView = secondItem.anchorSet()
@@ -204,7 +205,9 @@ class AutoLayoutConstraintsApi(
                 override fun offset(points: Int) {
                     it.constant = const + points
                     if (applyExtraMargins != null) {
-                        applyAdditionalMargins(firstItem.widget, points.toFloat(), applyExtraMargins)
+                        applyAdditionalMargins(firstItem.widget,
+                            points.toFloat(),
+                            applyExtraMargins)
                     }
                 }
             }
@@ -309,7 +312,7 @@ class AutoLayoutConstraintsApi(
 
     override fun ConstraintItem.Child.verticalCenterBetween(
         top: ConstraintItem.VerticalAnchor,
-        bottom: ConstraintItem.VerticalAnchor
+        bottom: ConstraintItem.VerticalAnchor,
     ) {
         val layoutGuide = UILayoutGuide()
         container.addLayoutGuide(layoutGuide)
@@ -318,20 +321,22 @@ class AutoLayoutConstraintsApi(
         val bottomAnchorSet = bottom.item.anchorSet()
 
         layoutGuide.topAnchor.constraintEqualToAnchor(top.edge.toAnchor(topAnchorSet)).active = true
-        layoutGuide.bottomAnchor.constraintEqualToAnchor(bottom.edge.toAnchor(bottomAnchorSet)).active = true
+        layoutGuide.bottomAnchor.constraintEqualToAnchor(bottom.edge.toAnchor(bottomAnchorSet)).active =
+            true
 
         val childAnchorSet = this.anchorSet()
-        childAnchorSet.centerYAnchor.constraintEqualToAnchor(layoutGuide.centerYAnchor).active = true
+        childAnchorSet.centerYAnchor.constraintEqualToAnchor(layoutGuide.centerYAnchor).active =
+            true
     }
 
-    private fun ConstraintItem.VerticalAnchor.Edge.toAnchor(anchorSet: AutoLayoutConstraintsApi.AnchorSet): NSLayoutAnchor {
+    private fun ConstraintItem.VerticalAnchor.Edge.toAnchor(anchorSet: AnchorSet): NSLayoutAnchor {
         return when (this) {
             ConstraintItem.VerticalAnchor.Edge.TOP -> anchorSet.topAnchor
             ConstraintItem.VerticalAnchor.Edge.BOTTOM -> anchorSet.bottomAnchor
         }
     }
 
-    private fun ConstraintItem.HorizontalAnchor.Edge.toAnchor(anchorSet: AutoLayoutConstraintsApi.AnchorSet): NSLayoutAnchor {
+    private fun ConstraintItem.HorizontalAnchor.Edge.toAnchor(anchorSet: AnchorSet): NSLayoutAnchor {
         return when (this) {
             ConstraintItem.HorizontalAnchor.Edge.LEFT -> anchorSet.leftAnchor
             ConstraintItem.HorizontalAnchor.Edge.RIGHT -> anchorSet.rightAnchor
@@ -340,7 +345,7 @@ class AutoLayoutConstraintsApi(
 
     override fun ConstraintItem.Child.horizontalCenterBetween(
         left: ConstraintItem.HorizontalAnchor,
-        right: ConstraintItem.HorizontalAnchor
+        right: ConstraintItem.HorizontalAnchor,
     ) {
         val layoutGuide = UILayoutGuide()
         container.addLayoutGuide(layoutGuide)
@@ -348,11 +353,14 @@ class AutoLayoutConstraintsApi(
         val firstAnchorSet = left.item.anchorSet()
         val secondAnchorSet = right.item.anchorSet()
 
-        layoutGuide.leftAnchor.constraintEqualToAnchor(left.edge.toAnchor(firstAnchorSet)).active = true
-        layoutGuide.rightAnchor.constraintEqualToAnchor(right.edge.toAnchor(secondAnchorSet)).active = true
+        layoutGuide.leftAnchor.constraintEqualToAnchor(left.edge.toAnchor(firstAnchorSet)).active =
+            true
+        layoutGuide.rightAnchor.constraintEqualToAnchor(right.edge.toAnchor(secondAnchorSet)).active =
+            true
 
         val childAnchorSet = this.anchorSet()
-        childAnchorSet.centerXAnchor.constraintEqualToAnchor(layoutGuide.centerXAnchor).active = true
+        childAnchorSet.centerXAnchor.constraintEqualToAnchor(layoutGuide.centerXAnchor).active =
+            true
     }
 
     override fun ConstraintItem.VerticalAnchor.pin(to: ConstraintItem.VerticalAnchor): Constraint {

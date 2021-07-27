@@ -6,8 +6,6 @@ package dev.icerock.moko.widgets.core.factory
 
 import android.os.Build
 import android.view.View
-import android.widget.Button
-import android.widget.ImageButton
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageButton
 import dev.icerock.moko.graphics.Color

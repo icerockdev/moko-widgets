@@ -32,7 +32,6 @@ import platform.UIKit.UITableViewStyle
 import platform.UIKit.indexPathForRow
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
-
 actual class ReversedListWidgetFactory actual constructor(
     private val background: Background<Fill.Solid>?
 ) : ViewFactory<ListWidget<out WidgetSize>> {

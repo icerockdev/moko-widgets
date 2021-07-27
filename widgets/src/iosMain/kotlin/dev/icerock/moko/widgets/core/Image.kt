@@ -8,6 +8,7 @@ import dev.icerock.moko.resources.ImageResource
 import platform.UIKit.UIImage
 import platform.UIKit.UIView
 
+@Suppress("UnnecessaryAbstractClass")
 actual abstract class Image {
     abstract fun apply(view: UIView, block: (UIImage?) -> Unit)
 

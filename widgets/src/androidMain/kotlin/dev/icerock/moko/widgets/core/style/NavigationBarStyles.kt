@@ -12,7 +12,7 @@ import dev.icerock.moko.widgets.core.screen.navigation.NavigationBar
 import dev.icerock.moko.widgets.core.utils.ThemeAttrs
 import dev.icerock.moko.widgets.core.utils.dp
 
-
+@Suppress("MagicNumber")
 fun NavigationBar.Styles.apply(
     toolbar: Toolbar,
     context: Context

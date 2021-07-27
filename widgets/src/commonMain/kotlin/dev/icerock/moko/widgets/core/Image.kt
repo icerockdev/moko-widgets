@@ -6,6 +6,7 @@ package dev.icerock.moko.widgets.core
 
 import dev.icerock.moko.resources.ImageResource
 
+@Suppress("UnnecessaryAbstractClass", "UtilityClassWithPublicConstructor")
 expect abstract class Image {
     companion object
 }

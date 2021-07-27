@@ -8,4 +8,5 @@ import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.widget.ClickableWidget
 
+@Suppress("EmptyDefaultConstructor")
 expect class ClickableViewFactory() : ViewFactory<ClickableWidget<out WidgetSize>>

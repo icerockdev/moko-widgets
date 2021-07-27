@@ -34,9 +34,7 @@ actual abstract class Screen<Arg : Args> {
         return created
     }
 
-    actual open fun onViewCreated() {
-
-    }
+    actual open fun onViewCreated() = Unit
 
     actual fun <T : Any> createEventsDispatcher(): EventsDispatcher<T> {
         return EventsDispatcher()

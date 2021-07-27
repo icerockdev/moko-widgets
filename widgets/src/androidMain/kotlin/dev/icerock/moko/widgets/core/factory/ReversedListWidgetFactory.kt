@@ -52,7 +52,7 @@ actual class ReversedListWidgetFactory actual constructor(
                 recyclerView.scrollToPosition(index)
             }
         }
-        
+
         val resultView: View = recyclerView
 
         widget.items.bind(lifecycleOwner) { units ->

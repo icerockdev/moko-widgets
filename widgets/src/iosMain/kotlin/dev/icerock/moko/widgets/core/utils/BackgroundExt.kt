@@ -18,8 +18,13 @@ import platform.QuartzCore.CADisplayLink
 import platform.QuartzCore.CAGradientLayer
 import platform.QuartzCore.CALayer
 import platform.QuartzCore.CATransaction
-import platform.UIKit.*
+import platform.UIKit.UIButton
+import platform.UIKit.UIColor
+import platform.UIKit.UIView
+import platform.UIKit.backgroundColor
+import platform.UIKit.window
 
+@Suppress("MagicNumber", "ComplexMethod")
 fun Background<out Fill>.caLayer(): CALayer {
 
     val backgroundLayer: CALayer
@@ -124,7 +129,6 @@ fun UIButton.applyStateBackgroundIfNeeded(background: PressableState<Background<
             updateLayers()
 
             CATransaction.commit()
-
         } else {
             link?.removeFromRunLoop(NSRunLoop.currentRunLoop, NSRunLoopCommonModes)
         }

@@ -17,6 +17,7 @@ import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.widget.SingleChoiceWidget
 import platform.UIKit.UIView
 
+@Suppress("LongParameterList")
 actual class SystemSingleChoiceViewFactory actual constructor(
     private val textStyle: TextStyle<Color>?,
     private val labelTextStyle: TextStyle<Color>?,

@@ -18,7 +18,8 @@ import platform.UIKit.topAnchor
 import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
-actual open class VerticalPageViewFactory actual constructor() : ViewFactory<VerticalPageWidget<out WidgetSize>> {
+actual open class VerticalPageViewFactory : ViewFactory<VerticalPageWidget<out WidgetSize>> {
+    @Suppress("ComplexMethod", "LongMethod")
     override fun <WS : WidgetSize> build(
         widget: VerticalPageWidget<out WidgetSize>,
         size: WS,

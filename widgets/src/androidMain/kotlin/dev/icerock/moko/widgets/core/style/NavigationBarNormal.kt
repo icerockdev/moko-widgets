@@ -21,7 +21,6 @@ import dev.icerock.moko.widgets.core.style.view.FontStyle
 import dev.icerock.moko.widgets.core.utils.ThemeAttrs
 import dev.icerock.moko.widgets.core.utils.sp
 
-
 fun NavigationBar.Normal.apply(
     toolbar: Toolbar,
     context: Context,

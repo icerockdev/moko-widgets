@@ -11,8 +11,7 @@ import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.widget.InputLengthWidget
 
-actual open class InputLengthViewFactory actual constructor() :
-    ViewFactory<InputLengthWidget<out WidgetSize>> {
+actual open class InputLengthViewFactory : ViewFactory<InputLengthWidget<out WidgetSize>> {
     override fun <WS : WidgetSize> build(
         widget: InputLengthWidget<out WidgetSize>,
         size: WS,

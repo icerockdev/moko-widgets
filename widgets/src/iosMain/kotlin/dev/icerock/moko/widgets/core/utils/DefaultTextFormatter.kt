@@ -4,7 +4,6 @@
 
 package dev.icerock.moko.widgets.core.utils
 
-
 class DefaultTextFormatter(val textPattern: String, val patternSymbol: Char = '#') {
 
     fun format(unformattedText: String): String {
@@ -43,7 +42,6 @@ class DefaultTextFormatter(val textPattern: String, val patternSymbol: Char = '#
                 }
                 formattedIndex += 1
             }
-
         }
         return unformatted
     }

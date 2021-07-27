@@ -68,5 +68,4 @@ actual class CardViewFactory actual constructor(
             margins = margins
         )
     }
-
 }

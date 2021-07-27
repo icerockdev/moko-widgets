@@ -41,6 +41,7 @@ import platform.UIKit.UISemanticContentAttributeForceRightToLeft
 import platform.UIKit.bringSubviewToFront
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
+@Suppress("LongParameterList")
 actual class ButtonWithIconViewFactory actual constructor(
     private val background: PressableState<Background<out Fill>>?,
     private val textStyle: TextStyle<PressableState<Color>>?,
@@ -53,6 +54,7 @@ actual class ButtonWithIconViewFactory actual constructor(
     private val icon: PressableState<ImageResource>
 ) : ViewFactory<ButtonWidget<out WidgetSize>> {
 
+    @Suppress("TooGenericExceptionThrown", "ComplexMethod", "LongMethod")
     override fun <WS : WidgetSize> build(
         widget: ButtonWidget<out WidgetSize>,
         size: WS,

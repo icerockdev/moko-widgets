@@ -53,6 +53,7 @@ actual class MultilineInputViewFactory actual constructor(
     private val textHorizontalAlignment: TextHorizontalAlignment?
 ) : ViewFactory<InputWidget<out WidgetSize>> {
 
+    @Suppress("LongMethod")
     override fun <WS : WidgetSize> build(
         widget: InputWidget<out WidgetSize>,
         size: WS,

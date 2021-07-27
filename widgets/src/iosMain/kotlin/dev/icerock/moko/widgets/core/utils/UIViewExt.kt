@@ -164,6 +164,7 @@ fun PaddingValues.toEdgeInsets(): CValue<UIEdgeInsets> {
     )
 }
 
+@Suppress("MagicNumber")
 fun UIView.wrapContentHeight(width: CGFloat? = null): CGFloat {
     var fittingSize = CGSizeMake(width ?: 2000.0, UILayoutFittingCompressedSize.height)
 
@@ -188,7 +189,9 @@ fun UIView.wrapContentWidth(height: CGFloat? = null): CGFloat {
         UIScreen.mainScreen.bounds.useContents { size.width },
         height ?: UIScreen.mainScreen.bounds.useContents { size.height }
     )
-    println("== Trying to calculate height with from initial size: W: ${expandedFrame.useContents { size }.width} H:  ${expandedFrame.useContents { size }.height} ==")
+    println("== Trying to calculate height with from initial size: " +
+            "W: ${expandedFrame.useContents { size }.width} " +
+            "H:  ${expandedFrame.useContents { size }.height} ==")
     height?.let {
         heightAnchor.constraintEqualToConstant(it).setActive(true)
     }

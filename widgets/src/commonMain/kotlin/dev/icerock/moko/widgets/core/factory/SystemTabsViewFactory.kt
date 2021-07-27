@@ -14,6 +14,7 @@ import dev.icerock.moko.widgets.core.style.view.MarginValues
 import dev.icerock.moko.widgets.core.style.view.PaddingValues
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 
+@Suppress("LongParameterList")
 expect class SystemTabsViewFactory(
     tabsTintColor: Color? = null,
     titleColor: SelectableState<Color?>? = null,

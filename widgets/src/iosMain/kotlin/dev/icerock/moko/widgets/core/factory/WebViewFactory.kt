@@ -104,9 +104,6 @@ actual class WebViewFactory actual constructor(
             } else {
                 decisionHandler(WKNavigationActionPolicy.WKNavigationActionPolicyAllow)
             }
-
         }
-
     }
-
 }

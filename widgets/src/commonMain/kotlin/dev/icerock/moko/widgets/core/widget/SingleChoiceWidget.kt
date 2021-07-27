@@ -17,6 +17,7 @@ import dev.icerock.moko.widgets.core.WidgetDef
 import dev.icerock.moko.widgets.core.factory.SystemSingleChoiceViewFactory
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 
+@Suppress("LongParameterList")
 @WidgetDef(SystemSingleChoiceViewFactory::class)
 class SingleChoiceWidget<WS : WidgetSize>(
     private val factory: ViewFactory<SingleChoiceWidget<out WidgetSize>>,

@@ -19,7 +19,8 @@ actual fun InputType.Companion.plain(mask: String?): InputType {
     return object : InputType {
         override fun applyTo(editText: EditText) {
             editText.applyMask(
-                platformInputType = android.text.InputType.TYPE_CLASS_TEXT + android.text.InputType.TYPE_TEXT_VARIATION_NORMAL,
+                platformInputType = android.text.InputType.TYPE_CLASS_TEXT +
+                        android.text.InputType.TYPE_TEXT_VARIATION_NORMAL,
                 mask = mask
             )
         }
@@ -41,7 +42,8 @@ actual fun InputType.Companion.date(mask: String?): InputType {
     return object : InputType {
         override fun applyTo(editText: EditText) {
             editText.applyMask(
-                platformInputType = android.text.InputType.TYPE_CLASS_DATETIME + android.text.InputType.TYPE_DATETIME_VARIATION_DATE,
+                platformInputType = android.text.InputType.TYPE_CLASS_DATETIME +
+                        android.text.InputType.TYPE_DATETIME_VARIATION_DATE,
                 mask = mask
             )
         }
@@ -52,7 +54,8 @@ actual fun InputType.Companion.password(mask: String?): InputType {
     return object : InputType {
         override fun applyTo(editText: EditText) {
             editText.applyMask(
-                platformInputType = android.text.InputType.TYPE_CLASS_TEXT + android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD,
+                platformInputType = android.text.InputType.TYPE_CLASS_TEXT +
+                        android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD,
                 mask = mask
             )
         }
@@ -74,7 +77,8 @@ actual fun InputType.Companion.email(mask: String?): InputType {
     return object : InputType {
         override fun applyTo(editText: EditText) {
             editText.applyMask(
-                platformInputType = android.text.InputType.TYPE_CLASS_TEXT + android.text.InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS,
+                platformInputType = android.text.InputType.TYPE_CLASS_TEXT +
+                        android.text.InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS,
                 mask = mask
             )
         }

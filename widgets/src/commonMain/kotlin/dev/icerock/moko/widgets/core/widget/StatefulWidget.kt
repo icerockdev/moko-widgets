@@ -19,6 +19,7 @@ import dev.icerock.moko.widgets.core.factory.StatefulViewFactory
 import dev.icerock.moko.widgets.core.style.view.SizeSpec
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 
+@Suppress("LongParameterList")
 @WidgetDef(StatefulViewFactory::class)
 class StatefulWidget<WS : WidgetSize, T, E> constructor(
     private val factory: ViewFactory<StatefulWidget<out WidgetSize, *, *>>,

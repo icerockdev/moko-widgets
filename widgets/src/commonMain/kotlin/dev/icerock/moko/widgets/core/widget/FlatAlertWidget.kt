@@ -15,6 +15,7 @@ import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.style.view.SizeSpec
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 
+@Suppress("LongParameterList", "MagicNumber")
 fun <WS : WidgetSize> Theme.flatAlert(
     constraintWidgetFactory: ViewFactory<ConstraintWidget<out WidgetSize>>? = null,
     textWidgetFactory: ViewFactory<TextWidget<out WidgetSize>>? = null,

@@ -31,7 +31,7 @@ import platform.UIKit.leadingAnchor
 import platform.UIKit.topAnchor
 import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
-
+@Suppress("MagicNumber")
 actual class CardViewFactory actual constructor(
     private val padding: PaddingValues?,
     private val margins: MarginValues?,
@@ -116,5 +116,4 @@ actual class CardViewFactory actual constructor(
             margins = margins
         )
     }
-
 }

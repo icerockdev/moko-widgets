@@ -4,8 +4,10 @@
 
 package dev.icerock.moko.widgets.core.utils
 
+@Suppress("FunctionParameterNaming")
 expect fun getAssociatedObject(`object`: kotlin.Any?): kotlin.Any?
 
+@Suppress("FunctionParameterNaming")
 expect fun setAssociatedObject(`object`: kotlin.Any?, value: kotlin.Any?)
 
 expect fun cgColors(uiColors: kotlin.collections.List<*>?): kotlin.collections.List<*>?

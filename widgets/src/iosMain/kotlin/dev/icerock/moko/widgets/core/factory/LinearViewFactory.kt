@@ -77,7 +77,8 @@ actual class LinearViewFactory actual constructor(
     }
 
     private fun correctChildSize(size: WidgetSize, orientation: Orientation): WidgetSize {
-        //TODO: Support aspects correcting?
+        @Suppress("ForbiddenComment")
+        // TODO: Support aspects correcting?
 
         var result = size
         when (size) {
@@ -97,6 +98,7 @@ actual class LinearViewFactory actual constructor(
         return (padding?.toDouble() ?: 0.0) + (margin?.toDouble() ?: 0.0)
     }
 
+    @Suppress("ComplexMethod", "LongMethod")
     private fun layoutHorizontal(
         root: UIView,
         children: List<Widget<out WidgetSize>>,
@@ -174,8 +176,8 @@ actual class LinearViewFactory actual constructor(
             } else if (childSize is WidgetSize.Const<*, *> && childSize.width == SizeSpec.AsParent) {
                 childView.constraints.filterIsInstance<NSLayoutConstraint>()
                     .filter {
-                        (it.firstItem == this && it.firstAnchor == childView.widthAnchor)
-                                || (it.secondItem == this && it.secondAnchor == childView.widthAnchor)
+                        (it.firstItem == this && it.firstAnchor == childView.widthAnchor) ||
+                                (it.secondItem == this && it.secondAnchor == childView.widthAnchor)
                     }.forEach { childView.removeConstraint(it) }
 
                 childView.trailingAnchor.constraintEqualToAnchor(
@@ -186,6 +188,7 @@ actual class LinearViewFactory actual constructor(
         }
     }
 
+    @Suppress("ComplexMethod", "LongMethod")
     private fun layoutVertical(
         root: UIView,
         children: List<Widget<out WidgetSize>>,
@@ -272,8 +275,8 @@ actual class LinearViewFactory actual constructor(
                 childView.constraints.filterIsInstance<NSLayoutConstraint>()
                     .filter {
                         println("const: $it")
-                        (it.firstItem == this && it.firstAnchor == childView.heightAnchor)
-                                || (it.secondItem == this && it.secondAnchor == childView.heightAnchor)
+                        (it.firstItem == this && it.firstAnchor == childView.heightAnchor) ||
+                                (it.secondItem == this && it.secondAnchor == childView.heightAnchor)
                     }.forEach {
                         println("remove: $it")
                         childView.removeConstraint(it)
@@ -284,7 +287,6 @@ actual class LinearViewFactory actual constructor(
                     constant = pm(lastMargins?.bottom, padding?.bottom)
                 ).active = true
             }
-
         }
     }
 }
