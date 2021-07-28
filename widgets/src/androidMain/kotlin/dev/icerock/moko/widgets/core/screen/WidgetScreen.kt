@@ -23,7 +23,7 @@ actual abstract class WidgetScreen<Arg : Args> : Screen<Arg>() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): android.view.View? {
         val widget = createContentWidget()
         val view = widget.buildView(
@@ -64,7 +64,7 @@ actual abstract class WidgetScreen<Arg : Args> : Screen<Arg>() {
                     override fun onScrolled(
                         recyclerView: RecyclerView,
                         dx: Int,
-                        dy: Int,
+                        dy: Int
                     ) {
                         super.onScrolled(recyclerView, dx, dy)
                         if (dy != 0) {

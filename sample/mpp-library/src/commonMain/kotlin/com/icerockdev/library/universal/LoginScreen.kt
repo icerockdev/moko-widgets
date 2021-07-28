@@ -59,7 +59,7 @@ class LoginScreen(
     override val isKeyboardResizeContent: Boolean = true
     override val isDismissKeyboardOnTap: Boolean = true
 
-    @Suppress("LongMethod", "CommentSpacing")
+    @Suppress("LongMethod")
     override fun createContentWidget() = with(theme) {
         val viewModel = getViewModel {
             loginViewModelFactory(createEventsDispatcher())
@@ -109,6 +109,7 @@ class LoginScreen(
                 text = const("IceRock Development")
             )
 
+            @Suppress("CommentSpacing")
             constraints {
                 passwordInput centerYToCenterY root
                 passwordInput leftRightToLeftRight root offset 16
@@ -176,7 +177,7 @@ class LoginScreen(
 }
 
 class LoginViewModel(
-    override val eventsDispatcher: EventsDispatcher<EventsListener>,
+    override val eventsDispatcher: EventsDispatcher<EventsListener>
 ) : ViewModel(), EventsDispatcherOwner<LoginViewModel.EventsListener> {
     val emailField = FormField<String, StringDesc>("", liveBlock { null })
     val passwordField = FormField<String, StringDesc>("", liveBlock { "blahbags".desc() })

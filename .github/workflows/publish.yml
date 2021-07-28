@@ -26,7 +26,7 @@ jobs:
         with:
           java-version: 11
       - name: Publish plugin
-        run: ./gradlew -p widgets-generator publishMavenJavaPublicationToOSSRHRepository
+        run: ./gradlew -p plugin publishMavenJavaPublicationToOSSRHRepository
       - name: Publish library
         run: ./gradlew publish
 

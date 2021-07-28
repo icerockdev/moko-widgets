@@ -16,7 +16,7 @@ import dev.icerock.moko.widgets.core.units.WidgetsCollectionUnitItem
 import dev.icerock.moko.widgets.core.units.WidgetsTableUnitItem
 
 class LoadingUnitWidget(
-    private val theme: Theme,
+    private val theme: Theme
 ) {
     @Suppress("MagicNumber")
     fun createWidget(data: LiveData<Unit>): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.Exact>> {
@@ -46,7 +46,7 @@ class LoadingUnitWidget(
 
     class TableUnitItem(
         theme: Theme,
-        itemId: Long,
+        itemId: Long
     ) : WidgetsTableUnitItem<Unit>(itemId, Unit) {
         private val unitWidget = LoadingUnitWidget(theme)
 
@@ -59,7 +59,7 @@ class LoadingUnitWidget(
 
     class CollectionUnitItem(
         theme: Theme,
-        itemId: Long,
+        itemId: Long
     ) : WidgetsCollectionUnitItem<Unit>(itemId, Unit) {
         private val unitWidget = LoadingUnitWidget(theme)
 

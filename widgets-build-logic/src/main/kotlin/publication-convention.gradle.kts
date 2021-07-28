@@ -39,6 +39,31 @@ publishing {
                     name.set("Aleksey Mikhailov")
                     email.set("aleksey.mikhailov@icerockdev.com")
                 }
+                developer {
+                    id.set("ATchernov")
+                    name.set("Andrey Tchernov")
+                    email.set("tchernov@icerockdev.com")
+                }
+                developer {
+                    id.set("Dorofeev")
+                    name.set("Andrey Dorofeev")
+                    email.set("adorofeev@icerockdev.com")
+                }
+                developer {
+                    id.set("Tetraquark")
+                    name.set("Vladislav Areshkin")
+                    email.set("vareshkin@icerockdev.com")
+                }
+                developer {
+                    id.set("Lobynya")
+                    name.set("Aleksey Lobynyan")
+                    email.set("alobynya@icerockdev.com")
+                }
+                developer {
+                    id.set("kovalandrew")
+                    name.set("Andrey Kovalev")
+                    email.set("kovalev@icerockdev.com")
+                }
             }
 
             scm {

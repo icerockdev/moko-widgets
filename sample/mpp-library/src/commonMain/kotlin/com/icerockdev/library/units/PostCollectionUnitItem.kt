@@ -81,10 +81,10 @@ class PostCollectionUnitItem(
             }
         }
 
-    @Suppress("CommentSpacing")
     private fun Theme.createFooter(
         data: LiveData<PostsViewModelContract.PostItem>
     ): Widget<out WidgetSize> {
+        @Suppress("CommentSpacing")
         val regularItems = listOf<Widget<out WidgetSize>>(
             text(
                 size = WidgetSize.Const(SizeSpec.MatchConstraint, SizeSpec.WrapContent),
