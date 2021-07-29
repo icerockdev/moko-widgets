@@ -8,9 +8,6 @@ plugins {
     id("publication-convention")
 }
 
-group = "dev.icerock.moko"
-version = libs.versions.mokoWidgetsVersion.get()
-
 buildscript {
     repositories {
         mavenCentral()

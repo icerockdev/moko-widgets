@@ -9,9 +9,6 @@ plugins {
     id("dev.icerock.mobile.multiplatform-widgets-generator")
 }
 
-group = "dev.icerock.moko"
-version = libs.versions.mokoWidgetsVersion.get()
-
 dependencies {
     commonMainApi(projects.widgets)
 
