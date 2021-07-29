@@ -14,6 +14,7 @@ import dev.icerock.moko.widgets.core.style.view.PaddingValues
 import dev.icerock.moko.widgets.core.style.view.TextStyle
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 
+@Suppress("LongParameterList")
 expect class SystemSingleChoiceViewFactory(
     textStyle: TextStyle<Color>? = null,
     labelTextStyle: TextStyle<Color>? = null,

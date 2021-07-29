@@ -59,6 +59,7 @@ class MediaScreen(
 
         return with(theme) {
             constraint(size = WidgetSize.AsParent) {
+                @Suppress("MagicNumber")
                 val selectedImage = +image(
                     size = WidgetSize.Const(
                         width = SizeSpec.Exact(200f),
@@ -98,6 +99,7 @@ class MediaViewModel(
     private val _selectedImage = MutableLiveData<Bitmap?>(initialValue = null)
     val selectedImage: LiveData<Bitmap?> = _selectedImage
 
+    @Suppress("TooGenericExceptionCaught")
     fun onSelectImagePressed() {
         viewModelScope.launch {
             try {

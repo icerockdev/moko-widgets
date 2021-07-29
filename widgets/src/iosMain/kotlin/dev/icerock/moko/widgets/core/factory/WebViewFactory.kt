@@ -8,7 +8,7 @@ import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.core.objc.setAssociatedObject
+import dev.icerock.moko.widgets.core.utils.setAssociatedObject
 import dev.icerock.moko.widgets.core.style.background.Background
 import dev.icerock.moko.widgets.core.style.background.Fill
 import dev.icerock.moko.widgets.core.style.view.MarginValues
@@ -104,9 +104,6 @@ actual class WebViewFactory actual constructor(
             } else {
                 decisionHandler(WKNavigationActionPolicy.WKNavigationActionPolicyAllow)
             }
-
         }
-
     }
-
 }

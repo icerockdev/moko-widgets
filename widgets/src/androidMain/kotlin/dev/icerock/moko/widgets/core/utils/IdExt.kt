@@ -13,6 +13,7 @@ import kotlin.math.abs
 
 private val classIdMap: MutableMap<Theme.Id<*>, Int> = mutableMapOf()
 
+@Suppress("MagicNumber")
 val <T : Widget<out WidgetSize>> Theme.Id<T>.androidId: Int
     get() {
         val cachedId = classIdMap[this]

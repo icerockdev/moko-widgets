@@ -21,6 +21,7 @@ import dev.icerock.moko.widgets.core.style.view.WidgetSize
  * It is possible to observe the state of the page loading process by [isWebPageLoading] LiveData.
  * JavaScript for WebView is enabled by default.
  */
+@Suppress("LongParameterList")
 @WidgetDef(WebViewFactory::class)
 class WebViewWidget<WS : WidgetSize>(
     private val factory: ViewFactory<WebViewWidget<out WidgetSize>>,
@@ -46,5 +47,4 @@ class WebViewWidget<WS : WidgetSize>(
     object DefaultCategory : Category
 
     data class RedirectConfig(val url: String, val handler: (String) -> Unit)
-
 }

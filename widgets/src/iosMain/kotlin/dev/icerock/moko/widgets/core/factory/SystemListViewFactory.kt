@@ -46,6 +46,7 @@ actual class SystemListViewFactory actual constructor(
     private val margins: MarginValues?
 ) : ViewFactory<ListWidget<out WidgetSize>> {
 
+    @Suppress("LongMethod")
     override fun <WS : WidgetSize> build(
         widget: ListWidget<out WidgetSize>,
         size: WS,
@@ -120,8 +121,9 @@ actual class SystemListViewFactory actual constructor(
         }
 
         widget.items.bind { items ->
-            unitDataSource.unitItems = if (widget.onReachEnd != null) {
-                items.observedEnd(widget.onReachEnd)
+            val onReachEnd = widget.onReachEnd
+            unitDataSource.unitItems = if (onReachEnd != null) {
+                items.observedEnd(onReachEnd)
             } else {
                 items
             }

@@ -4,7 +4,7 @@
 
 package dev.icerock.moko.widgets.core.screen
 
-import dev.icerock.moko.widgets.core.objc.setAssociatedObject
+import dev.icerock.moko.widgets.core.utils.setAssociatedObject
 import platform.Foundation.NSError
 import platform.MessageUI.MFMailComposeResult
 import platform.MessageUI.MFMailComposeViewController

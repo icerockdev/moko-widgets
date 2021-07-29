@@ -35,6 +35,7 @@ import dev.icerock.moko.widgets.core.style.view.TextStyle
 import dev.icerock.moko.widgets.core.style.view.rgba
 import dev.icerock.moko.widgets.core.utils.platformSpecific
 
+@Suppress("MagicNumber")
 object AppTheme {
     object PostsCollection : CollectionWidget.Category
 
@@ -189,8 +190,6 @@ object AppTheme {
             androidElevationEnabled = false
         )
     }
-
-
 //    val errorTextStyle: TextStyle = TextStyle(
 //        size = 12,
 //        color = Color.redError,

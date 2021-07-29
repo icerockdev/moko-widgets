@@ -3,46 +3,21 @@
  */
 
 plugins {
-    id("com.android.application")
-    id("kotlin-android")
+    id("android-app-convention")
+    id("detekt-convention")
+    id("kotlin-kapt")
 }
 
 android {
-    compileSdkVersion(Deps.Android.compileSdk)
-
     buildFeatures.dataBinding = true
 
-    dexOptions {
-        javaMaxHeapSize = "2g"
-    }
-
     defaultConfig {
-        minSdkVersion(Deps.Android.minSdk)
-        targetSdkVersion(Deps.Android.targetSdk)
-
         applicationId = "dev.icerock.moko.samples.widgets"
 
         versionCode = 1
-        versionName = Deps.mokoWidgetsVersion
-
-        vectorDrawables.useSupportLibrary = true
+        versionName = "0.1.0"
     }
-
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
-        }
-        getByName("debug") {
-            isDebuggable = true
-            applicationIdSuffix = ".debug"
-        }
-    }
-
-    packagingOptions {
-        exclude("META-INF/*.kotlin_module")
-    }
-
+    
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -50,11 +25,11 @@ android {
 }
 
 dependencies {
-    implementation(Deps.Libs.Android.appCompat)
-    implementation(Deps.Libs.Android.recyclerView)
-    implementation(Deps.Libs.Android.material)
-    implementation(Deps.Libs.Android.constraintLayout)
+    implementation(libs.appCompat)
+    implementation(libs.recyclerView)
+    implementation(libs.material)
+    implementation(libs.constraintLayout)
 
-    implementation(Deps.Libs.MultiPlatform.mokoWidgets.common)
-    implementation(project(":sample:mpp-library"))
+    implementation(projects.widgets)
+    implementation(projects.sample.mppLibrary)
 }

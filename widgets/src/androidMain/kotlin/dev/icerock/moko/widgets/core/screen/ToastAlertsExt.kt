@@ -7,7 +7,6 @@ package dev.icerock.moko.widgets.core.screen
 import android.widget.Toast
 import dev.icerock.moko.resources.desc.StringDesc
 
-
 actual fun Screen<*>.showToast(message: StringDesc) {
     val context = context ?: return
     val text = message.toString(context)

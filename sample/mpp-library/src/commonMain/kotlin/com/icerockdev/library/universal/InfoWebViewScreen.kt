@@ -66,5 +66,4 @@ class InfoWebViewScreen(
     data class WebViewArgs(
         val targetUrl: String
     ) : Parcelable
-
 }

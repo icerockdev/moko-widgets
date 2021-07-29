@@ -8,4 +8,5 @@ import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.widget.InputLengthWidget
 
+@Suppress("EmptyDefaultConstructor")
 expect open class InputLengthViewFactory() : ViewFactory<InputLengthWidget<out WidgetSize>>

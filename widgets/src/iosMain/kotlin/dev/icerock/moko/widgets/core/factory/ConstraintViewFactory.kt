@@ -46,7 +46,7 @@ actual class ConstraintViewFactory actual constructor(
     override fun <WS : WidgetSize> build(
         widget: ConstraintWidget<out WidgetSize>,
         size: WS,
-        viewFactoryContext: ViewFactoryContext
+        viewFactoryContext: ViewFactoryContext,
     ): ViewBundle<WS> {
         val container = UIView(frame = CGRectZero.readValue()).apply {
             translatesAutoresizingMaskIntoConstraints = false
@@ -113,7 +113,7 @@ class AutoLayoutConstraintsApi(
         val rightAnchor: NSLayoutAnchor,
         val bottomAnchor: NSLayoutAnchor,
         val centerXAnchor: NSLayoutAnchor,
-        val centerYAnchor: NSLayoutAnchor
+        val centerYAnchor: NSLayoutAnchor,
     ) {
         constructor(view: UIView) : this(
             topAnchor = view.topAnchor,
@@ -135,7 +135,8 @@ class AutoLayoutConstraintsApi(
     }
 
     private val _widgetAdditionalMargins = mutableMapOf<Widget<out WidgetSize>, MarginValues>()
-    val widgetAdditionalMargins: Map<out Widget<out WidgetSize>, MarginValues> = _widgetAdditionalMargins
+    val widgetAdditionalMargins: Map<out Widget<out WidgetSize>, MarginValues> =
+        _widgetAdditionalMargins
 
     private fun applyAdditionalMargins(
         widget: Widget<out WidgetSize>,
@@ -204,7 +205,9 @@ class AutoLayoutConstraintsApi(
                 override fun offset(points: Int) {
                     it.constant = const + points
                     if (applyExtraMargins != null) {
-                        applyAdditionalMargins(firstItem.widget, points.toFloat(), applyExtraMargins)
+                        applyAdditionalMargins(firstItem.widget,
+                            points.toFloat(),
+                            applyExtraMargins)
                     }
                 }
             }
@@ -318,20 +321,22 @@ class AutoLayoutConstraintsApi(
         val bottomAnchorSet = bottom.item.anchorSet()
 
         layoutGuide.topAnchor.constraintEqualToAnchor(top.edge.toAnchor(topAnchorSet)).active = true
-        layoutGuide.bottomAnchor.constraintEqualToAnchor(bottom.edge.toAnchor(bottomAnchorSet)).active = true
+        layoutGuide.bottomAnchor.constraintEqualToAnchor(bottom.edge.toAnchor(bottomAnchorSet)).active =
+            true
 
         val childAnchorSet = this.anchorSet()
-        childAnchorSet.centerYAnchor.constraintEqualToAnchor(layoutGuide.centerYAnchor).active = true
+        childAnchorSet.centerYAnchor.constraintEqualToAnchor(layoutGuide.centerYAnchor).active =
+            true
     }
 
-    private fun ConstraintItem.VerticalAnchor.Edge.toAnchor(anchorSet: AutoLayoutConstraintsApi.AnchorSet): NSLayoutAnchor {
+    private fun ConstraintItem.VerticalAnchor.Edge.toAnchor(anchorSet: AnchorSet): NSLayoutAnchor {
         return when (this) {
             ConstraintItem.VerticalAnchor.Edge.TOP -> anchorSet.topAnchor
             ConstraintItem.VerticalAnchor.Edge.BOTTOM -> anchorSet.bottomAnchor
         }
     }
 
-    private fun ConstraintItem.HorizontalAnchor.Edge.toAnchor(anchorSet: AutoLayoutConstraintsApi.AnchorSet): NSLayoutAnchor {
+    private fun ConstraintItem.HorizontalAnchor.Edge.toAnchor(anchorSet: AnchorSet): NSLayoutAnchor {
         return when (this) {
             ConstraintItem.HorizontalAnchor.Edge.LEFT -> anchorSet.leftAnchor
             ConstraintItem.HorizontalAnchor.Edge.RIGHT -> anchorSet.rightAnchor
@@ -348,11 +353,14 @@ class AutoLayoutConstraintsApi(
         val firstAnchorSet = left.item.anchorSet()
         val secondAnchorSet = right.item.anchorSet()
 
-        layoutGuide.leftAnchor.constraintEqualToAnchor(left.edge.toAnchor(firstAnchorSet)).active = true
-        layoutGuide.rightAnchor.constraintEqualToAnchor(right.edge.toAnchor(secondAnchorSet)).active = true
+        layoutGuide.leftAnchor.constraintEqualToAnchor(left.edge.toAnchor(firstAnchorSet)).active =
+            true
+        layoutGuide.rightAnchor.constraintEqualToAnchor(right.edge.toAnchor(secondAnchorSet)).active =
+            true
 
         val childAnchorSet = this.anchorSet()
-        childAnchorSet.centerXAnchor.constraintEqualToAnchor(layoutGuide.centerXAnchor).active = true
+        childAnchorSet.centerXAnchor.constraintEqualToAnchor(layoutGuide.centerXAnchor).active =
+            true
     }
 
     override fun ConstraintItem.VerticalAnchor.pin(to: ConstraintItem.VerticalAnchor): Constraint {

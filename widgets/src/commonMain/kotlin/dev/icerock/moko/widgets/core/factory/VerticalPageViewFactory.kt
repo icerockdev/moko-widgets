@@ -8,4 +8,5 @@ import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.widget.VerticalPageWidget
 
+@Suppress("EmptyDefaultConstructor", "ComplexMethod")
 expect open class VerticalPageViewFactory() : ViewFactory<VerticalPageWidget<out WidgetSize>>

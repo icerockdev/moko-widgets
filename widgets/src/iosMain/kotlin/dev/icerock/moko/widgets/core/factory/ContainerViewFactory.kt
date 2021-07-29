@@ -35,7 +35,7 @@ actual class ContainerViewFactory actual constructor(
     private val margins: MarginValues?,
     private val background: Background<out Fill>?
 ) : ViewFactory<ContainerWidget<out WidgetSize>> {
-
+    @Suppress("LongMethod")
     override fun <WS : WidgetSize> build(
         widget: ContainerWidget<out WidgetSize>,
         size: WS,

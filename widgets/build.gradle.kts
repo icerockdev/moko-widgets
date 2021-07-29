@@ -3,42 +3,43 @@
  */
 
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.multiplatform")
-    id("dev.icerock.mobile.multiplatform")
+    id("multiplatform-library-convention")
+    id("publication-convention")
     id("kotlin-kapt")
     id("kotlin-parcelize")
     id("dev.icerock.mobile.multiplatform-widgets-generator")
-    id("org.gradle.maven-publish")
+    id("detekt-convention")
 }
 
 dependencies {
-    commonMainImplementation(Deps.Libs.MultiPlatform.coroutines)
-
-    commonMainApi(Deps.Libs.MultiPlatform.mokoResources.common)
-    commonMainApi(Deps.Libs.MultiPlatform.mokoMvvm.common)
-    commonMainApi(Deps.Libs.MultiPlatform.mokoFields.common)
-    commonMainApi(Deps.Libs.MultiPlatform.mokoUnits.common)
-    commonMainApi(Deps.Libs.MultiPlatform.mokoGraphics.common)
-    commonMainApi(Deps.Libs.MultiPlatform.mokoParcelize.common)
-
-    androidMainImplementation(Deps.Libs.Android.appCompat)
-    androidMainImplementation(Deps.Libs.Android.fragment)
-    androidMainImplementation(Deps.Libs.Android.recyclerView)
-    androidMainImplementation(Deps.Libs.Android.material)
-    androidMainImplementation(Deps.Libs.Android.swipeRefreshLayout)
-    androidMainImplementation(Deps.Libs.Android.constraintLayout)
-    androidMainImplementation(Deps.Libs.Android.inputMask)
-    androidMainImplementation(Deps.Libs.Android.roundedImageView)
+    commonMainImplementation(libs.coroutines)
+    commonMainApi(libs.mokoResources)
+    commonMainApi(libs.mokoMvvmCore)
+    commonMainApi(libs.mokoMvvmLivedata)
+    commonMainApi(libs.mokoMvvmState)
+    commonMainApi(libs.mokoFields)
+    commonMainApi(libs.mokoUnits)
+    commonMainApi(libs.mokoGraphics)
+    commonMainApi(libs.mokoParcelize)
+    androidMainImplementation(libs.appCompat)
+    androidMainImplementation(libs.fragment)
+    androidMainImplementation(libs.recyclerView)
+    androidMainImplementation(libs.material)
+    androidMainImplementation(libs.swipeRefreshLayout)
+    androidMainImplementation(libs.constraintLayout)
+    androidMainImplementation(libs.inputMask)
+    androidMainImplementation(libs.roundedImageView)
 }
 
 kotlin {
-    targets.filterIsInstance<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>()
-        .forEach { target ->
-            target.compilations.getByName("main") {
-                val objcAddtition by cinterops.creating {
+    targets
+        .matching { it is org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget }
+        .configureEach {
+            this as org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+
+            compilations.getByName("main") {
+                val pluralizedString by cinterops.creating {
                     defFile(project.file("src/iosMain/def/objcAddtition.def"))
-                    packageName("dev.icerock.moko.widgets.core.objc")
                 }
             }
         }

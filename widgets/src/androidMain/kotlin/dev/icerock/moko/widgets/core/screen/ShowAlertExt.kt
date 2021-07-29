@@ -136,7 +136,8 @@ class AlertDialogFragment : DialogFragment() {
     }
 
     // TODO improve this case
-    // now using String in arg, but in case of configuration change in AlertDialog will show old values...another version
+    // now using String in arg
+    // but in case of configuration change in AlertDialog will show old values...another version
     // is not allow formatting stringdesc which can be very useful in dialogs.
     @Parcelize
     data class Arg(

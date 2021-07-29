@@ -55,6 +55,7 @@ actual class AutoScrollListViewFactory actual constructor(
         return bundle
     }
 
+    @Suppress("ReturnCount")
     private fun findTableView(view: View): UITableView? {
         return when (view) {
             is UITableView -> view

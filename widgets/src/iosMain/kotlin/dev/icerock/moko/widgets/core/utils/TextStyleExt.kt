@@ -24,6 +24,7 @@ import platform.UIKit.UILabel
 import platform.UIKit.UITextField
 import platform.UIKit.UITextView
 
+@Suppress("MagicNumber")
 fun TextStyle<*>.toUIFont(defaultFontSize: Double = 17.0): UIFont? {
     val styleSize = size?.toDouble()
     val fontStyle = fontStyle
@@ -42,6 +43,7 @@ fun TextStyle<*>.toUIFont(defaultFontSize: Double = 17.0): UIFont? {
     return null
 }
 
+@Suppress("MagicNumber")
 fun UIButton.applyTextStyleIfNeeded(textStyle: TextStyle<PressableState<Color>>?) {
     if (textStyle == null) return
 

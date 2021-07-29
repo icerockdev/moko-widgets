@@ -12,7 +12,7 @@ import dev.icerock.moko.widgets.core.style.ext.applyMargin
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.widget.VerticalPageWidget
 
-actual open class VerticalPageViewFactory actual constructor() :
+actual open class VerticalPageViewFactory :
     ViewFactory<VerticalPageWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(

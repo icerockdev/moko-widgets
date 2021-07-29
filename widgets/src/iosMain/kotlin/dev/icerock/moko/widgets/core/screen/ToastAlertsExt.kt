@@ -30,7 +30,7 @@ import platform.UIKit.UIViewAnimationOptionTransitionNone
 import platform.UIKit.alpha
 import platform.UIKit.removeFromSuperview
 
-
+@Suppress("MagicNumber")
 actual fun Screen<*>.showToast(message: StringDesc) {
 
     val containerView = UIView(frame = CGRectZero.readValue()).apply {
@@ -40,7 +40,6 @@ actual fun Screen<*>.showToast(message: StringDesc) {
         clipsToBounds = true
         backgroundColor = UIColor(red = 0.8, green = 0.8, blue = 0.8, alpha = 0.8)
     }
-
 
     val toastLabel = UILabel(frame = CGRectZero.readValue()).apply {
         translatesAutoresizingMaskIntoConstraints = false
@@ -53,7 +52,8 @@ actual fun Screen<*>.showToast(message: StringDesc) {
 
     containerView.addSubview(toastLabel)
     containerView.layer.zPosition = 10000.0
-    val controller = (UIApplication.sharedApplication.windows.last() as? UIWindow)?.rootViewController
+    val controller =
+        (UIApplication.sharedApplication.windows.last() as? UIWindow)?.rootViewController
     (UIApplication.sharedApplication.windows.last() as? UIWindow)?.addSubview(containerView)
 
     toastLabel.bottomAnchor.constraintEqualToAnchor(containerView.bottomAnchor, -8.0).active = true
@@ -77,7 +77,6 @@ actual fun Screen<*>.showToast(message: StringDesc) {
             containerView.trailingAnchor,
             24.0
         ).active = true
-
     }
     UIView.animateWithDuration(
         duration = 1.0,

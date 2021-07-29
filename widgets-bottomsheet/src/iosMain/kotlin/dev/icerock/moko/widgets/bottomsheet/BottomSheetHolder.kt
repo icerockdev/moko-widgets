@@ -4,26 +4,13 @@
 
 package dev.icerock.moko.widgets.bottomsheet
 
-import cocoapods.mokoWidgetsBottomSheet.BottomSheetController
 import dev.icerock.moko.widgets.core.View
 import platform.UIKit.UIViewController
 
-internal class BottomSheetHolder : SelfDismisser {
-    private val bottomSheet = BottomSheetController()
-
+internal expect class BottomSheetHolder() : SelfDismisser {
     fun show(
         viewController: UIViewController,
         view: View,
         onDismiss: (isSelfDismissed: Boolean) -> Unit
-    ) {
-        bottomSheet.showOnViewController(
-            vc = viewController,
-            withContent = view,
-            onDismiss = onDismiss
-        )
-    }
-
-    override fun dismissSelf() {
-        bottomSheet.dismiss()
-    }
+    )
 }

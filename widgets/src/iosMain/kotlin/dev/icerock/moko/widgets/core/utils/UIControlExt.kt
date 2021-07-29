@@ -6,7 +6,6 @@ package dev.icerock.moko.widgets.core.utils
 
 import kotlinx.cinterop.ObjCAction
 import kotlinx.cinterop.cstr
-import platform.Foundation.NSDefaultRunLoopMode
 import platform.Foundation.NSRunLoop
 import platform.Foundation.NSRunLoopCommonModes
 import platform.Foundation.NSSelectorFromString

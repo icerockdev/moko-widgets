@@ -3,34 +3,33 @@
  */
 package dev.icerock.moko.widgets.datetimepicker
 
-import cocoapods.mokoWidgetsDateTimePicker.DateBottomSheetController
 import com.soywiz.klock.DateTime
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.graphics.toUIColor
 import dev.icerock.moko.widgets.core.screen.Screen
 import dev.icerock.moko.widgets.core.utils.setEventHandler
-import kotlin.properties.ReadOnlyProperty
-import platform.UIKit.UIColor
-import platform.UIKit.UIView
-import platform.UIKit.translatesAutoresizingMaskIntoConstraints
-import platform.UIKit.backgroundColor
-import platform.UIKit.addSubview
-import platform.UIKit.leadingAnchor
-import platform.UIKit.trailingAnchor
-import platform.UIKit.bottomAnchor
-import platform.UIKit.UIDatePicker
-import platform.UIKit.UIDatePickerMode
-import platform.UIKit.safeAreaLayoutGuide
-import platform.UIKit.heightAnchor
-import platform.UIKit.topAnchor
-import platform.UIKit.UIButton
-import platform.UIKit.UIControlStateNormal
-import platform.UIKit.UIControlEventTouchUpInside
-import platform.UIKit.UIApplication
+import platform.CoreGraphics.CGRectMake
 import platform.Foundation.NSBundle
 import platform.Foundation.NSDate
 import platform.Foundation.NSTimeIntervalSince1970
-import platform.CoreGraphics.CGRectMake
+import platform.UIKit.UIApplication
+import platform.UIKit.UIButton
+import platform.UIKit.UIColor
+import platform.UIKit.UIControlEventTouchUpInside
+import platform.UIKit.UIControlStateNormal
+import platform.UIKit.UIDatePicker
+import platform.UIKit.UIDatePickerMode
+import platform.UIKit.UIView
+import platform.UIKit.addSubview
+import platform.UIKit.backgroundColor
+import platform.UIKit.bottomAnchor
+import platform.UIKit.heightAnchor
+import platform.UIKit.leadingAnchor
+import platform.UIKit.safeAreaLayoutGuide
+import platform.UIKit.topAnchor
+import platform.UIKit.trailingAnchor
+import platform.UIKit.translatesAutoresizingMaskIntoConstraints
+import kotlin.properties.ReadOnlyProperty
 
 actual class DatePickerDialogHandler(
     val positive: ((dialogId: Int, date: DateTime) -> Unit)?,
@@ -87,24 +86,6 @@ actual class DatePickerDialogBuilder {
         )
     }
 
-}
-
-actual fun Screen<*>.showDatePickerDialog(
-    dialogId: Int,
-    handler: DatePickerDialogHandler,
-    factory: DatePickerDialogBuilder.() -> Unit
-) {
-    val builder = DatePickerDialogBuilder()
-    factory(builder)
-    val controller = DateBottomSheetController()
-    val view = builder.createView(handler = handler, dialogId = dialogId) {
-        controller.dismiss()
-    }
-    controller.showOnViewController(
-        vc = this.viewController,
-        withContent = view,
-        onDismiss = { handler.negative?.invoke(dialogId) }
-    )
 }
 
 class DatePickerView(

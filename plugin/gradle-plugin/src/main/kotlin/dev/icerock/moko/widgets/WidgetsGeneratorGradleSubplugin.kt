@@ -4,7 +4,7 @@
 
 package dev.icerock.moko.widgets
 
-import BuildConfig
+import dev.icerock.moko.widgets.gradle_plugin.BuildConfig
 import com.google.auto.service.AutoService
 import org.gradle.api.Project
 import org.gradle.api.tasks.compile.AbstractCompile

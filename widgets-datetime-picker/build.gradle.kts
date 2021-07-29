@@ -3,27 +3,26 @@
  */
 
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.multiplatform")
-    id("dev.icerock.mobile.multiplatform")
+    id("multiplatform-library-convention")
+    id("publication-convention")
     id("kotlin-parcelize")
-    id("org.gradle.maven-publish")
+    id("dev.icerock.mobile.multiplatform.cocoapods")
 }
 
 dependencies {
-    commonMainApi(project(":widgets"))
+    commonMainApi(projects.widgets)
 
-    commonMainImplementation(Deps.Libs.MultiPlatform.coroutines)
+    commonMainImplementation(libs.coroutines)
 
-    commonMainApi(Deps.Libs.MultiPlatform.mokoMvvm.common)
-    commonMainApi(Deps.Libs.MultiPlatform.mokoResources.common)
-    commonMainApi(Deps.Libs.MultiPlatform.mokoGraphics.common)
-    commonMainApi(Deps.Libs.MultiPlatform.mokoParcelize.common)
+    commonMainApi(libs.mokoMvvmCore)
+    commonMainApi(libs.mokoResources)
+    commonMainApi(libs.mokoGraphics)
+    commonMainApi(libs.mokoParcelize)
 
-    commonMainImplementation(Deps.Libs.MultiPlatform.klock)
+    commonMainImplementation(libs.klock)
 
-    androidMainImplementation(Deps.Libs.Android.appCompat)
-    androidMainImplementation(Deps.Libs.Android.lifecycle)
+    androidMainImplementation(libs.appCompat)
+    androidMainImplementation(libs.lifecycleViewModel)
 }
 
 cocoaPods {

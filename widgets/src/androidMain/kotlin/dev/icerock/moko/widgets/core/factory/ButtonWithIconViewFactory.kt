@@ -30,6 +30,7 @@ import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.utils.bind
 import dev.icerock.moko.widgets.core.widget.ButtonWidget
 
+@Suppress("LongParameterList")
 actual class ButtonWithIconViewFactory actual constructor(
     private val background: PressableState<Background<out Fill>>?,
     private val textStyle: TextStyle<PressableState<Color>>?,
@@ -42,6 +43,7 @@ actual class ButtonWithIconViewFactory actual constructor(
     private val icon: PressableState<ImageResource>
 ) : ViewFactory<ButtonWidget<out WidgetSize>> {
 
+    @Suppress("ComplexMethod", "LongParameterList")
     @SuppressLint("RestrictedApi")
     override fun <WS : WidgetSize> build(
         widget: ButtonWidget<out WidgetSize>,
@@ -60,6 +62,7 @@ actual class ButtonWithIconViewFactory actual constructor(
         val icPadding = iconPadding ?: 0.0f
         val materialThemeWrapper = ContextThemeWrapper(ctx, R.style.Theme_MaterialComponents_NoActionBar)
 
+        @Suppress("TooGenericExceptionThrown")
         val button: MaterialButton = when (widget.content) {
             is ButtonWidget.Content.Text -> {
                 MaterialButton(materialThemeWrapper).apply {

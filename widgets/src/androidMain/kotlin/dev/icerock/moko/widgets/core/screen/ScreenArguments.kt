@@ -7,10 +7,10 @@ package dev.icerock.moko.widgets.core.screen
 import android.os.Bundle
 import dev.icerock.moko.parcelize.Parcelable
 
-private const val sScreenArgsParameter = "args"
+private const val SCREEN_ARGS_PARAMETER = "args"
 
 actual fun <T : Parcelable> Screen<Args.Parcel<T>>.getArgument(): T {
-    return requireNotNull(arguments?.getParcelable(sScreenArgsParameter)) {
+    return requireNotNull(arguments?.getParcelable(SCREEN_ARGS_PARAMETER)) {
         "screen with arguments should have notnull args"
     }
 }
@@ -22,6 +22,6 @@ fun <T : Parcelable> Screen<Args.Parcel<T>>.setArgument(arg: T) {
 // required for NavigationScreen arguments in routing
 fun unsafeSetScreenArgument(screen: Screen<*>, arg: Parcelable) {
     screen.arguments = Bundle().apply {
-        putParcelable(sScreenArgsParameter, arg)
+        putParcelable(SCREEN_ARGS_PARAMETER, arg)
     }
 }

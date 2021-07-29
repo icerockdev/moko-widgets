@@ -4,7 +4,6 @@
 
 package dev.icerock.moko.widgets.collection
 
-import cocoapods.mokoWidgetsCollection.ALCollectionFlowLayout
 import dev.icerock.moko.units.createUnitCollectionViewDataSource
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
@@ -23,12 +22,15 @@ import kotlinx.cinterop.readValue
 import kotlinx.cinterop.useContents
 import platform.CoreGraphics.CGRectZero
 import platform.UIKit.UICollectionView
+import platform.UIKit.UICollectionViewFlowLayout
 import platform.UIKit.UICollectionViewScrollDirection
 import platform.UIKit.UIColor
 import platform.UIKit.UIEdgeInsetsMake
 import platform.UIKit.UIEdgeInsetsZero
 import platform.UIKit.backgroundColor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
+
+expect fun createCollectionFlowLayout(): UICollectionViewFlowLayout
 
 actual class SimpleCollectionViewFactory actual constructor(
     private val orientation: Orientation,
@@ -42,7 +44,7 @@ actual class SimpleCollectionViewFactory actual constructor(
         size: WS,
         viewFactoryContext: ViewFactoryContext
     ): ViewBundle<WS> {
-        val layoutAndDelegate = ALCollectionFlowLayout().apply {
+        val layoutAndDelegate = createCollectionFlowLayout().apply {
             sectionInset = UIEdgeInsetsZero.readValue()
             minimumInteritemSpacing = 0.0
             minimumLineSpacing = 0.0

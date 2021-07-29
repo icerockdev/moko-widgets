@@ -79,12 +79,14 @@ import dev.icerock.moko.widgets.sample.ScrollContentScreen
 import dev.icerock.moko.widgets.sample.SelectGalleryScreen
 import dev.icerock.moko.widgets.sample.TabsSampleScreen
 
+@Suppress("EmptyDefaultConstructor")
 class App() : BaseApplication() {
 
     object SystemInputId : InputWidget.Id
     object FloatingLabelInputId : InputWidget.Id
     object MultilineInputId : InputWidget.Id
 
+    @Suppress("MagicNumber")
     override val androidStatusBarColor: Color? = Color(0x4444AAFF)
 
     override fun setup(): ScreenDesc<Args.Empty> {
@@ -93,8 +95,10 @@ class App() : BaseApplication() {
                 padding = PaddingValues(padding = 16.0f)
             )
             factory[SystemInputId] = SystemInputViewFactory(margins = MarginValues(bottom = 16.0f))
-            factory[FloatingLabelInputId] = FloatingLabelInputViewFactory(margins = MarginValues(bottom = 16.0f))
-            factory[MultilineInputId] = MultilineInputViewFactory(margins = MarginValues(bottom = 16.0f))
+            factory[FloatingLabelInputId] =
+                FloatingLabelInputViewFactory(margins = MarginValues(bottom = 16.0f))
+            factory[MultilineInputId] =
+                MultilineInputViewFactory(margins = MarginValues(bottom = 16.0f))
         }
 
         return registerScreen(RootNavigationScreen::class) {
@@ -215,6 +219,7 @@ class App() : BaseApplication() {
         )
     }
 
+    @Suppress("MagicNumber")
     private fun buildPostsRouteInfo(
         theme: Theme,
         router: NavigationScreen.Router
@@ -266,6 +271,7 @@ class App() : BaseApplication() {
         )
     }
 
+    @Suppress("LongMethod", "MagicNumber")
     private fun oldDemo(
         router: NavigationScreen.Router
     ): TypedScreenDesc<Args.Empty, LoginScreen> {
@@ -322,7 +328,9 @@ class App() : BaseApplication() {
             val bottomRouter = createRouter()
 
             val templateScreen = registerScreen(TemplateScreen::class) {
-                TemplateScreen(navTitle = "Template".desc(), labelText = "Template Screen".desc(), theme = theme)
+                TemplateScreen(navTitle = "Template".desc(),
+                    labelText = "Template Screen".desc(),
+                    theme = theme)
             }
 
             val cartNavigation = registerScreen(CartNavigationScreen::class) {
@@ -475,6 +483,7 @@ class LogoutScreen(
 }
 
 // TODO required for Android side... should be reworked if any ideas will be
+@Suppress("MagicNumber")
 class MainBottomNavigationScreen(
     router: Router,
     builder: BottomNavigationItem.Builder.() -> Unit
@@ -493,12 +502,15 @@ class MainBottomNavigationScreen(
 
 class RootNavigationScreen<T>(initialScreen: TypedScreenDesc<Args.Empty, T>, router: Router) :
     NavigationScreen<T>(initialScreen, router) where T : Screen<Args.Empty>, T : NavigationItem {
+
+    @Suppress("MagicNumber")
     override val androidStatusBarColor: Color? = Color(0x11AA11FF)
 }
 
-class ProductsNavigationScreen(initialScreen: TypedScreenDesc<Args.Empty, ProductsScreen>, router: Router) :
-    NavigationScreen<ProductsScreen>(initialScreen, router)
+class ProductsNavigationScreen(
+    initialScreen: TypedScreenDesc<Args.Empty, ProductsScreen>,
+    router: Router
+) : NavigationScreen<ProductsScreen>(initialScreen, router)
 
 class CartNavigationScreen(initialScreen: TypedScreenDesc<Args.Empty, CartScreen>, router: Router) :
     NavigationScreen<CartScreen>(initialScreen, router)
-

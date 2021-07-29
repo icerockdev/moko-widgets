@@ -30,6 +30,7 @@ import dev.icerock.moko.widgets.core.utils.ThemeAttrs
 import dev.icerock.moko.widgets.core.utils.dp
 import dev.icerock.moko.widgets.core.utils.getIntNullable
 
+@Suppress("MagicNumber")
 actual abstract class BottomNavigationScreen actual constructor(
     private val router: Router,
     builder: BottomNavigationItem.Builder.() -> Unit
@@ -105,6 +106,7 @@ actual abstract class BottomNavigationScreen actual constructor(
         updateBackCallbackState()
     }
 
+    @Suppress("LongMethod")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

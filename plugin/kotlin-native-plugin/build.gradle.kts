@@ -6,28 +6,16 @@ plugins {
     id("org.jetbrains.kotlin.jvm")
     id("org.gradle.maven-publish")
     id("kotlin-kapt")
-}
-
-val embedImplementationConfig = "embedImplementation"
-configurations {
-    val embedImplementation = create(embedImplementationConfig)
-    implementation.get().extendsFrom(embedImplementation)
+    id("embed-configuration-convention")
 }
 
 dependencies {
-    embedImplementationConfig(project(":kotlin-common-plugin"))
+    "embedImplementation"(projects.kotlinCommonPlugin)
 
     compileOnly("org.jetbrains.kotlin:kotlin-compiler")
 
-    compileOnly(Deps.Libs.Jvm.autoService)
-    kapt(Deps.Libs.Jvm.autoService)
-}
-
-tasks.jar {
-    from({
-        val embedConfiguration = configurations.getByName(embedImplementationConfig)
-        embedConfiguration.map { if(it.isDirectory) it else zipTree(it) }
-    })
+    compileOnly(libs.autoService)
+    kapt(libs.autoService)
 }
 
 publishing {

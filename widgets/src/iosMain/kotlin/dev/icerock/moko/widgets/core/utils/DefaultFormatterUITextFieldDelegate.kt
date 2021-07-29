@@ -87,6 +87,7 @@ class DefaultFormatterUITextFieldDelegate(
         return true
     }
 
+    @Suppress("ReturnCount")
     private fun nextResponder(textField: UITextField): UIView? {
         val window = textField.window ?: return null
         val fields = fillRespondersList(window)

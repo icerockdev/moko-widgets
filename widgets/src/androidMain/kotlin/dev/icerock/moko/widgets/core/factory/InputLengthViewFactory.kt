@@ -15,7 +15,7 @@ import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.utils.bind
 import dev.icerock.moko.widgets.core.widget.InputLengthWidget
 
-actual open class InputLengthViewFactory actual constructor() : ViewFactory<InputLengthWidget<out WidgetSize>> {
+actual open class InputLengthViewFactory : ViewFactory<InputLengthWidget<out WidgetSize>> {
     override fun <WS : WidgetSize> build(
         widget: InputLengthWidget<out WidgetSize>,
         size: WS,
@@ -36,7 +36,7 @@ actual open class InputLengthViewFactory actual constructor() : ViewFactory<Inpu
 
         return bundle
     }
-
+    @Suppress("ReturnCount")
     protected open fun getEditText(view: View): EditText? {
         when (view) {
             is EditText -> return view

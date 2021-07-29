@@ -26,6 +26,7 @@ import dev.icerock.moko.widgets.core.units.WidgetsTableUnitItem
 class UserUnitWidget(
     private val theme: Theme
 ) {
+    @Suppress("MagicNumber")
     fun createWidget(data: LiveData<Data>) =
         with(theme) {
             clickable(
@@ -52,7 +53,7 @@ class UserUnitWidget(
                         image = data.map { Image.network(it.avatarUrl) }
                     )
                     +linear(
-                        size = WidgetSize.WidthAsParentHeightWrapContent//,
+                        size = WidgetSize.WidthAsParentHeightWrapContent // ,
 //                        factory = DefaultLinearWidgetViewFactory(
 //                            DefaultLinearWidgetViewFactoryBase.Style(
 //                                orientation = Orientation.VERTICAL,

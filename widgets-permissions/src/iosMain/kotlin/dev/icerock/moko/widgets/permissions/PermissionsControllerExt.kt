@@ -6,9 +6,10 @@ package dev.icerock.moko.widgets.permissions
 
 import dev.icerock.moko.permissions.PermissionsController
 import dev.icerock.moko.widgets.core.screen.Screen
+import dev.icerock.moko.permissions.ios.PermissionsController as IosPermissionsController
 
 actual fun Screen<*>.createPermissionsController(): PermissionsController {
-    return PermissionsController()
+    return IosPermissionsController()
 }
 
 actual fun PermissionsController.bind(screen: Screen<*>) {

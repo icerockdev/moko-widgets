@@ -7,6 +7,7 @@ package dev.icerock.moko.widgets.core
 import android.widget.ImageView
 import dev.icerock.moko.resources.ImageResource
 
+@Suppress("UnnecessaryAbstractClass")
 actual abstract class Image {
     abstract fun loadIn(imageView: ImageView)
 

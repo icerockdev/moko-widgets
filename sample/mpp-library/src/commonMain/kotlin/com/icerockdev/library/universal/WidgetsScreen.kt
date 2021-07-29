@@ -33,6 +33,7 @@ class WidgetsScreen(
     private val postsCollectionCategory: CollectionWidget.Category
 ) : WidgetScreen<Args.Empty>() {
 
+    @Suppress("LongMethod", "CommentSpacing")
     override fun createContentWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         return with(theme) {
             constraint(size = WidgetSize.AsParent) {
@@ -45,14 +46,14 @@ class WidgetsScreen(
                     tab(
                         title = const("P#2"),
                         body = SocialProfileScreen(
-                            theme = theme, //AppTheme.socialWidgetScope,
+                            theme = theme, // AppTheme.socialWidgetScope,
                             viewModel = SocialProfileViewModel()
                         ).createWidget()
                     )
                     tab(
                         title = const("P#4"),
                         body = CryptoProfileScreen(
-                            theme = theme, //AppTheme.cryptoWidgetScope,
+                            theme = theme, // AppTheme.cryptoWidgetScope,
                             viewModel = CryptoProfileViewModel()
                         ).createWidget()
                     )
@@ -66,7 +67,7 @@ class WidgetsScreen(
                     tab(
                         title = const("P#3"),
                         body = McommerceProfileScreen(
-                            theme = theme, //AppTheme.mcommerceWidgetScope,
+                            theme = theme, // AppTheme.mcommerceWidgetScope,
                             viewModel = McommerceProfileViewModel()
                         ).createWidget()
                     )

@@ -62,6 +62,7 @@ import platform.UIKit.topAnchor
 import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
+@Suppress("MagicNumber", "LongParameterList")
 actual class FloatingLabelInputViewFactory actual constructor(
     private val background: Background<Fill.Solid>?,
     override val margins: MarginValues?,

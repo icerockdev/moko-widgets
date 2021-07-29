@@ -7,7 +7,6 @@ package dev.icerock.moko.widgets.sample
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.mvvm.livedata.map
-import dev.icerock.moko.mvvm.livedata.readOnly
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.permissions.Permission
 import dev.icerock.moko.permissions.PermissionsController
@@ -76,6 +75,7 @@ class PermissionsViewModel(
     private val _statusText = MutableLiveData(initialValue = "undefined")
     val statusText: LiveData<StringDesc> = _statusText.map { it.desc() }
 
+    @Suppress("TooGenericExceptionCaught")
     fun onRequestPressed() {
         viewModelScope.launch {
             try {

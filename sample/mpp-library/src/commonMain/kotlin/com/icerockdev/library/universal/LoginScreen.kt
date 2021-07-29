@@ -41,6 +41,7 @@ import dev.icerock.moko.widgets.core.style.view.SizeSpec
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.widget.text
 
+@Suppress("MagicNumber")
 class LoginScreen(
     private val theme: Theme,
     private val mainRoute: Route<Unit>,
@@ -58,6 +59,7 @@ class LoginScreen(
     override val isKeyboardResizeContent: Boolean = true
     override val isDismissKeyboardOnTap: Boolean = true
 
+    @Suppress("LongMethod")
     override fun createContentWidget() = with(theme) {
         val viewModel = getViewModel {
             loginViewModelFactory(createEventsDispatcher())
@@ -107,6 +109,7 @@ class LoginScreen(
                 text = const("IceRock Development")
             )
 
+            @Suppress("CommentSpacing")
             constraints {
                 passwordInput centerYToCenterY root
                 passwordInput leftRightToLeftRight root offset 16
@@ -171,7 +174,6 @@ class LoginScreen(
     override fun routeToWebViewInfo() {
         infoWebViewRoute.route("https://icerockdev.com/")
     }
-
 }
 
 class LoginViewModel(

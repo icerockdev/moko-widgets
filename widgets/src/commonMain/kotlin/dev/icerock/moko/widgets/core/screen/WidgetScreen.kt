@@ -8,6 +8,7 @@ import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.style.view.SizeSpec
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 
+@Suppress("EmptyDefaultConstructor")
 expect abstract class WidgetScreen<Arg : Args>() : Screen<Arg> {
     abstract fun createContentWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>
 

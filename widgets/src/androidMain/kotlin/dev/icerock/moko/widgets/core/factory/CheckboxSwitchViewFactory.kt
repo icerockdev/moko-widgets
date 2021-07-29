@@ -5,7 +5,6 @@
 package dev.icerock.moko.widgets.core.factory
 
 import android.graphics.drawable.StateListDrawable
-import android.widget.CheckBox
 import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.core.content.ContextCompat
 import dev.icerock.moko.resources.ImageResource

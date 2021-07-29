@@ -1,4 +1,5 @@
 language = Objective-C
+package = dev.icerock.moko.widgets.objc
 ---
 #import <objc/runtime.h>
 #import <UIKit/UIColor.h>

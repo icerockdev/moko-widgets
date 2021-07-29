@@ -8,7 +8,7 @@ import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.widgets.core.screen.navigation.NavigationBar
 import dev.icerock.moko.widgets.core.utils.toUIBarButtonItem
 import dev.icerock.moko.widgets.core.utils.toUIFont
-import dev.icerock.moko.widgets.core.objc.setAssociatedObject
+import dev.icerock.moko.widgets.core.utils.setAssociatedObject
 import platform.UIKit.NSFontAttributeName
 import platform.UIKit.NSForegroundColorAttributeName
 import platform.UIKit.UIApplication
@@ -27,8 +27,9 @@ import platform.darwin.NSObject
 fun UINavigationBar.applyNavigationBarStyle(style: NavigationBar.Styles?) {
     val textAttributes: Map<Any?, *>? = style?.textStyle?.let { ts ->
         val attributes = mutableMapOf<Any?, Any?>()
-        if (ts.color != null) {
-            attributes[NSForegroundColorAttributeName] = ts.color.toUIColor()
+        val color = ts.color
+        if (color != null) {
+            attributes[NSForegroundColorAttributeName] = color.toUIColor()
         }
         val font = ts.toUIFont()
         if (font != null) {
@@ -78,6 +79,7 @@ fun NavigationBar.Normal.apply(
     viewController.navigationItem.title = title.localized()
     navigationController?.navigationBar?.applyNavigationBarStyle(styles)
 
+    val backButton = this.backButton
     if (backButton != null) {
         viewController.navigationItem.leftBarButtonItem = backButton.toUIBarButtonItem()
     }
@@ -96,6 +98,7 @@ fun NavigationBar.Search.apply(
     viewController.navigationItem.title = title.localized()
     navigationController?.navigationBar?.applyNavigationBarStyle(styles)
 
+    val backButton = this.backButton
     if (backButton != null) {
         viewController.navigationItem.leftBarButtonItem = backButton.toUIBarButtonItem()
     }

@@ -4,36 +4,20 @@
 
 buildscript {
     repositories {
-        jcenter()
+        mavenCentral()
         google()
-
-        maven { url = uri("https://dl.bintray.com/kotlin/kotlin") }
-        maven { url = uri("https://kotlin.bintray.com/kotlinx") }
-        maven { url = uri("https://plugins.gradle.org/m2/") }
-        maven { url = uri("https://dl.bintray.com/icerockdev/plugins") }
+        gradlePluginPortal()
+        jcenter()
     }
     dependencies {
-        classpath("dev.icerock.moko:resources-generator:0.13.2")
-        classpath("dev.icerock.moko.widgets:gradle-plugin:0.1.0-dev-21")
-        classpath("gradle:moko-widgets-deps:1")
+        classpath("dev.icerock.moko:resources-generator:0.16.1")
+        classpath("dev.icerock.moko.widgets:gradle-plugin")
+        
+        classpath(":widgets-build-logic")
     }
 }
 
 allprojects {
-    repositories {
-        google()
-        jcenter()
-
-        maven { url = uri("https://kotlin.bintray.com/kotlin") }
-        maven { url = uri("https://kotlin.bintray.com/kotlinx") }
-        maven { url = uri("https://dl.bintray.com/icerockdev/moko") }
-        maven { url = uri("https://dl.bintray.com/icerockdev/plugins") }
-        maven { url = uri("http://dl.bintray.com/lukaville/maven") }
-
-        maven { url = uri("https://dl.bintray.com/icerockdev/moko-dev") }
-        maven { url = uri("https://dl.bintray.com/icerockdev/plugins-dev") }
-    }
-
     configurations
         .matching { it.name == "compileOnly" }
         .configureEach {
@@ -42,63 +26,6 @@ allprojects {
                 "compileOnly"("javax.annotation:jsr250-api:1.0")
             }
         }
-    
-    configurations.all {
-        resolutionStrategy.dependencySubstitution {
-            substitute(module("com.nbsp:library"))
-                .using(module("com.nbsp:materialfilepicker:1.9.1"))
-                .because("androidx support in new artifact")
-        }
-    }
-
-    plugins.withType<com.android.build.gradle.LibraryPlugin> {
-        configure<com.android.build.gradle.LibraryExtension> {
-            compileSdkVersion(Deps.Android.compileSdk)
-
-            defaultConfig {
-                minSdkVersion(Deps.Android.minSdk)
-                targetSdkVersion(Deps.Android.targetSdk)
-            }
-        }
-    }
-
-    val project = this
-    val bintrayPath: Pair<String, String>?
-    when {
-        this.name.startsWith("widgets") -> {
-            bintrayPath = "moko" to "moko-widgets"
-
-            this.group = "dev.icerock.moko"
-            this.version = Deps.mokoWidgetsVersion
-        }
-        else -> {
-            bintrayPath = null
-        }
-    }
-
-    if (bintrayPath != null) {
-        project.plugins.withType<MavenPublishPlugin> {
-            project.configure<PublishingExtension> {
-                val repo = bintrayPath.first
-                val artifact = bintrayPath.second
-                val isDevPublish = project.properties.containsKey("devPublish")
-                val fullRepoName = if (isDevPublish) "$repo-dev" else repo
-                val mavenUrl =
-                    "https://api.bintray.com/maven/icerockdev/$fullRepoName/$artifact/;publish=1"
-
-                repositories.maven(mavenUrl) {
-                    this.name = "bintray"
-
-                    credentials {
-                        username = System.getProperty("BINTRAY_USER")
-                        password = System.getProperty("BINTRAY_KEY")
-                    }
-                }
-            }
-        }
-
-        apply<dev.icerock.moko.widgets.gradle.BintrayPublishingPlugin>()
-    }
 }
 
 tasks.register("clean", Delete::class).configure {

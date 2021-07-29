@@ -39,6 +39,7 @@ class ProductScreen(
 ) : WidgetScreen<Args.Parcel<ProductScreen.Args>>(),
     ProductViewModel.EventsListener, NavigationItem {
     override val navigationBar
+        @Suppress("MagicNumber")
         get() = NavigationBar.Normal(
             title = getArgument().productId.let { "Product $it".desc() },
             styles = NavigationBar.Styles(

@@ -35,6 +35,7 @@ import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.widget.tabs
 import dev.icerock.moko.widgets.core.utils.platformSpecific
 
+@Suppress("MagicNumber")
 class TabsSampleScreen(
     private val theme: Theme
 ) : WidgetScreen<Args.Empty>(), NavigationItem {

@@ -3,13 +3,13 @@
  */
 
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.multiplatform")
-    id("dev.icerock.mobile.multiplatform")
+    id("multiplatform-library-convention")
+    id("detekt-convention")
     id("kotlin-kapt")
     id("kotlin-parcelize")
     id("dev.icerock.mobile.multiplatform-resources")
     id("dev.icerock.mobile.multiplatform.ios-framework")
+    id("dev.icerock.mobile.multiplatform.cocoapods")
 }
 
 android {
@@ -20,33 +20,40 @@ android {
     }
 }
 
-val deps = listOf(
-    Deps.Libs.MultiPlatform.mokoResources,
-    Deps.Libs.MultiPlatform.mokoMvvm,
-    Deps.Libs.MultiPlatform.mokoUnits,
-    Deps.Libs.MultiPlatform.mokoGraphics,
-    Deps.Libs.MultiPlatform.mokoWidgets,
-    Deps.Libs.MultiPlatform.mokoWidgetsBottomSheet,
-    Deps.Libs.MultiPlatform.mokoWidgetsCollection,
-    Deps.Libs.MultiPlatform.mokoWidgetsDateTimePicker,
-    Deps.Libs.MultiPlatform.mokoWidgetsImageNetwork,
-    Deps.Libs.MultiPlatform.mokoWidgetsMedia,
-    Deps.Libs.MultiPlatform.mokoWidgetsPermissions,
-    Deps.Libs.MultiPlatform.mokoWidgetsSms
-)
-
 dependencies {
-    commonMainImplementation(Deps.Libs.MultiPlatform.coroutines)
+    commonMainImplementation(libs.coroutines)
 
-    deps.forEach { commonMainImplementation(it.common) }
+    commonMainApi(libs.mokoMedia)
+    commonMainApi(libs.mokoPermissions)
+    commonMainApi(libs.mokoResources)
+    commonMainApi(libs.mokoMvvmCore)
+    commonMainApi(libs.mokoUnits)
+    commonMainApi(libs.mokoGraphics)
+    
+    commonMainApi(projects.widgets)
+    commonMainApi(projects.widgetsBottomsheet)
+    commonMainApi(projects.widgetsCollection)
+    commonMainApi(projects.widgetsDatetimePicker)
+    commonMainApi(projects.widgetsImageNetwork)
+    commonMainApi(projects.widgetsMedia)
+    commonMainApi(projects.widgetsPermissions)
+    commonMainApi(projects.widgetsSms)
 
-    androidMainImplementation(Deps.Libs.Android.recyclerView)
-    androidMainImplementation(Deps.Libs.Android.appCompat)
-    androidMainImplementation(Deps.Libs.Android.material)
+    androidMainImplementation(libs.recyclerView)
+    androidMainImplementation(libs.appCompat)
+    androidMainImplementation(libs.material)
+    androidMainImplementation(libs.mokoMvvmDataBinding)
 }
 
 framework {
-
+    export(projects.widgets)
+    export(projects.widgetsBottomsheet)
+    export(projects.widgetsCollection)
+    export(projects.widgetsDatetimePicker)
+    export(projects.widgetsImageNetwork)
+    export(projects.widgetsMedia)
+    export(projects.widgetsPermissions)
+    export(projects.widgetsSms)
 }
 
 multiplatformResources {

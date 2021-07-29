@@ -10,6 +10,7 @@ import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 
+@Suppress("EmptyDefaultConstructor", "CommentSpacing")
 actual class MaterialButtonWidgetViewFactory actual constructor() : ViewFactory<ButtonWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
@@ -17,6 +18,6 @@ actual class MaterialButtonWidgetViewFactory actual constructor() : ViewFactory<
         size: WS,
         viewFactoryContext: ViewFactoryContext
     ): ViewBundle<WS> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 }

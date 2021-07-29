@@ -48,6 +48,7 @@ import platform.UIKit.topAnchor
 import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
+@Suppress("LongParameterList")
 actual class SystemTabsViewFactory actual constructor(
     private val tabsTintColor: Color?,
     private val titleColor: SelectableState<Color?>?,
@@ -58,6 +59,7 @@ actual class SystemTabsViewFactory actual constructor(
     private val margins: MarginValues?
 ) : ViewFactory<TabsWidget<out WidgetSize>> {
 
+    @Suppress("ComplexMethod", "LongMethod")
     @ExperimentalUnsignedTypes
     override fun <WS : WidgetSize> build(
         widget: TabsWidget<out WidgetSize>,
@@ -201,7 +203,6 @@ actual class SystemTabsViewFactory actual constructor(
             container.trailingAnchor.constraintEqualToAnchor(trailingAnchor).active = true
             container.bottomAnchor.constraintEqualToAnchor(bottomAnchor).active = true
         }
-        
         return ViewBundle(
             view = view,
             size = size,

@@ -1,3 +1,4 @@
+@file:Suppress("Filename", "MatchingDeclarationName")
 /*
  * Copyright 2019 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
@@ -12,7 +13,9 @@ import android.widget.FrameLayout
 import dev.icerock.moko.widgets.core.screen.Screen
 
 abstract class BasePreviewView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
     abstract fun createScreen(): Screen<*>
 
