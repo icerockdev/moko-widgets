@@ -19,6 +19,8 @@ buildscript {
         jcenter()
     }
     dependencies {
+        classpath("com.gradle.publish:plugin-publish-plugin:0.15.0")
+        
         classpath(":widgets-build-logic")
     }
 }
