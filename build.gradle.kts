@@ -18,6 +18,12 @@ buildscript {
 }
 
 allprojects {
+
+    plugins.withId("org.gradle.maven-publish") {
+        group = "dev.icerock.moko"
+        version = libs.versions.mokoWidgetsVersion.get()
+    }
+
     configurations
         .matching { it.name == "compileOnly" }
         .configureEach {
