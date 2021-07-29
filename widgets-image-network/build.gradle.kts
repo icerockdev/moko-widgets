@@ -8,6 +8,9 @@ plugins {
     id("dev.icerock.mobile.multiplatform.cocoapods")
 }
 
+group = "dev.icerock.moko"
+version = libs.versions.mokoWidgetsVersion.get()
+
 dependencies {
     commonMainApi(projects.widgets)
 
