@@ -52,14 +52,14 @@ gradlePlugin {
 }
 
 pluginBundle {
-    website = "https://github.com/icerockdev/moko-widgets/tree/master/plugin"
-    vcsUrl = "https://github.com/icerockdev/moko-widgets/tree/master/plugin"
+    website = "https://github.com/icerockdev/moko-widgets"
+    vcsUrl = "https://github.com/icerockdev/moko-widgets"
     description = "Plugin to codegen for new Widgets"
-    tags = listOf("multiplatform-widgets-generator")
+    tags = listOf("moko-widgets", "moko", "kotlin", "kotlin-multiplatform")
 
     plugins {
         getByName("multiplatform-widgets-generator") {
-            displayName = "Widgets Generator for IceRock projects"
+            displayName = "MOKO Widgets generator plugin"
         }
     }
 
