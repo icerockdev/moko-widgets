@@ -173,14 +173,17 @@ class WidgetViewController(
             view.layoutIfNeeded()
         }
 
-        if (isScrollListOnKeyboardResize && tableView != null && notification.name == UIKeyboardWillChangeFrameNotification) {
+        if (isScrollListOnKeyboardResize &&
+            tableView != null &&
+            notification.name == UIKeyboardWillChangeFrameNotification) {
 
             val contentHeight = tableView.contentSize.useContents { this.height }
             val tableMaxY = tableView.frame.useContents { this.origin.y + this.size.height }
 
             val newContentOffset = tableViewContentYOffset + (tableViewOldMaxY - tableMaxY)
 
-            // cant use setContentOffset if newContentOffset greater then current max contentOffset(contentHeight - tableViewHeight)
+            // cant use setContentOffset if newContentOffset greater
+            // then current max contentOffset(contentHeight - tableViewHeight)
             if (contentHeight - tableViewHeight > newContentOffset) {
                 tableView.setContentOffset(
                     CGPointMake(
@@ -211,6 +214,7 @@ class WidgetViewController(
         return getStatusBarStyle(light) ?: super.preferredStatusBarStyle()
     }
 
+    @Suppress("NestedBlockDepth")
     private fun findTableView(view: UIView): UITableView? {
         return when (view) {
             is UITableView -> view

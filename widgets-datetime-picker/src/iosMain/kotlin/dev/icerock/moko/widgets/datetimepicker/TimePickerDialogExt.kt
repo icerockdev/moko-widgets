@@ -4,7 +4,6 @@
 
 package dev.icerock.moko.widgets.datetimepicker
 
-import cocoapods.mokoWidgetsDateTimePicker.DateBottomSheetController
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.graphics.toUIColor
 import dev.icerock.moko.widgets.core.screen.Screen
@@ -22,9 +21,7 @@ import platform.UIKit.UIControlEventTouchUpInside
 import platform.UIKit.UIControlStateNormal
 import platform.UIKit.UIDatePicker
 import platform.UIKit.UIDatePickerMode
-import platform.UIKit.UIModalPresentationOverCurrentContext
 import platform.UIKit.UIView
-import platform.UIKit.UIViewController
 import platform.UIKit.addSubview
 import platform.UIKit.backgroundColor
 import platform.UIKit.bottomAnchor
@@ -46,25 +43,6 @@ actual fun Screen<*>.registerTimePickerDialogHandler(
     negative: ((dialogId: Int) -> Unit)?
 ): ReadOnlyProperty<Screen<*>, TimePickerDialogHandler> {
     return createConstReadOnlyProperty(TimePickerDialogHandler(positive, negative))
-}
-
-actual fun Screen<*>.showTimePickerDialog(
-    dialogId: Int,
-    handler: TimePickerDialogHandler,
-    factory: TimePickerDialogBuilder.() -> Unit
-) {
-    TimePickerDialogBuilder().apply {
-        factory(this)
-        val controller = DateBottomSheetController()
-        val view = createView(handler = handler, dialogId = dialogId) {
-            controller.dismiss()
-        }
-        controller.showOnViewController(
-            vc = this@showTimePickerDialog.viewController,
-            withContent = view,
-            onDismiss = { handler.negative?.invoke(dialogId) }
-        )
-    }
 }
 
 actual class TimePickerDialogBuilder {

@@ -38,7 +38,7 @@ class ProductsScreen(
             }
         }
     }
-
+    @Suppress("MagicNumber")
     private fun onProductPressed() {
         productRoute.route(10)
     }

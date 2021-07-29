@@ -23,6 +23,7 @@ import java.util.concurrent.Executor
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
+@Suppress("TooManyFunctions")
 actual abstract class Screen<Arg : Args> : Fragment() {
     private val attachFragmentHooks = mutableListOf<(Fragment) -> Unit>()
     private val activityResultHooks = mutableMapOf<Int, (result: Int, data: Intent?) -> Unit>()
@@ -51,9 +52,7 @@ actual abstract class Screen<Arg : Args> : Fragment() {
         return EventsDispatcher(mainExecutor)
     }
 
-    actual open fun onViewCreated() {
-
-    }
+    actual open fun onViewCreated() = Unit
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,6 +75,7 @@ actual abstract class Screen<Arg : Args> : Fragment() {
         setLightStatusBar(lightStatusBar)
     }
 
+    @Suppress("ReturnCount")
     private fun resolveStatusBarColor(): Int {
         if (androidStatusBarColor != null) return androidStatusBarColor!!.argb.toInt()
 
@@ -94,6 +94,7 @@ actual abstract class Screen<Arg : Args> : Fragment() {
         return ThemeAttrs.getPrimaryDarkColor(requireContext())
     }
 
+    @Suppress("ReturnCount")
     private fun resolveIsStatusBarLight(): Boolean {
         if (isLightStatusBar != null) return isLightStatusBar!!
 

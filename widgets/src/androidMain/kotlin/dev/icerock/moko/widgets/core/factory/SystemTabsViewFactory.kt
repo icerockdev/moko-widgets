@@ -32,6 +32,7 @@ import dev.icerock.moko.widgets.core.utils.bind
 import dev.icerock.moko.widgets.core.widget.TabsWidget
 import kotlinx.android.parcel.Parcelize
 
+@Suppress("LongParameterList", "ComplexMethod", "LongMethod")
 actual class SystemTabsViewFactory actual constructor(
     private val tabsTintColor: Color?,
     private val titleColor: SelectableState<Color?>?,
@@ -62,13 +63,9 @@ actual class SystemTabsViewFactory actual constructor(
             applyBackgroundIfNeeded(this@SystemTabsViewFactory.tabsBackground)
         }
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-                //no need
-            }
+            override fun onTabReselected(tab: TabLayout.Tab?) = Unit
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-                //no need
-            }
+            override fun onTabUnselected(tab: TabLayout.Tab?) = Unit
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 widget.selectedTab?.postValue(tab?.position ?: 0)
@@ -119,7 +116,8 @@ actual class SystemTabsViewFactory actual constructor(
                 ),
                 intArrayOf(
                     stateColor.selected?.argb?.toInt() ?: ThemeAttrs.getTextColorPrimary(context),
-                    stateColor.unselected?.argb?.toInt() ?: ThemeAttrs.getTextColorSecondary(context)
+                    stateColor.unselected?.argb?.toInt()
+                        ?: ThemeAttrs.getTextColorSecondary(context)
                 )
             )
         }

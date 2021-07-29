@@ -34,7 +34,7 @@ data class BottomNavigationItem(
     val stateIcons: SelectableState<ImageResource>? = null,
     val screenDesc: ScreenDesc<Args.Empty>
 ) {
-    class Builder() {
+    class Builder {
         private val tabs = mutableListOf<BottomNavigationItem>()
 
         private fun tab(

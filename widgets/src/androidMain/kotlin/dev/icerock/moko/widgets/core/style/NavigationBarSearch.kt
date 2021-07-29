@@ -25,7 +25,6 @@ import dev.icerock.moko.widgets.core.style.view.FontStyle
 import dev.icerock.moko.widgets.core.utils.ThemeAttrs
 import dev.icerock.moko.widgets.core.utils.sp
 
-
 fun NavigationBar.Search.apply(
     toolbar: Toolbar,
     context: Context,
@@ -88,7 +87,6 @@ fun NavigationBar.Search.apply(
                 searchQuery.value = newText
                 return true
             }
-
         })
         setOnSearchClickListener { _ ->
             searchQuery.value = query.toString()
@@ -97,7 +95,8 @@ fun NavigationBar.Search.apply(
 
         applyBackgroundIfNeeded(androidSearchBackground)
 
-        val mlp = findViewById<View>(R.id.search_edit_frame).layoutParams as? ViewGroup.MarginLayoutParams
+        val mlp =
+            findViewById<View>(R.id.search_edit_frame).layoutParams as? ViewGroup.MarginLayoutParams
         mlp?.leftMargin = 0
         mlp?.rightMargin = 0
     }

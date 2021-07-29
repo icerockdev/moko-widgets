@@ -57,7 +57,6 @@ class PostsScreen(
     }
 }
 
-
 interface PostsViewModelContract {
     val posts: LiveData<List<PostItem>>
 
@@ -73,6 +72,7 @@ interface PostsViewModelContract {
 }
 
 class PostsViewModel : ViewModel(), PostsViewModelContract {
+    @Suppress("MagicNumber")
     private val _postsTitle: MutableLiveData<List<String>> = MutableLiveData(
         initialValue = List(20) { "Test $it post" }
     )

@@ -63,6 +63,7 @@ class ProfileViewModel(
 
     val text: LiveData<StringDesc> = MutableLiveData(initialValue = "User $userId".desc())
 
+    @Suppress("MagicNumber")
     fun start() {
         viewModelScope.launch {
             delay(2000)

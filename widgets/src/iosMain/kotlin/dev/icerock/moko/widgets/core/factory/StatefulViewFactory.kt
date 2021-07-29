@@ -4,7 +4,7 @@
 
 package dev.icerock.moko.widgets.core.factory
 
-import dev.icerock.moko.mvvm.State
+import dev.icerock.moko.mvvm.ResourceState
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
@@ -71,12 +71,12 @@ actual class StatefulViewFactory actual constructor(
                 fillChildView(childView, edges)
             }
 
-            fun updateState(state: State<*, *>) {
+            fun updateState(state: ResourceState<*, *>) {
                 childView.hidden = when (state) {
-                    is State.Data -> childWidget == widget.dataWidget
-                    is State.Empty -> childWidget == widget.emptyWidget
-                    is State.Error -> childWidget == widget.errorWidget
-                    is State.Loading -> childWidget == widget.loadingWidget
+                    is ResourceState.Success -> childWidget == widget.dataWidget
+                    is ResourceState.Empty -> childWidget == widget.emptyWidget
+                    is ResourceState.Failed -> childWidget == widget.errorWidget
+                    is ResourceState.Loading -> childWidget == widget.loadingWidget
                 }.not()
             }
 

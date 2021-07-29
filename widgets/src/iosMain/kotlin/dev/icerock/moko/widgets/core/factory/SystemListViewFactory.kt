@@ -20,9 +20,12 @@ import dev.icerock.moko.widgets.core.utils.bind
 import dev.icerock.moko.widgets.core.utils.setEventHandler
 import dev.icerock.moko.widgets.core.utils.toEdgeInsets
 import dev.icerock.moko.widgets.core.widget.ListWidget
+import dev.icerock.moko.widgets.core.widget.ScrollListView
 import kotlinx.cinterop.readValue
 import kotlinx.cinterop.useContents
 import platform.CoreGraphics.CGRectZero
+import platform.Foundation.NSIndexPath
+import platform.UIKit.indexPathForRow
 import platform.UIKit.UIControlEventValueChanged
 import platform.UIKit.UIEdgeInsetsMake
 import platform.UIKit.UIRefreshControl
@@ -30,6 +33,7 @@ import platform.UIKit.UITableView
 import platform.UIKit.UITableViewAutomaticDimension
 import platform.UIKit.UITableViewCell
 import platform.UIKit.UITableViewCellSeparatorStyle
+import platform.UIKit.UITableViewScrollPosition
 import platform.UIKit.UITableViewStyle
 import platform.UIKit.layoutMargins
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
@@ -42,6 +46,7 @@ actual class SystemListViewFactory actual constructor(
     private val margins: MarginValues?
 ) : ViewFactory<ListWidget<out WidgetSize>> {
 
+    @Suppress("LongMethod")
     override fun <WS : WidgetSize> build(
         widget: ListWidget<out WidgetSize>,
         size: WS,
@@ -95,6 +100,19 @@ actual class SystemListViewFactory actual constructor(
                 }
             }
 
+            widget.lastScrollView = object : ScrollListView {
+                override fun scrollToPosition(index: Int) {
+                    scrollToRowAtIndexPath(
+                        NSIndexPath.indexPathForRow(
+                            row = index.toLong(),
+                            inSection = 0
+                        ),
+                        animated = true,
+                        atScrollPosition = UITableViewScrollPosition.UITableViewScrollPositionBottom
+                    )
+                }
+            }
+
             if (dividerEnabled == false) {
                 separatorStyle = UITableViewCellSeparatorStyle.UITableViewCellSeparatorStyleNone
             }
@@ -103,8 +121,9 @@ actual class SystemListViewFactory actual constructor(
         }
 
         widget.items.bind { items ->
-            unitDataSource.unitItems = if (widget.onReachEnd != null) {
-                items.observedEnd(widget.onReachEnd)
+            val onReachEnd = widget.onReachEnd
+            unitDataSource.unitItems = if (onReachEnd != null) {
+                items.observedEnd(onReachEnd)
             } else {
                 items
             }

@@ -9,7 +9,7 @@ import dev.icerock.moko.widgets.core.style.view.SizeSpec
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import platform.UIKit.UIViewController
 
-actual abstract class WidgetScreen<Arg : Args> actual constructor() : Screen<Arg>() {
+actual abstract class WidgetScreen<Arg : Args> : Screen<Arg>() {
     actual abstract fun createContentWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>>
 
     override fun createViewController(isLightStatusBar: Boolean?): UIViewController {

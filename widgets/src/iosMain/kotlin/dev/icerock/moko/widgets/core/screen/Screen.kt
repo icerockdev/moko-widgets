@@ -7,8 +7,8 @@ package dev.icerock.moko.widgets.core.screen
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcher
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
-import dev.icerock.moko.widgets.core.objc.getAssociatedObject
-import dev.icerock.moko.widgets.core.objc.setAssociatedObject
+import dev.icerock.moko.widgets.core.utils.getAssociatedObject
+import dev.icerock.moko.widgets.core.utils.setAssociatedObject
 import platform.UIKit.UIViewController
 import kotlin.native.ref.WeakReference
 import kotlin.properties.ReadOnlyProperty
@@ -34,9 +34,7 @@ actual abstract class Screen<Arg : Args> {
         return created
     }
 
-    actual open fun onViewCreated() {
-
-    }
+    actual open fun onViewCreated() = Unit
 
     actual fun <T : Any> createEventsDispatcher(): EventsDispatcher<T> {
         return EventsDispatcher()

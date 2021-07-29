@@ -17,15 +17,14 @@ internal class WebViewRedirectUrlHandler(
      * and [onFailureBlock] will be called and the function will return true, otherwise false.
      */
     fun handleUrl(url: String): Boolean {
-        return if(successRedirectConfig != null && url.contains(successRedirectConfig.url)) {
+        return if (successRedirectConfig != null && url.contains(successRedirectConfig.url)) {
             successRedirectConfig.handler(url)
             true
-        } else if(failureRedirectConfig != null && url.contains(failureRedirectConfig.url)) {
+        } else if (failureRedirectConfig != null && url.contains(failureRedirectConfig.url)) {
             failureRedirectConfig.handler(url)
             true
         } else {
             false
         }
     }
-
 }

@@ -29,6 +29,7 @@ import dev.icerock.moko.widgets.core.widget.text
 import dev.icerock.moko.widgets.core.units.UnitItemRoot
 import dev.icerock.moko.widgets.core.units.WidgetsTableUnitItem
 
+@Suppress("MagicNumber")
 class ProductsSearchScreen(
     private val theme: Theme
 ) : WidgetScreen<Args.Empty>(), NavigationItem {
@@ -105,6 +106,7 @@ class ProductsSearchScreen(
 class ProductsSearchViewModel : ViewModel() {
     val searchQuery = MutableLiveData(initialValue = "")
 
+    @Suppress("MagicNumber")
     private val _products: List<String> = List(size = 50) { "It's product $it" }
 
     val products: LiveData<List<String>> = searchQuery.map { query ->

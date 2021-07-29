@@ -18,6 +18,7 @@ import dev.icerock.moko.widgets.core.factory.SystemInputViewFactory
 import dev.icerock.moko.widgets.core.style.input.InputType
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 
+@Suppress("LongParameterList")
 @WidgetDef(SystemInputViewFactory::class)
 class InputWidget<WS : WidgetSize>(
     private val factory: ViewFactory<InputWidget<out WidgetSize>>,

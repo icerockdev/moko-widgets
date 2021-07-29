@@ -3,19 +3,20 @@
  */
 
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.multiplatform")
-    id("dev.icerock.mobile.multiplatform")
-    id("maven-publish")
+    id("multiplatform-library-convention")
+    id("publication-convention")
 }
 
 dependencies {
-    commonMainApi(project(":widgets"))
+    commonMainApi(projects.widgets)
 
-    mppLibrary(Deps.Libs.MultiPlatform.kotlinStdLib)
-    mppLibrary(Deps.Libs.MultiPlatform.coroutines)
+    commonMainImplementation(libs.coroutines)
 
-    mppLibrary(Deps.Libs.MultiPlatform.mokoPermissions)
+    commonMainApi(libs.mokoPermissions)
+    commonMainApi(libs.mokoMvvmCore)
+    commonMainApi(libs.mokoMvvmState)
+    commonMainApi(libs.mokoMvvmLivedata)
 
-    androidLibrary(Deps.Libs.Android.lifecycle)
+
+    androidMainImplementation(libs.lifecycleViewModel)
 }

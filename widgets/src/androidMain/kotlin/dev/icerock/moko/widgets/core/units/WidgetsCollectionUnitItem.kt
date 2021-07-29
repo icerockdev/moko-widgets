@@ -130,4 +130,3 @@ actual abstract class WidgetsCollectionUnitItem<T> actual constructor(
         view: View
     ) : RecyclerView.ViewHolder(view)
 }
-

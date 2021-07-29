@@ -3,24 +3,34 @@
  */
 
 plugins {
-    `kotlin-dsl`
-    id("maven-publish")
+    id("org.jetbrains.kotlin.jvm")
+    id("org.gradle.maven-publish")
     id("kotlin-kapt")
-    id("com.github.kukuhyoniatmoko.buildconfigkotlin") version "1.0.5"
+    id("com.github.gmazzo.buildconfig") version ("3.0.2")
 }
 
 dependencies {
-    implementation(Deps.Libs.Jvm.kotlinStdLib)
+    implementation(gradleApi())
+    implementation(gradleKotlinDsl())
+    compileOnly(libs.kotlinGradlePlugin)
+    implementation(libs.kotlinGradlePluginApi)
 
-    compileOnly(Deps.Libs.Jvm.kotlinGradlePlugin)
-    implementation(Deps.Libs.Jvm.kotlinGradlePluginApi)
-
-    compileOnly(Deps.Libs.Jvm.autoService)
-    kapt(Deps.Libs.Jvm.autoService)
+    compileOnly(libs.autoService)
+    kapt(libs.autoService)
 }
 
-buildConfigKotlin {
-    sourceSet("main") {
-        buildConfig(name = "compilerPluginVersion", value = project.version.toString())
+buildConfig {
+    sourceSets.getByName("main") {
+        buildConfig {
+            buildConfigField("String", "compilerPluginVersion", "\"${project.version}\"")
+        }
+    }
+}
+
+publishing {
+    publications {
+        register("maven", MavenPublication::class) {
+            from(components["java"])
+        }
     }
 }

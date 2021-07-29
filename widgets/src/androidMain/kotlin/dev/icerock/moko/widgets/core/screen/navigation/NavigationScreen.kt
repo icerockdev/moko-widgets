@@ -26,7 +26,6 @@ import dev.icerock.moko.widgets.core.style.apply
 import dev.icerock.moko.widgets.core.utils.ThemeAttrs
 import dev.icerock.moko.widgets.core.utils.dp
 
-
 actual abstract class NavigationScreen<S> actual constructor(
     private val initialScreen: TypedScreenDesc<Args.Empty, S>,
     private val router: Router
@@ -111,6 +110,7 @@ actual abstract class NavigationScreen<S> actual constructor(
         return list
     }
 
+    @Suppress("MagicNumber")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

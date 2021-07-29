@@ -119,6 +119,7 @@ class UsersViewModel(
     private var refreshJob: Job? = null
     private var nextPageJob: Job? = null
 
+    @Suppress("MagicNumber")
     override fun refresh(completion: () -> Unit) {
         if (refreshJob?.isActive == true || nextPageJob?.isActive == true) {
             completion()
@@ -135,6 +136,7 @@ class UsersViewModel(
         }
     }
 
+    @Suppress("MagicNumber")
     override fun loadNextPage() {
         if (refreshJob?.isActive == true || nextPageJob?.isActive == true) return
 

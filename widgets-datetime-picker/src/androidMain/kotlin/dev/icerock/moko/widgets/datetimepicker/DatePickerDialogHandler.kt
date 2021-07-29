@@ -101,15 +101,12 @@ class DatePickerDialogFragment : DialogFragment() {
         requireNotNull(argument) { "can't be opened without argument" }
 
         val dialogId = argument.dialogId
-        val selectedDate =  Calendar.getInstance()
+        val selectedDate = Calendar.getInstance()
         argument.selectedDate?.let {
             selectedDate.timeInMillis = it
         }
         val dialog = DatePickerDialog(
-            context, { _
-                       , year
-                       , month
-                       , day
+            requireContext(), { _, year, month, day
                 ->
                 val date = Calendar.getInstance()
                 date.set(year, month, day)

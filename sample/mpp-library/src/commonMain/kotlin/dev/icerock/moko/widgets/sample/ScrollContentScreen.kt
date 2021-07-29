@@ -16,7 +16,7 @@ import dev.icerock.moko.widgets.core.widget.scroll
 import dev.icerock.moko.widgets.core.style.view.SizeSpec
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 
-abstract class ScrollContentScreen<A: Args>(
+abstract class ScrollContentScreen<A : Args>(
     protected val theme: Theme
 ) : WidgetScreen<A>() {
 

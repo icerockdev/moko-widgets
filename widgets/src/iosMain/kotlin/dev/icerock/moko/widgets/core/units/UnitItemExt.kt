@@ -10,8 +10,8 @@ import dev.icerock.moko.widgets.core.Widget
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.utils.Edges
 import dev.icerock.moko.widgets.core.utils.applySize
-import dev.icerock.moko.widgets.core.objc.getAssociatedObject
-import dev.icerock.moko.widgets.core.objc.setAssociatedObject
+import dev.icerock.moko.widgets.core.utils.getAssociatedObject
+import dev.icerock.moko.widgets.core.utils.setAssociatedObject
 import kotlinx.cinterop.useContents
 import platform.UIKit.UIApplication
 import platform.UIKit.UILayoutPriorityDefaultHigh
@@ -56,11 +56,12 @@ internal fun <T> UIView.setupWidgetContent(
         val childSize = viewBundle.size
         val childMargins = viewBundle.margins
 
+        @Suppress("CommentSpacing", "ForbiddenComment")
         val edges = Edges(
-            top = childMargins?.top?.toDouble() ?: 0.0, //TODO: Support this
+            top = childMargins?.top?.toDouble() ?: 0.0, // TODO: Support this
             leading = childMargins?.start?.toDouble() ?: 0.0, // + margin_left,
-            bottom = childMargins?.bottom?.toDouble() ?: 0.0, //TODO: Support this
-            trailing = childMargins?.end?.toDouble() ?: 0.0 //+ margin_right
+            bottom = childMargins?.bottom?.toDouble() ?: 0.0, // TODO: Support this
+            trailing = childMargins?.end?.toDouble() ?: 0.0 // + margin_right
         )
         view.applySize(childSize, this, edges)
 

@@ -5,7 +5,6 @@
 package dev.icerock.moko.widgets.core.factory
 
 import android.annotation.SuppressLint
-import android.graphics.drawable.GradientDrawable
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.ViewGroup
@@ -32,7 +31,6 @@ import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.utils.androidId
 import dev.icerock.moko.widgets.core.utils.bind
 import dev.icerock.moko.widgets.core.utils.dp
-import kotlin.math.ceil
 
 actual class MultilineInputViewFactory actual constructor(
     private val background: Background<Fill.Solid>?,
@@ -52,6 +50,7 @@ actual class MultilineInputViewFactory actual constructor(
         val context = viewFactoryContext.androidContext
         val lifecycleOwner = viewFactoryContext.lifecycleOwner
 
+        @Suppress("MagicNumber")
         val editText = EditText(context).apply {
             applyPaddingIfNeeded(padding)
             applyBackgroundIfNeeded(this@MultilineInputViewFactory.background)
@@ -62,7 +61,8 @@ actual class MultilineInputViewFactory actual constructor(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             ).apply {
-                // EditText's default background have paddings 4dp, while we not change background to own we just change margins
+                // EditText's default background have paddings 4dp,
+                // while we not change background to own we just change margins
                 // https://stackoverflow.com/questions/31735291/removing-the-left-padding-on-an-android-edittext/44497551
                 val dp4 = (-4).dp(context)
                 MarginLayoutParamsCompat.setMarginStart(this, dp4)
@@ -85,15 +85,14 @@ actual class MultilineInputViewFactory actual constructor(
                 if (!hasFocus) widget.field.validate()
             }
             addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable?) {}
+                override fun afterTextChanged(s: Editable?) = Unit
 
                 override fun beforeTextChanged(
                     s: CharSequence?,
                     start: Int,
                     count: Int,
                     after: Int
-                ) {
-                }
+                ) = Unit
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                     if (s == null) return

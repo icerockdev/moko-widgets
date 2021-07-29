@@ -13,8 +13,7 @@ import dev.icerock.moko.widgets.core.widget.ClickableWidget
 import platform.UIKit.UITapGestureRecognizer
 import platform.UIKit.addGestureRecognizer
 
-actual class ClickableViewFactory actual constructor(
-) : ViewFactory<ClickableWidget<out WidgetSize>> {
+actual class ClickableViewFactory : ViewFactory<ClickableWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(
         widget: ClickableWidget<out WidgetSize>,

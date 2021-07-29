@@ -17,6 +17,7 @@ import dev.icerock.moko.widgets.core.style.view.TextVerticalAlignment
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.widget.InputWidget
 
+@Suppress("LongParameterList")
 expect class SystemInputViewFactory(
     background: Background<Fill.Solid>? = null,
     margins: MarginValues? = null,

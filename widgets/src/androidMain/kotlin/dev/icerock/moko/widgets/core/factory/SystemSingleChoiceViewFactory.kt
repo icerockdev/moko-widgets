@@ -36,6 +36,7 @@ import dev.icerock.moko.widgets.core.utils.androidId
 import dev.icerock.moko.widgets.core.utils.bind
 import dev.icerock.moko.widgets.core.utils.dp
 
+@Suppress("LongParameterList")
 actual class SystemSingleChoiceViewFactory actual constructor(
     private val textStyle: TextStyle<Color>?,
     private val labelTextStyle: TextStyle<Color>?,
@@ -46,6 +47,7 @@ actual class SystemSingleChoiceViewFactory actual constructor(
     private val margins: MarginValues?
 ) : ViewFactory<SingleChoiceWidget<out WidgetSize>> {
 
+    @Suppress("LongMethod")
     override fun <WS : WidgetSize> build(
         widget: SingleChoiceWidget<out WidgetSize>,
         size: WS,
@@ -65,13 +67,14 @@ actual class SystemSingleChoiceViewFactory actual constructor(
         }
 
         container.addView(textInputLayout)
-
+        @Suppress("MagicNumber")
         val editText = TextInputEditText(context).apply {
             layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             ).apply {
-                // EditText's default background have paddings 4dp, while we not change background to own we just change margins
+                // EditText's default background have paddings 4dp,
+                // while we not change background to own we just change margins
                 // https://stackoverflow.com/questions/31735291/removing-the-left-padding-on-an-android-edittext/44497551
                 marginStart = (-4).dp(context)
                 marginEnd = 4.dp(context)

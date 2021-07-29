@@ -16,7 +16,6 @@ import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.utils.bind
 import dev.icerock.moko.widgets.core.utils.dp
 
-
 actual class SystemImageViewFactory actual constructor(
     private val margins: MarginValues?,
     private val cornerRadius: Float?
@@ -36,6 +35,7 @@ actual class SystemImageViewFactory actual constructor(
             ImageWidget.ScaleType.FILL -> imageView.scaleType = ImageView.ScaleType.CENTER_CROP
             ImageWidget.ScaleType.FIT -> imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE
         }
+        @Suppress("ComplexCondition")
         if ((size is WidgetSize.Const<*, *> &&
                     (size.width is SizeSpec.WrapContent || size.height is SizeSpec.WrapContent)) ||
             (size is WidgetSize.AspectByWidth<*> && size.width is SizeSpec.WrapContent) ||

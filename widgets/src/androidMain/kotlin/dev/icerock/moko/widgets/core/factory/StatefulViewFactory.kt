@@ -6,7 +6,7 @@ package dev.icerock.moko.widgets.core.factory
 
 import android.view.View
 import android.widget.FrameLayout
-import dev.icerock.moko.mvvm.State
+import dev.icerock.moko.mvvm.ResourceState
 import dev.icerock.moko.widgets.core.widget.StatefulWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
@@ -63,14 +63,19 @@ actual class StatefulViewFactory actual constructor(
 
         widget.state.bindNotNull(lifecycleOwner) { state ->
             val currentView = when (state) {
-                is State.Empty -> emptyView
-                is State.Loading -> loadingView
-                is State.Data -> dataView
-                is State.Error -> errorView
+                is ResourceState.Empty -> emptyView
+                is ResourceState.Loading -> loadingView
+                is ResourceState.Success -> dataView
+                is ResourceState.Failed -> errorView
             }
 
-            views.forEach { it.view.visibility = View.GONE }
-            currentView.view.visibility = View.VISIBLE
+            views.asSequence()
+                .filter { it.view.visibility != View.GONE && it.view != currentView.view }
+                .forEach { it.view.visibility = View.GONE }
+
+            if (currentView.view.visibility != View.VISIBLE) {
+                currentView.view.visibility = View.VISIBLE
+            }
         }
 
         return ViewBundle(

@@ -17,6 +17,7 @@ import dev.icerock.moko.widgets.core.bind
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.utils.bind
 
+@Suppress("EmptyDefaultConstructor")
 actual class MaterialButtonWidgetViewFactory actual constructor() : ViewFactory<ButtonWidget<out WidgetSize>> {
 
     override fun <WS : WidgetSize> build(

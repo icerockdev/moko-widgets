@@ -3,28 +3,26 @@
  */
 
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.multiplatform")
-    id("dev.icerock.mobile.multiplatform")
-    id("maven-publish")
+    id("multiplatform-library-convention")
+    id("publication-convention")
+    id("dev.icerock.mobile.multiplatform.cocoapods")
 }
 
 dependencies {
-    commonMainApi(project(":widgets"))
+    commonMainApi(projects.widgets)
 
-    mppLibrary(Deps.Libs.MultiPlatform.kotlinStdLib)
-    mppLibrary(Deps.Libs.MultiPlatform.coroutines)
+    commonMainImplementation(libs.coroutines)
 
-    mppLibrary(Deps.Libs.MultiPlatform.mokoMvvm)
-    mppLibrary(Deps.Libs.MultiPlatform.mokoResources)
-    mppLibrary(Deps.Libs.MultiPlatform.mokoFields)
+    commonMainApi(libs.mokoMvvmCore)
+    commonMainApi(libs.mokoResources)
+    commonMainApi(libs.mokoFields)
+    commonMainApi(libs.mokoGraphics)
+    commonMainApi(libs.mokoParcelize)
 
-    androidLibrary(Deps.Libs.Android.lifecycle)
-    androidLibrary(Deps.Libs.Android.material)
+    androidMainImplementation(libs.lifecycleViewModel)
+    androidMainImplementation(libs.material)
 }
 
 cocoaPods {
-    podsProject = file("../sample/ios-app/Pods/Pods.xcodeproj")
-
     pod("moko-widgets-bottomsheet", "mokoWidgetsBottomSheet")
 }

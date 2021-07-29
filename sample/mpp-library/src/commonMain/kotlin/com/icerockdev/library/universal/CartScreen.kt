@@ -25,6 +25,7 @@ class CartScreen(
 ) : WidgetScreen<Args.Empty>(), NavigationItem {
     override val navigationBar = NavigationBar.Normal(title = "Cart".desc())
 
+    @Suppress("MagicNumber")
     override fun createContentWidget(): Widget<WidgetSize.Const<SizeSpec.AsParent, SizeSpec.AsParent>> {
         return with(theme) {
             container(size = WidgetSize.AsParent) {

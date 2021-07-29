@@ -16,6 +16,7 @@ import dev.icerock.moko.widgets.core.style.view.TextStyle
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.widget.InputWidget
 
+@Suppress("LongParameterList")
 expect class FloatingLabelInputViewFactory(
     background: Background<Fill.Solid>? = null,
     margins: MarginValues? = null,

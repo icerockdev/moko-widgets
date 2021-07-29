@@ -16,6 +16,7 @@ import dev.icerock.moko.widgets.core.style.view.TextStyle
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.widget.ButtonWidget
 
+@Suppress("LongParameterList")
 expect class ButtonWithIconViewFactory(
     background: PressableState<Background<out Fill>>? = null,
     textStyle: TextStyle<PressableState<Color>>? = null,

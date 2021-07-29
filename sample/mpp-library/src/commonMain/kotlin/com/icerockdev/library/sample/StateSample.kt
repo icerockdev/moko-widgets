@@ -4,7 +4,7 @@
 
 package com.icerockdev.library.sample
 
-import dev.icerock.moko.mvvm.State
+import dev.icerock.moko.mvvm.ResourceState
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.mvvm.livedata.map
@@ -100,24 +100,24 @@ open class StateScreen(
 }
 
 interface StateViewModelContract {
-    val state: LiveData<State<String, String>>
+    val state: LiveData<ResourceState<String, String>>
 
     fun onChangeStatePressed()
 }
 
 class StateViewModel : ViewModel(), StateViewModelContract {
-    private val _state: MutableLiveData<State<String, String>> =
-        MutableLiveData(initialValue = State.Empty())
-    override val state: LiveData<State<String, String>> = _state
+    private val _state: MutableLiveData<ResourceState<String, String>> =
+        MutableLiveData(initialValue = ResourceState.Empty())
+    override val state: LiveData<ResourceState<String, String>> = _state
 
     override fun onChangeStatePressed() {
         when (state.value) {
-            is State.Empty -> _state.value = State.Loading()
-            is State.Loading -> {
-                _state.value = State.Data(data = "hello!")
+            is ResourceState.Empty -> _state.value = ResourceState.Loading()
+            is ResourceState.Loading -> {
+                _state.value = ResourceState.Success(data = "hello!")
             }
-            is State.Data -> _state.value = State.Error(error = "this is error")
-            is State.Error -> _state.value = State.Empty()
+            is ResourceState.Success -> _state.value = ResourceState.Failed(error = "this is error")
+            is ResourceState.Failed -> _state.value = ResourceState.Empty()
         }
     }
 }

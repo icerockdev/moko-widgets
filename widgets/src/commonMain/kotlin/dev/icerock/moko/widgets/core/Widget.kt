@@ -6,6 +6,7 @@ package dev.icerock.moko.widgets.core
 
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 
+@Suppress("UnnecessaryAbstractClass")
 abstract class Widget<WS : WidgetSize> {
     abstract val size: WS
 

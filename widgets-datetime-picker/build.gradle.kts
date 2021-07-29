@@ -3,29 +3,28 @@
  */
 
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.multiplatform")
-    id("dev.icerock.mobile.multiplatform")
-    id("kotlin-android-extensions")
-    id("maven-publish")
+    id("multiplatform-library-convention")
+    id("publication-convention")
+    id("kotlin-parcelize")
+    id("dev.icerock.mobile.multiplatform.cocoapods")
 }
 
 dependencies {
-    commonMainApi(project(":widgets"))
+    commonMainApi(projects.widgets)
 
-    mppLibrary(Deps.Libs.MultiPlatform.kotlinStdLib)
-    mppLibrary(Deps.Libs.MultiPlatform.coroutines)
+    commonMainImplementation(libs.coroutines)
 
-    mppLibrary(Deps.Libs.MultiPlatform.mokoMvvm)
-    mppLibrary(Deps.Libs.MultiPlatform.mokoResources)
-    mppLibrary(Deps.Libs.MultiPlatform.klock)
+    commonMainApi(libs.mokoMvvmCore)
+    commonMainApi(libs.mokoResources)
+    commonMainApi(libs.mokoGraphics)
+    commonMainApi(libs.mokoParcelize)
 
-    androidLibrary(Deps.Libs.Android.appCompat)
-    androidLibrary(Deps.Libs.Android.lifecycle)
+    commonMainImplementation(libs.klock)
+
+    androidMainImplementation(libs.appCompat)
+    androidMainImplementation(libs.lifecycleViewModel)
 }
 
 cocoaPods {
-    podsProject = file("../sample/ios-app/Pods/Pods.xcodeproj")
-
     pod("moko-widgets-datetime-picker", "mokoWidgetsDateTimePicker")
 }
