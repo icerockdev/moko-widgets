@@ -25,6 +25,8 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
+      - name: Cocoapods install
+        run: (cd sample/ios-app && pod install)
       - name: Publish plugin
         run: ./gradlew -p plugin publishMavenJavaPublicationToOSSRHRepository
       - name: Publish library
