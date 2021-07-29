@@ -10,8 +10,9 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath("dev.icerock.moko:resources-generator:0.16.1")
+        classpath("dev.icerock.moko:resources-generator:0.16.2")
         classpath("dev.icerock.moko.widgets:gradle-plugin")
+        classpath("com.gradle.publish:plugin-publish-plugin:0.15.0")
         
         classpath(":widgets-build-logic")
     }
