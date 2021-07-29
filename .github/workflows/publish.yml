@@ -28,7 +28,7 @@ jobs:
       - name: Cocoapods install
         run: (cd sample/ios-app && pod install)
       - name: Publish plugin
-        run: ./gradlew -p plugin publishMavenJavaPublicationToOSSRHRepository
+        run: ./gradlew -p plugin publishPlugins -Pgradle.publish.key=${{ secrets.GRADLE_PLUGIN_PORTAL_KEY }} -Pgradle.publish.secret=${{ secrets.GRADLE_PLUGIN_PORTAL_SECRET }}
       - name: Publish library
         run: ./gradlew publish
 

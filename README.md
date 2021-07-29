@@ -215,17 +215,11 @@ root build.gradle
 ```groovy
 buildscript {
     repositories {
-        mavenCentral()
+        gradlePluginPortal()
     }
 
     dependencies {
         classpath "dev.icerock.moko.widgets:gradle-plugin:0.1.0"
-    }
-}
-
-allprojects {
-    repositories {
-        maven { url = uri("https://dl.bintray.com/icerockdev/plugins") } // compiler plugins
     }
 }
 ```
