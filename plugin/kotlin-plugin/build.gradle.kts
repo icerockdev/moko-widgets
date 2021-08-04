@@ -4,9 +4,10 @@
 
 plugins {
     id("org.jetbrains.kotlin.jvm")
-    id("org.gradle.maven-publish")
     id("kotlin-kapt")
     id("embed-configuration-convention")
+    id("publication-convention")
+    id("detekt-convention")
 }
 
 dependencies {
