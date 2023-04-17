@@ -90,6 +90,9 @@ actual class LinearViewFactory actual constructor(
                     result = WidgetSize.Const(size.width, SizeSpec.WrapContent)
                 }
             }
+
+            is WidgetSize.AspectByHeight<*> -> Unit
+            is WidgetSize.AspectByWidth<*> -> Unit
         }
         return result
     }

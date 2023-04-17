@@ -4,7 +4,7 @@
 
 package dev.icerock.moko.widgets.core.factory
 
-import dev.icerock.moko.fields.FormField
+import dev.icerock.moko.fields.core.FormField
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.core.ViewBundle
@@ -66,7 +66,8 @@ abstract class BaseInputViewFactory<V : UIView> : ViewFactory<InputWidget<out Wi
         rootView: V,
         textField: UITextField
     ) {
-        field.data.bind { newValue ->
+        // TODO check leaks?
+        field.observeData { newValue ->
             val currentText = textField.text.orEmpty()
             val shouldApplyChange = textField.delegate?.run {
                 textField(
@@ -80,11 +81,11 @@ abstract class BaseInputViewFactory<V : UIView> : ViewFactory<InputWidget<out Wi
         }
 
         textField.setEventHandler(UIControlEventEditingChanged) {
-            val currentValue = field.data.value
-            val newValue = textField.text
+            val currentValue: String = field.value()
+            val newValue: String? = textField.text
 
             if (currentValue != newValue) {
-                field.data.value = newValue.orEmpty()
+                field.setValue(newValue.orEmpty())
             }
         }
     }

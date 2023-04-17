@@ -6,6 +6,7 @@ package dev.icerock.moko.widgets.core.factory
 
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.graphics.toUIColor
+import dev.icerock.moko.mvvm.livedata.postValue
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext

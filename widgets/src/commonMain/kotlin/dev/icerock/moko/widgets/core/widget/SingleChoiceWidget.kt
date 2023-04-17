@@ -4,7 +4,7 @@
 
 package dev.icerock.moko.widgets.core.widget
 
-import dev.icerock.moko.fields.FormField
+import dev.icerock.moko.fields.core.FormField
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.core.RequireId

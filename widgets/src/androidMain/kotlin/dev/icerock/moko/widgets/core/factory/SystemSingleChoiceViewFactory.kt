@@ -110,7 +110,7 @@ actual class SystemSingleChoiceViewFactory actual constructor(
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                widget.field.data.value = null
+                widget.field.setValue(null)
                 widget.field.validate()
             }
 
@@ -120,7 +120,7 @@ actual class SystemSingleChoiceViewFactory actual constructor(
                 position: Int,
                 id: Long
             ) {
-                widget.field.data.value = position
+                widget.field.setValue(position)
                 widget.field.validate()
             }
         }
@@ -129,17 +129,18 @@ actual class SystemSingleChoiceViewFactory actual constructor(
             spinner.setPopupBackgroundDrawable(it.buildBackground(context))
         }
 
-        widget.field.data.mergeWith(widget.values) { index, values ->
-            if (index == null) null
-            else values[index]
-        }.bind(lifecycleOwner) { stringDesc ->
-            val string = stringDesc?.toString(context)
-
-            if (editText.text?.toString() == string) return@bind
-
-            editText.setText(string)
-        }
-        widget.field.error.bind(lifecycleOwner) { error ->
+        // TODO fixme
+//        widget.field.data.mergeWith(widget.values) { index, values ->
+//            if (index == null) null
+//            else values[index]
+//        }.bind(lifecycleOwner) { stringDesc ->
+//            val string = stringDesc?.toString(context)
+//
+//            if (editText.text?.toString() == string) return@bind
+//
+//            editText.setText(string)
+//        }
+        widget.field.observeError(lifecycleOwner) { error ->
             textInputLayout.error = error?.toString(context)
             textInputLayout.isErrorEnabled = error != null
         }

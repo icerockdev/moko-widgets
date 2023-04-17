@@ -38,8 +38,11 @@ actual class SystemImageViewFactory actual constructor(
             when (widget.scaleType) {
                 ImageWidget.ScaleType.FILL -> this.contentMode =
                     UIViewContentMode.UIViewContentModeScaleAspectFill
+
                 ImageWidget.ScaleType.FIT -> this.contentMode =
                     UIViewContentMode.UIViewContentModeScaleAspectFit
+
+                null -> Unit
             }
 
             layer.cornerRadius = cornerRadius?.toDouble() ?: 0.0

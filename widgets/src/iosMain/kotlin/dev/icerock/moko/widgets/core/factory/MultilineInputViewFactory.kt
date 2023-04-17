@@ -92,17 +92,18 @@ actual class MultilineInputViewFactory actual constructor(
         }
 
         widget.enabled?.bind { textView.editable = it }
-        widget.field.data.bind { textView.text = it }
+        // TODO check leaks?
+        widget.field.observeData { textView.text = it }
 
         val nc = NSNotificationCenter.defaultCenter
         val observer = TextViewObserver(
             textView = textView,
-            isPlaceholderShow = widget.field.data.value.isEmpty(),
+            isPlaceholderShow = widget.field.value().isEmpty(),
             textChangedHandler = { newValue ->
-                val currentValue = widget.field.data.value
+                val currentValue = widget.field.value()
 
                 if (currentValue != newValue) {
-                    widget.field.data.value = newValue
+                    widget.field.setValue(newValue)
                 }
             },
             placeholderText = widget.label.value,
@@ -129,7 +130,7 @@ actual class MultilineInputViewFactory actual constructor(
         )
 
         if (widget.label.value.localized().isNotEmpty()) {
-            if (widget.field.data.value.isEmpty()) {
+            if (widget.field.value().isEmpty()) {
                 textView.text = widget.label.value.localized()
                 textView.textColor = labelTextColor?.toUIColor() ?: UIColor.grayColor
             }
