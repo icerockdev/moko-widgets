@@ -21,7 +21,7 @@ dependencies {
     commonMainApi(libs.mokoUnits)
     commonMainApi(libs.mokoGraphics)
     commonMainApi(libs.mokoParcelize)
-    androidMainImplementation(libs.appCompat)
+    androidMainApi(libs.appCompat)
     androidMainApi(libs.fragment)
     androidMainImplementation(libs.recyclerView)
     androidMainImplementation(libs.material)
