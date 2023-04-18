@@ -3,15 +3,15 @@ plugins {
 }
 
 repositories {
+    gradlePluginPortal()
+
     mavenCentral()
     google()
-
-    gradlePluginPortal()
 }
 
 dependencies {
-    api("dev.icerock:mobile-multiplatform:0.12.0")
-    api("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21")
-    api("com.android.tools.build:gradle:4.2.1")
-    api("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.15.0")
+    api("dev.icerock:mobile-multiplatform:0.14.2")
+    api("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10")
+    api("com.android.tools.build:gradle:7.4.2")
+    api("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.22.0")
 }

@@ -5,17 +5,16 @@
 plugins {
     id("android-app-convention")
     id("detekt-convention")
-    id("kotlin-kapt")
 }
 
 android {
-    buildFeatures.dataBinding = true
-
     defaultConfig {
         applicationId = "dev.icerock.moko.samples.widgets"
 
         versionCode = 1
         versionName = "0.1.0"
+
+        multiDexEnabled = true
     }
     
     compileOptions {

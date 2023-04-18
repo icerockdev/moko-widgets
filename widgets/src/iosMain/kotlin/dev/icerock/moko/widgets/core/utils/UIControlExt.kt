@@ -70,6 +70,7 @@ class LambdaTarget(val lambda: () -> Unit) : NSObject() {
     }
 
     @ObjCAction
+    @Suppress("UnusedPrivateMember")
     fun displayLink(link: CADisplayLink) {
         lambda()
     }

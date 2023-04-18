@@ -4,7 +4,7 @@
 
 package dev.icerock.moko.widgets.core.factory
 
-import dev.icerock.moko.fields.FormField
+import dev.icerock.moko.fields.livedata.FormField
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.graphics.toUIColor
 import dev.icerock.moko.mvvm.livedata.LiveData
@@ -111,8 +111,12 @@ actual class FloatingLabelInputViewFactory actual constructor(
         return inputView to inputView.textField
     }
 
-    override fun bindLabel(label: LiveData<StringDesc>, rootView: InputWidgetView, textField: UITextField) {
-        label.bind(rootView) { placeholder = it.localized() }
+    override fun bindLabel(
+        label: LiveData<StringDesc>,
+        rootView: InputWidgetView,
+        textField: UITextField
+    ) {
+        rootView.bind(label) { placeholder = it.localized() }
     }
 
     override fun bindFieldToTextField(
@@ -121,12 +125,15 @@ actual class FloatingLabelInputViewFactory actual constructor(
         textField: UITextField
     ) {
         super.bindFieldToTextField(field, rootView, textField)
-        field.data.bind(rootView) {
-            if (!textField.isEditing()) {
+
+        textField.bind(field.data) {
+            if (!isEditing()) {
                 rootView.layoutPlaceholder()
             }
         }
-        field.error.bind(rootView) { error = it?.localized() }
+        rootView.bind(field.error) {
+            this.error = it?.localized()
+        }
     }
 
     class InputWidgetView(
@@ -153,7 +160,9 @@ actual class FloatingLabelInputViewFactory actual constructor(
                 field = value
                 when (value) {
                     TextHorizontalAlignment.LEFT -> textField.textAlignment = NSTextAlignmentLeft
-                    TextHorizontalAlignment.CENTER -> textField.textAlignment = NSTextAlignmentCenter
+                    TextHorizontalAlignment.CENTER -> textField.textAlignment =
+                        NSTextAlignmentCenter
+
                     TextHorizontalAlignment.RIGHT -> textField.textAlignment = NSTextAlignmentRight
                 }
             }

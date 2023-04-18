@@ -36,7 +36,7 @@ import dev.icerock.moko.widgets.core.utils.androidId
 import dev.icerock.moko.widgets.core.utils.bind
 import dev.icerock.moko.widgets.core.utils.dp
 
-@Suppress("LongParameterList")
+@Suppress("LongParameterList", "UnusedPrivateMember")
 actual class SystemSingleChoiceViewFactory actual constructor(
     private val textStyle: TextStyle<Color>?,
     private val labelTextStyle: TextStyle<Color>?,
@@ -110,7 +110,7 @@ actual class SystemSingleChoiceViewFactory actual constructor(
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                widget.field.data.value = null
+                widget.field.setValue(null)
                 widget.field.validate()
             }
 
@@ -120,7 +120,7 @@ actual class SystemSingleChoiceViewFactory actual constructor(
                 position: Int,
                 id: Long
             ) {
-                widget.field.data.value = position
+                widget.field.setValue(position)
                 widget.field.validate()
             }
         }
@@ -139,7 +139,7 @@ actual class SystemSingleChoiceViewFactory actual constructor(
 
             editText.setText(string)
         }
-        widget.field.error.bind(lifecycleOwner) { error ->
+        widget.field.observeError(lifecycleOwner) { error ->
             textInputLayout.error = error?.toString(context)
             textInputLayout.isErrorEnabled = error != null
         }

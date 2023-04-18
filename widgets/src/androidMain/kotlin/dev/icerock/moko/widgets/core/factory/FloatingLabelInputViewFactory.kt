@@ -18,7 +18,6 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.widgets.core.R
-import dev.icerock.moko.widgets.core.widget.InputWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
@@ -39,6 +38,7 @@ import dev.icerock.moko.widgets.core.utils.androidId
 import dev.icerock.moko.widgets.core.utils.bind
 import dev.icerock.moko.widgets.core.utils.dp
 import dev.icerock.moko.widgets.core.utils.sp
+import dev.icerock.moko.widgets.core.widget.InputWidget
 
 @Suppress("LongParameterList", "MagicNumber")
 actual class FloatingLabelInputViewFactory actual constructor(
@@ -119,7 +119,7 @@ actual class FloatingLabelInputViewFactory actual constructor(
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                     if (s == null) return
 
-                    widget.field.data.value = s.toString()
+                    widget.field.setValue(s.toString())
                 }
             })
         }
@@ -144,12 +144,12 @@ actual class FloatingLabelInputViewFactory actual constructor(
             }
         }
 
-        widget.field.data.bind(lifecycleOwner) { data ->
-            if (editText.text?.toString() == data) return@bind
+        widget.field.observeData(lifecycleOwner) { data ->
+            if (editText.text?.toString() == data) return@observeData
 
             editText.setText(data)
         }
-        widget.field.error.bind(lifecycleOwner) { error ->
+        widget.field.observeError(lifecycleOwner) { error ->
             textInputLayout.error = error?.toString(context)
             textInputLayout.isErrorEnabled = error != null
 
@@ -163,10 +163,10 @@ actual class FloatingLabelInputViewFactory actual constructor(
         widget.enabled?.bind(lifecycleOwner) { editText.isEnabled = it == true }
         widget.maxLines?.bind(lifecycleOwner) { maxLines ->
             when (maxLines) {
-                null -> editText.setSingleLine(false)
-                1 -> editText.setSingleLine(true)
+                null -> editText.isSingleLine = false
+                1 -> editText.isSingleLine = true
                 else -> {
-                    editText.setSingleLine(false)
+                    editText.isSingleLine = false
                     editText.maxLines = maxLines
                 }
             }

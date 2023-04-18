@@ -30,6 +30,7 @@ val <T : Widget<out WidgetSize>> Theme.Id<T>.androidId: Int
         val fullId = 0x7f081000 + id
 
         if (BuildConfig.DEBUG) {
+            @Suppress("ImplicitDefaultLocale")
             println(String.format("id %s transformed to 0x%X", idString, fullId))
         }
 
@@ -40,6 +41,7 @@ val <T : Widget<out WidgetSize>> Theme.Id<T>.androidId: Int
                 .first()
                 .javaClass.name
 
+            @Suppress("ImplicitDefaultLocale")
             val msg = String.format(
                 "id 0x%X already used by %s, it conflict with %s",
                 fullId,

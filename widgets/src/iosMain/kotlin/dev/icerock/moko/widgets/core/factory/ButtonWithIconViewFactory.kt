@@ -39,6 +39,8 @@ import platform.UIKit.UISemanticContentAttribute
 import platform.UIKit.UISemanticContentAttributeForceLeftToRight
 import platform.UIKit.UISemanticContentAttributeForceRightToLeft
 import platform.UIKit.bringSubviewToFront
+import platform.UIKit.contentEdgeInsets
+import platform.UIKit.titleEdgeInsets
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
 @Suppress("LongParameterList")

@@ -13,7 +13,6 @@ import android.widget.LinearLayout
 import androidx.core.view.MarginLayoutParamsCompat
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.graphics.colorInt
-import dev.icerock.moko.widgets.core.widget.InputWidget
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
@@ -31,6 +30,7 @@ import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.utils.androidId
 import dev.icerock.moko.widgets.core.utils.bind
 import dev.icerock.moko.widgets.core.utils.dp
+import dev.icerock.moko.widgets.core.widget.InputWidget
 
 actual class MultilineInputViewFactory actual constructor(
     private val background: Background<Fill.Solid>?,
@@ -97,7 +97,7 @@ actual class MultilineInputViewFactory actual constructor(
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                     if (s == null) return
 
-                    widget.field.data.value = s.toString()
+                    widget.field.setValue(s.toString())
                 }
             })
 
@@ -105,15 +105,15 @@ actual class MultilineInputViewFactory actual constructor(
             labelTextColor?.let { setHintTextColor(it.colorInt()) }
         }
 
-        widget.field.data.bind(lifecycleOwner) { data ->
-            if (editText.text?.toString() == data) return@bind
+        widget.field.observeData(lifecycleOwner) { data ->
+            if (editText.text?.toString() == data) return@observeData
 
             editText.setText(data)
         }
 
         widget.label.bind(lifecycleOwner) { editText.hint = it?.toString(context) }
         widget.enabled?.bind(lifecycleOwner) { editText.isEnabled = it == true }
-        editText.setSingleLine(false)
+        editText.isSingleLine = false
 
         return ViewBundle(
             view = editText,

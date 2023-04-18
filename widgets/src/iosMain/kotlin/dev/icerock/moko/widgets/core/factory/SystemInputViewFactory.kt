@@ -35,7 +35,7 @@ import platform.UIKit.UITextField
 import platform.UIKit.clipsToBounds
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
-@Suppress("LongParameterList")
+@Suppress("LongParameterList", "UnusedPrivateMember")
 actual open class SystemInputViewFactory actual constructor(
     private val background: Background<Fill.Solid>?,
     override val margins: MarginValues?,

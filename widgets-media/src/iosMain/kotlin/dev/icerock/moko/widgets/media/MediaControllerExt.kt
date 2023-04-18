@@ -16,6 +16,4 @@ actual fun Screen<*>.createMediaPickerController(permissionsController: Permissi
     )
 }
 
-actual fun MediaPickerController.bind(screen: Screen<*>) {
-    // nothing todo - bind only for android
-}
+actual fun MediaPickerController.bind(screen: Screen<*>) = Unit

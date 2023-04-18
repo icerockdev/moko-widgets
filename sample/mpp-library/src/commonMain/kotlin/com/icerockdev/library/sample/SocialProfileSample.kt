@@ -4,9 +4,9 @@
 
 package com.icerockdev.library.sample
 
-import dev.icerock.moko.fields.FormField
-import dev.icerock.moko.fields.liveBlock
-import dev.icerock.moko.fields.validate
+import dev.icerock.moko.fields.core.validate
+import dev.icerock.moko.fields.livedata.FormField
+import dev.icerock.moko.fields.livedata.liveBlock
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.mvvm.livedata.map
