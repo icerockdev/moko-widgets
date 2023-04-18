@@ -53,38 +53,37 @@ actual abstract class NavigationScreen<S> actual constructor(
         }
         childFragmentManager.registerFragmentLifecycleCallbacks(
             object : FragmentManager.FragmentLifecycleCallbacks() {
-                private val detachHandlers = mutableMapOf<Fragment, Runnable>()
-
                 override fun onFragmentStarted(fm: FragmentManager, f: Fragment) {
                     super.onFragmentStarted(fm, f)
 
                     updateNavigation(f)
                 }
 
-                override fun onFragmentAttached(fm: FragmentManager, f: Fragment, context: Context) {
-                    super.onFragmentAttached(fm, f, context)
-
-                    if (f is Resultable<*> && f is Screen<*>) {
-                        val resultTarget = f.screenId
-
-                        if (resultTarget != null) {
-                            val target = fm.getAllScreens()
-                                .firstOrNull { it.resultCode == resultTarget }
-
-                            detachHandlers[f] = Runnable {
-                                val code = f.requestCode
-                                val result = f.screenResult
-
-                                target!!.routeHandlers[code]!!.invoke(result)
-                            }
-                        }
-                    }
-                }
+                override fun onFragmentAttached(
+                    fm: FragmentManager,
+                    f: Fragment,
+                    context: Context
+                ) = Unit
 
                 override fun onFragmentDetached(fm: FragmentManager, f: Fragment) {
                     super.onFragmentDetached(fm, f)
 
-                    detachHandlers.remove(f)?.run()
+                    if (f is Resultable<*> && f is Screen<*>) {
+                        val resultTarget: Int = f.screenId
+                            ?: return
+
+                        val target: Screen<*>? = fm.getAllScreens()
+                            .firstOrNull { it.resultCode == resultTarget }
+
+                        requireNotNull(target) { "can't route with result because target not found" }
+
+                        val code: Int? = f.requestCode
+                        val result: android.os.Parcelable? = f.screenResult
+
+                        val handler = target.routeHandlers[code]
+                        requireNotNull(handler) { "can't call result because handler is null" }
+                        handler.invoke(result)
+                    }
                 }
             },
             false
@@ -192,6 +191,7 @@ actual abstract class NavigationScreen<S> actual constructor(
             NavigationBar.None -> {
                 toolbar.visibility = View.GONE
             }
+
             is NavigationBar.Normal -> {
                 navBar.apply(
                     toolbar = toolbar,
@@ -199,6 +199,7 @@ actual abstract class NavigationScreen<S> actual constructor(
                     fragmentManager = childFragmentManager
                 )
             }
+
             is NavigationBar.Search -> {
                 navBar.apply(
                     toolbar = toolbar,
