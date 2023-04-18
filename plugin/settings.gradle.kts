@@ -36,7 +36,5 @@ dependencyResolutionManagement {
 
 includeBuild("../widgets-build-logic")
 
-include(":kotlin-common-plugin")
 include(":kotlin-plugin")
-include(":kotlin-native-plugin")
 include(":gradle-plugin")

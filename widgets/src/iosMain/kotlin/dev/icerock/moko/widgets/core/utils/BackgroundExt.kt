@@ -21,6 +21,8 @@ import platform.QuartzCore.CATransaction
 import platform.UIKit.UIButton
 import platform.UIKit.UIColor
 import platform.UIKit.UIView
+import platform.UIKit.adjustsImageWhenDisabled
+import platform.UIKit.adjustsImageWhenHighlighted
 import platform.UIKit.backgroundColor
 import platform.UIKit.window
 

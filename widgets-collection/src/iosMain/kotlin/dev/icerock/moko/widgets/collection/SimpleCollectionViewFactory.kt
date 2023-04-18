@@ -4,6 +4,7 @@
 
 package dev.icerock.moko.widgets.collection
 
+import cocoapods.mokoWidgetsCollection.ALCollectionFlowLayout
 import dev.icerock.moko.units.createUnitCollectionViewDataSource
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
@@ -30,7 +31,9 @@ import platform.UIKit.UIEdgeInsetsZero
 import platform.UIKit.backgroundColor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
-expect fun createCollectionFlowLayout(): UICollectionViewFlowLayout
+fun createCollectionFlowLayout(): UICollectionViewFlowLayout {
+    return ALCollectionFlowLayout()
+}
 
 actual class SimpleCollectionViewFactory actual constructor(
     private val orientation: Orientation,

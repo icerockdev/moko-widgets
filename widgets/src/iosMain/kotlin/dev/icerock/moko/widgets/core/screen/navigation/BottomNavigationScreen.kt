@@ -40,7 +40,6 @@ actual abstract class BottomNavigationScreen actual constructor(
         BottomNavigationItem.Builder().apply(builder).build()
 
     actual var selectedItemId: Int
-        @ExperimentalUnsignedTypes
         get() = tabBarController?.selectedIndex?.let {
             items[it.toInt()].id
         } ?: -1

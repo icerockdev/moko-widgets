@@ -8,11 +8,13 @@ import com.google.auto.service.AutoService
 import org.jetbrains.kotlin.compiler.plugin.AbstractCliOption
 import org.jetbrains.kotlin.compiler.plugin.CliOption
 import org.jetbrains.kotlin.compiler.plugin.CommandLineProcessor
+import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.config.CompilerConfigurationKey
 
 object GenerationDir : CompilerConfigurationKey<String>("generationDir")
 
+@OptIn(ExperimentalCompilerApi::class)
 @AutoService(CommandLineProcessor::class)
 class WidgetsGeneratorCommandLineProcessor : CommandLineProcessor {
     override val pluginId = CommonCommandLineProcessor.pluginId

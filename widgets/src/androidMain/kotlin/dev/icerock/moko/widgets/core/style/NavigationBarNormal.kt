@@ -76,7 +76,7 @@ fun NavigationBar.Normal.apply(
         actions.forEach { barBtn ->
             val item = toolbar.menu.add("$barBtn")
             item.icon = ContextCompat.getDrawable(context, barBtn.icon.drawableResId)
-            DrawableCompat.setTint(item.icon, tintColor)
+            item.icon?.let { DrawableCompat.setTint(it, tintColor) }
             item.setOnMenuItemClickListener {
                 barBtn.action()
                 true

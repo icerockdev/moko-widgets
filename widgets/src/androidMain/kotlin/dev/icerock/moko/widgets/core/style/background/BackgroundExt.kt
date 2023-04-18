@@ -52,6 +52,8 @@ fun Background<out Fill>.buildBackground(context: Context): Drawable {
             gradientDrawable.colors = fill.colors.map { it.argb.toInt() }.toIntArray()
             gradientDrawable.orientation = fill.direction.toPlatformOrientation()
         }
+
+        null -> Unit
     }
 
     if (cornerRadius != null) {

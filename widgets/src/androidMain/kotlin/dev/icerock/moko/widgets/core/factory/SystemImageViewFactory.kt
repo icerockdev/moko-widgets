@@ -34,6 +34,7 @@ actual class SystemImageViewFactory actual constructor(
         when (widget.scaleType) {
             ImageWidget.ScaleType.FILL -> imageView.scaleType = ImageView.ScaleType.CENTER_CROP
             ImageWidget.ScaleType.FIT -> imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE
+            null -> Unit
         }
         @Suppress("ComplexCondition")
         if ((size is WidgetSize.Const<*, *> &&

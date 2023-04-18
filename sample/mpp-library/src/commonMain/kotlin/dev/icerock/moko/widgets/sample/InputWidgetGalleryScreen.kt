@@ -4,8 +4,8 @@
 
 package dev.icerock.moko.widgets.sample
 
-import dev.icerock.moko.fields.FormField
-import dev.icerock.moko.fields.liveBlock
+import dev.icerock.moko.fields.livedata.FormField
+import dev.icerock.moko.fields.livedata.liveBlock
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.widgets.core.widget.InputWidget
