@@ -4,7 +4,7 @@
 
 package dev.icerock.moko.widgets.core.factory
 
-import dev.icerock.moko.fields.core.FormField
+import dev.icerock.moko.fields.livedata.FormField
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.graphics.toUIColor
 import dev.icerock.moko.mvvm.livedata.LiveData
@@ -125,15 +125,14 @@ actual class FloatingLabelInputViewFactory actual constructor(
         textField: UITextField
     ) {
         super.bindFieldToTextField(field, rootView, textField)
-        // TODO check leaks?
-        field.observeData {
-            if (!textField.isEditing()) {
+
+        textField.bind(field.data) {
+            if (!isEditing()) {
                 rootView.layoutPlaceholder()
             }
         }
-        // TODO check leaks?
-        field.observeError {
-            rootView.error = it?.localized()
+        rootView.bind(field.error) {
+            this.error = it?.localized()
         }
     }
 

@@ -4,15 +4,15 @@
 
 package dev.icerock.moko.widgets.core.factory
 
-import dev.icerock.moko.fields.core.FormField
+import dev.icerock.moko.fields.livedata.FormField
 import dev.icerock.moko.mvvm.livedata.LiveData
+import dev.icerock.moko.mvvm.utils.bind
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
 import dev.icerock.moko.widgets.core.style.view.MarginValues
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
-import dev.icerock.moko.widgets.core.utils.bind
 import dev.icerock.moko.widgets.core.utils.setEventHandler
 import dev.icerock.moko.widgets.core.widget.InputWidget
 import platform.Foundation.NSMakeRange
@@ -50,7 +50,8 @@ abstract class BaseInputViewFactory<V : UIView> : ViewFactory<InputWidget<out Wi
         rootView: V,
         textField: UITextField
     ) {
-        enabled?.bind { textField.enabled = it }
+        if (enabled == null) return
+        textField.bind(enabled) { this.enabled = it }
     }
 
     protected open fun bindLabel(
@@ -58,7 +59,7 @@ abstract class BaseInputViewFactory<V : UIView> : ViewFactory<InputWidget<out Wi
         rootView: V,
         textField: UITextField
     ) {
-        label.bind { textField.placeholder = it.localized() }
+        textField.bind(label) { this.placeholder = it.localized() }
     }
 
     protected open fun bindFieldToTextField(
@@ -66,17 +67,16 @@ abstract class BaseInputViewFactory<V : UIView> : ViewFactory<InputWidget<out Wi
         rootView: V,
         textField: UITextField
     ) {
-        // TODO check leaks?
-        field.observeData { newValue ->
-            val currentText = textField.text.orEmpty()
-            val shouldApplyChange = textField.delegate?.run {
+        textField.bind(field.data) { newValue ->
+            val currentText = this.text.orEmpty()
+            val shouldApplyChange = this.delegate?.run {
                 textField(
-                    textField,
+                    this@bind,
                     NSMakeRange(0.toULong(), currentText.length.toULong()), newValue
                 )
             } ?: true
             if (shouldApplyChange) {
-                textField.text = newValue
+                this.text = newValue
             }
         }
 

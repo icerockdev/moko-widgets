@@ -129,17 +129,16 @@ actual class SystemSingleChoiceViewFactory actual constructor(
             spinner.setPopupBackgroundDrawable(it.buildBackground(context))
         }
 
-        // TODO fixme
-//        widget.field.data.mergeWith(widget.values) { index, values ->
-//            if (index == null) null
-//            else values[index]
-//        }.bind(lifecycleOwner) { stringDesc ->
-//            val string = stringDesc?.toString(context)
-//
-//            if (editText.text?.toString() == string) return@bind
-//
-//            editText.setText(string)
-//        }
+        widget.field.data.mergeWith(widget.values) { index, values ->
+            if (index == null) null
+            else values[index]
+        }.bind(lifecycleOwner) { stringDesc ->
+            val string = stringDesc?.toString(context)
+
+            if (editText.text?.toString() == string) return@bind
+
+            editText.setText(string)
+        }
         widget.field.observeError(lifecycleOwner) { error ->
             textInputLayout.error = error?.toString(context)
             textInputLayout.isErrorEnabled = error != null

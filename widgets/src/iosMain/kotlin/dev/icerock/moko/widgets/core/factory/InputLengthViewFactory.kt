@@ -19,12 +19,11 @@ actual open class InputLengthViewFactory : ViewFactory<InputLengthWidget<out Wid
     ): ViewBundle<WS> {
         val bundle = widget.child.buildView(viewFactoryContext) as ViewBundle<WS>
 
-        // TODO fixme
-//        widget.maxLength.mergeWith(widget.child.field.data) { maxLength, userInput ->
-//            if (maxLength != null && userInput.length > maxLength) {
-//                widget.child.field.data.value = userInput.take(maxLength)
-//            }
-//        }
+        widget.maxLength.mergeWith(widget.child.field.data) { maxLength, userInput ->
+            if (maxLength != null && userInput.length > maxLength) {
+                widget.child.field.data.value = userInput.take(maxLength)
+            }
+        }
 
         return bundle
     }

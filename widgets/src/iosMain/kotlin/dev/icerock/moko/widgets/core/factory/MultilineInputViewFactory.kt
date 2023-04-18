@@ -6,6 +6,7 @@ package dev.icerock.moko.widgets.core.factory
 
 import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.graphics.toUIColor
+import dev.icerock.moko.mvvm.utils.bind
 import dev.icerock.moko.resources.desc.StringDesc
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
@@ -91,9 +92,10 @@ actual class MultilineInputViewFactory actual constructor(
             }
         }
 
-        widget.enabled?.bind { textView.editable = it }
-        // TODO check leaks?
-        widget.field.observeData { textView.text = it }
+        widget.enabled?.let { enabled ->
+            textView.bind(enabled) { this.editable = it }
+        }
+        textView.bind(widget.field.data) { this.text = it }
 
         val nc = NSNotificationCenter.defaultCenter
         val observer = TextViewObserver(
