@@ -296,6 +296,7 @@ actual abstract class NavigationScreen<S> actual constructor(
             return object : Route<Unit> {
                 override fun route(arg: Unit) {
                     val fragmentManager = navigationScreen!!.getChildFragmentManager()
+                    @Suppress("UnusedPrivateMember")
                     for (i in 0 until fragmentManager.backStackEntryCount) {
                         fragmentManager.popBackStack()
                     }

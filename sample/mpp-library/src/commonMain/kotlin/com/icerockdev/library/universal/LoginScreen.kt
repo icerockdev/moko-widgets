@@ -4,8 +4,8 @@
 
 package com.icerockdev.library.universal
 
-import dev.icerock.moko.fields.FormField
-import dev.icerock.moko.fields.liveBlock
+import dev.icerock.moko.fields.livedata.FormField
+import dev.icerock.moko.fields.livedata.liveBlock
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcher
 import dev.icerock.moko.mvvm.dispatcher.EventsDispatcherOwner
 import dev.icerock.moko.mvvm.viewmodel.ViewModel

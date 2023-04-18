@@ -16,6 +16,7 @@ import dev.icerock.moko.widgets.core.style.background.Background
 import dev.icerock.moko.widgets.core.style.background.Fill
 import dev.icerock.moko.widgets.core.style.view.TextStyle
 
+@Suppress("UnnecessaryAbstractClass")
 expect abstract class NavigationScreen<S>(
     initialScreen: TypedScreenDesc<Args.Empty, S>,
     router: Router

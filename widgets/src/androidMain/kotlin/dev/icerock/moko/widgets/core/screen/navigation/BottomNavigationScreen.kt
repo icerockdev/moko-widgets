@@ -242,11 +242,9 @@ actual abstract class BottomNavigationScreen actual constructor(
     private fun updateTitleMode() {
         bottomNavigationView?.also { navView ->
             if (isTitleVisible) {
-                navView.labelVisibilityMode =
-                    LabelVisibilityMode.LABEL_VISIBILITY_LABELED
+                navView.labelVisibilityMode = BottomNavigationView.LABEL_VISIBILITY_LABELED
             } else {
-                navView.labelVisibilityMode =
-                    LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED
+                navView.labelVisibilityMode = BottomNavigationView.LABEL_VISIBILITY_UNLABELED
             }
         }
     }

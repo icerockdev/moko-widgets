@@ -35,6 +35,7 @@ fun getGravityForTextAlignment(
     } else if (textVerticalAlignment != null) {
         textVerticalAlignment.getGravity()
     } else {
+        @Suppress("UseRequire")
         throw IllegalArgumentException("At least one argument must be nonnull.")
     }
 }

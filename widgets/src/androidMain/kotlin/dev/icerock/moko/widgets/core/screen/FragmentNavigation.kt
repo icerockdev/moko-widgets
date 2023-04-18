@@ -22,6 +22,7 @@ internal class FragmentNavigation(
         val fm = fragment.childFragmentManager
 
         val backStackCount = fm.backStackEntryCount
+        @Suppress("UnusedPrivateMember")
         for (i in 0 until backStackCount) {
             fm.popBackStack()
         }

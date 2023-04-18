@@ -36,7 +36,7 @@ import dev.icerock.moko.widgets.core.utils.androidId
 import dev.icerock.moko.widgets.core.utils.bind
 import dev.icerock.moko.widgets.core.utils.dp
 
-@Suppress("LongParameterList")
+@Suppress("LongParameterList", "UnusedPrivateMember")
 actual class SystemSingleChoiceViewFactory actual constructor(
     private val textStyle: TextStyle<Color>?,
     private val labelTextStyle: TextStyle<Color>?,

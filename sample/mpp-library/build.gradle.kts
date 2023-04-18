@@ -4,8 +4,6 @@
 
 plugins {
     id("multiplatform-library-convention")
-    id("detekt-convention")
-    id("kotlin-kapt")
     id("kotlin-parcelize")
     id("dev.icerock.mobile.multiplatform-resources")
     id("dev.icerock.mobile.multiplatform.ios-framework")

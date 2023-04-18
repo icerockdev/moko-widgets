@@ -38,6 +38,7 @@ import platform.UIKit.UITableViewStyle
 import platform.UIKit.layoutMargins
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
+@Suppress("UnusedPrivateMember")
 actual class SystemListViewFactory actual constructor(
     private val background: Background<Fill.Solid>?,
     private val dividerEnabled: Boolean?,
