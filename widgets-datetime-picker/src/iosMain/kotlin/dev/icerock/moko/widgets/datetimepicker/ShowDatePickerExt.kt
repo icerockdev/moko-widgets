@@ -19,6 +19,7 @@ import platform.UIKit.UIControlEventTouchUpInside
 import platform.UIKit.UIControlStateNormal
 import platform.UIKit.UIDatePicker
 import platform.UIKit.UIDatePickerMode
+import platform.UIKit.UIDatePickerStyle
 import platform.UIKit.UIView
 import platform.UIKit.addSubview
 import platform.UIKit.backgroundColor
@@ -114,6 +115,7 @@ class DatePickerView(
         ).active = true
 
         val datePicker = UIDatePicker()
+        datePicker.preferredDatePickerStyle = UIDatePickerStyle.UIDatePickerStyleWheels
         datePicker.translatesAutoresizingMaskIntoConstraints = false
         datePicker.datePickerMode = UIDatePickerMode.UIDatePickerModeDate
         addSubview(datePicker)
