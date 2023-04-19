@@ -6,10 +6,13 @@ This is a Kotlin MultiPlatform library that provides declarative UI and applicat
  in common code. You can implement full application for Android and iOS only from common code with it.  
 
 ## Sample Screen
+
 |Android|iOS|
 |---|---|
 |![Sample Android](https://user-images.githubusercontent.com/5010169/70204616-d0bd1b00-1753-11ea-95d1-749341631ba7.png)|![Sample iOS](https://user-images.githubusercontent.com/5010169/70204576-aff4c580-1753-11ea-95b9-14e488edb689.png)|
+
 Code of screen structure:
+
 ```kotlin
 class LoginScreen(
     private val theme: Theme,
@@ -206,7 +209,15 @@ allprojects {
 project build.gradle
 ```groovy
 dependencies {
-    classpath("dev.icerock.moko:widgets:0.1.0")
+    commonMainApi("dev.icerock.moko:widgets:0.2.1")
+
+    commonMainApi("dev.icerock.moko:widgets-bottomsheet:0.2.1") // show bottom sheets
+    commonMainApi("dev.icerock.moko:widgets-collection:0.2.1") // collection widget
+    commonMainApi("dev.icerock.moko:widgets-datetime-picker:0.2.1") // show datepicker
+    commonMainApi("dev.icerock.moko:widgets-image-network:0.2.1") // images with load from url
+    commonMainApi("dev.icerock.moko:widgets-sms:0.2.1") // input with sms autofill
+    commonMainApi("dev.icerock.moko:widgets-media:0.2.1") // moko-media integration
+    commonMainApi("dev.icerock.moko:widgets-permissions:0.2.1") // moko-permissions integration
 }
 ```
 
@@ -219,7 +230,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "dev.icerock.moko.widgets:gradle-plugin:0.1.0"
+        classpath "dev.icerock.moko.widgets:gradle-plugin:0.2.1"
     }
 }
 ```
