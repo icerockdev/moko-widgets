@@ -7,7 +7,7 @@ import FloatingPanel
 
 private var AssociatedDelegateHandle: UInt8 = 0
 
-@objc public class BottomSheetController: NSObject, FloatingPanelControllerDelegate {
+@objc public class BottomSheetController: NSObject {
   
   private weak var controller: FloatingPanelController?
   private var onDismiss: ((Bool) -> Void)?
