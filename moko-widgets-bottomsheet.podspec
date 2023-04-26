@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
     spec.name                     = 'moko-widgets-bottomsheet'
-    spec.version                  = '0.1.0'
+    spec.version                  = '0.2.0'
     spec.homepage                 = 'https://github.com/icerockdev/moko-widgets'
     spec.source                   = { :git => "https://github.com/icerockdev/moko-widgets.git", :tag => "release/#{spec.version}" }
     spec.authors                  = 'IceRock Development'
@@ -11,7 +11,7 @@ Pod::Spec.new do |spec|
     spec.source_files             = "widgets-bottomSheet/src/iosMain/swift/**/*.{h,m,swift}"
     spec.resources                = "widgets-bottomSheet/src/iosMain/bundle/**/*"
 
-    spec.dependency 'FloatingPanel', '~> 1.7.2'
+    spec.dependency 'FloatingPanel', '~> 2.6.1'
 
     spec.ios.deployment_target  = '11.0'
     spec.swift_version          = '5.0'

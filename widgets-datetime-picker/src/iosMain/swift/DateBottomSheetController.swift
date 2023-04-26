@@ -41,9 +41,9 @@ private var AssociatedDelegateHandle: UInt8 = 0
     fpc.backdropView.backgroundColor = UIColor.black
     fpc.isRemovalInteractionEnabled = true
     fpc.surfaceView.grabberHandle.isHidden = true
-    fpc.surfaceView.grabberHandleHeight = 0
-    fpc.surfaceView.grabberTopPadding = 0
-    fpc.surfaceView.contentInsets = .zero
+    fpc.surfaceView.grabberHandleSize.height = 0
+    fpc.surfaceView.grabberHandlePadding = 0
+    //fpc.surfaceView.contentInsets = .zero
 
     controller = fpc
     self.onDismiss = onDismiss
@@ -68,12 +68,12 @@ class FloatingDelegate: FloatingPanelControllerDelegate {
     self.onDismiss = onDismiss
   }
 
-  func floatingPanel(_ vc: FloatingPanelController, layoutFor newCollection: UITraitCollection) -> FloatingPanelLayout? {
+    func floatingPanel(_ vc: FloatingPanelController, layoutFor newCollection: UITraitCollection) -> FloatingPanelLayout {
     return floatingLayout
   }
 
   func floatingPanelDidEndDecelerating(_ vc: FloatingPanelController) {
-    if vc.position == .hidden {
+    if vc.state == .hidden {
       vc.removePanelFromParent(animated: true)
       vc.dismiss(animated: false, completion: nil)
       onDismiss(false)
@@ -86,26 +86,34 @@ class FloatingDelegate: FloatingPanelControllerDelegate {
 }
 
 class BottomSheetLayout: FloatingPanelLayout {
-  var initialPosition: FloatingPanelPosition = .half
-
-  private let preferredHeight: CGFloat
-
-  init(preferredHeight: CGFloat) {
-    self.preferredHeight = preferredHeight
-  }
-
-  func insetFor(position: FloatingPanelPosition) -> CGFloat? {
-    switch (position) {
-    case .half: return preferredHeight
-    case .full: return 0
-    case .tip: return 0
-    case .hidden: return 0
+    private let preferredHeight: CGFloat
+    
+    var position: FloatingPanelPosition {
+        return .bottom
     }
-  }
-
-  var supportedPositions: Set<FloatingPanelPosition> = [.half, .hidden]
-
-  func backdropAlphaFor(position: FloatingPanelPosition) -> CGFloat {
-    return 0.3
-  }
+    
+    var initialState: FloatingPanelState {
+        return .half
+    }
+    
+    var anchors: [FloatingPanelState : FloatingPanelLayoutAnchoring] {
+        return [
+            .half: FloatingPanelLayoutAnchor(absoluteInset: preferredHeight, edge: .bottom, referenceGuide: .safeArea)
+        ]
+    }
+    
+    init(preferredHeight: CGFloat) {
+        self.preferredHeight = preferredHeight
+    }
+    
+    func prepareLayout(surfaceView: UIView, in view: UIView) -> [NSLayoutConstraint] {
+        return [
+            surfaceView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 0.0),
+            surfaceView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: 0.0),
+        ]
+    }
+    
+    func backdropAlpha(for state: FloatingPanelState) -> CGFloat {
+        return  0.3
+    }
 }
