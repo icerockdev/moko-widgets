@@ -4,12 +4,13 @@
 
 package dev.icerock.moko.widgets.core.utils
 
+import dev.icerock.moko.widgets.objc.KeyValueObserverProtocol
+import kotlinx.cinterop.COpaquePointer
 import kotlinx.cinterop.ObjCAction
 import kotlinx.cinterop.cstr
-import platform.Foundation.NSRunLoop
-import platform.Foundation.NSRunLoopCommonModes
+import platform.Foundation.NSKeyValueObservingOptionNew
 import platform.Foundation.NSSelectorFromString
-import platform.QuartzCore.CADisplayLink
+import platform.Foundation.addObserver
 import platform.UIKit.UIControl
 import platform.UIKit.UIControlEvents
 import platform.UIKit.UIGestureRecognizer
@@ -52,36 +53,44 @@ fun UIGestureRecognizer.setHandler(action: () -> Unit) {
     )
 }
 
-fun <T : Any, CTX> T.displayLink(
+fun <V : UIView, CTX> V.onBoundsChanged(
     context: CTX,
-    objectForSkipCheck: (T) -> Any,
-    action: (T, CTX) -> Unit
+    action: (V, CTX) -> Unit
 ) {
-    val ref: WeakReference<T> = WeakReference(this)
+    val ref: WeakReference<V> = WeakReference(this)
 
-    var displayLink: CADisplayLink? = null
-
-    var oldState: Any = objectForSkipCheck(this)
-    val target = LambdaTarget {
-        val strongRef: T? = ref.get()
-        if (strongRef == null) {
-            displayLink?.removeFromRunLoop(NSRunLoop.currentRunLoop, NSRunLoopCommonModes)
-            displayLink = null
-            return@LambdaTarget
-        }
-
-        val newState: Any = objectForSkipCheck(strongRef)
-        if (newState == oldState) return@LambdaTarget
+    val target = ObserverObject {
+        val strongRef: V = ref.get() ?: return@ObserverObject
 
         action(strongRef, context)
     }
 
-    CADisplayLink.displayLinkWithTarget(
-        target = target,
-        selector = NSSelectorFromString("displayLink:")
-    ).apply {
-        frameInterval = 1
-        addToRunLoop(NSRunLoop.currentRunLoop, NSRunLoopCommonModes)
+    objc_setAssociatedObject(
+        `object` = this,
+        key = "onBoundsChanged".cstr,
+        value = target,
+        policy = OBJC_ASSOCIATION_RETAIN
+    )
+
+    this.addObserver(
+        observer = target,
+        forKeyPath = "bounds",
+        options = NSKeyValueObservingOptionNew,
+        context = null
+    )
+}
+
+private class ObserverObject(
+    private val lambda: () -> Unit
+) : NSObject(), KeyValueObserverProtocol {
+
+    override fun observeValueForKeyPath(
+        keyPath: String?,
+        ofObject: Any?,
+        change: Map<Any?, *>?,
+        context: COpaquePointer?
+    ) {
+        lambda()
     }
 }
 
@@ -89,12 +98,6 @@ class LambdaTarget(val lambda: () -> Unit) : NSObject() {
 
     @ObjCAction
     fun action() {
-        lambda()
-    }
-
-    @ObjCAction
-    @Suppress("UnusedPrivateMember")
-    fun displayLink(link: CADisplayLink) {
         lambda()
     }
 }

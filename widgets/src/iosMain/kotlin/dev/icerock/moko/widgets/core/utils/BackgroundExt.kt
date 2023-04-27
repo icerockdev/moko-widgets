@@ -98,9 +98,8 @@ fun UIButton.applyStateBackgroundIfNeeded(background: PressableState<Background<
 
     stateLayers.update(this)
 
-    this.displayLink(
+    this.onBoundsChanged(
         context = stateLayers,
-        objectForSkipCheck = { it.layer.bounds }
     ) { button, stateLayers ->
         val (width: CGFloat, height: CGFloat) = button.layer.bounds.useContents {
             this.size.width to this.size.height
@@ -165,9 +164,8 @@ fun UIView.applyBackgroundIfNeeded(background: Background<out Fill>?) {
     val bgLayer: CALayer = background.caLayer()
     layer.insertSublayer(bgLayer, 0U)
 
-    this.displayLink(
+    this.onBoundsChanged(
         context = bgLayer,
-        objectForSkipCheck = { it.layer.bounds }
     ) { view, bgLayer ->
         val (width: CGFloat, height: CGFloat) = view.layer.bounds.useContents {
             this.size.width to this.size.height
