@@ -20,8 +20,13 @@ import platform.objc.OBJC_ASSOCIATION_RETAIN
 import platform.objc.objc_setAssociatedObject
 import kotlin.native.ref.WeakReference
 
-fun UIControl.setEventHandler(controlEvent: UIControlEvents, action: () -> Unit) {
-    val target = LambdaTarget(action)
+fun <V: UIControl> V.setEventHandler(controlEvent: UIControlEvents, action: (V) -> Unit) {
+    val weakReference: WeakReference<V> = WeakReference(this)
+    val target = LambdaTarget {
+        val strongRef: V = weakReference.get() ?: return@LambdaTarget
+
+        action(strongRef)
+    }
 
     addTarget(
         target = target,

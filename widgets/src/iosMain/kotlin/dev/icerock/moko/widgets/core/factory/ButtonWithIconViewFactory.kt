@@ -100,7 +100,7 @@ actual class ButtonWithIconViewFactory actual constructor(
 
         button.setEventHandler(
             controlEvent = UIControlEventTouchUpInside,
-            action = widget.onTap
+            action = { widget.onTap }
         )
 
         val contentAttribute: UISemanticContentAttribute
