@@ -98,7 +98,8 @@ fun UIButton.applyStateBackgroundIfNeeded(background: PressableState<Background<
 
     stateLayers.update(this)
 
-    this.onBoundsChanged(
+    this.observeKeyChanges(
+        keyPath = "bounds",
         context = stateLayers,
     ) { button, stateLayers ->
         val (width: CGFloat, height: CGFloat) = button.layer.bounds.useContents {
@@ -112,9 +113,21 @@ fun UIButton.applyStateBackgroundIfNeeded(background: PressableState<Background<
         stateLayers.disabled.frame = CGRectMake(0.0, 0.0, width, height)
         stateLayers.pressed.frame = CGRectMake(0.0, 0.0, width, height)
 
-        stateLayers.update(button)
-
         CATransaction.commit()
+    }
+
+    listOf("highlighted", "enabled").forEach { keyPath ->
+        this.observeKeyChanges(
+            keyPath = keyPath,
+            context = stateLayers,
+        ) { button, stateLayers ->
+            CATransaction.begin()
+            CATransaction.setDisableActions(true)
+
+            stateLayers.update(button)
+
+            CATransaction.commit()
+        }
     }
 }
 
@@ -164,7 +177,8 @@ fun UIView.applyBackgroundIfNeeded(background: Background<out Fill>?) {
     val bgLayer: CALayer = background.caLayer()
     layer.insertSublayer(bgLayer, 0U)
 
-    this.onBoundsChanged(
+    this.observeKeyChanges(
+        keyPath = "bounds",
         context = bgLayer,
     ) { view, bgLayer ->
         val (width: CGFloat, height: CGFloat) = view.layer.bounds.useContents {

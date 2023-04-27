@@ -20,7 +20,7 @@ import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.utils.applyStateBackgroundIfNeeded
 import dev.icerock.moko.widgets.core.utils.applyTextStyleIfNeeded
 import dev.icerock.moko.widgets.core.utils.bind
-import dev.icerock.moko.widgets.core.utils.onBoundsChanged
+import dev.icerock.moko.widgets.core.utils.observeKeyChanges
 import dev.icerock.moko.widgets.core.utils.setEventHandler
 import dev.icerock.moko.widgets.core.widget.ButtonWidget
 import kotlinx.cinterop.useContents
@@ -141,7 +141,8 @@ actual class ButtonWithIconViewFactory actual constructor(
     }
 
     private fun setupLayoutUpdate(button: UIButton, viewFactory: ButtonWithIconViewFactory) {
-        button.onBoundsChanged(
+        button.observeKeyChanges(
+            keyPath = "bounds",
             context = viewFactory,
         ) { button, viewFactory ->
             val icPadding: Double = viewFactory.iconPadding?.toDouble() ?: 0.0

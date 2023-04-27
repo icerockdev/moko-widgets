@@ -20,7 +20,7 @@ import platform.objc.OBJC_ASSOCIATION_RETAIN
 import platform.objc.objc_setAssociatedObject
 import kotlin.native.ref.WeakReference
 
-fun <V: UIControl> V.setEventHandler(controlEvent: UIControlEvents, action: (V) -> Unit) {
+fun <V : UIControl> V.setEventHandler(controlEvent: UIControlEvents, action: (V) -> Unit) {
     val weakReference: WeakReference<V> = WeakReference(this)
     val target = LambdaTarget {
         val strongRef: V = weakReference.get() ?: return@LambdaTarget
@@ -58,7 +58,8 @@ fun UIGestureRecognizer.setHandler(action: () -> Unit) {
     )
 }
 
-fun <V : UIView, CTX> V.onBoundsChanged(
+fun <V : UIView, CTX> V.observeKeyChanges(
+    keyPath: String,
     context: CTX,
     action: (V, CTX) -> Unit
 ) {
@@ -72,14 +73,14 @@ fun <V : UIView, CTX> V.onBoundsChanged(
 
     objc_setAssociatedObject(
         `object` = this,
-        key = "onBoundsChanged".cstr,
+        key = "observeKeyChanges-$keyPath".cstr,
         value = target,
         policy = OBJC_ASSOCIATION_RETAIN
     )
 
     this.addObserver(
         observer = target,
-        forKeyPath = "bounds",
+        forKeyPath = keyPath,
         options = NSKeyValueObservingOptionNew,
         context = null
     )
