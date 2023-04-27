@@ -90,6 +90,7 @@ actual class ButtonWithIconViewFactory actual constructor(
                     button.setTitle(title = processedText, forState = UIControlStateNormal)
                 }
             }
+
             else -> throw Exception("Not supported content type")
         }
 
@@ -109,14 +110,17 @@ actual class ButtonWithIconViewFactory actual constructor(
                 contentAttribute = UISemanticContentAttributeForceLeftToRight
                 contentAlignment = UIControlContentHorizontalAlignmentLeft
             }
+
             IconGravity.END -> {
                 contentAttribute = UISemanticContentAttributeForceRightToLeft
                 contentAlignment = UIControlContentHorizontalAlignmentLeft
             }
+
             IconGravity.TEXT_START, null -> {
                 contentAttribute = UISemanticContentAttributeForceLeftToRight
                 contentAlignment = UIControlContentHorizontalAlignmentCenter
             }
+
             IconGravity.TEXT_END -> {
                 contentAttribute = UISemanticContentAttributeForceRightToLeft
                 contentAlignment = UIControlContentHorizontalAlignmentCenter
@@ -127,27 +131,36 @@ actual class ButtonWithIconViewFactory actual constructor(
 
         button.imageView?.let { button.bringSubviewToFront(it) }
 
-        var buttonWidth = 0.0
-        // TODO remove this bad :(
-        button.displayLink {
-            val icPadding: Double = iconPadding?.toDouble() ?: 0.0
+        setupLayoutUpdate(button, viewFactory = this)
 
-            val newButtonWidth = button.bounds.useContents { this.size.width }
-            if (buttonWidth == newButtonWidth) return@displayLink
-            buttonWidth = newButtonWidth
+        return ViewBundle(
+            view = button,
+            size = size,
+            margins = margins
+        )
+    }
+
+    private fun setupLayoutUpdate(button: UIButton, viewFactory: ButtonWithIconViewFactory) {
+        button.displayLink(
+            context = viewFactory,
+            objectForSkipCheck = { it.bounds }
+        ) { button, viewFactory ->
+            val icPadding: Double = viewFactory.iconPadding?.toDouble() ?: 0.0
+
+            val buttonWidth: CGFloat = button.bounds.useContents { this.size.width }
 
             val iconWidth = button.imageView?.frame?.useContents { this.size.width } ?: 0.0
             val titleWidth = button.titleLabel?.frame?.useContents { this.size.width } ?: 0.0
 
-            val paddingTop = padding?.top?.toDouble() ?: 0.0
-            var paddingLeft = padding?.start?.toDouble() ?: 0.0
-            var paddingRight = padding?.end?.toDouble() ?: 0.0
-            val paddingBottom = padding?.bottom?.toDouble() ?: 0.0
+            val paddingTop = viewFactory.padding?.top?.toDouble() ?: 0.0
+            var paddingLeft = viewFactory.padding?.start?.toDouble() ?: 0.0
+            var paddingRight = viewFactory.padding?.end?.toDouble() ?: 0.0
+            val paddingBottom = viewFactory.padding?.bottom?.toDouble() ?: 0.0
 
             val titleLeftInset: CGFloat
             val titleRightInset: CGFloat
 
-            when (iconGravity) {
+            when (viewFactory.iconGravity) {
                 IconGravity.START -> {
                     val inset = buttonWidth -
                             iconWidth - titleWidth -
@@ -157,6 +170,7 @@ actual class ButtonWithIconViewFactory actual constructor(
                     titleRightInset = -inset
                     paddingRight += inset
                 }
+
                 IconGravity.END -> {
                     val inset = buttonWidth -
                             iconWidth - titleWidth -
@@ -166,11 +180,13 @@ actual class ButtonWithIconViewFactory actual constructor(
                     titleRightInset = inset
                     paddingLeft += inset
                 }
+
                 IconGravity.TEXT_START, null -> {
                     titleLeftInset = icPadding
                     titleRightInset = -icPadding
                     paddingRight += icPadding
                 }
+
                 IconGravity.TEXT_END -> {
                     titleLeftInset = -icPadding
                     titleRightInset = icPadding
@@ -191,11 +207,5 @@ actual class ButtonWithIconViewFactory actual constructor(
                 right = paddingRight
             )
         }
-
-        return ViewBundle(
-            view = button,
-            size = size,
-            margins = margins
-        )
     }
 }

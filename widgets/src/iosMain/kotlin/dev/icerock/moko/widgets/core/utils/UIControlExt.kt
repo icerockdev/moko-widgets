@@ -13,9 +13,11 @@ import platform.QuartzCore.CADisplayLink
 import platform.UIKit.UIControl
 import platform.UIKit.UIControlEvents
 import platform.UIKit.UIGestureRecognizer
+import platform.UIKit.UIView
 import platform.darwin.NSObject
 import platform.objc.OBJC_ASSOCIATION_RETAIN
 import platform.objc.objc_setAssociatedObject
+import kotlin.native.ref.WeakReference
 
 fun UIControl.setEventHandler(controlEvent: UIControlEvents, action: () -> Unit) {
     val target = LambdaTarget(action)
@@ -50,10 +52,31 @@ fun UIGestureRecognizer.setHandler(action: () -> Unit) {
     )
 }
 
-fun NSObject.displayLink(action: () -> Unit): CADisplayLink {
-    val target = LambdaTarget(action)
+fun <T : Any, CTX> T.displayLink(
+    context: CTX,
+    objectForSkipCheck: (T) -> Any,
+    action: (T, CTX) -> Unit
+) {
+    val ref: WeakReference<T> = WeakReference(this)
 
-    return CADisplayLink.displayLinkWithTarget(
+    var displayLink: CADisplayLink? = null
+
+    var oldState: Any = objectForSkipCheck(this)
+    val target = LambdaTarget {
+        val strongRef: T? = ref.get()
+        if (strongRef == null) {
+            displayLink?.removeFromRunLoop(NSRunLoop.currentRunLoop, NSRunLoopCommonModes)
+            displayLink = null
+            return@LambdaTarget
+        }
+
+        val newState: Any = objectForSkipCheck(strongRef)
+        if (newState == oldState) return@LambdaTarget
+
+        action(strongRef, context)
+    }
+
+    CADisplayLink.displayLinkWithTarget(
         target = target,
         selector = NSSelectorFromString("displayLink:")
     ).apply {
