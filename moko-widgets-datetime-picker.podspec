@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
     spec.name                     = 'moko-widgets-datetime-picker'
-    spec.version                  = '0.2.0'
+    spec.version                  = '0.2.2'
     spec.homepage                 = 'https://github.com/icerockdev/moko-widgets'
     spec.source                   = { :git => "https://github.com/icerockdev/moko-widgets.git", :tag => "release/#{spec.version}" }
     spec.authors                  = 'IceRock Development'

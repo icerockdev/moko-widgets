@@ -43,7 +43,6 @@ private var AssociatedDelegateHandle: UInt8 = 0
     fpc.surfaceView.grabberHandle.isHidden = true
     fpc.surfaceView.grabberHandleSize.height = 0
     fpc.surfaceView.grabberHandlePadding = 0
-    //fpc.surfaceView.contentInsets = .zero
 
     controller = fpc
     self.onDismiss = onDismiss

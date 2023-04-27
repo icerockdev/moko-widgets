@@ -62,10 +62,6 @@ private var AssociatedDelegateHandle: UInt8 = 0
     objc_setAssociatedObject(fpc, &AssociatedDelegateHandle, delegate, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
     
     vc.present(fpc, animated: true, completion: nil)
-      
-      DispatchQueue.main.async {
-          view.setNeedsLayout()
-      }
   }
   
   @objc public func dismiss() {
