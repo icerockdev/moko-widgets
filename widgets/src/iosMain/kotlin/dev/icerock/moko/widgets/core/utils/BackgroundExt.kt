@@ -10,21 +10,19 @@ import dev.icerock.moko.widgets.core.style.background.Direction
 import dev.icerock.moko.widgets.core.style.background.Fill
 import dev.icerock.moko.widgets.core.style.state.PressableState
 import kotlinx.cinterop.useContents
+import platform.CoreGraphics.CGFloat
 import platform.CoreGraphics.CGPointMake
 import platform.CoreGraphics.CGRectMake
-import platform.Foundation.NSRunLoop
-import platform.Foundation.NSRunLoopCommonModes
-import platform.QuartzCore.CADisplayLink
 import platform.QuartzCore.CAGradientLayer
 import platform.QuartzCore.CALayer
 import platform.QuartzCore.CATransaction
 import platform.UIKit.UIButton
 import platform.UIKit.UIColor
+import platform.UIKit.UIControl
 import platform.UIKit.UIView
 import platform.UIKit.adjustsImageWhenDisabled
 import platform.UIKit.adjustsImageWhenHighlighted
 import platform.UIKit.backgroundColor
-import platform.UIKit.window
 
 @Suppress("MagicNumber", "ComplexMethod")
 fun Background<out Fill>.caLayer(): CALayer {
@@ -35,6 +33,7 @@ fun Background<out Fill>.caLayer(): CALayer {
         is Fill.Solid -> backgroundLayer = CALayer().apply {
             backgroundColor = fill.color.toUIColor().CGColor
         }
+
         is Fill.Gradient -> {
             backgroundLayer = CAGradientLayer().apply {
                 colors = cgColors(fill.colors.map {
@@ -58,6 +57,7 @@ fun Background<out Fill>.caLayer(): CALayer {
                 endPoint = end
             }
         }
+
         null -> {
             backgroundLayer = CALayer()
         }
@@ -84,56 +84,74 @@ fun UIButton.applyStateBackgroundIfNeeded(background: PressableState<Background<
     adjustsImageWhenDisabled = false
     adjustsImageWhenHighlighted = false
 
-    val normalBg = background.normal.caLayer().also {
-        layer.addSublayer(it)
-    }
-    val disabledBg = background.disabled.caLayer().also {
-        layer.addSublayer(it)
-    }
-    val pressedBg = background.pressed.caLayer().also {
-        layer.addSublayer(it)
-    }
+    val stateLayers = StateLayers(
+        normal = background.normal.caLayer().also {
+            layer.addSublayer(it)
+        },
+        disabled = background.disabled.caLayer().also {
+            layer.addSublayer(it)
+        },
+        pressed = background.pressed.caLayer().also {
+            layer.addSublayer(it)
+        }
+    )
 
-    fun updateLayers() {
-        if (!isEnabled()) {
-            disabledBg.opacity = 1.0f
-            normalBg.opacity = 0f
-            pressedBg.opacity = 0f
-            return
+    stateLayers.update(this)
+
+    this.observeKeyChanges(
+        keyPath = "bounds",
+        context = stateLayers,
+    ) { button, stateLayers ->
+        val (width: CGFloat, height: CGFloat) = button.layer.bounds.useContents {
+            this.size.width to this.size.height
         }
 
-        if (isHighlighted()) {
-            pressedBg.opacity = 1.0f
-            normalBg.opacity = 0f
-        } else {
-            normalBg.opacity = 1.0f
-            pressedBg.opacity = 0f
-        }
-        disabledBg.opacity = 0f
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+
+        stateLayers.normal.frame = CGRectMake(0.0, 0.0, width, height)
+        stateLayers.disabled.frame = CGRectMake(0.0, 0.0, width, height)
+        stateLayers.pressed.frame = CGRectMake(0.0, 0.0, width, height)
+
+        CATransaction.commit()
     }
 
-    updateLayers()
-
-    // FIXME memoryleak, perfomance problem !!!
-    var link: CADisplayLink? = null
-
-    link = displayLink {
-        if (window != null) {
-            val (width, height) = layer.bounds.useContents { size.width to size.height }
-
+    listOf("highlighted", "enabled").forEach { keyPath ->
+        this.observeKeyChanges(
+            keyPath = keyPath,
+            context = stateLayers,
+        ) { button, stateLayers ->
             CATransaction.begin()
             CATransaction.setDisableActions(true)
 
-            normalBg.frame = CGRectMake(0.0, 0.0, width, height)
-            disabledBg.frame = CGRectMake(0.0, 0.0, width, height)
-            pressedBg.frame = CGRectMake(0.0, 0.0, width, height)
-
-            updateLayers()
+            stateLayers.update(button)
 
             CATransaction.commit()
-        } else {
-            link?.removeFromRunLoop(NSRunLoop.currentRunLoop, NSRunLoopCommonModes)
         }
+    }
+}
+
+private data class StateLayers(
+    val normal: CALayer,
+    val disabled: CALayer,
+    val pressed: CALayer
+) {
+    fun update(control: UIControl) {
+        if (!control.isEnabled()) {
+            disabled.opacity = 1.0f
+            normal.opacity = 0f
+            pressed.opacity = 0f
+            return
+        }
+
+        if (control.isHighlighted()) {
+            pressed.opacity = 1.0f
+            normal.opacity = 0f
+        } else {
+            normal.opacity = 1.0f
+            pressed.opacity = 0f
+        }
+        disabled.opacity = 0f
     }
 }
 
@@ -156,24 +174,22 @@ fun UIView.applyBackgroundIfNeeded(background: Background<out Fill>?) {
 
     this.backgroundColor = UIColor.clearColor
 
-    val bgLayer = background.caLayer()
+    val bgLayer: CALayer = background.caLayer()
     layer.insertSublayer(bgLayer, 0U)
 
-    // FIXME memoryleak, perfomance problem !!!
-    var link: CADisplayLink? = null
-
-    link = displayLink {
-        if (window != null) {
-            val (width, height) = layer.bounds.useContents { size.width to size.height }
-
-            CATransaction.begin()
-            CATransaction.setDisableActions(true)
-
-            bgLayer.frame = CGRectMake(0.0, 0.0, width, height)
-
-            CATransaction.commit()
-        } else {
-            link?.removeFromRunLoop(NSRunLoop.currentRunLoop, NSRunLoopCommonModes)
+    this.observeKeyChanges(
+        keyPath = "bounds",
+        context = bgLayer,
+    ) { view, bgLayer ->
+        val (width: CGFloat, height: CGFloat) = view.layer.bounds.useContents {
+            this.size.width to this.size.height
         }
+
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+
+        bgLayer.frame = CGRectMake(0.0, 0.0, width, height)
+
+        CATransaction.commit()
     }
 }

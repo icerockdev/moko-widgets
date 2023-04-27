@@ -36,3 +36,7 @@ NSURLSessionDataTask* dataTask(NSURLSession* session, NSURL* url, void (^complet
     }
   ];
 }
+
+@protocol KeyValueObserver
+- (void)observeValueForKeyPath:(nullable NSString *)keyPath ofObject:(nullable id)object change:(nullable NSDictionary<NSKeyValueChangeKey, id> *)change context:(nullable void *)context;
+@end
