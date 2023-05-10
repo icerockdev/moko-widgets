@@ -22,6 +22,7 @@ import dev.icerock.moko.widgets.core.utils.bind
 import dev.icerock.moko.widgets.core.utils.setEventHandler
 import dev.icerock.moko.widgets.core.widget.ButtonWidget
 import platform.UIKit.UIButton
+import platform.UIKit.UIButtonType
 import platform.UIKit.UIButtonTypeCustom
 import platform.UIKit.UIButtonTypeSystem
 import platform.UIKit.UIControlEventTouchUpInside
@@ -44,14 +45,13 @@ actual class SystemButtonViewFactory actual constructor(
         size: WS,
         viewFactoryContext: ViewFactoryContext
     ): ViewBundle<WS> {
-
-        val buttonType = if (widget.content is ButtonWidget.Content.Icon) {
+        val buttonType: UIButtonType = if (widget.content is ButtonWidget.Content.Icon) {
             UIButtonTypeCustom
         } else {
             UIButtonTypeSystem
         }
 
-        val button = UIButton.buttonWithType(buttonType).apply {
+        val button: UIButton = UIButton.buttonWithType(buttonType).apply {
             translatesAutoresizingMaskIntoConstraints = false
 
             applyStateBackgroundIfNeeded(background)
@@ -81,6 +81,7 @@ actual class SystemButtonViewFactory actual constructor(
                     button.setTitle(title = processedText, forState = UIControlStateNormal)
                 }
             }
+
             is ButtonWidget.Content.Icon -> {
                 content.image.bind { image ->
                     image.apply(button) {

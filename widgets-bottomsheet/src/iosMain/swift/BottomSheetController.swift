@@ -7,7 +7,7 @@ import FloatingPanel
 
 private var AssociatedDelegateHandle: UInt8 = 0
 
-@objc public class BottomSheetController: NSObject, FloatingPanelControllerDelegate {
+@objc public class BottomSheetController: NSObject {
   
   private var controller: FloatingPanelController?
   private var onDismiss: ((Bool) -> Void)?
@@ -48,6 +48,9 @@ private var AssociatedDelegateHandle: UInt8 = 0
     fpc.delegate = delegate
     fpc.backdropView.backgroundColor = UIColor.black
     fpc.isRemovalInteractionEnabled = true
+    let surface = SurfaceAppearance()
+    surface.cornerRadius = 14
+    fpc.surfaceView.appearance = surface
     
     view.superview?.layer.maskedCorners = [CACornerMask.layerMinXMinYCorner, CACornerMask.layerMaxXMinYCorner]
     view.superview?.layer.masksToBounds = true
@@ -76,44 +79,52 @@ class FloatingDelegate: FloatingPanelControllerDelegate {
     self.onDismiss = onDismiss
   }
   
-  func floatingPanel(_ vc: FloatingPanelController, layoutFor newCollection: UITraitCollection) -> FloatingPanelLayout? {
+  func floatingPanel(_ vc: FloatingPanelController, layoutFor newCollection: UITraitCollection) -> FloatingPanelLayout {
     return floatingLayout
   }
   
   func floatingPanelDidEndDecelerating(_ vc: FloatingPanelController) {
-    if vc.position == .hidden {
+    if vc.state == .hidden {
       vc.removePanelFromParent(animated: true)
       vc.dismiss(animated: false, completion: nil)
       onDismiss(false)
     }
   }
   
-  func floatingPanelDidEndRemove(_ vc: FloatingPanelController) {
+  func floatingPanelDidRemove(_ vc: FloatingPanelController) {
     onDismiss(false)
   }
 }
 
 class BottomSheetLayout: FloatingPanelLayout {
-  var initialPosition: FloatingPanelPosition = .full
-  
-  private let preferredHeight: CGFloat
-  
-  init(preferredHeight: CGFloat) {
-    self.preferredHeight = preferredHeight
-  }
-  
-  func insetFor(position: FloatingPanelPosition) -> CGFloat? {
-    switch (position) {
-    case .half: return 0
-    case .full: return UIScreen.main.bounds.size.height - preferredHeight - 30.0
-    case .tip: return 0
-    case .hidden: return 0
+    private let preferredHeight: CGFloat
+    
+    var position: FloatingPanelPosition {
+        return .bottom
     }
-  }
-  
-  var supportedPositions: Set<FloatingPanelPosition> = [.full, .hidden]
-  
-  func backdropAlphaFor(position: FloatingPanelPosition) -> CGFloat {
-    return 0.3
-  }
+    
+    var initialState: FloatingPanelState {
+        return .full
+    }
+    
+    var anchors: [FloatingPanelState : FloatingPanelLayoutAnchoring] {
+        return [
+            .full: FloatingPanelLayoutAnchor(absoluteInset: preferredHeight, edge: .bottom, referenceGuide: .safeArea)
+        ]
+    }
+    
+    init(preferredHeight: CGFloat) {
+        self.preferredHeight = preferredHeight
+    }
+    
+    func prepareLayout(surfaceView: UIView, in view: UIView) -> [NSLayoutConstraint] {
+        return [
+            surfaceView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 0.0),
+            surfaceView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: 0.0),
+        ]
+    }
+    
+    func backdropAlpha(for state: FloatingPanelState) -> CGFloat {
+        return state == .full ? 0.3 : 0.0
+    }
 }

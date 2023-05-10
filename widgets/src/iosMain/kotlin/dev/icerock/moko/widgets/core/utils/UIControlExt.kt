@@ -4,21 +4,29 @@
 
 package dev.icerock.moko.widgets.core.utils
 
+import dev.icerock.moko.widgets.objc.KeyValueObserverProtocol
+import kotlinx.cinterop.COpaquePointer
 import kotlinx.cinterop.ObjCAction
 import kotlinx.cinterop.cstr
-import platform.Foundation.NSRunLoop
-import platform.Foundation.NSRunLoopCommonModes
+import platform.Foundation.NSKeyValueObservingOptionNew
 import platform.Foundation.NSSelectorFromString
-import platform.QuartzCore.CADisplayLink
+import platform.Foundation.addObserver
 import platform.UIKit.UIControl
 import platform.UIKit.UIControlEvents
 import platform.UIKit.UIGestureRecognizer
+import platform.UIKit.UIView
 import platform.darwin.NSObject
 import platform.objc.OBJC_ASSOCIATION_RETAIN
 import platform.objc.objc_setAssociatedObject
+import kotlin.native.ref.WeakReference
 
-fun UIControl.setEventHandler(controlEvent: UIControlEvents, action: () -> Unit) {
-    val target = LambdaTarget(action)
+fun <V : UIControl> V.setEventHandler(controlEvent: UIControlEvents, action: (V) -> Unit) {
+    val weakReference: WeakReference<V> = WeakReference(this)
+    val target = LambdaTarget {
+        val strongRef: V = weakReference.get() ?: return@LambdaTarget
+
+        action(strongRef)
+    }
 
     addTarget(
         target = target,
@@ -50,15 +58,45 @@ fun UIGestureRecognizer.setHandler(action: () -> Unit) {
     )
 }
 
-fun NSObject.displayLink(action: () -> Unit): CADisplayLink {
-    val target = LambdaTarget(action)
+fun <V : UIView, CTX> V.observeKeyChanges(
+    keyPath: String,
+    context: CTX,
+    action: (V, CTX) -> Unit
+) {
+    val ref: WeakReference<V> = WeakReference(this)
 
-    return CADisplayLink.displayLinkWithTarget(
-        target = target,
-        selector = NSSelectorFromString("displayLink:")
-    ).apply {
-        frameInterval = 1
-        addToRunLoop(NSRunLoop.currentRunLoop, NSRunLoopCommonModes)
+    val target = ObserverObject {
+        val strongRef: V = ref.get() ?: return@ObserverObject
+
+        action(strongRef, context)
+    }
+
+    objc_setAssociatedObject(
+        `object` = this,
+        key = "observeKeyChanges-$keyPath".cstr,
+        value = target,
+        policy = OBJC_ASSOCIATION_RETAIN
+    )
+
+    this.addObserver(
+        observer = target,
+        forKeyPath = keyPath,
+        options = NSKeyValueObservingOptionNew,
+        context = null
+    )
+}
+
+private class ObserverObject(
+    private val lambda: () -> Unit
+) : NSObject(), KeyValueObserverProtocol {
+
+    override fun observeValueForKeyPath(
+        keyPath: String?,
+        ofObject: Any?,
+        change: Map<Any?, *>?,
+        context: COpaquePointer?
+    ) {
+        lambda()
     }
 }
 
@@ -66,12 +104,6 @@ class LambdaTarget(val lambda: () -> Unit) : NSObject() {
 
     @ObjCAction
     fun action() {
-        lambda()
-    }
-
-    @ObjCAction
-    @Suppress("UnusedPrivateMember")
-    fun displayLink(link: CADisplayLink) {
         lambda()
     }
 }
