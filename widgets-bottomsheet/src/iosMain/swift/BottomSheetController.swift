@@ -9,7 +9,7 @@ private var AssociatedDelegateHandle: UInt8 = 0
 
 @objc public class BottomSheetController: NSObject {
   
-  private weak var controller: FloatingPanelController?
+  private var controller: FloatingPanelController?
   private var onDismiss: ((Bool) -> Void)?
   
   @objc public func show(
