@@ -1,7 +1,7 @@
 [versions]
 kotlinVersion = "1.8.10"
 
-mokoWidgetsVersion = "0.2.2"
+mokoWidgetsVersion = "0.2.3"
 mokoResourcesVersion = "0.21.2"
 mokoMvvmVersion = "0.16.0"
 mokoFieldsVersion = "0.12.0"
