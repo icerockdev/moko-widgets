@@ -5,12 +5,18 @@
 package dev.icerock.moko.widgets.core.utils
 
 import dev.icerock.moko.widgets.objc.KeyValueObserverProtocol
+import dev.icerock.moko.widgets.objc.setAssociatedObjectWithKey
 import kotlinx.cinterop.COpaquePointer
+import kotlinx.cinterop.ExportObjCClass
 import kotlinx.cinterop.ObjCAction
 import kotlinx.cinterop.cstr
 import platform.Foundation.NSKeyValueObservingOptionNew
 import platform.Foundation.NSSelectorFromString
+import platform.Foundation.NSString
+import platform.Foundation.NSValue
+import platform.Foundation.UTF8String
 import platform.Foundation.addObserver
+import platform.Foundation.valueWithPointer
 import platform.UIKit.UIControl
 import platform.UIKit.UIControlEvents
 import platform.UIKit.UIGestureRecognizer
@@ -58,24 +64,28 @@ fun UIGestureRecognizer.setHandler(action: () -> Unit) {
     )
 }
 
+private val keys = mutableMapOf<String, NSValue>()
+
 fun <V : UIView, CTX> V.observeKeyChanges(
     keyPath: String,
     context: CTX,
     action: (V, CTX) -> Unit
 ) {
-    val ref: WeakReference<V> = WeakReference(this)
-
-    val target = ObserverObject {
-        val strongRef: V = ref.get() ?: return@ObserverObject
-
-        action(strongRef, context)
+    val target: ObserverObject<V> = ObserverObject(this) {
+        action(this, context)
     }
 
-    objc_setAssociatedObject(
+    val keyString = "observeKeyChanges-$keyPath"
+    val key: NSValue = keys[keyString] ?: let {
+        NSValue.valueWithPointer((keyString as NSString).UTF8String)
+    }.also {
+        keys[keyString] = it
+    }
+
+    setAssociatedObjectWithKey(
         `object` = this,
-        key = "observeKeyChanges-$keyPath".cstr,
-        value = target,
-        policy = OBJC_ASSOCIATION_RETAIN
+        key = key,
+        value = target
     )
 
     this.addObserver(
@@ -86,9 +96,12 @@ fun <V : UIView, CTX> V.observeKeyChanges(
     )
 }
 
-private class ObserverObject(
-    private val lambda: () -> Unit
+@ExportObjCClass
+private class ObserverObject<T : Any>(
+    ref: T,
+    private val lambda: T.() -> Unit
 ) : NSObject(), KeyValueObserverProtocol {
+    private val ref: WeakReference<T> = WeakReference(ref)
 
     override fun observeValueForKeyPath(
         keyPath: String?,
@@ -96,7 +109,8 @@ private class ObserverObject(
         change: Map<Any?, *>?,
         context: COpaquePointer?
     ) {
-        lambda()
+        val strongRef: T = ref.get() ?: return
+        lambda.invoke(strongRef)
     }
 }
 
