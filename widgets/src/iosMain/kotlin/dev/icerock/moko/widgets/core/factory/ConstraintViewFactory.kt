@@ -19,6 +19,7 @@ import dev.icerock.moko.widgets.core.widget.Constraint
 import dev.icerock.moko.widgets.core.widget.ConstraintItem
 import dev.icerock.moko.widgets.core.widget.ConstraintWidget
 import dev.icerock.moko.widgets.core.widget.ConstraintsApi
+import kotlinx.cinterop.ExportObjCClass
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGFloat
 import platform.CoreGraphics.CGRectZero
@@ -37,6 +38,9 @@ import platform.UIKit.safeAreaLayoutGuide
 import platform.UIKit.topAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 
+@ExportObjCClass
+private class ConstraintViewContainer : UIView(frame = CGRectZero.readValue())
+
 actual class ConstraintViewFactory actual constructor(
     private val background: Background<out Fill>?,
     private val padding: PaddingValues?,
@@ -48,7 +52,7 @@ actual class ConstraintViewFactory actual constructor(
         size: WS,
         viewFactoryContext: ViewFactoryContext,
     ): ViewBundle<WS> {
-        val container = UIView(frame = CGRectZero.readValue()).apply {
+        val container = ConstraintViewContainer().apply {
             translatesAutoresizingMaskIntoConstraints = false
 
             applyBackgroundIfNeeded(background)
@@ -205,9 +209,11 @@ class AutoLayoutConstraintsApi(
                 override fun offset(points: Int) {
                     it.constant = const + points
                     if (applyExtraMargins != null) {
-                        applyAdditionalMargins(firstItem.widget,
+                        applyAdditionalMargins(
+                            firstItem.widget,
                             points.toFloat(),
-                            applyExtraMargins)
+                            applyExtraMargins
+                        )
                     }
                 }
             }

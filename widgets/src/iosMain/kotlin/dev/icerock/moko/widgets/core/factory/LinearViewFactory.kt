@@ -19,6 +19,7 @@ import dev.icerock.moko.widgets.core.utils.Edges
 import dev.icerock.moko.widgets.core.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.core.utils.applySize
 import dev.icerock.moko.widgets.core.widget.LinearWidget
+import kotlinx.cinterop.ExportObjCClass
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGFloat
 import platform.CoreGraphics.CGRectZero
@@ -36,6 +37,9 @@ import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 import platform.UIKit.widthAnchor
 
+@ExportObjCClass
+private class LinearViewContainer : UIView(frame = CGRectZero.readValue())
+
 actual class LinearViewFactory actual constructor(
     private val padding: PaddingValues?,
     private val margins: MarginValues?,
@@ -49,7 +53,7 @@ actual class LinearViewFactory actual constructor(
     ): ViewBundle<WS> {
         val viewController: UIViewController = viewFactoryContext
 
-        val container = UIView(frame = CGRectZero.readValue()).apply {
+        val container = LinearViewContainer().apply {
             translatesAutoresizingMaskIntoConstraints = false
             applyBackgroundIfNeeded(background)
         }
@@ -61,6 +65,7 @@ actual class LinearViewFactory actual constructor(
                 viewController = viewController,
                 size = size
             )
+
             Orientation.VERTICAL -> layoutVertical(
                 root = container,
                 children = widget.children,
