@@ -20,6 +20,10 @@ void setAssociatedObject(id object, id value) {
   return objc_setAssociatedObject(object, &kAssociatedObjectKey, value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
+void setAssociatedObjectWithKey(id object, NSValue* key, id value) {
+  return objc_setAssociatedObject(object, key.pointerValue, value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
 NSArray* cgColors(NSArray<UIColor*>* uiColors) {
   NSMutableArray* result = [NSMutableArray arrayWithCapacity: uiColors.count];
   for(int i = 0;i < uiColors.count;i++) {

@@ -38,8 +38,8 @@ kotlin {
             this as org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
             compilations.getByName("main") {
-                val pluralizedString by cinterops.creating {
-                    defFile(project.file("src/iosMain/def/objcAddtition.def"))
+                val objcAddition by cinterops.creating {
+                    defFile(project.file("src/iosMain/def/objcAddition.def"))
                 }
             }
         }
