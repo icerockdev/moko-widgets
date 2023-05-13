@@ -14,12 +14,14 @@ import dev.icerock.moko.widgets.core.style.view.MarginValues
 import dev.icerock.moko.widgets.core.style.view.PaddingValues
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.utils.Edges
-import dev.icerock.moko.widgets.core.utils.UIViewWithIdentifier
 import dev.icerock.moko.widgets.core.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.core.utils.applySizeToChild
-import dev.icerock.moko.widgets.core.utils.identifier
 import dev.icerock.moko.widgets.core.widget.ContainerWidget
+import kotlinx.cinterop.ExportObjCClass
+import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGFloat
+import platform.CoreGraphics.CGRectZero
+import platform.UIKit.UIView
 import platform.UIKit.UIViewController
 import platform.UIKit.addSubview
 import platform.UIKit.bottomAnchor
@@ -29,6 +31,9 @@ import platform.UIKit.leadingAnchor
 import platform.UIKit.topAnchor
 import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
+
+@ExportObjCClass
+private class ContainerView : UIView(frame = CGRectZero.readValue())
 
 actual class ContainerViewFactory actual constructor(
     private val padding: PaddingValues?,
@@ -43,11 +48,9 @@ actual class ContainerViewFactory actual constructor(
     ): ViewBundle<WS> {
         val viewController: UIViewController = viewFactoryContext
 
-        val root = UIViewWithIdentifier().apply {
+        val root = ContainerView().apply {
             translatesAutoresizingMaskIntoConstraints = false
             applyBackgroundIfNeeded(background)
-
-            accessibilityIdentifier = widget.identifier()
         }
 
         widget.children.forEach { (childWidget, childAlignment) ->
@@ -73,6 +76,7 @@ actual class ContainerViewFactory actual constructor(
                     childView.centerYAnchor.constraintEqualToAnchor(root.centerYAnchor).active =
                         true
                 }
+
                 Alignment.LEFT -> {
                     childView.leadingAnchor.constraintEqualToAnchor(
                         anchor = root.leadingAnchor,
@@ -81,6 +85,7 @@ actual class ContainerViewFactory actual constructor(
                     childView.centerYAnchor.constraintEqualToAnchor(root.centerYAnchor).active =
                         true
                 }
+
                 Alignment.RIGHT -> {
                     childView.trailingAnchor.constraintEqualToAnchor(
                         anchor = root.trailingAnchor,
@@ -89,6 +94,7 @@ actual class ContainerViewFactory actual constructor(
                     childView.centerYAnchor.constraintEqualToAnchor(root.centerYAnchor).active =
                         true
                 }
+
                 Alignment.TOP -> {
                     childView.topAnchor.constraintEqualToAnchor(
                         anchor = root.topAnchor,
@@ -97,6 +103,7 @@ actual class ContainerViewFactory actual constructor(
                     childView.centerXAnchor.constraintEqualToAnchor(root.centerXAnchor).active =
                         true
                 }
+
                 Alignment.BOTTOM -> {
                     childView.bottomAnchor.constraintEqualToAnchor(
                         anchor = root.bottomAnchor,

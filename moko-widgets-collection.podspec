@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
     spec.name                     = 'moko-widgets-collection'
-    spec.version                  = '0.2.2'
+    spec.version                  = '0.2.4'
     spec.homepage                 = 'https://github.com/icerockdev/moko-widgets'
     spec.source                   = { :git => "https://github.com/icerockdev/moko-widgets.git", :tag => "release/#{spec.version}" }
     spec.authors                  = 'IceRock Development'

@@ -16,6 +16,12 @@ fun NavigationBar.BarButton.toUIBarButtonItem(): UIBarButtonItem {
         target = actionHandler,
         action = NSSelectorFromString("action")
     )
-    setAssociatedObject(button, actionHandler)
+
+    setAssociatedObject(
+        obj = button,
+        key = "barButtonAction",
+        target = actionHandler
+    )
+
     return button
 }

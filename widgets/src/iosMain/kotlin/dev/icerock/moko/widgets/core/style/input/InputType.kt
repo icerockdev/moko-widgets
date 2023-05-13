@@ -6,8 +6,8 @@ package dev.icerock.moko.widgets.core.style.input
 
 import dev.icerock.moko.widgets.core.utils.DefaultFormatterUITextFieldDelegate
 import dev.icerock.moko.widgets.core.utils.DefaultTextFormatter
+import dev.icerock.moko.widgets.core.utils.setAssociatedObject
 import dev.icerock.moko.widgets.core.utils.toIosPattern
-import kotlinx.cinterop.cstr
 import platform.UIKit.UIKeyboardTypeDecimalPad
 import platform.UIKit.UIKeyboardTypeDefault
 import platform.UIKit.UIKeyboardTypeEmailAddress
@@ -15,8 +15,6 @@ import platform.UIKit.UIKeyboardTypeNumberPad
 import platform.UIKit.UIKeyboardTypePhonePad
 import platform.UIKit.UITextField
 import platform.UIKit.UITextView
-import platform.objc.OBJC_ASSOCIATION_RETAIN_NONATOMIC
-import platform.objc.objc_setAssociatedObject
 
 actual interface InputType {
 
@@ -132,22 +130,22 @@ actual fun InputType.Companion.digits(mask: String?): InputType {
 private fun applyFormatter(mask: String?, textField: UITextField) {
     val delegate = DefaultFormatterUITextFieldDelegate(inputFormatter = mask?.let { createDefaultTextFormatter(it) })
     textField.delegate = delegate
-    objc_setAssociatedObject(
-        `object` = textField,
-        key = "textFieldDelegate".cstr,
-        value = delegate,
-        policy = OBJC_ASSOCIATION_RETAIN_NONATOMIC
+
+    setAssociatedObject(
+        obj = textField,
+        key = "textFieldDelegate",
+        target = delegate
     )
 }
 
 private fun applyFormatter(mask: String?, textView: UITextView) {
     val delegate = DefaultFormatterUITextFieldDelegate(inputFormatter = mask?.let { createDefaultTextFormatter(it) })
     textView.delegate = delegate
-    objc_setAssociatedObject(
-        `object` = textView,
-        key = "textViewDelegate".cstr,
-        value = delegate,
-        policy = OBJC_ASSOCIATION_RETAIN_NONATOMIC
+
+    setAssociatedObject(
+        obj = textView,
+        key = "textViewDelegate",
+        target = delegate
     )
 }
 

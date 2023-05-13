@@ -8,13 +8,13 @@ import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.widgets.core.ViewBundle
 import dev.icerock.moko.widgets.core.ViewFactory
 import dev.icerock.moko.widgets.core.ViewFactoryContext
-import dev.icerock.moko.widgets.core.utils.setAssociatedObject
 import dev.icerock.moko.widgets.core.style.background.Background
 import dev.icerock.moko.widgets.core.style.background.Fill
 import dev.icerock.moko.widgets.core.style.view.MarginValues
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.utils.WebViewRedirectUrlHandler
 import dev.icerock.moko.widgets.core.utils.applyBackgroundIfNeeded
+import dev.icerock.moko.widgets.core.utils.setAssociatedObject
 import dev.icerock.moko.widgets.core.widget.WebViewWidget
 import platform.Foundation.NSURL
 import platform.Foundation.NSURLRequest
@@ -48,7 +48,11 @@ actual class WebViewFactory actual constructor(
                 failureRedirectConfig = widget.failureRedirectConfig,
                 isPageLoading = widget.isWebPageLoading
             )
-            setAssociatedObject(this, webViewNavDelegate)
+            setAssociatedObject(
+                obj = this,
+                key = "webviewNavDelegate",
+                target = webViewNavDelegate
+            )
 
             setNavigationDelegate(webViewNavDelegate)
             loadRequest(request = NSURLRequest(uRL = NSURL(string = widget.targetUrl)))

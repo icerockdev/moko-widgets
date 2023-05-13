@@ -13,12 +13,13 @@ import dev.icerock.moko.widgets.core.style.view.MarginValues
 import dev.icerock.moko.widgets.core.style.view.PaddingValues
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.utils.Edges
-import dev.icerock.moko.widgets.core.utils.UIViewWithIdentifier
 import dev.icerock.moko.widgets.core.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.core.utils.applySizeToChild
-import dev.icerock.moko.widgets.core.utils.identifier
 import dev.icerock.moko.widgets.core.widget.CardWidget
+import kotlinx.cinterop.ExportObjCClass
+import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGFloat
+import platform.CoreGraphics.CGRectZero
 import platform.CoreGraphics.CGSizeMake
 import platform.UIKit.UIColor
 import platform.UIKit.UIView
@@ -31,6 +32,10 @@ import platform.UIKit.leadingAnchor
 import platform.UIKit.topAnchor
 import platform.UIKit.trailingAnchor
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
+
+@ExportObjCClass
+private class CardViewContainer : UIView(frame = CGRectZero.readValue())
+
 @Suppress("MagicNumber")
 actual class CardViewFactory actual constructor(
     private val padding: PaddingValues?,
@@ -46,15 +51,13 @@ actual class CardViewFactory actual constructor(
 
         val viewController: UIViewController = viewFactoryContext
 
-        val root = UIViewWithIdentifier().apply {
+        val root = CardViewContainer().apply {
             translatesAutoresizingMaskIntoConstraints = false
             applyBackgroundIfNeeded(background)
 
             layer.cornerRadius = background?.cornerRadius?.toDouble() ?: 0.0
             clipsToBounds = true
             backgroundColor = UIColor.whiteColor
-
-            accessibilityIdentifier = widget.identifier()
         }
 
         val childViewBundle = widget.child.buildView(viewController)

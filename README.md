@@ -209,15 +209,15 @@ allprojects {
 project build.gradle
 ```groovy
 dependencies {
-    commonMainApi("dev.icerock.moko:widgets:0.2.2")
+    commonMainApi("dev.icerock.moko:widgets:0.2.4")
 
-    commonMainApi("dev.icerock.moko:widgets-bottomsheet:0.2.2") // show bottom sheets
-    commonMainApi("dev.icerock.moko:widgets-collection:0.2.2") // collection widget
-    commonMainApi("dev.icerock.moko:widgets-datetime-picker:0.2.2") // show datepicker
-    commonMainApi("dev.icerock.moko:widgets-image-network:0.2.2") // images with load from url
-    commonMainApi("dev.icerock.moko:widgets-sms:0.2.2") // input with sms autofill
-    commonMainApi("dev.icerock.moko:widgets-media:0.2.2") // moko-media integration
-    commonMainApi("dev.icerock.moko:widgets-permissions:0.2.2") // moko-permissions integration
+    commonMainApi("dev.icerock.moko:widgets-bottomsheet:0.2.4") // show bottom sheets
+    commonMainApi("dev.icerock.moko:widgets-collection:0.2.4") // collection widget
+    commonMainApi("dev.icerock.moko:widgets-datetime-picker:0.2.4") // show datepicker
+    commonMainApi("dev.icerock.moko:widgets-image-network:0.2.4") // images with load from url
+    commonMainApi("dev.icerock.moko:widgets-sms:0.2.4") // input with sms autofill
+    commonMainApi("dev.icerock.moko:widgets-media:0.2.4") // moko-media integration
+    commonMainApi("dev.icerock.moko:widgets-permissions:0.2.4") // moko-permissions integration
 }
 ```
 
@@ -230,7 +230,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "dev.icerock.moko.widgets:gradle-plugin:0.2.2"
+        classpath "dev.icerock.moko.widgets:gradle-plugin:0.2.4"
     }
 }
 ```
