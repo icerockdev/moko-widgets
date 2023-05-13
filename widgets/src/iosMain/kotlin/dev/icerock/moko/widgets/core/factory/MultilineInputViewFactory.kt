@@ -21,10 +21,9 @@ import dev.icerock.moko.widgets.core.style.view.TextStyle
 import dev.icerock.moko.widgets.core.style.view.WidgetSize
 import dev.icerock.moko.widgets.core.utils.applyBackgroundIfNeeded
 import dev.icerock.moko.widgets.core.utils.applyTextStyleIfNeeded
-import dev.icerock.moko.widgets.core.utils.bind
+import dev.icerock.moko.widgets.core.utils.setAssociatedObject
 import dev.icerock.moko.widgets.core.widget.InputWidget
 import kotlinx.cinterop.ObjCAction
-import kotlinx.cinterop.cstr
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGRectZero
 import platform.Foundation.NSNotification
@@ -42,8 +41,6 @@ import platform.UIKit.UITextViewTextDidEndEditingNotification
 import platform.UIKit.clipsToBounds
 import platform.UIKit.translatesAutoresizingMaskIntoConstraints
 import platform.darwin.NSObject
-import platform.objc.OBJC_ASSOCIATION_RETAIN_NONATOMIC
-import platform.objc.objc_setAssociatedObject
 
 actual class MultilineInputViewFactory actual constructor(
     private val background: Background<Fill.Solid>?,
@@ -138,11 +135,10 @@ actual class MultilineInputViewFactory actual constructor(
             }
         }
 
-        objc_setAssociatedObject(
-            `object` = textView,
-            key = "textViewObserver".cstr,
-            value = observer,
-            policy = OBJC_ASSOCIATION_RETAIN_NONATOMIC
+        setAssociatedObject(
+            obj = textView,
+            key = "textViewObserver",
+            target = observer
         )
 
         return ViewBundle(

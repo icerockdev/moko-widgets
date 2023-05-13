@@ -5,46 +5,34 @@
 package dev.icerock.moko.widgets.core.utils
 
 import dev.icerock.moko.widgets.objc.KeyValueObserverProtocol
-import dev.icerock.moko.widgets.objc.setAssociatedObjectWithKey
 import kotlinx.cinterop.COpaquePointer
 import kotlinx.cinterop.ExportObjCClass
 import kotlinx.cinterop.ObjCAction
-import kotlinx.cinterop.cstr
 import platform.Foundation.NSKeyValueObservingOptionNew
 import platform.Foundation.NSSelectorFromString
-import platform.Foundation.NSString
-import platform.Foundation.NSValue
-import platform.Foundation.UTF8String
 import platform.Foundation.addObserver
-import platform.Foundation.valueWithPointer
 import platform.UIKit.UIControl
 import platform.UIKit.UIControlEvents
 import platform.UIKit.UIGestureRecognizer
 import platform.UIKit.UIView
 import platform.darwin.NSObject
-import platform.objc.OBJC_ASSOCIATION_RETAIN
-import platform.objc.objc_setAssociatedObject
 import kotlin.native.ref.WeakReference
 
 fun <V : UIControl> V.setEventHandler(controlEvent: UIControlEvents, action: (V) -> Unit) {
-    val weakReference: WeakReference<V> = WeakReference(this)
-    val target = LambdaTarget {
-        val strongRef: V = weakReference.get() ?: return@LambdaTarget
-
-        action(strongRef)
+    val target: LambdaRefTarget<V> = LambdaRefTarget(ref = this) {
+        action(this)
     }
 
-    addTarget(
+    setAssociatedObject(
+        obj = this,
+        key = "event-$controlEvent",
+        target = target
+    )
+
+    this.addTarget(
         target = target,
         action = NSSelectorFromString("action"),
         forControlEvents = controlEvent
-    )
-
-    objc_setAssociatedObject(
-        `object` = this,
-        key = "event$controlEvent".cstr,
-        value = target,
-        policy = OBJC_ASSOCIATION_RETAIN
     )
 }
 
@@ -56,15 +44,12 @@ fun UIGestureRecognizer.setHandler(action: () -> Unit) {
         action = NSSelectorFromString("action")
     )
 
-    objc_setAssociatedObject(
-        `object` = this,
-        key = "gestureAction".cstr,
-        value = target,
-        policy = OBJC_ASSOCIATION_RETAIN
+    setAssociatedObject(
+        obj = this,
+        key = "gestureAction",
+        target = target
     )
 }
-
-private val keys = mutableMapOf<String, NSValue>()
 
 fun <V : UIView, CTX> V.observeKeyChanges(
     keyPath: String,
@@ -75,17 +60,10 @@ fun <V : UIView, CTX> V.observeKeyChanges(
         action(this, context)
     }
 
-    val keyString = "observeKeyChanges-$keyPath"
-    val key: NSValue = keys[keyString] ?: let {
-        NSValue.valueWithPointer((keyString as NSString).UTF8String)
-    }.also {
-        keys[keyString] = it
-    }
-
-    setAssociatedObjectWithKey(
-        `object` = this,
-        key = key,
-        value = target
+    setAssociatedObject(
+        obj = this,
+        key = "observeKeyChanges-$keyPath",
+        target = target
     )
 
     this.addObserver(
@@ -114,8 +92,24 @@ private class ObserverObject<T : Any>(
     }
 }
 
-class LambdaTarget(val lambda: () -> Unit) : NSObject() {
+@ExportObjCClass
+internal class LambdaRefTarget<T : Any>(
+    ref: T,
+    val lambda: T.() -> Unit
+) : NSObject() {
+    private val ref: WeakReference<T> = WeakReference(ref)
 
+    @ObjCAction
+    fun action() {
+        val strongRef: T = ref.get() ?: return
+        lambda(strongRef)
+    }
+}
+
+@ExportObjCClass
+internal class LambdaTarget(
+    val lambda: () -> Unit
+) : NSObject() {
     @ObjCAction
     fun action() {
         lambda()
