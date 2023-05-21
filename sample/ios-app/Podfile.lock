@@ -47,9 +47,9 @@ SPEC CHECKSUMS:
   moko-widgets-datetime-picker: d25eb6926078eae46a311af26294c78b09f0058d
   moko-widgets-image-network: 074870717767dfcc1a0e942a0a070ad183c01195
   mppLibraryIos: 72c3984fbaa53978d678e62096fd613e67839f0c
-  MultiPlatformLibrary: 176fb8ade516666cd47e93de1b71ba0441a541bb
+  MultiPlatformLibrary: 91d3837ea2c0943e0713f98671a36913470ef412
   SDWebImage: 7edb9c3ea661e77a66661f7f044de8c1b55d1120
 
 PODFILE CHECKSUM: dd6f9b7e6c038aff8581037bf3a09cf3c1c947f9
 
-COCOAPODS: 1.12.0
+COCOAPODS: 1.12.1
